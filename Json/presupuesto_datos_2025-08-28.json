@@ -1,0 +1,830 @@
+{
+  "transactions": [
+    {
+      "id": "0C1iaR7odJoBWle1P440",
+      "date": "2025-08-05",
+      "bank": "Chase",
+      "type": "expense",
+      "amount": 287.83,
+      "fromRecurringId": "aG64jB41yPgGSRwZUnsV",
+      "description": "Servicio Electrico",
+      "category": "Servicios Básicos"
+    },
+    {
+      "id": "0LN7hom3A7oQZpxxw4t0",
+      "type": "expense",
+      "date": "2025-08-07",
+      "amount": 31.62,
+      "bank": "Bank Of America",
+      "category": "Tarjetas De Crédito",
+      "description": "Tc Walgreens"
+    },
+    {
+      "id": "2YFD2fgtlBtZbH2OwbwW",
+      "type": "expense",
+      "category": "Comida",
+      "description": "Walmart",
+      "bank": "Bank Of America",
+      "amount": 78.63,
+      "date": "2025-08-20"
+    },
+    {
+      "id": "3Owcu0GlUjrgRIi514QI",
+      "amount": 65,
+      "description": "Angely Spectrum",
+      "date": "2025-08-06",
+      "bank": "Bank Of America",
+      "type": "income",
+      "category": "Gastos Comunes"
+    },
+    {
+      "id": "3hy957ecFhrZvWtDOzgC",
+      "description": "Transferencia desde Chase",
+      "type": "income",
+      "date": "2025-08-14",
+      "category": "Transferencia Interna",
+      "bank": "Bank Of America",
+      "amount": 439.72
+    },
+    {
+      "id": "81akp0Ig4SoJZ3KtRO2Y",
+      "date": "2025-08-11",
+      "amount": 35.81,
+      "bank": "Bank Of America",
+      "type": "expense",
+      "category": "Comida",
+      "description": "Publix"
+    },
+    {
+      "id": "822ROEaKVj1qhW1zoyyT",
+      "category": "Sueldo",
+      "date": "2025-08-06",
+      "bank": "Bank Of America",
+      "type": "income",
+      "description": "Sueldo",
+      "amount": 334.26
+    },
+    {
+      "id": "9KdNF15hNfEaLImEAjxZ",
+      "type": "expense",
+      "description": "Otros",
+      "bank": "Bank Of America",
+      "amount": 1.5,
+      "date": "2025-08-22",
+      "category": "Ocio"
+    },
+    {
+      "id": "9dIacBUrcYqQWUGYjbA7",
+      "category": "Tarjetas De Crédito",
+      "date": "2025-08-13",
+      "amount": 90,
+      "type": "expense",
+      "description": "Tc Capital One",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "HYBFNkvT5ype6ex32z9b",
+      "category": "Otros",
+      "amount": 10,
+      "type": "expense",
+      "bank": "Wells Fargo",
+      "date": "2025-08-07",
+      "description": "Fee"
+    },
+    {
+      "id": "J1FxDgt0KRZpE3L4v0xY",
+      "bank": "Wells Fargo",
+      "type": "expense",
+      "description": "Netflix",
+      "amount": 20.28,
+      "fromRecurringId": "7pE6FhIS15ojeFHwFdKI",
+      "date": "2025-08-05",
+      "category": "Entretenimiento"
+    },
+    {
+      "id": "JC8GpAMOBP829DXGD21T",
+      "category": "Otros",
+      "date": "2025-08-06",
+      "amount": 2.75,
+      "bank": "Wells Fargo",
+      "description": "Otros",
+      "type": "expense"
+    },
+    {
+      "id": "JS0YRSo40Lg41VFSk2uU",
+      "description": "Ariannys Seguro Vehículo",
+      "category": "Gastos Comunes",
+      "bank": "Bank Of America",
+      "amount": 220,
+      "type": "income",
+      "date": "2025-08-27"
+    },
+    {
+      "id": "JUWXN7SIwVfFh7meM4Jx",
+      "category": "Sueldo",
+      "bank": "Chase",
+      "type": "income",
+      "date": "2025-08-20",
+      "description": "Sueldo",
+      "amount": 934.82
+    },
+    {
+      "id": "MzdG6CeKWbkzW7m32z18",
+      "type": "income",
+      "bank": "Bank Of America",
+      "category": "Gastos Comunes",
+      "description": "Angie",
+      "date": "2025-08-20",
+      "amount": 187
+    },
+    {
+      "id": "PEcmOpgE00tkF3LOfYN0",
+      "amount": 18.75,
+      "type": "expense",
+      "bank": "Bank Of America",
+      "date": "2025-08-22",
+      "description": "Transferencia a Wells Fargo",
+      "category": "Transferencia Interna"
+    },
+    {
+      "id": "PSevxp3l1gpSc1LxnZ0n",
+      "description": "Gastos Comunes",
+      "bank": "Bank Of America",
+      "category": "Gastos Comunes",
+      "amount": 270,
+      "type": "income",
+      "date": "2025-08-20"
+    },
+    {
+      "id": "QIEIjOwGbZ99BQvcFum9",
+      "category": "Servicios",
+      "type": "expense",
+      "description": "Icloud",
+      "date": "2025-08-22",
+      "amount": 2.99,
+      "bank": "Wells Fargo"
+    },
+    {
+      "id": "RETXAW4kWTYWT3rlK7c6",
+      "category": "Tarjetas De Crédito",
+      "bank": "Wells Fargo",
+      "type": "expense",
+      "description": "Tc Wells Fargo",
+      "amount": 80,
+      "date": "2025-08-01"
+    },
+    {
+      "id": "UX54YMSYBT8VHtwmTWtq",
+      "bank": "Chase",
+      "category": "Otros",
+      "type": "income",
+      "date": "2025-08-01",
+      "amount": 985.08,
+      "description": "Saldo Inicial"
+    },
+    {
+      "id": "VLfyUabJQ3aauJt7Icy1",
+      "category": "Otros",
+      "date": "2025-08-13",
+      "bank": "Wells Fargo",
+      "amount": 5.25,
+      "description": "Otros",
+      "type": "expense"
+    },
+    {
+      "id": "VeuGopRe1lbY9A6xirMR",
+      "description": "Transferencia desde Bank Of America",
+      "bank": "Wells Fargo",
+      "date": "2025-08-22",
+      "type": "income",
+      "category": "Transferencia Interna",
+      "amount": 18.75
+    },
+    {
+      "id": "WB40IMX9KFlUfkAxwPKn",
+      "type": "income",
+      "description": "Sueldo",
+      "amount": 400.64,
+      "bank": "Bank Of America",
+      "date": "2025-08-20",
+      "category": "Sueldo"
+    },
+    {
+      "id": "ZiH2DTcLAQBUK0dompMX",
+      "amount": 796,
+      "type": "expense",
+      "bank": "Chase",
+      "description": "Hipoteca",
+      "fromRecurringId": "0EFTPOuNJU7GLP6rSdVP",
+      "date": "2025-08-01",
+      "category": "Vivienda"
+    },
+    {
+      "id": "aBOuo0IyydthEnpIVdXK",
+      "type": "expense",
+      "bank": "Bank Of America",
+      "category": "Transferencia Interna",
+      "amount": 152.43,
+      "description": "Transferencia a Wells Fargo",
+      "date": "2025-08-27"
+    },
+    {
+      "id": "c6SbKRkQocpU50tPxcpG",
+      "amount": 779.94,
+      "category": "Sueldo",
+      "date": "2025-08-06",
+      "bank": "Chase",
+      "type": "income",
+      "description": "Sueldo"
+    },
+    {
+      "id": "dPDwMyaN4SA2rCuLUg7T",
+      "type": "expense",
+      "description": "Hipoteca",
+      "bank": "Chase",
+      "category": "Gastos Comunes",
+      "date": "2025-08-01",
+      "amount": 1591.47
+    },
+    {
+      "id": "e3cvaf41oylEkK5xoCmq",
+      "bank": "Wells Fargo",
+      "amount": 40,
+      "description": "Spectrum",
+      "category": "Servicios",
+      "fromRecurringId": "vGafoysb8bBxYTvesLxo",
+      "date": "2025-08-18",
+      "type": "expense"
+    },
+    {
+      "id": "eewgJOFIkTmQvZCFSgci",
+      "bank": "Chase",
+      "amount": 1550,
+      "category": "Vivienda",
+      "type": "income",
+      "date": "2025-08-01",
+      "description": "Angie"
+    },
+    {
+      "id": "ehIexbHLq353HO31arQs",
+      "amount": 26.61,
+      "bank": "Wells Fargo",
+      "date": "2025-08-18",
+      "type": "expense",
+      "category": "Transporte",
+      "description": "Car Wash"
+    },
+    {
+      "id": "gQis1RkwcxC3G8ez1Rim",
+      "amount": 190.8,
+      "date": "2025-08-21",
+      "bank": "Bank Of America",
+      "type": "expense",
+      "category": "Gastos Comunes",
+      "description": "Spectrum Mobile"
+    },
+    {
+      "id": "heoeohZe6QJ17ulSiwk8",
+      "type": "expense",
+      "bank": "Wells Fargo",
+      "date": "2025-08-25",
+      "description": "Otros",
+      "category": "Ocio",
+      "amount": 1.5
+    },
+    {
+      "id": "iAkaRP7IBkLgaXHEwSPU",
+      "bank": "Wells Fargo",
+      "type": "income",
+      "category": "Transferencia Interna",
+      "amount": 152.43,
+      "date": "2025-08-27",
+      "description": "Transferencia desde Bank Of America"
+    },
+    {
+      "id": "iaWQJBlCJy5WoObDVvxA",
+      "amount": 135,
+      "bank": "Bank Of America",
+      "fromRecurringId": "7L5tVZKuFkiuToqLZo9R",
+      "description": "Best Buy",
+      "category": "Tarjetas De Crédito",
+      "type": "expense",
+      "date": "2025-08-07"
+    },
+    {
+      "id": "ivBX73qst0tYumBSm4Mk",
+      "date": "2025-08-18",
+      "type": "expense",
+      "amount": 50,
+      "description": "Tc Bofa Unlimited",
+      "category": "Tarjetas De Crédito",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "jZ3maWEhyXuYMIs3DAir",
+      "date": "2025-08-19",
+      "amount": 65,
+      "category": "Servicios",
+      "description": "Arianys Spectrum",
+      "type": "income",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "l0AQV43GGC6AVicl1Wmc",
+      "description": "Angie",
+      "type": "income",
+      "date": "2025-08-06",
+      "amount": 150,
+      "category": "Comida",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "lCAgsSM3l3FLphY3qShE",
+      "description": "Tc Bank Of America",
+      "date": "2025-08-09",
+      "type": "expense",
+      "fromRecurringId": "xSPvYWZjDjUvzATzcS4e",
+      "bank": "Bank Of America",
+      "category": "Targeta De Crédito",
+      "amount": 155
+    },
+    {
+      "id": "lNZDbWhWmABDf1byL1Pn",
+      "amount": 95,
+      "bank": "Chase",
+      "type": "expense",
+      "date": "2025-08-15",
+      "category": "Tarjetas De Crédito",
+      "description": "Tc Chase"
+    },
+    {
+      "id": "n5yU1Ct34d4snnHOhcuP",
+      "bank": "Bank Of America",
+      "category": "Transporte",
+      "description": "Tolls",
+      "type": "expense",
+      "date": "2025-08-04",
+      "amount": 20
+    },
+    {
+      "id": "nEltLjtIlHHRvtHTxOVD",
+      "description": "Angie",
+      "type": "income",
+      "date": "2025-08-06",
+      "amount": 50,
+      "category": "Vivienda",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "nd6ZsyDGHyHr2a24zaUX",
+      "bank": "Bank Of America",
+      "date": "2025-08-18",
+      "amount": 30,
+      "category": "Transporte",
+      "description": "Gas",
+      "type": "expense"
+    },
+    {
+      "id": "nkYEQoa36O9JzSVA9y1c",
+      "description": "Maribel",
+      "category": "Otros",
+      "amount": 157.5,
+      "bank": "Bank Of America",
+      "date": "2025-08-06",
+      "type": "expense"
+    },
+    {
+      "id": "oWWcOM7ff15hlh2DLoh8",
+      "bank": "Bank Of America",
+      "date": "2025-08-16",
+      "category": "Impuestos",
+      "description": "Irs",
+      "type": "expense",
+      "amount": 201
+    },
+    {
+      "id": "q98pv8Cc0NQ7qtXg7EtE",
+      "type": "expense",
+      "amount": 226,
+      "category": "Otros",
+      "description": "Transferencia A Saving",
+      "date": "2025-08-04",
+      "bank": "Wells Fargo"
+    },
+    {
+      "id": "qrnI5eoJLM83I48IRrex",
+      "type": "expense",
+      "date": "2025-08-12",
+      "bank": "Wells Fargo",
+      "category": "Comida",
+      "description": "Sam's",
+      "amount": 233.62
+    },
+    {
+      "id": "r45T4M5bkNeFToocBTIe",
+      "category": "Comida",
+      "bank": "Bank Of America",
+      "description": "Walmart",
+      "type": "income",
+      "date": "2025-08-21",
+      "amount": 35
+    },
+    {
+      "id": "sBmp7x6imaJksBqxJ55d",
+      "category": "Transferencia Interna",
+      "bank": "Bank Of America",
+      "description": "Transferencia desde Chase",
+      "date": "2025-08-05",
+      "type": "income",
+      "amount": 100
+    },
+    {
+      "id": "sOXwM8KizgPVBXboFXEn",
+      "description": "Eggs",
+      "bank": "Bank Of America",
+      "type": "expense",
+      "date": "2025-08-09",
+      "amount": 346.6,
+      "category": "Préstamos"
+    },
+    {
+      "id": "t5GDaOzGOVBq9rqduSFu",
+      "bank": "Chase",
+      "fromRecurringId": "sARtuOUBSbFQnCflLfrx",
+      "type": "expense",
+      "category": "Préstamos",
+      "date": "2025-08-20",
+      "description": "Chaseauto",
+      "amount": 450
+    },
+    {
+      "id": "tVziQftAyMqZ22VhW5xr",
+      "date": "2025-08-11",
+      "description": "Angie",
+      "category": "Comida",
+      "amount": 180,
+      "type": "income",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "tfl8UqgleVzF60zGGQDb",
+      "amount": 100,
+      "date": "2025-08-05",
+      "description": "Transferencia a Bank Of America",
+      "category": "Transferencia Interna",
+      "type": "expense",
+      "bank": "Chase"
+    },
+    {
+      "id": "ttGrnKFEsZJdVpKOH23x",
+      "date": "2025-08-04",
+      "description": "Transferencia De Saving",
+      "type": "income",
+      "bank": "Wells Fargo",
+      "category": "Otros",
+      "amount": 76
+    },
+    {
+      "id": "vFKzhUS0OpXAGVIzrkVl",
+      "type": "expense",
+      "description": "Spectrum Mobile",
+      "date": "2025-08-20",
+      "amount": 23.28,
+      "category": "Servicios Básicos",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "vFrAx64qT7wqSaJ3NYzK",
+      "type": "income",
+      "bank": "Wells Fargo",
+      "description": "Saldo Inicial",
+      "category": "Otros",
+      "amount": 265.24,
+      "date": "2025-08-01"
+    },
+    {
+      "id": "xaOh0rKn73hDLY5vjZrD",
+      "category": "Otros",
+      "date": "2025-08-01",
+      "type": "income",
+      "bank": "Bank Of America",
+      "description": "Saldo Inicial",
+      "amount": 21.3
+    },
+    {
+      "id": "xjN0OSt7qFqrq56cLA5g",
+      "bank": "Chase",
+      "category": "Transferencia Interna",
+      "date": "2025-08-14",
+      "type": "expense",
+      "description": "Transferencia a Bank Of America",
+      "amount": 439.72
+    },
+    {
+      "id": "yTzVh6Vn8Igv0J1pHfVD",
+      "amount": 2.75,
+      "description": "Otros",
+      "date": "2025-08-19",
+      "category": "Otros",
+      "bank": "Wells Fargo",
+      "type": "expense"
+    },
+    {
+      "id": "zVCOZ3GDMRKezqMuGKL2",
+      "category": "Otros",
+      "date": "2025-08-11",
+      "bank": "Wells Fargo",
+      "type": "income",
+      "amount": 300,
+      "description": "Transferencia De Saving"
+    }
+  ],
+  "categories": [
+    "Comida",
+    "Entretenimiento",
+    "Gastos Comunes",
+    "Impuestos",
+    "Ocio",
+    "Otros",
+    "Préstamos",
+    "Servicios",
+    "Servicios Básicos",
+    "Sueldo",
+    "Tarjetas De Crédito",
+    "Transferencia Interna",
+    "Transporte",
+    "Vivienda"
+  ],
+  "banks": [
+    "Bank Of America",
+    "Chase",
+    "Efectivo",
+    "Tarjeta de Crédito",
+    "Wells Fargo"
+  ],
+  "descriptions": [
+    "Alquiler",
+    "Angely Spectrum",
+    "Angie",
+    "Ariannys Seguro Vehículo",
+    "Arianys Spectrum",
+    "Car Wash",
+    "Chat Gpt",
+    "Compra de Supermercado",
+    "Factura de Electricidad",
+    "Fee",
+    "Gas",
+    "Gastos Comunes",
+    "Hipoteca",
+    "Maribel",
+    "Netflix",
+    "Otros",
+    "Pago de Nómina",
+    "Prueba",
+    "Publix",
+    "Saldo Inicial",
+    "Sam's",
+    "Servicio Electrico",
+    "Spectrum",
+    "Spectrum Mobile",
+    "Sueldo",
+    "Suscripción a Netflix",
+    "Tc Chase",
+    "Tc Walgreens",
+    "Tc Wells Fargo",
+    "Tolls",
+    "Transferencia A Saving",
+    "Transferencia De Saving",
+    "Walmart"
+  ],
+  "recurringExpenses": [
+    {
+      "id": "0mrffpi6ztyhn1Dk8YYl",
+      "bank": "Wells Fargo",
+      "amount": 20,
+      "description": "Chat Gpt",
+      "category": "Servicios",
+      "day": 26
+    },
+    {
+      "id": "JQczaN8pAy3pfUiaPuT2",
+      "bank": "Bank Of America",
+      "amount": 193.09,
+      "description": "Seguro Vehículo",
+      "category": "Servicios",
+      "day": 29
+    },
+    {
+      "id": "JSZXjt126ZpgM1QgNOpF",
+      "bank": "Bank Of America",
+      "amount": 40,
+      "description": "Spectrum",
+      "day": 18,
+      "category": "Servicios"
+    },
+    {
+      "id": "JeexBx7uzDqkA5vbUyWC",
+      "bank": "Chase",
+      "description": "Chaseauto",
+      "day": 20,
+      "category": "Préstamos",
+      "amount": 450
+    },
+    {
+      "id": "Pnyuzxlp8mHlWaOShqy3",
+      "amount": 3.49,
+      "description": "Tapo",
+      "day": 30,
+      "category": "Servicios",
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "QpzqAvnbCHyehqosf7ua",
+      "bank": "Bank Of America",
+      "amount": 45,
+      "day": 18,
+      "category": "Tarjetas De Crédito",
+      "description": "Tc Bofa Unlimited"
+    },
+    {
+      "id": "WD6oQ34z8LuBJPEXtAFJ",
+      "category": "Tarjetas De Crédito",
+      "description": "Tc Walgreens",
+      "amount": 20,
+      "bank": "Bank Of America",
+      "day": 7
+    },
+    {
+      "id": "Y8kahK30hCbfirI3bD9k",
+      "bank": "Bank Of America",
+      "day": 20,
+      "description": "Spectrum Mobile",
+      "category": "Servicios Básicos",
+      "amount": 23.28
+    },
+    {
+      "id": "b02cVIuNyJi9Ctqbfmnc",
+      "bank": "Wells Fargo",
+      "category": "Entretenimiento",
+      "description": "Apple Music",
+      "day": 29,
+      "amount": 12.39
+    },
+    {
+      "id": "ivt2TDaFrY7YxWGAuLai",
+      "category": "Tarjetas De Crédito",
+      "amount": 75,
+      "bank": "Wells Fargo",
+      "description": "Tc Wells Fargo",
+      "day": 1
+    },
+    {
+      "id": "j0HpZyBUvmC3PhqTEKSX",
+      "category": "Entretenimiento",
+      "day": 5,
+      "bank": "Wells Fargo",
+      "amount": 20.28,
+      "description": "Netflix"
+    },
+    {
+      "id": "mNhIyh36JINeFI2yt9MX",
+      "category": "Targeta De Crédito",
+      "bank": "Bank Of America",
+      "day": 9,
+      "description": "Tc Bank Of America",
+      "amount": 155
+    },
+    {
+      "id": "mlX18EEwgLxk3A0zneGl",
+      "category": "Impuestos",
+      "day": 16,
+      "description": "Irs",
+      "amount": 205,
+      "bank": "Bank Of America"
+    },
+    {
+      "id": "nWxrBCtP3Ifqh9Yg820Z",
+      "bank": "Bank Of America",
+      "day": 9,
+      "amount": 346.6,
+      "category": "Préstamos",
+      "description": "Eggs"
+    },
+    {
+      "id": "nbGaleORsYjJIiWWMYA6",
+      "bank": "Chase",
+      "day": 1,
+      "category": "Vivienda",
+      "amount": 796,
+      "description": "Hipoteca"
+    },
+    {
+      "id": "pJAhQOcrkcQTuGM4stv0",
+      "amount": 135,
+      "bank": "Bank Of America",
+      "day": 7,
+      "description": "Best Buy",
+      "category": "Tarjetas De Crédito"
+    },
+    {
+      "id": "tRfZNZmWY9Glm2hQum7f",
+      "category": "Tarjetas De Crédito",
+      "description": "Tc Capital One",
+      "day": 13,
+      "bank": "Bank Of America",
+      "amount": 90
+    },
+    {
+      "id": "uBPUoFCjV8EWfd3I2kJT",
+      "day": 22,
+      "amount": 2.99,
+      "description": "Icloud",
+      "category": "Servicios",
+      "bank": "Wells Fargo"
+    },
+    {
+      "id": "vf3kRBskMQ9Vq99gcGni",
+      "description": "Servicio Electrico",
+      "bank": "Chase",
+      "day": 5,
+      "amount": 282.83,
+      "category": "Servicios Básicos"
+    },
+    {
+      "id": "z4xsizQxFAbzetctzHW5",
+      "day": 15,
+      "category": "Tarjetas De Crédito",
+      "description": "Tc Chase",
+      "bank": "Chase",
+      "amount": 110
+    }
+  ],
+  "creditCards": [
+    {
+      "id": "0qQ5TnQO1y5IZCHSJFlE",
+      "months": 24,
+      "dueDate": 8,
+      "amount": 1990.19,
+      "bank": "Best Buy",
+      "rate": 0
+    },
+    {
+      "id": "Ckjt4vu3fdB5G7KeCYNU",
+      "bank": "Bank Of America Unlimited",
+      "dueDate": 18,
+      "rate": 0,
+      "amount": 1590.51,
+      "months": 35
+    },
+    {
+      "id": "QEvFIWPBwAxAk2sqvgGA",
+      "amount": 15175.87,
+      "rate": 9.44,
+      "months": 40,
+      "bank": "Chase Auto",
+      "dueDate": 20
+    },
+    {
+      "id": "XIO1KpUVFhxlkbD3BUgB",
+      "dueDate": 1,
+      "rate": 29.24,
+      "months": 35,
+      "bank": "Wells Fargo",
+      "amount": 1751.01
+    },
+    {
+      "id": "hQqBWgaLHSGLOWES9hIJ",
+      "rate": 25.24,
+      "months": 35,
+      "bank": "Bank Of America",
+      "dueDate": 8,
+      "amount": 3805.4
+    },
+    {
+      "id": "kzbpB7iluQ2oizWyee8L",
+      "dueDate": 15,
+      "amount": 2513.96,
+      "months": 35,
+      "rate": 28.24,
+      "bank": "Chase"
+    },
+    {
+      "id": "mM84C8Ds0K9G6PTZS7qq",
+      "dueDate": 13,
+      "rate": 29.24,
+      "months": 35,
+      "amount": 2097.08,
+      "bank": "Capital One"
+    },
+    {
+      "id": "vJUJq1VHXsndudJ6jsDX",
+      "amount": 350,
+      "bank": "Walgreen",
+      "months": 35,
+      "rate": 33.99,
+      "dueDate": 7
+    }
+  ],
+  "openingBalance": 0,
+  "userAlias": "Albert"
+}

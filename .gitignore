@@ -1,0 +1,13 @@
+# Sistema
+Thumbs.db
+.DS_Store
+ECHO est  desactivado.
+# Logs
+*.log
+ECHO est  desactivado.
+# Build tools comunes
+node_modules/
+dist/
+build/
+
+link.txt
