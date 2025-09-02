@@ -1,47 +1,47 @@
 @echo off
-setlocal EnableExtensions EnableDelayedExpansion
+setlocal EnableExtensions
 
-REM =================== CONFIGURACION ===================
+REM ============== CONFIG ==============
 set "REPO_URL=https://github.com/Alberthoma/foresee-web.git"
 set "REPO_WEB=https://alberthoma.github.io/foresee-web/"
-REM =====================================================
+REM ====================================
 
-title Publicar (primera vez) foresee-web
+title Publicar (primera vez) foresee-web - FIX
 
 echo.
 echo === Verificando que Git este instalado ===
 where git >nul 2>&1
 if errorlevel 1 (
-  echo [ERROR] Git no esta instalado o no esta en el PATH.
-  echo Instala Git desde https://git-scm.com/download/win y vuelve a ejecutar este .bat
+  echo ERROR: Git no esta instalado o no esta en el PATH.
+  echo Descarga Git desde https://git-scm.com/download/win e instalalo.
   pause
   exit /b 1
 )
 
 echo.
-echo === Comprobando que estes en la carpeta DEL PROYECTO ===
+echo === Comprobando que ejecutes este archivo dentro de la carpeta del proyecto ===
 if not exist "index.html" (
-  echo [ADVERTENCIA] No se encontro index.html en esta carpeta.
-  echo Asegurate de ejecutar este .bat dentro de la carpeta de tu app (donde esta index.html).
-  echo Puedes continuar, pero GitHub Pages necesita un index.html en la raiz.
-  choice /c SY /m "Deseas continuar de todas formas? (S/N)"
-  if errorlevel 2 exit /b 1
+  echo ADVERTENCIA: No se encontro un archivo llamado index.html en esta carpeta.
+  echo Debes ejecutar este archivo dentro de la carpeta de tu app donde esta index.html
+  echo GitHub Pages necesita un index.html en la raiz.
+  set /p ANS=Continuar de todas formas? Escribe S para SI. Cualquier otra tecla cancela: 
+  if /I not "%ANS%"=="S" exit /b 1
 )
 
 echo.
-echo === Inicializando repo local (si no existe) ===
+echo === Inicializando repositorio local si no existe ===
 if not exist ".git" (
   git init
 )
 
 echo.
-echo === Creando .nojekyll (evita procesamiento de Jekyll) ===
+echo === Creando archivo .nojekyll si no existe ===
 if not exist ".nojekyll" (
   type nul > ".nojekyll"
 )
 
 echo.
-echo === Creando .gitignore basico (si no existe) ===
+echo === Creando .gitignore basico si no existe ===
 if not exist ".gitignore" (
   (
     echo # Sistema
@@ -59,19 +59,17 @@ if not exist ".gitignore" (
 )
 
 echo.
-echo === Estableciendo rama principal: main ===
+echo === Estableciendo rama principal main ===
 git branch -M main 2>nul
 
 echo.
-echo === Vinculando con GitHub (origin) ===
+echo === Vinculando repositorio remoto origin ===
 git remote remove origin 2>nul
 git remote add origin "%REPO_URL%"
 
 echo.
 echo === Preparando primer commit ===
 git add -A
-
-REM Hacemos commit; si ya hubiera commits previos, esto no falla
 git commit -m "Publicacion inicial del sitio" 2>nul
 
 echo.
@@ -79,38 +77,31 @@ echo === Subiendo a GitHub ===
 git push -u origin main
 if errorlevel 1 (
   echo.
-  echo --- El push fallo. Intentando hacer pull --rebase (por si el repo remoto tiene README u otros archivos) ---
+  echo El primer push no se pudo completar. Intentando actualizar desde el remoto con pull --rebase
   git pull --rebase origin main
   if errorlevel 1 (
-    echo [ERROR] No se pudo hacer pull --rebase. Revisa conflictos en los archivos.
-    echo Abre PowerShell aqui y ejecuta:
-    echo    git status
-    echo Resuelve conflictos, luego:
-    echo    git add -A
-    echo    git rebase --continue  ^(si aplica^)
-    echo    git push
+    echo ERROR: No fue posible hacer pull --rebase. Revisa conflictos con "git status".
+    echo Luego de resolverlos ejecuta: git add -A, y despues git rebase --continue si aplica, y git push
     pause
     exit /b 1
   )
   echo Reintentando push...
   git push -u origin main
   if errorlevel 1 (
-    echo [ERROR] El push volvio a fallar.
-    echo Posibles causas: credenciales incorrectas o permisos insuficientes.
-    echo Si Git te pide usuario/contrase^na:
-    echo   - Usuario:  Alberthoma
-    echo   - Contrase^na: tu PAT (Personal Access Token) de GitHub con permisos de repo.
+    echo ERROR: El push volvio a fallar.
+    echo Usuario:  Alberthoma
+    echo Contrasena: tu token personal de GitHub (PAT) con permiso de repo o Contents: Read and Write
     pause
     exit /b 1
   )
 )
 
 echo.
-echo === Listo. Paso siguiente: activar GitHub Pages ===
-echo 1) Abre la configuracion de Pages del repo:
-echo    https://github.com/Alberthoma/foresee-web/settings/pages
-echo 2) En "Build and deployment > Source" elige "Deploy from a branch".
-echo 3) En Branch selecciona: main   y en Folder: /(root).  Guarda.
-echo 4) Tu sitio quedara disponible en: %REPO_WEB%
+echo === Listo. Activa GitHub Pages en el repositorio ===
+echo Abre la configuracion de Pages del repositorio y selecciona:
+echo   - Build and deployment: Deploy from a branch
+echo   - Branch: main
+echo   - Folder: / (root)
+echo Tu sitio: %REPO_WEB%
 echo.
 pause

@@ -359,7 +359,28 @@
                 .tab-button img { height: 24px; width: auto; margin-bottom: 2px; }
                 .tab-button span { font-size: 0.65rem; }
                 body.navigating #barr { display: none; }
+              /* Oculta solo la parte superior del header (logo y título) */
+              #barr {
+                  display: none;
               }
+
+              /* Ajusta la altura del contenedor principal del header para que solo ocupe el espacio de las pestañas */
+              #main-header-bar {
+                  height: auto; 
+              }
+
+              /* Ajusta el margen superior del cuerpo para que el contenido principal no quede oculto debajo de las pestañas */
+              body {
+                  margin-top: 6rem !important; /* Aproximadamente la altura de la barra de pestañas */
+              }
+              
+              /* Pega esta nueva regla para que el contenido se ajuste a las pestañas */
+              body.view-content #main-container {
+                  margin-top: 0.5rem; /* Un pequeño espacio en lugar del grande anterior */
+              }    
+              }
+              
+          
 
               /* --- ESTILOS DE MODALES Y NOTIFICACIONES --- */
               .modal { display: none; z-index: 100; }
@@ -1142,7 +1163,7 @@
               }
 
               /* ====================================================================== */
-              /* ===== AJUSTES PARA MODALES LEGALES by Gemini - 31/08/2025 ======== */
+              /* ===== AJUSTES PARA MODALES LEGALES 31/08/2025 ======== */
               /* ====================================================================== */
 
               /* 1. Asegura que el área de contenido del modal sea desplazable (scroll) */
@@ -1175,7 +1196,144 @@
                   color: var(--text-light-secondary); /* Usa el color de texto secundario */
                   margin-bottom: 1rem;
                   line-height: 1.6;
-              }              
+              }
+
+              
+/* ====================================================================== */
+/* ===== AJUSTES PARA VISTA MÓVIL (Tablas y Filtros) - 01/09/2025 ==== */
+/* ====================================================================== */
+
+@media (max-width: 768px) {
+    /* 1. Oculta las columnas 'Descripción' y 'Acciones' en ambas tablas */
+    #recurrentes-content th:nth-child(6),
+    #recurrentes-content td:nth-child(6),
+    #tarjetas-content th:nth-child(3),
+    #tarjetas-content td:nth-child(3),
+    #tarjetas-content th:nth-child(7),
+    #tarjetas-content td:nth-child(7),
+    #recurrentes-content th:nth-child(7),
+    #recurrentes-content td:nth-child(7),
+
+    #registros-content th:nth-child(3),
+    #registros-content td:nth-child(3),
+    #registros-content th:nth-child(7),
+    #registros-content td:nth-child(7),
+    #proyeccion-content th:nth-child(3),
+    #proyeccion-content td:nth-child(3),
+    #proyeccion-content th:nth-child(7),
+    #proyeccion-content td:nth-child(7) {
+        display: none;
+    }
+
+    /* 2. Formato de fecha para móvil (muestra solo el día) */
+    .desktop-date { display: none; } /* Oculta la fecha completa */
+    .mobile-date { 
+        display: inline-block; /* Muestra solo el número del día */
+        font-weight: 600;      /* Opcional: lo hace más visible */
+        font-size: 1.1em;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* 3. Reduce el tamaño del texto y el espaciado en las tablas */
+    #recurrentes-content td, #recurrentes-content th,
+    #tarjetas-content td, #tarjetas-content th,
+    #registros-content td, #registros-content th,
+    #proyeccion-content td, #proyeccion-content th {
+        font-size: 0.75rem; /* 12px, texto más pequeño */
+        padding: 6px 4px;   /* Menos espaciado vertical y horizontal */
+    }
+
+    /* 4. Hace más pequeños los botones de acción principales */
+    #mostrar, #main-action-btn, #delete-selected-btn, #save-budgets-btn, #migrate-all-recurring-btn {
+        font-size: 0.7rem; /* 11px, texto del botón más pequeño */
+        padding: 2px 6px;
+        margin-top: 0rem;
+        
+    }
+
+    /* 5. Lógica para ocultar y mostrar los filtros */
+    #filters-container {
+        display: none; /* Oculta los filtros por defecto */
+        flex-direction: column; /* Apila los filtros verticalmente */
+    }
+
+    #filters-container.filters-visible {
+        display: flex; /* Muestra los filtros cuando el botón es presionado */
+    }
+    
+    #toggle-filters-btn {
+        display: block; /* Asegura que el botón de filtros sea visible en móvil */
+    }
+}
+
+/* --- Estilos para la fecha en vista de escritorio --- */
+@media (min-width: 769px) {
+    .mobile-date { display: none; } /* Oculta el día solo */
+    .desktop-date { display: inline; } /* Muestra la fecha completa */
+    #toggle-filters-btn {
+        display: none; /* Oculta el botón de filtros en escritorio */
+    }
+} 
+
+/* ====================================================================== */
+/* ===== AJUSTES PARA FORMULARIOS EN MÓVIL - 01/09/2025 ==== */
+/* ====================================================================== */
+
+@media (max-width: 768px) {
+    /* Identificadores de los modales a modificar */
+    .modal#transaction-modal,
+    .modal#recurring-expense-modal,
+    .modal#credit-card-modal {
+
+        /* 1. Reduce el tamaño del título principal del modal */
+        h2 {
+            font-size: 1rem; /* ~20px, antes era 1.5rem */
+            padding: 0.1rem;      /* Menos espaciado */
+        }
+
+        /* 2. Hace más pequeños los labels (etiquetas) de cada campo */
+        label {
+            font-size: 0.75rem; /* ~12px, texto más pequeño */
+        }
+
+        /* 3. Reduce el tamaño del texto y el espaciado dentro de los inputs y selects */
+        input, select {
+            font-size: 0.875rem; /* ~14px */
+            padding: 0.4rem;    /* Menos espaciado interno */
+        }
+
+        /* 4. Hace más pequeñas las etiquetas de radio "Ingreso" y "Gasto" */
+        .radio-type-label {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.5rem;
+        }
+
+        /* 5. Reduce el tamaño de los botones de acción principales */
+        #save-transaction-btn,
+        #save-recurring-btn,
+        #save-credit-card-btn,
+        #open-transfer-modal-btn {
+            font-size: 0.75rem; /* ~14px */
+            padding: 0.5rem 1rem;   /* Botones más compactos */
+        }
+
+        /* 6. Reduce el espaciado general dentro del formulario */
+        .p-8.space-y-6 {
+            padding: 0.5rem; /* Menos padding general */
+            margin-top: 0.25rem;
+            --tw-space-y-reverse: 2;
+            margin-top: calc(0.25rem * (0.25 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+        }
+
+        /* 7. Reduce el espaciado del pie del modal (donde están los botones) */
+        .p-6.border-t {
+            padding: 0.25rem;
+        }
+        
+    }
+}
 
     </style>
   </head>
@@ -1301,7 +1459,6 @@
                     <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514668/configuracion_puo2ap.png" alt="Icono configuración" class="h-11 w-11 mb-1" />
                     <span>Configuración</span>
                 </button>
-
               </div>
             </div>
           </div>  
@@ -1326,7 +1483,8 @@
             Ahora no
           </button>
         </div>
-      </div>    
+      </div>
+
       <div id="dashboard">
         <div class="dashboard-card">
           <div>
@@ -1360,90 +1518,96 @@
       <div class="mr-8 ml-8 mt-2 text-sm text-yellow-700" id="credit-card-alerts"></div>
       <div class="mr-8 ml-8 mt-2 text-sm text-blue-700" id="recurring-alerts"></div>      
 
-<main id="main-container" class="container mx-auto bg-gray-200 rounded-xl shadow-md mt-24">
+      <main id="main-container" class="container mx-auto bg-gray-200 rounded-xl shadow-md mt-24">
         
-        <div class="flex items-center mb-4">
-          <button class="aparecer mt-0 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 mr-4" id="mostrar">
-            <span>Ocultar</span>
-          </button>
-          
-          <h3 id="main-content-title" class="text-xl font-semibold"></h3>
+      <!--<h3 id="main-content-title" class="text-xl font-semibold mb-4"></h3>-->
 
-          <div class="ml-auto flex items-center space-x-2">
-            <button id="migrate-all-recurring-btn" class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition flex items-center space-x-2 hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                <span>Registrar Todos</span>
-                <span class="btn-spinner hidden"></span>
-            </button>
-            <button class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-2 hidden" id="save-budgets-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                <span>Guardar</span>
-                <span class="btn-spinner hidden"></span>
-            </button>
-            <button id="delete-selected-btn" class="bg-red-600 text-white px-2 py-1 rounded-lg hover:bg-red-700 transition flex items-center space-x-2 hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                <span>Eliminar Seleccionados</span>
-                <span class="btn-spinner hidden"></span>
-            </button>
-            <button class="bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 hidden" id="main-action-btn">
-              <span id="main-action-btn-text"></span>
-            </button>
+        <div class="flex items-center justify-between w-full mb-2 mt-0">
+
+          <button class="aparecer text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2" id="mostrar">
+              <span>Ocultar</span>
+          </button>
+
+          <button id="toggle-filters-btn" class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs">
+              Mostrar Filtros
+          </button>
+
+          <div class="flex items-center space-x-2">
+              <button id="migrate-all-recurring-btn" class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition flex items-center space-x-2 hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                  <span>Registrar Todos</span>
+                  <span class="btn-spinner hidden"></span>
+              </button>
+              <button class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-2 hidden" id="save-budgets-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                  <span>Guardar</span>
+                  <span class="btn-spinner hidden"></span>
+              </button>
+              <button id="delete-selected-btn" class="bg-red-600 text-white px-2 py-1 rounded-lg hover:bg-red-700 transition flex items-center space-x-2 hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                  <span>Eliminar Seleccionados</span>
+                  <span class="btn-spinner hidden"></span>
+              </button>
+              <button class="bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 hidden" id="main-action-btn">
+                <span id="main-action-btn-text"></span>
+              </button>
           </div>
         </div>
 
-        <div id="tab-content">
-          <div class="tab-pane active" id="registros-content">
-            <div class="flex flex-col md:flex-row gap-4 mb-4">
+            <div class="flex flex-col md:flex-row gap-4 mb-4" id="filters-container">
               <input class="flex-grow p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-description" placeholder="Filtrar por descripción..." type="text"/>
               <select class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-category" type="text">
                 <option value="">
                   Todas las categorías
                 </option>
               </select>
-              <input class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-month" type="month"/>            </div>
-            <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-2 py-3 text-center">
-                      <input type="checkbox" id="select-all-registros" title="Seleccionar Todo">
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Fecha
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Descripción
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Categoría
-                    </th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Monto
-                    </th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Saldo
-                    </th>                    
-                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Acciones
-                    </th>
-                  </tr>
-                </thead>                
-                <tbody class="bg-white divide-y divide-gray-200" id="transactions-table-body">
-                </tbody>
-                <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                  <tr>
-                    <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">Total Ingresos:</td>
-                    <td class="px-6 py-4 text-right text-green-600 text-sm" id="registros-total-income">$0.00</td>
-                    <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">Total Gastos:</td>
-                    <td class="px-6 py-4 text-right text-red-600 text-sm" id="registros-total-expenses">$0.00</td>
-                  </tr>
-                </tfoot>              
-              </table>
-              <p class="text-center text-gray-500 py-8" id="no-transactions-message">
-                No hay transacciones para el período seleccionado.
-              </p>
+              <input class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-month" type="month"/>
             </div>
-          </div>
+
+            <div id="registros-content" class="tab-pane active">
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-2 py-3 text-center">
+                          <input type="checkbox" id="select-all-registros" title="Seleccionar Todo">
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Fecha
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Descripción
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Categoría
+                        </th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Monto
+                        </th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Saldo
+                        </th>                    
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Acciones
+                        </th>
+                      </tr>
+                    </thead>                
+                    <tbody class="bg-white divide-y divide-gray-200" id="transactions-table-body">
+                    </tbody>
+                    <tfoot class="bg-gray-50 border-t-2 border-gray-300">
+                      <tr>
+                        <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">Total Ingresos:</td>
+                        <td class="px-6 py-4 text-right text-green-600 text-sm" id="registros-total-income">$0.00</td>
+                        <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">Total Gastos:</td>
+                        <td class="px-6 py-4 text-right text-red-600 text-sm" id="registros-total-expenses">$0.00</td>
+                      </tr>
+                    </tfoot>              
+                  </table>
+                  <p class="text-center text-gray-500 py-8" id="no-transactions-message">
+                    No hay transacciones para el período seleccionado.
+                  </p>
+                </div>
+            </div>
 
           <div class="tab-pane hidden" id="proyeccion-content">
             <div class="overflow-x-auto">
@@ -1986,12 +2150,12 @@
       </main>
     </div>
 
-    <div class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4" id="transaction-modal">
+    <div class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-2" id="transaction-modal">
       <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col" style="max-height: 90vh;">
         <div class="p-6 border-b flex justify-between items-center bg-gray-50 rounded-t-2xl">
-          <h2 class="text-2xl font-bold hover:bg-blue-700 text-gray-800" id="modal-title">Registrar Transacción</h2>
+          <h2 class="text-1xl font-bold hover:bg-blue-700 text-gray-800" id="modal-title">Registrar Transacción</h2>
           <button class="text-gray-400 hover:text-gray-600" id="close-transaction-modal-btn" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
         
@@ -2222,11 +2386,11 @@
               </span>
             </div>
           </div>
-          <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-            <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300" id="credit-card-cancel-btn" type="button">
+          <div class="p-2 border-t flex-shrink-0 flex justify-end gap-4">
+            <button class="bg-gray-200 text-gray-800 px-2 py-2 rounded-lg hover:bg-gray-300" id="credit-card-cancel-btn" type="button">
               Cancelar
             </button>
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center" id="save-credit-card-btn" type="submit">
+            <button class="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center" id="save-credit-card-btn" type="submit">
               Añadir Tarjeta
               <span class="btn-spinner hidden">
               </span>
@@ -2448,14 +2612,14 @@
               const PRESET_ICONS = [
                   DEFAULT_ICON, // Opción por defecto primero
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514703/vivienda_bsyk94.png',
-                  'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514703/vivienda2_xibpbf.png',
+                  
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514702/viajes_duy42o.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514701/transporte_kv5zty.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514700/transferencia-interna_wjuhnq.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514700/telefonia_tfmo9l.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514698/tecnologia_zzpzjl.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514698/tarjetas-de-credito_maojob.png',
-                  'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514698/tarjetas-de-credito_maojob.png',
+                  'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514671/entretenimiento2_uxheb0.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514697/tarjetas2_z3jokx.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514696/tarjetas_ngrqvg.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514695/servicios3_wq8cno.png',
@@ -2498,7 +2662,9 @@
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514664/Banco_u87u1e.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514663/ahorro2_xugr6g.png',
                   'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514663/ahorro_vhwhw7.png',                  
-                  'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756512727/deudas_onrwf0.png'
+                  'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514668/deudas_jcqhez.png',
+                  'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756767509/comunes_xjuxxt.png'
+
 
               ];
 
@@ -2642,11 +2808,35 @@
                   console.log("[Auth State Changed] Usuario:", user ? user.uid : "null"); // Debugging
                   try {
                       if (user) {
-                          enterFullscreen(document.documentElement); // Activa la pantalla completa
+                          //enterFullscreen(document.documentElement); // Activa la pantalla completa
                           userId = user.uid;
                           // userAliasDisplay.textContent = userId; // Esto ahora se actualizará en renderHeaderAlias
                           isAuthReady = true;
                           hideAuthModal(); // Ocultar modal de autenticación si el usuario está logueado
+                          
+                          // ================== INICIO DE LA CORRECCIÓN IMPORTANTE ==================
+                          // Esta nueva sección se asegura de que tu configuración solo se cree UNA VEZ.
+                          const appId = window.firebaseProjectId;
+                          const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/user_data/preferences`);
+
+                          // 1. Hacemos una lectura única para ver si el documento de preferencias ya existe.
+                          const docSnap = await getDoc(userDocRef);
+
+                          // 2. Si NO existe, lo creamos de forma segura. Esto solo debería ocurrir para usuarios 100% nuevos.
+                          if (!docSnap.exists()) {
+                              console.log("[Firestore] Documento de preferencias no existe. Creando uno nuevo...");
+                              await setDoc(userDocRef, {
+                                  categories: [],
+                                  banks: [],
+                                  descriptions: [],
+                                  openingBalance: 0,
+                                  userAlias: null,
+                                  categoryBudgets: {}
+                              });
+                              console.log("[Firestore] Documento de preferencias inicial creado con éxito.");
+                          }
+                          // =================== FIN DE LA CORRECCIÓN IMPORTANTE ===================                          
+                          
                           await loadUserDataAndListen(); // Cargar datos del usuario una once autenticado
                           initApp(); // Inicializar la UI de la aplicación
                       } else {
@@ -2850,7 +3040,7 @@
                   setupEnterKeyNavigation('recurring-expense-form', ['recurring-description', 'recurring-category', 'recurring-bank', 'recurring-amount', 'recurring-day', 'save-recurring-btn']);
 
                   deleteSelectedBtn.addEventListener('click', handleDeleteSelected);
-                  const tablesContainer = document.getElementById('tab-content');
+                  const tablesContainer = document.getElementById('main-container');
                   tablesContainer.addEventListener('change', (e) => {
                       if (e.target.matches('.transaction-checkbox, .projection-checkbox, .recurring-checkbox, #select-all-registros, #select-all-proyeccion, #select-all-recurrentes')) {
                           updateDeleteButtonVisibility();
@@ -2872,7 +3062,17 @@
                       mostrarBtn.addEventListener("click", showDashboardView);
                   }
                   // ================== FIN DEL PEGADO ==================
+                  const toggleFiltersBtn = document.getElementById('toggle-filters-btn');
+                  const filtersContainer = document.getElementById('filters-container');
 
+                  if (toggleFiltersBtn && filtersContainer) {
+                      toggleFiltersBtn.addEventListener('click', () => {
+                          filtersContainer.classList.toggle('filters-visible');
+                          // Cambia el texto del botón
+                          const isVisible = filtersContainer.classList.contains('filters-visible');
+                          toggleFiltersBtn.textContent = isVisible ? 'Ocultar Filtros' : 'Mostrar Filtros';
+                      });
+                  }
                   listenersAttached = true; // Marca la bandera como verdadera después de asignar todo.
               }
               // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
@@ -3115,36 +3315,16 @@
                           appState.categoryBudgets = data.categoryBudgets || {};
                           console.log("[Firestore] Preferencias cargadas:", appState.categories.length, "categorías (formato objeto)");
                       } else {
-                          console.log("[Firestore] Documento de preferencias no existe, inicializando con valores vacíos.");
-                          
-                          // MODIFICADO: Las listas inician vacías para un nuevo usuario.
-                          appState.categories = [];
-                          appState.banks = [];
-                          appState.descriptions = [];
-
-                          // Se mantienen los valores iniciales numéricos y nulos.
-                          appState.openingBalance = 0;
-                          appState.userAlias = null;
-                          appState.categoryBudgets = {};
-                          
-                          if (auth.currentUser && !auth.currentUser.isAnonymous) {
-                              try {
-                                  // ... (el resto del código sigue igual)
-                                  // Al guardar, se usa el estado local que ya tiene la nueva estructura.
-                                  await setDoc(userDocRef, {
-                                      categories: appState.categories,
-                                      banks: appState.banks,
-                                      descriptions: appState.descriptions,
-                                      openingBalance: appState.openingBalance,
-                                      userAlias: appState.userAlias,
-                                      categoryBudgets: appState.categoryBudgets
-                                  });
-                                  console.log("[Firestore] Preferencias por defecto guardadas.");
-                              } catch (error) {
-                                  console.error("[Firestore] Error al guardar preferencias por defecto:", error);
-                                  showMessageModal("Error de Inicialización", "No se pudieron guardar las preferencias iniciales.", "error");
-                              }
-                          }
+                          // ================== INICIO DE LA CORRECCIÓN DE SEGURIDAD ==================
+                          // Este bloque ahora es seguro. En lugar de borrar tus datos,
+                          // solo mostrará un error en la consola y te avisará.
+                          console.error("[Error Crítico] El documento de preferencias del usuario ha desaparecido. No se tomará ninguna acción para prevenir la pérdida de datos.");
+                          showMessageModal(
+                              "Error de Sincronización", 
+                              "No se pudo cargar tu configuración. Por favor, recarga la página. Si el problema persiste, contacta a soporte.", 
+                              "error"
+                          );
+                          // =================== FIN DE LA CORRECCIÓN DE SEGURIDAD ===================
                       }
                       if (isAuthReady) {
                           populateFilterDropdowns();
@@ -3414,7 +3594,10 @@
                               <td class="px-2 py-4 text-center">
                                 <input type="checkbox" class="transaction-checkbox" data-id="${t.id}">
                               </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-sm">${formatDate(t.date)}</td>
+                              <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="desktop-date">${formatDate(t.date)}</span>
+                                <span class="mobile-date">${formatDateForMobile(t.date)}</span>
+                              </td>
                               <td class="px-6 py-4 whitespace-nowrap text-sm">${t.description}</td>
                               <td class="px-6 py-4 whitespace-nowrap text-sm flex items-center">${getCategoryDisplay(t.category)}</td>
                               <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-weight: 400">${formatCurrency(t.amount)}</td>
@@ -3473,7 +3656,10 @@
                               <td class="px-2 py-4 text-center">
                                 <input type="checkbox" class="projection-checkbox" data-id="${t.id}">
                               </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-sm">${formatDate(t.date)}</td>
+                              <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="desktop-date">${formatDate(t.date)}</span>
+                                <span class="mobile-date">${formatDateForMobile(t.date)}</span>
+                              </td>
                               <td class="px-6 py-4 whitespace-nowrap text-sm">${t.description}</td>
                               <td class="px-6 py-4 whitespace-nowrap text-sm flex items-center">${getCategoryDisplay(t.category)}</td>
                               <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-weight: 400">${formatCurrency(t.amount)}</td>
@@ -5272,6 +5458,16 @@
       
               // --- UTILIDADES Y VALIDACIÓN ---
 
+              /**
+               * Formatea una fecha para mostrar solo el número del día.
+               * @param {string} dateString - La cadena de fecha (ej. "2025-09-01").
+               * @returns {string} El número del día.
+               */
+              function formatDateForMobile(dateString) {
+                  const date = new Date(dateString + 'T00:00:00');
+                  return date.getDate().toString();
+              }              
+
               // ================== REEMPLAZA ESTE BLOQUE COMPLETO ==================
               /**
                * Entra en el modo de pantalla completa con depuración.
@@ -5492,16 +5688,7 @@
               document.body.classList.remove('view-dashboard');
               document.body.classList.add('view-content');
           }
-          // ================== FIN DEL PEGADO ==================
 
-
-          
-
-
-
-
-      
-      
               // ================== Pega este bloque ==================
               // Reemplaza las 3 funciones de "populate" para categorías y bancos
 
@@ -5626,43 +5813,43 @@
                   // 2. Mostrar el título y el BOTÓN ESPECÍFICO para la pestaña activa
                   switch (tabName) {
                       case 'registros':
-                          mainContentTitle.textContent = 'Registros de Transacciones';
+                          //mainContentTitle.textContent = 'Registros de Transacciones'.remove('hidden');//
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Registrar Transacción';
                           break;
                       case 'proyeccion':
-                          mainContentTitle.textContent = 'Proyección de Transacciones';
+                          //mainContentTitle.textContent = 'Proyección de Transacciones';//
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Registrar Proyección';
                           break;
                       
                       case 'recurrentes':
-                          mainContentTitle.textContent = 'Gastos Recurrentes';
+                          //mainContentTitle.textContent = 'Gastos Recurrentes';//
                           migrateAllRecurringBtn.classList.remove('hidden');
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Añadir Gasto Recurrente';
                           break;
 
                       case 'tarjetas':
-                          mainContentTitle.textContent = 'Tarjetas de Crédito';
+                          //mainContentTitle.textContent = 'Tarjetas de Crédito';//
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Añadir Tarjeta';
                           break;
                       case 'saldos':
-                          mainContentTitle.textContent = 'Saldos de Cuentas';
+                          //mainContentTitle.textContent = 'Saldos de Cuentas';
                           break;
                       case 'calculadora':
-                          mainContentTitle.textContent = 'Calculadora de Salario';
+                          //mainContentTitle.textContent = 'Calculadora de Salario';
                           break;
                       case 'reportes':
-                          mainContentTitle.textContent = 'Reportes Financieros';
+                          //mainContentTitle.textContent = 'Reportes Financieros';
                           break;
                       case 'presupuesto':
-                          mainContentTitle.textContent = 'Gestión de Presupuesto Mensual';
+                          //mainContentTitle.textContent = 'Gestión de Presupuesto Mensual';
                           saveBudgetsBtn.classList.remove('hidden');
                           break;
                       case 'configuración':
-                          mainContentTitle.textContent = 'Configuración General';
+                          //mainContentTitle.textContent = 'Configuración General';
                           break;
                   }
 
