@@ -148,6 +148,12 @@
               #main-header-bar {
                 transition: height 0.3s ease-in-out;                
               }
+
+              /* Clase para ocultar el header con un deslizamiento suave */
+              .header-hidden {
+                  transform: translateY(-100%);
+              }
+
               #barr {
                 background-color: var(--bg-dark-tertiary);
                 transition: all 0.3s ease-in-out;/*
@@ -6629,6 +6635,26 @@
                   // Llama a la función principal que hace el trabajo.
                   processRecurringExpenses();
               }              
+              // --- LÓGICA PARA OCULTAR ENCABEZADO AL HACER SCROLL ---
+              let lastScrollTop = 0;
+              const headerBar = document.getElementById('main-header-bar');
+
+              window.addEventListener('scroll', function() {
+                  // `window.scrollY` es la posición actual del scroll.
+                  let scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+                  // Comparamos la posición actual con la última guardada.
+                  // La condición "scrollTop > 100" evita que se oculte con el más mínimo movimiento.
+                  if (scrollTop > lastScrollTop && scrollTop > 100) {
+                      // Si bajamos y hemos pasado los 100px, ocultamos el encabezado.
+                      headerBar.classList.add('header-hidden');
+                  } else {
+                      // Si subimos, lo mostramos.
+                      headerBar.classList.remove('header-hidden');
+                  }
+                  // Actualizamos la última posición de scroll para la próxima vez.
+                  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+              }, false);
               
           });
     </script>
