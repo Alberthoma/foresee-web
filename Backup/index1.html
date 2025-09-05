@@ -1431,63 +1431,59 @@
                   }                  
 
               }
+              @media (max-width: 768px) {
+                  /* Identificadores de los modales a modificar */
+                  .modal#transaction-modal,
+                  .modal#recurring-expense-modal,
+                  .modal#credit-card-modal {
 
-          @media (max-width: 768px) {
-              /* Identificadores de los modales a modificar */
-              .modal#transaction-modal,
-              .modal#recurring-expense-modal,
-              .modal#credit-card-modal {
+                      /* 1. Reduce el tamaño del título principal del modal */
+                      h2 {
+                          font-size: 1rem; /* ~20px, antes era 1.5rem */
+                          padding: 0.1rem;      /* Menos espaciado */
+                      }
 
-                  /* 1. Reduce el tamaño del título principal del modal */
-                  h2 {
-                      font-size: 1rem; /* ~20px, antes era 1.5rem */
-                      padding: 0.1rem;      /* Menos espaciado */
-                  }
+                      /* 2. Hace más pequeños los labels (etiquetas) de cada campo */
+                      label {
+                          font-size: 0.75rem; /* ~12px, texto más pequeño */
+                      }
 
-                  /* 2. Hace más pequeños los labels (etiquetas) de cada campo */
-                  label {
-                      font-size: 0.75rem; /* ~12px, texto más pequeño */
-                  }
+                      /* 3. Ajusta el tamaño del texto para EVITAR ZOOM AUTOMÁTICO en iOS */
+                      input, select {
+                          font-size: 16px; /* <-- CAMBIO CLAVE: Mínimo para evitar zoom en iPhone */
+                          padding: 0.6rem 0.5rem; /* Ajustamos el padding para que se vea bien */
+                      }
 
-                  /* 3. Ajusta el tamaño del texto para EVITAR ZOOM AUTOMÁTICO en iOS */
-                  input, select {
-                      font-size: 16px !important; /* <-- CORRECCIÓN: Se añade !important para forzar el estilo */
-                      padding: 0.6rem 0.5rem; /* Ajustamos el padding para que se vea bien */
-                  }
+                      /* 4. Hace más pequeñas las etiquetas de radio "Ingreso" y "Gasto" */
+                      .radio-type-label {
+                          font-size: 0.8rem;
+                          padding: 0.4rem 0.5rem;
+                      }
 
-                  /* 4. Hace más pequeñas las etiquetas de radio "Ingreso" y "Gasto" */
-                  .radio-type-label {
-                      font-size: 0.8rem;
-                      padding: 0.4rem 0.5rem;
-                  }
+                      /* 5. Reduce el tamaño de los botones de acción principales */
+                      #save-transaction-btn,
+                      #save-recurring-btn,
+                      #save-credit-card-btn,
+                      #open-transfer-modal-btn {
+                          font-size: 0.75rem; /* ~14px */
+                          padding: 0.5rem 1rem;   /* Botones más compactos */
+                      }
 
-                  /* 5. Reduce el tamaño de los botones de acción principales */
-                  #save-transaction-btn,
-                  #save-recurring-btn,
-                  #save-credit-card-btn,
-                  #open-transfer-modal-btn {
-                      font-size: 0.75rem; /* ~14px */
-                      padding: 0.5rem 1rem;   /* Botones más compactos */
-                  }
+                      /* 6. Reduce el espaciado general dentro del formulario */
+                      .p-8.space-y-6 {
+                          padding: 0.5rem; /* Menos padding general */
+                          margin-top: 0.25rem;
+                          --tw-space-y-reverse: 2;
+                          margin-top: calc(0.25rem * (0.25 - var(--tw-space-y-reverse)));
+                          margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+                      }
 
-                  /* 6. Reduce el espaciado general dentro del formulario */
-                  .p-8.space-y-6 {
-                      padding: 0.5rem; /* Menos padding general */
-                      margin-top: 0.25rem;
-                      --tw-space-y-reverse: 2;
-                      margin-top: calc(0.25rem * (0.25 - var(--tw-space-y-reverse)));
-                      margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
-                  }
-
-                  /* 7. Reduce el espaciado del pie del modal (donde están los botones) */
-                  .p-6.border-t {
-                      padding: 0.25rem;
-                  }                      
-              }                  
-          }
-
-          /* ====================================================================== */
-          /* ==== CORRECCIÓN DEFINITIVA P/ DESBORDAMIENTO DE MODALES EN MÓVIL ==== */
+                      /* 7. Reduce el espaciado del pie del modal (donde están los botones) */
+                      .p-6.border-t {
+                          padding: 0.25rem;
+                      }                      
+                  }                  
+              }
 
               /* ====================================================================== */
               /* ==== CORRECCIÓN DEFINITIVA P/ DESBORDAMIENTO DE MODALES EN MÓVIL ==== */
