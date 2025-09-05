@@ -1439,6 +1439,11 @@
                   .modal#recurring-expense-modal,
                   .modal#credit-card-modal {
 
+                      /* NUEVO: Reduce el espacio del encabezado */
+                      .p-6.border-b {
+                          padding-bottom: 4px; /* Reduce el padding inferior del título */
+                      }
+
                       /* 1. Reduce el tamaño del título principal del modal (sin cambios) */
                       h2 {
                           font-size: 1rem; 
@@ -1454,7 +1459,7 @@
                       input, select {
                           font-size: 16px !important; /* Mantiene la corrección anti-zoom de iOS */
                           height: 44px; /* NUEVO: Altura fija para todos los campos (ideal para tocar con el dedo) */
-                          width: 100%; /* NUEVO: Asegura que todos los campos ocupen el ancho completo */
+                          width: 100% !important; /* CAMBIO: Se añade !important para forzar el ancho */
                           padding: 0 0.75rem; /* Padding solo horizontal, la altura ya está definida */
                           box-sizing: border-box; /* NUEVO: Asegura que el padding no altere el tamaño total */
                       }
@@ -2938,7 +2943,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.1.1
+              Versión 4.1.2
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
