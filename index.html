@@ -1470,18 +1470,17 @@
                       padding: 0.5rem 1rem;   /* Botones más compactos */
                   }
 
-                  /* 6. Reduce el espaciado general dentro del formulario */
-                  .p-8.space-y-6 {
-                      padding: 0.5rem; /* Menos padding general */
-                      margin-top: 0.25rem;
-                      --tw-space-y-reverse: 2;
-                      margin-top: calc(0.25rem * (0.25 - var(--tw-space-y-reverse)));
-                      margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+                  /* 6. CORREGIDO: Reduce el padding y el espacio entre campos del formulario */
+                  .modal .p-8.space-y-6 {
+                      padding: 1rem; /* Reduce el "relleno" general a 16px */
+                  }
+                  .modal .p-8.space-y-6 > * + * {
+                      margin-top: 0.75rem; /* Reduce el espacio entre campos a 12px */
                   }
 
-                  /* 7. Reduce el espaciado del pie del modal (donde están los botones) */
-                  .p-6.border-t {
-                      padding: 0.25rem;
+                  /* 7. CORREGIDO: Reduce el espaciado del pie del modal (donde están los botones) */
+                  .modal .p-6.border-t {
+                      padding: 0.75rem; /* Un padding un poco más consistente */
                   }                      
               }                  
           }
@@ -2924,20 +2923,23 @@
           </div>
         </div>        
 
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto text-center">
-          <p class="text-sm">
-            © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
-          </p>
-          <div class="text-xs mt-2 space-x-4">
-            <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
-            <span>|</span>
-            <a href="#" id="open-terms-conditions" class="text-blue-400 hover:underline">Términos de Uso</a>
-            <span>|</span>
-            <a href="#" id="open-cookie-policy" class="text-blue-400 hover:underline">Política de Cookies</a>
+        <footer class="bg-gray-800 text-white py-4">
+          <div class="container mx-auto text-center">
+            <p class="text-sm">
+              © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
+            </p>
+            <p id="app-version" class="text-xs text-gray-400 mt-1">
+              Versión 4.1
+            </p>
+            <div class="text-xs mt-2 space-x-4">
+              <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
+              <span>|</span>
+              <a href="#" id="open-terms-conditions" class="text-blue-400 hover:underline">Términos de Uso</a>
+              <span>|</span>
+              <a href="#" id="open-cookie-policy" class="text-blue-400 hover:underline">Política de Cookies</a>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
       
     <script>
           document.addEventListener('DOMContentLoaded', () => {
