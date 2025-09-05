@@ -1441,7 +1441,8 @@
 
                       /* NUEVO: Reduce el espacio del encabezado */
                       .p-6.border-b {
-                          padding-bottom: 4px; /* Reduce el padding inferior del título */
+                          padding-bottom: 1px; /* Reduce el padding inferior del título */
+                          
                       }
 
                       /* 1. Reduce el tamaño del título principal del modal (sin cambios) */
@@ -1495,6 +1496,23 @@
                           padding: 0.75rem;
                       }
                   }
+                 /* ===== CORRECCIÓN DEFINITIVA DE ESPACIO Y ANCHO (MÓVIL) ===== */
+                  /* Estas reglas de alta especificidad anulan cualquier conflicto. */
+                  
+                  /* 1. Elimina el relleno inferior del encabezado para juntarlo al formulario. */
+                  .modal#transaction-modal .p-6.border-b {
+                      padding-bottom: 0 !important;
+                  }
+
+                  /* 2. Añade un pequeño espacio superior controlado al formulario. */
+                  .modal#transaction-modal .p-8.space-y-6 {
+                      padding-top: 12px !important; /* ¡Este es el espacio real y controlado! */
+                  }
+
+                  /* 3. Forza el ancho del input de fecha para que sea igual al resto. */
+                  .modal#transaction-modal input#transaction-date {
+                      width: 100% !important;
+                  }                  
               }
 
               /* ====================================================================== */
@@ -2943,7 +2961,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.1.2
+              Versión 4.1.3
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
