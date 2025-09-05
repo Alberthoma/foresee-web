@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
     <title>
       Gestor de Presupuesto Web
     </title>
@@ -1486,33 +1486,39 @@
               }
 
               /* ====================================================================== */
-              /* ==== CORRECCIÓN PARA DESBORDAMIENTO DE MODALES EN MÓVIL (NUEVO) ==== */
+              /* ==== CORRECCIÓN DEFINITIVA P/ DESBORDAMIENTO DE MODALES EN MÓVIL ==== */
               /* ====================================================================== */
               @media (max-width: 768px) {
-                  /* Se aplica a los principales modales con formularios */
+                  /* Selecciona el contenedor principal de cada modal de formulario */
                   .modal#transaction-modal > div,
                   .modal#recurring-expense-modal > div,
                   .modal#credit-card-modal > div,
                   .modal#transfer-modal > div,
                   .modal#category-icon-modal > div {
-                      /* 1. Altura máxima: Nunca será más alto que el 90% de la pantalla */
-                      max-height: 90vh; 
-                      /* 2. Flexbox: Organiza el contenido verticalmente */
+                      
+                      /* 1. Lo posicionamos de forma fija en el centro de la pantalla */
+                      position: fixed;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+
+                      /* 2. Establecemos un ancho y una altura máxima FIJOS */
+                      width: 95%; /* Ocupará el 95% del ancho de la pantalla */
+                      max-height: 90vh; /* Nunca será más alto que el 90% de la pantalla */
+                      
+                      /* 3. Organizamos el contenido interno verticalmente */
                       display: flex;
                       flex-direction: column;
-                      /* 3. Evita que el modal se desborde */
-                      overflow: hidden; 
+                      overflow: hidden; /* Oculta cualquier desbordamiento del modal en sí */
                   }
 
                   /*
-                   * Esta es la parte CLAVE:
-                   * Seleccionamos el área de contenido principal del formulario
-                   * y le decimos que ocupe todo el espacio disponible y que,
-                   * si su contenido interno es demasiado grande, muestre un scroll.
+                   * Esta regla, que ya tenías, sigue siendo la CLAVE.
+                   * Le dice al área del formulario que crezca y active el scroll si es necesario.
                   */
-                  .modal form > div:first-child { /* Apunta al div que contiene los inputs */
-                      flex-grow: 1; /* Hace que esta área crezca para ocupar el espacio */
-                      overflow-y: auto; /* Muestra una barra de scroll vertical SI es necesario */
+                  .modal form > div:first-child {
+                      flex-grow: 1;
+                      overflow-y: auto;
                   }
               }              
 
