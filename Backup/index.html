@@ -1362,8 +1362,8 @@
                   #tarjetas-content td, #tarjetas-content th,
                   #registros-content td, #registros-content th,
                   #proyeccion-content td, #proyeccion-content th {
-                      font-size: 0.75rem; /* 12px, texto más pequeño */
-                      padding: 6px 4px;   /* Menos espaciado vertical y horizontal */
+                      font-size: 1rem; /* 12px, texto más pequeño */
+                      padding: 4px 2px;   /* Menos espaciado vertical y horizontal */
                   }
 
                   /* 4. Hace más pequeños los botones de acción principales */
@@ -1412,118 +1412,90 @@
                   }
                   
                   /* AJUSTE PARA IMÁGENES DEL DASHBOARD EN MÓVIL */
-
-                  /* Regla para el CÍRCULO que contiene la imagen */
-                  .card-icon-wrapper {
-                      width: 48px;      /* Ancho fijo y más pequeño para el círculo */
-                      height: 48px;     /* Alto fijo y más pequeño para el círculo */
-                      padding: 0;       /* Anulamos el padding para controlar el tamaño de la imagen directamente */
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      flex-shrink: 0;   /* Evita que el círculo se encoja */
-                  }
-
-                  /* Regla para la IMAGEN dentro del círculo */
-                  .card-icon-wrapper img {
-                      height: 28px;     /* Tamaño de la imagen más pequeño y consistente */
-                      width: 28px;      /* Hacemos que sea un cuadrado para que no se deforme */
-                  }                  
-
               }
 
-          @media (max-width: 768px) {
-              /* Identificadores de los modales a modificar */
-              .modal#transaction-modal,
-              .modal#recurring-expense-modal,
-              .modal#credit-card-modal {
 
-                  /* 1. Reduce el tamaño del título principal del modal */
-                  h2 {
-                      font-size: 1rem; /* ~20px, antes era 1.5rem */
-                      padding: 0.1rem;      /* Menos espaciado */
-                  }
-
-                  /* 2. Hace más pequeños los labels (etiquetas) de cada campo */
-                  label {
-                      font-size: 0.75rem; /* ~12px, texto más pequeño */
-                  }
-
-                  /* 3. Ajusta el tamaño del texto para EVITAR ZOOM AUTOMÁTICO en iOS */
-                  input, select {
-                      font-size: 16px !important; /* <-- CORRECCIÓN: Se añade !important para forzar el estilo */
-                      padding: 0.6rem 0.5rem; /* Ajustamos el padding para que se vea bien */
-                  }
-
-                  /* 4. Hace más pequeñas las etiquetas de radio "Ingreso" y "Gasto" */
-                  .radio-type-label {
-                      font-size: 0.8rem;
-                      padding: 0.4rem 0.5rem;
-                  }
-
-                  /* 5. Reduce el tamaño de los botones de acción principales */
-                  #save-transaction-btn,
-                  #save-recurring-btn,
-                  #save-credit-card-btn,
-                  #open-transfer-modal-btn {
-                      font-size: 0.75rem; /* ~14px */
-                      padding: 0.5rem 1rem;   /* Botones más compactos */
-                  }
-
-                  /* 6. CORREGIDO: Reduce el padding y el espacio entre campos del formulario */
-                  .modal .p-8.space-y-6 {
-                      padding: 1rem; /* Reduce el "relleno" general a 16px */
-                  }
-                  .modal .p-8.space-y-6 > * + * {
-                      margin-top: 0.75rem; /* Reduce el espacio entre campos a 12px */
-                  }
-
-                  /* 7. CORREGIDO: Reduce el espaciado del pie del modal (donde están los botones) */
-                  .modal .p-6.border-t {
-                      padding: 0.75rem; /* Un padding un poco más consistente */
-                  }                      
-              }                  
-          }
-
-          /* ====================================================================== */
-          /* ==== CORRECCIÓN DEFINITIVA P/ DESBORDAMIENTO DE MODALES EN MÓVIL ==== */
-
-              /* ====================================================================== */
-              /* ==== CORRECCIÓN DEFINITIVA P/ DESBORDAMIENTO DE MODALES EN MÓVIL ==== */
-              /* ====================================================================== */
               @media (max-width: 768px) {
-                  /* Selecciona el contenedor principal de cada modal de formulario */
-                  .modal#transaction-modal > div,
-                  .modal#recurring-expense-modal > div,
-                  .modal#credit-card-modal > div,
-                  .modal#transfer-modal > div,
-                  .modal#category-icon-modal > div {
-                      
-                      /* 1. Lo posicionamos de forma fija en el centro de la pantalla */
-                      position: fixed;
-                      top: 50%;
-                      left: 50%;
-                      transform: translate(-50%, -50%);
+                  /* Identificadores de los modales a modificar */
+                  .modal#transaction-modal,
+                  .modal#recurring-expense-modal,
+                  .modal#credit-card-modal {
 
-                      /* 2. Establecemos un ancho y una altura máxima FIJOS */
-                      width: 95%; /* Ocupará el 95% del ancho de la pantalla */
-                      max-height: 90vh; /* Nunca será más alto que el 90% de la pantalla */
-                      
-                      /* 3. Organizamos el contenido interno verticalmente */
-                      display: flex;
-                      flex-direction: column;
-                      overflow: hidden; /* Oculta cualquier desbordamiento del modal en sí */
+                      /* NUEVO: Reduce el espacio del encabezado */
+                      .p-6.border-b {
+                          padding-bottom: 1px; /* Reduce el padding inferior del título */
+                          
+                      }
+
+                      /* 1. Reduce el tamaño del título principal del modal (sin cambios) */
+                      h2 {
+                          font-size: 1rem; 
+                          padding: 0.1rem;
+                      }
+
+                      /* 2. Hace más pequeños los labels (etiquetas) (sin cambios) */
+                      label {
+                          font-size: 0.75rem;
+                      }
+
+                      /* 3. AJUSTE DEFINITIVO DE INPUTS: Altura, ancho y tamaño de letra uniformes */
+                      input, select {
+                          font-size: 16px !important; /* Mantiene la corrección anti-zoom de iOS */
+                          height: 44px; /* NUEVO: Altura fija para todos los campos (ideal para tocar con el dedo) */
+                          width: 100% !important; /* CAMBIO: Se añade !important para forzar el ancho */
+                          padding: 0 0.75rem; /* Padding solo horizontal, la altura ya está definida */
+                          box-sizing: border-box; /* NUEVO: Asegura que el padding no altere el tamaño total */
+                      }
+
+                      /* 4. Hace más pequeñas las etiquetas de radio (sin cambios) */
+                      .radio-type-label {
+                          font-size: 0.8rem;
+                          padding: 0.4rem 0.5rem;
+                          display: flex; /* Centra el texto en la etiqueta de radio */
+                          align-items: center;
+                          justify-content: center;
+                      }
+
+                      /* 5. Reduce el tamaño de los botones de acción principales (sin cambios) */
+                      #save-transaction-btn,
+                      #save-recurring-btn,
+                      #save-credit-card-btn,
+                      #open-transfer-modal-btn {
+                          font-size: 0.75rem;
+                          padding: 0.5rem 1rem;
+                      }
+
+                      /* 6. AJUSTE DE ESPACIADO: Se reduce padding superior y espacio entre campos */
+                      .modal .p-8.space-y-6 {
+                          padding: 0px 1rem 1rem 1rem; /* NUEVO: Padding superior de 4px, el resto 1rem (16px) */
+                      }
+                      .modal .p-8.space-y-6 > * + * {
+                          margin-top: 0.25rem; /* Espacio entre campos se mantiene en 12px */
+                      }
+
+                      /* 7. Reduce el espaciado del pie del modal (sin cambios) */
+                      .modal .p-6.border-t {
+                          padding: 0.75rem;
+                      }
+                  }
+                  /* ===== CORRECCIÓN DEFINITIVA DE ESPACIO Y ANCHO (MÓVIL) ===== */
+                  /* Estas reglas de alta especificidad anulan cualquier conflicto. */
+                  
+                  /* 1. Elimina el relleno inferior del encabezado para juntarlo al formulario. */
+                  .modal#transaction-modal .p-6.border-b {
+                      padding-bottom: 0 !important;
                   }
 
-                  /*
-                   * Esta regla, que ya tenías, sigue siendo la CLAVE.
-                   * Le dice al área del formulario que crezca y active el scroll si es necesario.
-                  */
-                  .modal form > div:first-child {
-                      flex-grow: 1;
-                      overflow-y: auto;
+                  /* 2. Añade un pequeño espacio superior controlado al formulario. */
+                  .modal#transaction-modal .p-8.space-y-6 {
+                      padding-top: 12px !important; /* ¡Este es el espacio real y controlado! */
                   }
-              }              
+
+                  /* 3. Forza el ancho del input de fecha para que sea igual al resto. */
+                  .modal#transaction-modal input#transaction-date {
+                      width: 100% !important;
+                  }                  
+              }
 
               /* ====================================================================== */
               /* ===== LÓGICA PARA BOTÓN DE LOGOUT EN LA BARRA DE PESTAÑAS (MÓVIL) ===== */
@@ -1551,8 +1523,6 @@
               }
 
               @media (max-width: 768px) {
-                /* ... otros estilos que ya tienes ... */
-
                 /* ===== INICIO DEL CÓDIGO MODIFICADO PARA BOTONES DE PESTAÑAS MÓVIL ===== */
                 
                 /* 1. El botón principal se convierte en un contenedor flexible */
@@ -1568,7 +1538,7 @@
 
                 /* 3. Ajustes para el icono (img) para que quepa bien en el círculo */
                 .tab-button img {
-                    height: 52px;           /* Tamaño del icono reducido */
+                    height: 64px;           /* Tamaño del icono reducido */
                     width: auto;
                     margin-bottom: 0;
                     padding: 1px;       /* Resetea el margen que tenía */
@@ -1589,17 +1559,18 @@
                     transform: scale(1.05); /* Lo hace un poco más grande */
                 }
 
-              #main-action-btn {
-                background-color: var(--electric-blue); color: white;
-                font-size: 0.85rem;
-                margin-left: 0;
-              }
+                #main-action-btn {
+                  background-color: var(--electric-blue); color: white;
+                  font-size: 0.85rem;
+                  margin-left: 0;
+                }
 
-              #main-action-btn:hover { background-color: #0ea4e9c8; 
-                transform: scale(1.05);
-                width: auto;
-                height: 20px;                
-              }
+                #main-action-btn:hover { 
+                  background-color: #0ea4e9c8; 
+                  transform: scale(1.05);
+                  width: auto;
+                  height: 20px;                
+                }
 
                 
                 /* ===== FIN DEL CÓDIGO MODIFICADO ===== */
@@ -1644,9 +1615,16 @@
                 0 0 25px var(--electric-blue); /* Efecto neón al pasar el mouse */
                 inset: 0 0 10px rgba(14, 165, 233, 0.6); /* Neón interno al estar activo */               
             }
+            .tab-button.active {
+              box-shadow: 
+                0 0 8px var(--bg-dark-tertiary),
+                0 0 15px var(--bg-dark-tertiary),
+                0 0 25px var(--bg-dark-tertiary); /* Efecto neón al pasar el mouse */
+                inset: 0 0 5px rgba(112, 114, 115, 0.6); /* Neón interno al estar activo */ 
+            }
 
               .tab-button img{
-                height: 52px;
+                height: 64px;
                 width: auto;
               }
               .btn{
@@ -2929,7 +2907,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.1
+              Versión 4.3.1
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
