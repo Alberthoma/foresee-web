@@ -339,8 +339,11 @@
                 opacity: 1;
               }*/             
 
-              /* --- ESTILOS DE MODALES Y NOTIFICACIONES --- */
+
               
+          
+
+              /* --- ESTILOS DE MODALES Y NOTIFICACIONES --- */
               .modal { display: none; z-index: 100; }
               .modal.active { display: flex; }
               .modal > div {
@@ -427,120 +430,19 @@
                   border-left-color: #fff; width: 16px; height: 16px;
               }
               body.auth-modal-active #main-content-wrapper { display: none; }
-              /* ====================================================================== */
-              /* ===== ESTILOS PARA EL NUEVO PANEL DE ACCIÓN ÚNICA - 04/09/2025 ===== */
-              /* ====================================================================== */
-              
-              /* Anula el fondo oscuro del modal para que solo el panel sea visible */
-              #single-action-modal {
-                  background-color: rgba(17, 24, 39, 0.4); /* Fondo semi-transparente */
-                  pointer-events: none; /* Permite hacer clic "a través" del fondo */
-              }
-
-              /* Estilos para el panel que se desliza desde abajo */
-              #single-action-modal-content {
-                  background-color: var(--bg-dark-secondary); /* Fondo oscuro del panel */
-                  border-top: 1px solid var(--border-dark);
-                  pointer-events: all; /* El panel sí debe ser clickeable */
-              }
-              
-              /* Estilos para el texto del panel */
-              #single-action-modal-title {
-                  color: var(--text-light-secondary);
-              }
-
-              /* Lógica para mostrar/ocultar el panel */
-              #single-action-modal.active {
-                  pointer-events: all;
-              }
-              #single-action-modal.active #single-action-modal-content {
-                  transform: translateY(0); /* Lo trae a su posición visible */
-              }
-
-
-
-
-
-              /* --- ESTILOS DE TABLAS --- */
-
-              .button-container /*flex items-center justify-between w-full mb-2 mt-0"*/ {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 100%;
-                margin-bottom: 0.5rem;
-                margin-top: 0;
-                padding-top: 0;
-              }
 
               main.container {
                 background-color: var(--bg-dark-secondary);
                 border: 1px solid var(--border-dark);
                 padding: 1rem;
               }
-              #main-action-btn {
+              #main-action-btn, .aparecer {
                 background-color: var(--electric-blue); color: white;
                 font-weight: 500;
-                font-size: large;
-                margin-left: 0;
               }
-              #main-action-btn:hover { background-color: #0ea4e9c8; 
-                transform: scale(1.05);
-                width: auto;
-                height: 40px;                
-              }
-
+              #main-action-btn:hover, .aparecer:hover { background-color: #0ea4e9c8; }
               table { border-collapse: collapse; }
-
-              .aparecer {
-                padding: 0.25rem 0.5rem; border-radius: 0.5rem;
-                border: 1px solid var(--border-dark);
-                transition: all 0.2s ease-in-out;
-                background-color: grey;
-              }
-
-              .aparecer:hover{
-                background-color: var(--electric-red);
-                color: white;
-                border-color: var(--electric-red);
-                transform: scale(1.05);
-              }
-
-               /* Aquí es donde debes pegar el código CSS */
-              table {
-                  border-collapse: separate; /* Importante para que border-radius funcione */
-                  border-spacing: 0;
-                  border-radius: 10px; /* Aquí establecemos el radio de las esquinas */
-                  overflow: hidden; /* Esto es clave para que los bordes de las celdas no se salgan */
-                  width: 80%;
-                  margin: 20px auto;
-                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                  border: 1px solid var(--border-dark);
-                  margin-top: 1px;
-              }
-
-              th, td {
-                  border: 1px solid #ddd;
-                  padding: 2px;
-                  text-align: left;
-              }
-
-              /* Estilos adicionales para que las esquinas de las celdas se vean bien */
-              table tr:first-child th:first-child {
-                  border-top-left-radius: 10px;
-              }
-
-              table tr:first-child th:last-child {
-                  border-top-right-radius: 10px;
-              }
-
-              table tr:last-child td:first-child {
-                  border-bottom-left-radius: 10px;
-              }
-
-              table tr:last-child td:last-child {
-                  border-bottom-right-radius: 10px;
-              }             
+              thead { background-color: var(--bg-dark-primary); }
 
               /* CÓDIGO NUEVO */
               th {
@@ -557,15 +459,14 @@
               #presupuesto-content thead th {
                   color: var(--text-light-primary);
               }
-
-              /* REGLA ÚNICA Y DEFINITIVA PARA EL ENCABEZADO NEGRO */
-              thead,
+              /* --- REGLA ESPECÍFICA PARA EL FONDO OSCURO DEL ENCABEZADO --- */
               #registros-content thead,
               #recurrentes-content thead,
               #tarjetas-content thead,
               #presupuesto-content thead {
-                  background-color: #000000; /* Negro puro para todos los encabezados */
-              }                   
+                  background-color: var(--bg-dark-primary);
+              }             
+              
 
               tbody { background-color: var(--bg-dark-secondary); border-color: var(--border-dark); }
               td { color: var(--text-light-primary); }
@@ -1212,46 +1113,8 @@
 /* ====================================================================== */
 /* ===== AJUSTES PARA VISTA MÓVIL (Tablas y Filtros) - 01/09/2025 ======= */
 /* -------------------- CSS RESPONSIVO (MÓVILES) ------------------------ */
-/* ====================================================================== */ 
+/* ====================================================================== */             
 
-              /* --- Estilos para el botón 'i' solo en vista móvil --- */
-              @media (max-width: 768px) {
-                  .info-btn {
-                      display: flex; /* Centra la 'i' dentro del círculo */
-                      align-items: center;
-                      justify-content: center;
-                      width: 1rem;     /* 16px */
-                      height: 1rem;    /* 16px */
-                      margin-left: 8px; /* Espacio entre el texto de la categoría y el botón */
-                      border-radius: 50%; /* Lo hace un círculo */
-                      background-color: var(--bg-dark-tertiary);
-                      color: var(--text-light-secondary);
-                      border: 1px solid var(--border-dark);
-                      font-size: 0.65rem;
-                      font-weight: bold;
-                      cursor: pointer;
-                      transition: background-color 0.2s ease, transform 0.2s ease;
-                      flex-shrink: 0; /* Evita que el botón se encoja */
-                  }
-                  .info-btn:hover {
-                      background-color: var(--electric-blue);
-                      color: white;
-                      transform: scale(1.1);
-                  }
-                  /* Ocultamos la columna de descripción en móvil, ya que tenemos el botón */
-                  #registros-content th:nth-child(3),
-                  #registros-content td:nth-child(3),
-                  #proyeccion-content th:nth-child(3),
-                  #proyeccion-content td:nth-child(3) {
-                      display: none;
-                  }
-              }
-              /* Ocultamos el botón en la vista de escritorio */
-              @media (min-width: 769px) {
-                  .info-btn {
-                      display: none;
-                  }
-              }
               
               @media (max-width: 768px) {
                 #barr {
@@ -1282,7 +1145,7 @@
                 body {
                     margin-top: 6rem !important; /* Aproximadamente la altura de la barra de pestañas */
                 }
-              
+                
                 /* Pega esta nueva regla para que el contenido se ajuste a las pestañas */
                 body.view-content #main-container {
                     margin-top: 0.5rem; /* Un pequeño espacio en lugar del grande anterior */
@@ -1384,7 +1247,6 @@
                       display: flex; /* Muestra los filtros cuando el botón es presionado */
                   }
                   
-                  
                   #toggle-filters-btn {
                       display: block; /* Asegura que el botón de filtros sea visible en móvil */
                   }
@@ -1431,6 +1293,12 @@
                   }                  
 
               }
+
+
+        
+
+
+
               @media (max-width: 768px) {
                   /* Identificadores de los modales a modificar */
                   .modal#transaction-modal,
@@ -1484,37 +1352,6 @@
                       }                      
                   }                  
               }
-
-              /* ====================================================================== */
-              /* ==== CORRECCIÓN PARA DESBORDAMIENTO DE MODALES EN MÓVIL (NUEVO) ==== */
-              /* ====================================================================== */
-              @media (max-width: 768px) {
-                  /* Se aplica a los principales modales con formularios */
-                  .modal#transaction-modal > div,
-                  .modal#recurring-expense-modal > div,
-                  .modal#credit-card-modal > div,
-                  .modal#transfer-modal > div,
-                  .modal#category-icon-modal > div {
-                      /* 1. Altura máxima: Nunca será más alto que el 90% de la pantalla */
-                      max-height: 90vh; 
-                      /* 2. Flexbox: Organiza el contenido verticalmente */
-                      display: flex;
-                      flex-direction: column;
-                      /* 3. Evita que el modal se desborde */
-                      overflow: hidden; 
-                  }
-
-                  /*
-                   * Esta es la parte CLAVE:
-                   * Seleccionamos el área de contenido principal del formulario
-                   * y le decimos que ocupe todo el espacio disponible y que,
-                   * si su contenido interno es demasiado grande, muestre un scroll.
-                  */
-                  .modal form > div:first-child { /* Apunta al div que contiene los inputs */
-                      flex-grow: 1; /* Hace que esta área crezca para ocupar el espacio */
-                      overflow-y: auto; /* Muestra una barra de scroll vertical SI es necesario */
-                  }
-              }              
 
               /* ====================================================================== */
               /* ===== LÓGICA PARA BOTÓN DE LOGOUT EN LA BARRA DE PESTAÑAS (MÓVIL) ===== */
@@ -1579,19 +1416,6 @@
                     background-color: transparent; /* Resalta el círculo */
                     transform: scale(1.05); /* Lo hace un poco más grande */
                 }
-
-              #main-action-btn {
-                background-color: var(--electric-blue); color: white;
-                font-size: 0.85rem;
-                margin-left: 0;
-              }
-
-              #main-action-btn:hover { background-color: #0ea4e9c8; 
-                transform: scale(1.05);
-                width: auto;
-                height: 20px;                
-              }
-
                 
                 /* ===== FIN DEL CÓDIGO MODIFICADO ===== */
 
@@ -1679,6 +1503,45 @@
               }
               .info-tooltip.visible {
                   opacity: 1;
+              }
+
+              /* --- Estilos para el botón 'i' solo en vista móvil --- */
+              @media (max-width: 768px) {
+                  .info-btn {
+                      display: flex; /* Centra la 'i' dentro del círculo */
+                      align-items: center;
+                      justify-content: center;
+                      width: 1rem;     /* 16px */
+                      height: 1rem;    /* 16px */
+                      margin-left: 8px; /* Espacio entre el texto de la categoría y el botón */
+                      border-radius: 50%; /* Lo hace un círculo */
+                      background-color: var(--bg-dark-tertiary);
+                      color: var(--text-light-secondary);
+                      border: 1px solid var(--border-dark);
+                      font-size: 0.65rem;
+                      font-weight: bold;
+                      cursor: pointer;
+                      transition: background-color 0.2s ease, transform 0.2s ease;
+                      flex-shrink: 0; /* Evita que el botón se encoja */
+                  }
+                  .info-btn:hover {
+                      background-color: var(--electric-blue);
+                      color: white;
+                      transform: scale(1.1);
+                  }
+                  /* Ocultamos la columna de descripción en móvil, ya que tenemos el botón */
+                  #registros-content th:nth-child(3),
+                  #registros-content td:nth-child(3),
+                  #proyeccion-content th:nth-child(3),
+                  #proyeccion-content td:nth-child(3) {
+                      display: none;
+                  }
+              }
+              /* Ocultamos el botón en la vista de escritorio */
+              @media (min-width: 769px) {
+                  .info-btn {
+                      display: none;
+                  }
               }
 
 
@@ -1873,8 +1736,20 @@
       <div class="mr-8 ml-8 mt-2 text-sm text-yellow-700" id="credit-card-alerts"></div>
       <div class="mr-8 ml-8 mt-2 text-sm text-blue-700" id="recurring-alerts"></div>      
 
-      <main id="main-container" class="container mx-auto bg-gray-200 rounded-xl shadow-md mt-24">              
-        <div class="button-container">
+      <main id="main-container" class="container mx-auto bg-gray-200 rounded-xl shadow-md mt-24">
+        
+      <!--<h3 id="main-content-title" class="text-xl font-semibold mb-4"></h3>-->
+
+        <div class="flex items-center justify-between w-full mb-2 mt-0">
+
+          <button class="aparecer text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2" id="mostrar">
+              <span>Ocultar</span>
+          </button>
+
+          <button id="toggle-filters-btn" class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs">
+              Mostrar Filtros
+          </button>
+
           <div class="flex items-center space-x-2">
               <button id="migrate-all-recurring-btn" class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition flex items-center space-x-2 hidden">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
@@ -1895,13 +1770,6 @@
                 <span id="main-action-btn-text"></span>
               </button>
           </div>
-          <button id="toggle-filters-btn" class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs">
-              Filtros
-          </button>
-          <button class="aparecer" id="mostrar">
-              <span>X</span>
-          </button>
-
         </div>
 
             <div class="flex flex-col md:flex-row gap-4 mb-4" id="filters-container">
@@ -2013,7 +1881,7 @@
                       <input type="checkbox" id="select-all-recurrentes" title="Seleccionar Todo">
                     </th>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Día
+                      Día de Pago
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Descripción
@@ -2895,24 +2763,6 @@
             </div>
           </div>
         </div>
-        <div class="modal fixed inset-0 bg-transparent items-end" id="single-action-modal">
-          <div id="single-action-modal-content" class="bg-white w-full rounded-t-2xl shadow-2xl p-4 transform transition-transform duration-300 translate-y-full">
-            <p class="text-sm text-center text-gray-500 mb-3" id="single-action-modal-title">
-              Acción para el elemento seleccionado:
-            </p>
-            <div class="space-y-2">
-              <button class="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 font-semibold" id="single-action-edit-btn">
-                Editar Selección
-              </button>
-              <button class="w-full bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 font-semibold" id="single-action-delete-btn">
-                Eliminar Selección
-              </button>
-              <button class="w-full bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 mt-2" id="single-action-cancel-btn">
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>        
 
     <footer class="bg-gray-800 text-white py-4">
         <div class="container mx-auto text-center">
@@ -3054,13 +2904,7 @@
               };
 
               let userId = null;
-              // ===== AÑADE ESTE BLOQUE DE VARIABLES NUEVO AQUÍ =====
-              let unsubscribePreferences = null;
-              let unsubscribeTransactions = null;
-              let unsubscribeProjections = null;
-              let unsubscribeRecurring = null;
-              let unsubscribeCreditCards = null;
-              // =======================================================
+
 
               // Pega el nuevo código aquí
               let modalContext = 'registros'; // Para saber desde qué pestaña se abre el modal              
@@ -3182,12 +3026,12 @@
                   console.log("[Auth State Changed] Usuario:", user ? user.uid : "null"); // Debugging
                   try {
                       if (user) {
-                          enterFullscreen(document.documentElement); // Activa la pantalla completa
+                          //enterFullscreen(document.documentElement); // Activa la pantalla completa
                           userId = user.uid;
                           // userAliasDisplay.textContent = userId; // Esto ahora se actualizará en renderHeaderAlias
                           isAuthReady = true;
                           hideAuthModal(); // Ocultar modal de autenticación si el usuario está logueado
-                          showDashboardView(); // <-- ¡ESTA ES LA CORRECCIÓN! Asegura que se muestre el dashboard.
+                          
                           // ================== INICIO DE LA CORRECCIÓN IMPORTANTE ==================
                           // Esta nueva sección se asegura de que tu configuración solo se cree UNA VEZ.
                           const appId = window.firebaseProjectId;
@@ -3265,255 +3109,240 @@
               // ================== Pega este bloque completo ==================
               // Reemplaza tu función setupEventListeners() original con esta.
 
-              function setupEventListeners() {
-                  if (listenersAttached) return; // Si ya están asignados, no hagas nada.
+function setupEventListeners() {
+    if (listenersAttached) return; // Si ya están asignados, no hagas nada.
 
-                  // --- Conectar el nuevo botón de cerrar vista (flecha) ---
-                  const closeContentViewBtn = document.getElementById('close-content-view-btn');
-                  if (closeContentViewBtn) {
-                      closeContentViewBtn.addEventListener('click', showDashboardView);
-                  }
+    // --- Conectar el nuevo botón de cerrar vista (flecha) ---
+    const closeContentViewBtn = document.getElementById('close-content-view-btn');
+    if (closeContentViewBtn) {
+        closeContentViewBtn.addEventListener('click', showDashboardView);
+    }
 
-                  // --- Conectar el botón de logout de la barra de pestañas (icono de salir) ---
-                  const logoutTabBtn = document.getElementById('logout-tab-btn');
-                  if (logoutTabBtn) {
-                      logoutTabBtn.addEventListener('click', handleLogout);
-                  }
-                  
-                  // Eventos de Autenticación
-                  authForm.addEventListener('submit', handleLogin);
-                  registerBtn.addEventListener('click', handleRegister);
-                  logoutBtn.addEventListener('click', handleLogout);
+    // --- Conectar el botón de logout de la barra de pestañas (icono de salir) ---
+    const logoutTabBtn = document.getElementById('logout-tab-btn');
+    if (logoutTabBtn) {
+        logoutTabBtn.addEventListener('click', handleLogout);
+    }
+    
+    // Eventos de Autenticación
+    authForm.addEventListener('submit', handleLogin);
+    registerBtn.addEventListener('click', handleRegister);
+    logoutBtn.addEventListener('click', handleLogout);
 
-                  // Botones de Pantalla Completa
-                  document.getElementById('IdbtOpenScreen').addEventListener('click', () => enterFullscreen(document.documentElement));
-                  document.getElementById('IdbtCloseScreen').addEventListener('click', exitFullscreen);
+    // Botones de Pantalla Completa
+    document.getElementById('IdbtOpenScreen').addEventListener('click', () => enterFullscreen(document.documentElement));
+    document.getElementById('IdbtCloseScreen').addEventListener('click', exitFullscreen);
 
-                  // Eventos de la Aplicación
-                  mainActionBtn.addEventListener('click', handleMainActionClick);
-                  transactionModal.addEventListener('click', (e) => { if (e.target === transactionModal) closeTransactionModal(); });
-                  transactionForm.addEventListener('submit', handleFormSubmit);
+    // Eventos de la Aplicación
+    mainActionBtn.addEventListener('click', handleMainActionClick);
+    transactionModal.addEventListener('click', (e) => { if (e.target === transactionModal) closeTransactionModal(); });
+    transactionForm.addEventListener('submit', handleFormSubmit);
 
-                  filterMonth.addEventListener('change', () => {
-                      currentMonthFilterValue = filterMonth.value;
-                      renderAll();
-                  });
-                  filterDescription.addEventListener('input', renderAll);
-                  filterCategory.addEventListener('change', renderAll);
+    filterMonth.addEventListener('change', () => {
+        currentMonthFilterValue = filterMonth.value;
+        renderAll();
+    });
+    filterDescription.addEventListener('input', renderAll);
+    filterCategory.addEventListener('change', renderAll);
 
-                  document.querySelectorAll('.tab-button').forEach(button => {
-                      button.addEventListener('click', (e) => switchTab(e.currentTarget.dataset.tab));
-                  });
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', (e) => switchTab(e.currentTarget.dataset.tab));
+    });
 
-                  document.getElementById('open-add-category-modal-btn').addEventListener('click', openAddCategoryModal);
-                  document.getElementById('save-new-category-btn').addEventListener('click', addCategory);
-                  document.getElementById('close-icon-modal-btn').addEventListener('click', closeAddCategoryModal);
-                  document.getElementById('category-icon-modal').addEventListener('click', (e) => { 
-                      if (e.target.id === 'category-icon-modal') closeAddCategoryModal(); 
-                  });
+    document.getElementById('open-add-category-modal-btn').addEventListener('click', openAddCategoryModal);
+    document.getElementById('save-new-category-btn').addEventListener('click', addCategory);
+    document.getElementById('close-icon-modal-btn').addEventListener('click', closeAddCategoryModal);
+    document.getElementById('category-icon-modal').addEventListener('click', (e) => { 
+        if (e.target.id === 'category-icon-modal') closeAddCategoryModal(); 
+    });
 
-                  document.getElementById('add-bank-btn').addEventListener('click', addBank);
-                  document.getElementById('initiate-new-month-btn').addEventListener('click', initiateNewMonth);
-                  document.getElementById('reset-data-btn').addEventListener('click', resetAllData);
-                  document.getElementById('save-budgets-btn').addEventListener('click', handleSaveBudgets);
-                  confirmModal.addEventListener('click', (e) => { if (e.target === confirmModal) closeConfirmModal(); });
-                  confirmModalCancelBtn.addEventListener('click', closeConfirmModal);
+    document.getElementById('add-bank-btn').addEventListener('click', addBank);
+    document.getElementById('initiate-new-month-btn').addEventListener('click', initiateNewMonth);
+    document.getElementById('reset-data-btn').addEventListener('click', resetAllData);
+    document.getElementById('save-budgets-btn').addEventListener('click', handleSaveBudgets);
+    confirmModal.addEventListener('click', (e) => { if (e.target === confirmModal) closeConfirmModal(); });
+    confirmModalCancelBtn.addEventListener('click', closeConfirmModal);
 
-                  confirmModalConfirmBtn.addEventListener('click', async () => { if (typeof confirmCallback === 'function') { await confirmCallback(); } closeConfirmModal(); });                  
+    confirmModalConfirmBtn.addEventListener('click', async () => { if (typeof confirmCallback === 'function') { await confirmCallback(); } closeConfirmModal(); });                  
 
-                  messageModalCloseBtn.addEventListener('click', closeMessageModal);
-                  messageModal.addEventListener('click', (e) => { if (e.target === messageModal) closeMessageModal(); });
+    messageModalCloseBtn.addEventListener('click', closeMessageModal);
+    messageModal.addEventListener('click', (e) => { if (e.target === messageModal) closeMessageModal(); });
 
-                  document.getElementById('export-pdf-btn').addEventListener('click', exportToPDF);
-                  document.getElementById('export-json-btn').addEventListener('click', exportData);
-                  document.getElementById('import-json-btn').addEventListener('click', () => importFileInput.click());
-                  importFileInput.addEventListener('change', importData);
+    document.getElementById('export-pdf-btn').addEventListener('click', exportToPDF);
+    document.getElementById('export-json-btn').addEventListener('click', exportData);
+    document.getElementById('import-json-btn').addEventListener('click', () => importFileInput.click());
+    importFileInput.addEventListener('change', importData);
 
-                  creditCardModal.addEventListener('click', (e) => { if (e.target === creditCardModal) closeCreditCardModal(); });
-                  document.getElementById('credit-card-cancel-btn').addEventListener('click', closeCreditCardModal);
-                  creditCardForm.addEventListener('submit', handleCreditCardFormSubmit);
+    creditCardModal.addEventListener('click', (e) => { if (e.target === creditCardModal) closeCreditCardModal(); });
+    document.getElementById('credit-card-cancel-btn').addEventListener('click', closeCreditCardModal);
+    creditCardForm.addEventListener('submit', handleCreditCardFormSubmit);
 
-                  creditCardsTableBody.addEventListener('change', handleCardDataChange);
+    creditCardsTableBody.addEventListener('change', handleCardDataChange);
 
-                  openTransferModalBtn.addEventListener('click', openTransferModal);
-                  transferCancelBtn.addEventListener('click', closeTransferModal);
-                  transferModal.addEventListener('click', (e) => { if (e.target === transferModal) closeTransferModal(); });
-                  transferForm.addEventListener('submit', handleTransferFormSubmit);
-                  recurringExpenseModal.addEventListener('click', (e) => { if (e.target === recurringExpenseModal) closeRecurringExpenseModal(); });
-                  recurringExpenseForm.addEventListener('submit', handleRecurringExpenseFormSubmit);
-                  document.getElementById('migrate-all-recurring-btn').addEventListener('click', migrateAllRecurringToTransactions);
+    openTransferModalBtn.addEventListener('click', openTransferModal);
+    transferCancelBtn.addEventListener('click', closeTransferModal);
+    transferModal.addEventListener('click', (e) => { if (e.target === transferModal) closeTransferModal(); });
+    transferForm.addEventListener('submit', handleTransferFormSubmit);
+    recurringExpenseModal.addEventListener('click', (e) => { if (e.target === recurringExpenseModal) closeRecurringExpenseModal(); });
+    recurringExpenseForm.addEventListener('submit', handleRecurringExpenseFormSubmit);
+    document.getElementById('migrate-all-recurring-btn').addEventListener('click', migrateAllRecurringToTransactions);
 
-                  saveAliasBtn.addEventListener('click', handleSaveAlias);
-                  changePasswordForm.addEventListener('submit', handleChangePassword);
+    saveAliasBtn.addEventListener('click', handleSaveAlias);
+    changePasswordForm.addEventListener('submit', handleChangePassword);
 
-                  const brandStoryModal = document.getElementById('brand-story-modal');
-                  const openBrandStoryBtn = document.getElementById('open-brand-story-btn');
-                  const closeBrandStoryBtn = document.getElementById('close-brand-story-btn');
+    const brandStoryModal = document.getElementById('brand-story-modal');
+    const openBrandStoryBtn = document.getElementById('open-brand-story-btn');
+    const closeBrandStoryBtn = document.getElementById('close-brand-story-btn');
 
-                  if (brandStoryModal && openBrandStoryBtn && closeBrandStoryBtn) {
-                      openBrandStoryBtn.addEventListener('click', () => brandStoryModal.classList.add('active'));
-                      const closeModal = () => brandStoryModal.classList.remove('active');
-                      closeBrandStoryBtn.addEventListener('click', closeModal);
-                      brandStoryModal.addEventListener('click', (e) => { if (e.target === brandStoryModal) closeModal(); });
-                  }
+    if (brandStoryModal && openBrandStoryBtn && closeBrandStoryBtn) {
+        openBrandStoryBtn.addEventListener('click', () => brandStoryModal.classList.add('active'));
+        const closeModal = () => brandStoryModal.classList.remove('active');
+        closeBrandStoryBtn.addEventListener('click', closeModal);
+        brandStoryModal.addEventListener('click', (e) => { if (e.target === brandStoryModal) closeModal(); });
+    }
 
-                  const privacyModal = document.getElementById('privacy-policy-modal');
-                  const termsModal = document.getElementById('terms-conditions-modal');
-                  const cookieModal = document.getElementById('cookie-policy-modal');
+    const privacyModal = document.getElementById('privacy-policy-modal');
+    const termsModal = document.getElementById('terms-conditions-modal');
+    const cookieModal = document.getElementById('cookie-policy-modal');
 
-                  const openPrivacyBtn = document.getElementById('open-privacy-policy');
-                  const openTermsBtn = document.getElementById('open-terms-conditions');
-                  const openCookieBtn = document.getElementById('open-cookie-policy');
+    const openPrivacyBtn = document.getElementById('open-privacy-policy');
+    const openTermsBtn = document.getElementById('open-terms-conditions');
+    const openCookieBtn = document.getElementById('open-cookie-policy');
 
-                  const closeLegalModals = () => {
-                      privacyModal.classList.remove('active');
-                      termsModal.classList.remove('active');
-                      cookieModal.classList.remove('active');
-                  };
+    const closeLegalModals = () => {
+        privacyModal.classList.remove('active');
+        termsModal.classList.remove('active');
+        cookieModal.classList.remove('active');
+    };
 
-                  openPrivacyBtn.addEventListener('click', (e) => {
-                      e.preventDefault();
-                      privacyModal.classList.add('active');
-                  });
-                  openTermsBtn.addEventListener('click', (e) => {
-                      e.preventDefault();
-                      termsModal.classList.add('active');
-                  });
-                  openCookieBtn.addEventListener('click', (e) => {
-                      e.preventDefault();
-                      cookieModal.classList.add('active');
-                  });
+    openPrivacyBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        privacyModal.classList.add('active');
+    });
+    openTermsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        termsModal.classList.add('active');
+    });
+    openCookieBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        cookieModal.classList.add('active');
+    });
 
-                  document.querySelectorAll('.modal').forEach(modal => {
-                      modal.addEventListener('click', (e) => {
-                          if (e.target === modal) {
-                              closeLegalModals();
-                          }
-                      });
-                  });
-                  document.querySelectorAll('.close-legal-modal').forEach(button => {
-                      button.addEventListener('click', closeLegalModals);
-                  });
-                  
-                  const closeTransactionBtn = document.getElementById('close-transaction-modal-btn');
-                  if(closeTransactionBtn) closeTransactionBtn.addEventListener('click', closeTransactionModal);
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeLegalModals();
+            }
+        });
+    });
+    document.querySelectorAll('.close-legal-modal').forEach(button => {
+        button.addEventListener('click', closeLegalModals);
+    });
+    
+    const closeTransactionBtn = document.getElementById('close-transaction-modal-btn');
+    if(closeTransactionBtn) closeTransactionBtn.addEventListener('click', closeTransactionModal);
 
-                  const closeRecurringBtn = document.getElementById('close-recurring-modal-btn');
-                  if(closeRecurringBtn) closeRecurringBtn.addEventListener('click', closeRecurringExpenseModal);
+    const closeRecurringBtn = document.getElementById('close-recurring-modal-btn');
+    if(closeRecurringBtn) closeRecurringBtn.addEventListener('click', closeRecurringExpenseModal);
 
-                  const setupEnterKeyNavigation = (formId, fieldIds) => {
-                      const form = document.getElementById(formId);
-                      if (!form) return;
-                      fieldIds.forEach((fieldId, index) => {
-                          const element = document.getElementById(fieldId);
-                          if (!element) return;
-                          element.addEventListener('keydown', (e) => {
-                              if (e.key === 'Enter' && index < fieldIds.length - 1) {
-                                  e.preventDefault();
-                                  const nextElement = document.getElementById(fieldIds[index + 1]);
-                                  if (nextElement) nextElement.focus();
-                              }
-                          });
-                      });
-                  };
+    const setupEnterKeyNavigation = (formId, fieldIds) => {
+        const form = document.getElementById(formId);
+        if (!form) return;
+        fieldIds.forEach((fieldId, index) => {
+            const element = document.getElementById(fieldId);
+            if (!element) return;
+            element.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && index < fieldIds.length - 1) {
+                    e.preventDefault();
+                    const nextElement = document.getElementById(fieldIds[index + 1]);
+                    if (nextElement) nextElement.focus();
+                }
+            });
+        });
+    };
 
-                  setupEnterKeyNavigation('transaction-form', ['transaction-date', 'transaction-description', 'transaction-category', 'transaction-bank', 'transaction-amount', 'save-transaction-btn']);
-                  setupEnterKeyNavigation('recurring-expense-form', ['recurring-description', 'recurring-category', 'recurring-bank', 'recurring-amount', 'recurring-day', 'save-recurring-btn']);
+    setupEnterKeyNavigation('transaction-form', ['transaction-date', 'transaction-description', 'transaction-category', 'transaction-bank', 'transaction-amount', 'save-transaction-btn']);
+    setupEnterKeyNavigation('recurring-expense-form', ['recurring-description', 'recurring-category', 'recurring-bank', 'recurring-amount', 'recurring-day', 'save-recurring-btn']);
 
-                  deleteSelectedBtn.addEventListener('click', handleDeleteSelected);
-                  const tablesContainer = document.getElementById('main-container');
-                  tablesContainer.addEventListener('change', (e) => {
-                      if (e.target.matches('.transaction-checkbox, .projection-checkbox, .recurring-checkbox, #select-all-registros, #select-all-proyeccion, #select-all-recurrentes')) {
-                          updateDeleteButtonVisibility();
-                      }
-                  });
+    deleteSelectedBtn.addEventListener('click', handleDeleteSelected);
+    const tablesContainer = document.getElementById('main-container');
+    tablesContainer.addEventListener('change', (e) => {
+        if (e.target.matches('.transaction-checkbox, .projection-checkbox, .recurring-checkbox, #select-all-registros, #select-all-proyeccion, #select-all-recurrentes')) {
+            updateDeleteButtonVisibility();
+        }
+    });
 
-                  selectAllRegistrosCheckbox.addEventListener('change', (e) => document.querySelectorAll('#registros-content .transaction-checkbox').forEach(cb => cb.checked = e.target.checked));
-                  selectAllProyeccionCheckbox.addEventListener('change', (e) => document.querySelectorAll('#proyeccion-content .projection-checkbox').forEach(cb => cb.checked = e.target.checked));
-                  selectAllRecurrentesCheckbox.addEventListener('change', (e) => document.querySelectorAll('#recurrentes-content .recurring-checkbox').forEach(cb => cb.checked = e.target.checked));
-                  
-                  const mostrarBtn = document.getElementById("mostrar");
-                  const tabButtons = document.querySelectorAll("#tabs .tab-button");
+    selectAllRegistrosCheckbox.addEventListener('change', (e) => document.querySelectorAll('#registros-content .transaction-checkbox').forEach(cb => cb.checked = e.target.checked));
+    selectAllProyeccionCheckbox.addEventListener('change', (e) => document.querySelectorAll('#proyeccion-content .projection-checkbox').forEach(cb => cb.checked = e.target.checked));
+    selectAllRecurrentesCheckbox.addEventListener('change', (e) => document.querySelectorAll('#recurrentes-content .recurring-checkbox').forEach(cb => cb.checked = e.target.checked));
+    
+    const mostrarBtn = document.getElementById("mostrar");
+    const tabButtons = document.querySelectorAll("#tabs .tab-button");
 
-                  tabButtons.forEach(btn => {
-                      btn.addEventListener("click", showContentView);
-                  });
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", showContentView);
+    });
 
-                  if (mostrarBtn) {
-                      mostrarBtn.addEventListener("click", showDashboardView);
-                  }
-                  
-                  const toggleFiltersBtn = document.getElementById('toggle-filters-btn');
-                  const filtersContainer = document.getElementById('filters-container');
+    if (mostrarBtn) {
+        mostrarBtn.addEventListener("click", showDashboardView);
+    }
+    
+    const toggleFiltersBtn = document.getElementById('toggle-filters-btn');
+    const filtersContainer = document.getElementById('filters-container');
 
-                  if (toggleFiltersBtn && filtersContainer) {
-                      toggleFiltersBtn.addEventListener('click', () => {
-                          filtersContainer.classList.toggle('filters-visible');
-                          const isVisible = filtersContainer.classList.contains('filters-visible');
-                          toggleFiltersBtn.textContent = isVisible ? 'Ocultar Filtros' : 'Mostrar Filtros';
+    if (toggleFiltersBtn && filtersContainer) {
+        toggleFiltersBtn.addEventListener('click', () => {
+            filtersContainer.classList.toggle('filters-visible');
+            const isVisible = filtersContainer.classList.contains('filters-visible');
+            toggleFiltersBtn.textContent = isVisible ? 'Ocultar Filtros' : 'Mostrar Filtros';
+        });
+    }
+    listenersAttached = true;
+}
 
-                      });
-                  }
-                  // =========================================================================
-                  // ===== PEGA EL NUEVO CÓDIGO DE LOS BOTONES DEL PANEL DE ACCIONES AQUÍ =====
-                  // =========================================================================
-                  document.getElementById('single-action-edit-btn').addEventListener('click', handleSingleEditAction);
-                  document.getElementById('single-action-delete-btn').addEventListener('click', handleSingleDeleteAction);
-                  document.getElementById('single-action-cancel-btn').addEventListener('click', () => {
-                      document.getElementById('single-action-modal').classList.remove('active');
-                      // Deselecciona cualquier casilla que estuviera marcada
-                      const checkedCheckbox = document.querySelector('.tab-pane.active input[type="checkbox"]:checked');
-                      if (checkedCheckbox) {
-                          checkedCheckbox.checked = false;
-                      }
-                      updateDeleteButtonVisibility(); // Oculta el panel
-                  });
-                  // =========================================================================
-                  // ===== FIN DEL NUEVO CÓDIGO A PEGAR =====================================
-                  // =========================================================================
-
-                  listenersAttached = true;
-              }
-
-              // ... Aquí termina la función setupEventListeners() ...
+// ... Aquí termina la función setupEventListeners() ...
 
 
 
-              // PEGA EL SIGUIENTE BLOQUE DE CÓDIGO AQUÍ
-              // --- LÓGICA PARA EL TOOLTIP DE INFORMACIÓN DE TRANSACCIÓN ---
-              document.body.addEventListener('click', (e) => {
-                  // Primero, si hay un tooltip visible, lo eliminamos.
-                  const existingTooltip = document.querySelector('.info-tooltip');
-                  if (existingTooltip) {
-                      existingTooltip.remove();
-                  }
+// PEGA EL SIGUIENTE BLOQUE DE CÓDIGO AQUÍ
+// --- LÓGICA PARA EL TOOLTIP DE INFORMACIÓN DE TRANSACCIÓN ---
+document.body.addEventListener('click', (e) => {
+    // Primero, si hay un tooltip visible, lo eliminamos.
+    const existingTooltip = document.querySelector('.info-tooltip');
+    if (existingTooltip) {
+        existingTooltip.remove();
+    }
 
-                  // Si el clic fue en un botón de info, creamos un nuevo tooltip.
-                  const infoBtn = e.target.closest('.info-btn');
-                  if (infoBtn) {
-                      // Evita que el clic en el botón se propague y cierre el tooltip inmediatamente.
-                      e.stopPropagation(); 
-                      
-                      const description = infoBtn.dataset.description;
-                      if (!description) return;
+    // Si el clic fue en un botón de info, creamos un nuevo tooltip.
+    const infoBtn = e.target.closest('.info-btn');
+    if (infoBtn) {
+        // Evita que el clic en el botón se propague y cierre el tooltip inmediatamente.
+        e.stopPropagation(); 
+        
+        const description = infoBtn.dataset.description;
+        if (!description) return;
 
-                      const tooltip = document.createElement('div');
-                      tooltip.className = 'info-tooltip';
-                      tooltip.textContent = description;
-                      document.body.appendChild(tooltip);
+        const tooltip = document.createElement('div');
+        tooltip.className = 'info-tooltip';
+        tooltip.textContent = description;
+        document.body.appendChild(tooltip);
 
-                      // Posicionar el tooltip
-                      const btnRect = infoBtn.getBoundingClientRect();
-                      tooltip.style.left = `${btnRect.left}px`;
-                      tooltip.style.top = `${btnRect.bottom + 5}px`; // 5px debajo del botón
+        // Posicionar el tooltip
+        const btnRect = infoBtn.getBoundingClientRect();
+        tooltip.style.left = `${btnRect.left}px`;
+        tooltip.style.top = `${btnRect.bottom + 5}px`; // 5px debajo del botón
 
-                      // Forzar un reflow para que la animación de opacidad funcione
-                      void tooltip.offsetWidth; 
-                      tooltip.classList.add('visible');
-                  }
-              });
+        // Forzar un reflow para que la animación de opacidad funcione
+        void tooltip.offsetWidth; 
+        tooltip.classList.add('visible');
+    }
+});
 
 
+// ... Aquí continúan el resto de tus funciones ...
+
+
+              
               // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
       
               // --- LÓGICA DE AUTENTICACIÓN ---
@@ -3611,58 +3440,46 @@
       
               // ===== REEMPLAZA LA FUNCIÓN handleLogout() EXISTENTE CON ESTA =====
 
-// ===== REEMPLAZA TU FUNCIÓN handleLogout CON ESTAS DOS NUEVAS FUNCIONES =====
-
-              /**
-               * "Cuelga" todas las llamadas a la base de datos para evitar errores al cerrar sesión.
-               */
-              function unsubscribeAllListeners() {
-                  if (unsubscribePreferences) unsubscribePreferences();
-                  if (unsubscribeTransactions) unsubscribeTransactions();
-                  if (unsubscribeProjections) unsubscribeProjections();
-                  if (unsubscribeRecurring) unsubscribeRecurring();
-                  if (unsubscribeCreditCards) unsubscribeCreditCards();
-                  console.log("[Firestore] Todos los oyentes han sido desvinculados.");
-              }
-
-              /**
-               * Gestiona el cierre de sesión del usuario de forma limpia.
-               */
               async function handleLogout() {
+                  // Abre un modal de confirmación antes de proceder
                   openConfirmModal('Cerrar Sesión', '¿Estás seguro de que quieres cerrar tu sesión?', async () => {
+                      // Esta parte solo se ejecuta si el usuario hace clic en "Confirmar"
                       exitFullscreen(); 
                       showButtonLoading(logoutBtn);
-                      
-                      // ===== ¡ESTA ES LA PARTE CLAVE! =====
-                      // 1. Colgamos las llamadas a la base de datos.
-                      unsubscribeAllListeners();
-
                       console.log("[Auth] Intentando cerrar sesión...");
+
                       try {
-                          // 2. Ahora sí, cerramos la sesión de forma segura.
                           await window.signOut(auth);
                           showToast("Sesión Cerrada Exitosamente.", "info");
                           
-                          // Limpia el estado de la aplicación
+                          // Limpia completamente el estado de la aplicación para el próximo usuario
                           appState = {
-                              transactions: [], projections: [], categories: [], 
-                              banks: [], descriptions: [], recurringExpenses: [],
-                              creditCards: [], openingBalance: 0, userAlias: null,
-                              categoryBudgets: {}, budgetAlertsShown: {}, 
+                              transactions: [],
+                              projections: [],
+                              categories: [], 
+                              banks: [],
+                              descriptions: [],
+                              recurringExpenses: [],
+                              creditCards: [],
+                              openingBalance: 0,
+                              userAlias: null,
+                              categoryBudgets: {}, 
+                              budgetAlertsShown: {}, 
                           };
                           
                           // Vuelve a la pantalla de inicio de sesión
                           showAuthModal(); 
+
                       } catch (error) {
                           console.error("[Auth] Error al cerrar sesión:", error);
-                          showMessageModal("Error", "No se pudo cerrar la sesión.", "error");
+                          showMessageModal("Error", "No se pudo cerrar la sesión. Inténtalo de nuevo.", "error");
                       } finally {
                           hideButtonLoading(logoutBtn);
                       }
                   });
               }
 
-              /**
+/**
                * Abre el modal para seleccionar un icono y añadir una nueva categoría.
                */
               function openAddCategoryModal() {
@@ -3728,39 +3545,34 @@
       
               // --- LÓGICA DE DATOS (FIREBASE) ---
       
-// ===== REEMPLAZA TU FUNCIÓN loadUserDataAndListen ENTERA CON ESTA =====
               async function loadUserDataAndListen() {
                   if (!userId) {
-                      console.warn("[Firestore] No hay ID de usuario para cargar datos.");
-                      hideLoading();
+                      console.warn("[Firestore] No hay ID de usuario para cargar datos. Esto no debería ocurrir si isAuthReady es true.");
+                      hideLoading(); // Asegurarse de ocultar la carga
                       return;
                   }
-                  console.log(`[Firestore] Cargando datos para el usuario: ${userId}`);
+                  console.log(`[Firestore] Cargando datos para el usuario: ${userId}`); // Debugging
       
+                  // Usamos el projectId global para construir la ruta del appId
                   const appId = firebaseProjectId;
-                  if (!appId) {
+                  if (!appId) { // Doble verificación por si acaso
                       console.error("[Firestore] ERROR: appId no disponible al cargar datos.");
-                      showMessageModal("Error de Configuración", "El ID del proyecto Firebase no está disponible.");
+                      showMessageModal("Error de Configuración", "El ID del proyecto Firebase no está disponible. Recarga la página o verifica tu configuración.", "error");
                       hideLoading();
                       return;
-                  }
-
-                  // Función para desuscribirse de todos los oyentes antes de crear nuevos
-                  if (typeof unsubscribeAllListeners === 'function') {
-                    unsubscribeAllListeners();
                   }
       
                   const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/user_data/preferences`);
                   const transactionsColRef = collection(db, `artifacts/${appId}/users/${userId}/transactions`);
                   const recurringExpensesColRef = collection(db, `artifacts/${appId}/users/${userId}/recurringExpenses`);
                   const creditCardsColRef = collection(db, `artifacts/${appId}/users/${userId}/creditCards`);
-                  const projectionsColRef = collection(db, `artifacts/${appId}/users/${userId}/projections`);
       
-                  // Guardamos la función "unsubscribe" para cada oyente
-                  unsubscribePreferences = onSnapshot(userDocRef, (docSnap) => {
+// Escuchar cambios en las preferencias del usuario
+                  onSnapshot(userDocRef, async (docSnap) => {
                       console.log("[Firestore] onSnapshot preferences fired.");
                       if (docSnap.exists()) {
                           const data = docSnap.data();
+                          // MODIFICADO: Se asegura de que las categorías siempre sean un array de objetos.
                           appState.categories = (data.categories || []).map(cat => 
                               typeof cat === 'string' ? { name: cat, icon: DEFAULT_ICON } : cat
                           );
@@ -3769,6 +3581,18 @@
                           appState.openingBalance = data.openingBalance || 0;
                           appState.userAlias = data.userAlias || null;
                           appState.categoryBudgets = data.categoryBudgets || {};
+                          console.log("[Firestore] Preferencias cargadas:", appState.categories.length, "categorías (formato objeto)");
+                      } else {
+                          // ================== INICIO DE LA CORRECCIÓN DE SEGURIDAD ==================
+                          // Este bloque ahora es seguro. En lugar de borrar tus datos,
+                          // solo mostrará un error en la consola y te avisará.
+                          console.error("[Error Crítico] El documento de preferencias del usuario ha desaparecido. No se tomará ninguna acción para prevenir la pérdida de datos.");
+                          showMessageModal(
+                              "Error de Sincronización", 
+                              "No se pudo cargar tu configuración. Por favor, recarga la página. Si el problema persiste, contacta a soporte.", 
+                              "error"
+                          );
+                          // =================== FIN DE LA CORRECCIÓN DE SEGURIDAD ===================
                       }
                       if (isAuthReady) {
                           populateFilterDropdowns();
@@ -3782,51 +3606,69 @@
                       }
                   }, (error) => {
                       console.error("[Firestore] Error al escuchar preferencias del usuario:", error);
-                      showMessageModal("Error de Carga", "Hubo un problema al cargar tus preferencias.", "error");
+                      showMessageModal("Error de Carga de Preferencias", "Hubo un problema al cargar tus preferencias.", "error");
                   });
       
-                  unsubscribeTransactions = onSnapshot(transactionsColRef, (snapshot) => {
-                      console.log("[Firestore] onSnapshot transactions fired.");
+                 // Escuchar cambios en las transacciones
+                  // --- ESTE ES EL LISTENER QUE FALTABA PARA LAS TRANSACCIONES ---
+                  onSnapshot(transactionsColRef, (snapshot) => {
+                      console.log("[Firestore] onSnapshot transactions fired."); // Debugging
                       appState.transactions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                      initialTransactionsLoaded = true;
-                      tryProcessRecurringExpenses();                     
+                      console.log("[Firestore] Transacciones cargadas:", appState.transactions.length); // Debugging
+                       // --- PEGA AQUÍ LAS DOS LÍNEAS NUEVAS ---
+                      initialTransactionsLoaded = true; // Levanta la bandera de transacciones
+                      tryProcessRecurringExpenses(); // Llama al verificador                     
                       if (isAuthReady) renderAll();
                   }, (error) => {
                       console.error("[Firestore] Error al escuchar transacciones:", error);
-                      showMessageModal("Error de Carga", "Hubo un problema al cargar tus transacciones.", "error");
+                      showMessageModal("Error de Carga de Transacciones", "Hubo un problema al cargar tus transacciones. Verifica tu conexión a internet o inténtalo más tarde.", "error");
                   });
 
-                  unsubscribeRecurring = onSnapshot(recurringExpensesColRef, (snapshot) => {
-                      console.log("[Firestore] onSnapshot recurringExpenses fired.");
+                  // --- ESTE ES EL LISTENER CORRECTO PARA GASTOS RECURRENTES (CON TU MEJORA) ---
+                  onSnapshot(recurringExpensesColRef, (snapshot) => {
+                      console.log("[Firestore] onSnapshot recurringExpenses fired."); // Debugging
                       appState.recurringExpenses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                      initialRecurringLoaded = true;
-                      tryProcessRecurringExpenses();                      
+                      console.log("[Firestore] Gastos recurrentes cargados:", appState.recurringExpenses.length); // Debugging
+
+                      // --- PEGA AQUÍ LAS DOS LÍNEAS NUEVAS ---
+                      initialRecurringLoaded = true; // Levanta la bandera de gastos recurrentes
+                      tryProcessRecurringExpenses(); // Llama al verificador                      
+                      
                       if (isAuthReady) {
-                          checkRecurringPaymentReminders();
+                          checkRecurringPaymentReminders(); // Revisar recordatorios al cargar
                           renderAll();
                       }
                   }, (error) => {
                       console.error("[Firestore] Error al escuchar gastos recurrentes:", error);
-                      showMessageModal("Error de Carga", "Hubo un problema al cargar tus gastos recurrentes.", "error");
+                      showMessageModal("Error de Carga de Gastos Recurrentes", "Hubo un problema al cargar tus gastos recurrentes. Verifica tu conexión a internet o inténtalo más tarde.", "error");
                   });
       
-                  unsubscribeCreditCards = onSnapshot(creditCardsColRef, (snapshot) => {
-                      console.log("[Firestore] onSnapshot creditCards fired.");
+                  // Escuchar cambios en las tarjetas de crédito
+                  onSnapshot(creditCardsColRef, (snapshot) => {
+                      console.log("[Firestore] onSnapshot creditCards fired."); // Debugging
                       appState.creditCards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                      console.log("[Firestore] Tarjetas de crédito cargadas:", appState.creditCards.length); // Debugging
                       if (isAuthReady) renderAll();
                   }, (error) => {
-                      console.error("[Firestore] Error al escuchar tarjetas de crédito:", error);
-                      showMessageModal("Error de Carga", "Hubo un problema al cargar tus tarjetas de crédito.", "error");
+                      console.error("[Firestore] Error al escuchar tarjetas de crédito:", error); // Debugging
+                      showMessageModal("Error de Carga de Tarjetas de Crédito", "Hubo un problema al cargar tus tarjetas de crédito. Verifica tu conexión a internet o inténtalo más tarde. Asegúrate de que tus reglas de seguridad de Firestore permitan la lectura de 'creditCards'.", "error");
+                      // No ocultar hideLoading aquí, ya se hace en el finally del onAuthStateChanged
                   });
 
-                  unsubscribeProjections = onSnapshot(projectionsColRef, (snapshot) => {
-                      console.log("[Firestore] onSnapshot projections fired.");
+                 // Pega el nuevo código aquí
+                  const projectionsColRef = collection(db, `artifacts/${appId}/users/${userId}/projections`);
+
+                  // Escuchar cambios en las proyecciones
+                  onSnapshot(projectionsColRef, (snapshot) => {
+                      console.log("[Firestore] onSnapshot projections fired."); // Debugging
                       appState.projections = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                      console.log("[Firestore] Proyecciones cargadas:", appState.projections.length); // Debugging
                       if (isAuthReady) renderAll();
                   }, (error) => {
                       console.error("[Firestore] Error al escuchar proyecciones:", error);
-                      showMessageModal("Error de Carga", "Hubo un problema al cargar tus proyecciones.", "error");
+                      showMessageModal("Error de Carga de Proyecciones", "Hubo un problema al cargar tus proyecciones.", "error");
                   });
+
               }
       
               // --- REEMPLAZA las dos funciones existentes con estas dos ---
@@ -3836,18 +3678,9 @@
                   const categoryFilter = filterCategory.value;
 
                   return appState.transactions.filter(t => {
-                      // --- INICIO DE LA CORRECCIÓN ---
-                      // Se añade una comprobación para asegurar que la transacción 't' y 't.date' existen antes de usarlos.
-                      if (!t || typeof t.date !== 'string') {
-                          console.warn('Se encontró una transacción sin fecha válida:', t);
-                          return false; // Se ignora esta transacción para evitar el error.
-                      }
-                      // --- FIN DE LA CORRECCIÓN ---
-
                       const transactionMonth = t.date.substring(0, 7);
                       const matchesMonth = !selectedMonth || transactionMonth === selectedMonth;
-                      // Se asegura que t.description exista antes de llamar a toLowerCase()
-                      const matchesDescription = (t.description || '').toLowerCase().includes(descriptionFilter);
+                      const matchesDescription = t.description.toLowerCase().includes(descriptionFilter);
                       const matchesCategory = !categoryFilter || t.category === categoryFilter;
                       return matchesMonth && matchesDescription && matchesCategory;
                   }).sort((a, b) => {
@@ -3875,16 +3708,9 @@
       
                   // Esta función ahora lee de appState.projections
                   return appState.projections.filter(t => {
-                      // --- INICIO DE LA CORRECCIÓN ---
-                      if (!t || typeof t.date !== 'string') {
-                          console.warn('Se encontró una proyección sin fecha válida:', t);
-                          return false; // Se ignora para evitar el error.
-                      }
-                      // --- FIN DE LA CORRECCIÓN ---
-
                       const transactionMonth = t.date.substring(0, 7);
                       const matchesMonth = !selectedMonth || transactionMonth === selectedMonth;
-                      const matchesDescription = (t.description || '').toLowerCase().includes(descriptionFilter);
+                      const matchesDescription = t.description.toLowerCase().includes(descriptionFilter);
                       const matchesCategory = !categoryFilter || t.category === categoryFilter;
                       return matchesMonth && matchesDescription && matchesCategory;
                   }).sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -4314,15 +4140,9 @@
               }
       
               function renderCashFlowChart() {
-                  // --- INICIO DE LA CORRECCIÓN ---
-                  // Se filtra cualquier transacción sin fecha antes de procesarla.
-                  const validTransactions = appState.transactions.filter(t => t && typeof t.date === 'string');
-                  const allMonths = [...new Set(validTransactions.map(t => t.date.substring(0, 7)))].sort();
-                  // --- FIN DE LA CORRECCIÓN ---
-
+                  const allMonths = [...new Set(appState.transactions.map(t => t.date.substring(0, 7)))].sort();
                   const monthlyData = allMonths.map(month => {
-                      // Usamos 'validTransactions' en lugar de 'appState.transactions'
-                      const transactionsInMonth = validTransactions.filter(t => t.date.startsWith(month));
+                      const transactionsInMonth = appState.transactions.filter(t => t.date.startsWith(month));
                       const income = transactionsInMonth.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
                       const expenses = transactionsInMonth.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
                       return { month, income, expenses };
@@ -4458,8 +4278,6 @@
                * @param {'info'|'success'|'error'} type - Tipo de mensaje para estilos (info por defecto).
                */
               function showMessageModal(title, message, type = 'info') {
-                  // ===== AÑADE ESTA LÍNEA DE VERIFICACIÓN AQUÍ =====
-                  if (!messageModal) return;                
                   messageModalTitle.textContent = title;
                   messageModalContent.textContent = message;
       
@@ -6235,7 +6053,6 @@
               }
 
               // ================== REEMPLAZA ESTA FUNCIÓN COMPLETA =================
-              // ================== REEMPLAZA ESTA FUNCIÓN COMPLETA =================
               function switchTab(tabName) {
                   // Lógica para activar la pestaña correcta
                   document.querySelectorAll('.tab-pane').forEach(pane => {
@@ -6246,11 +6063,6 @@
                       button.classList.remove('active');
                   });
                   const activePane = document.getElementById(`${tabName}-content`);
-
-                  // ===== LÍNEA DE CORRECCIÓN AÑADIDA AQUÍ =====
-                  // Si no se encuentra un panel (como cuando se hace clic en "Salir"), la función se detiene.
-                  if (!activePane) return; 
-                  
                   activePane.classList.remove('hidden');
                   activePane.classList.add('active');
                   document.querySelector(`button[data-tab="${tabName}"]`).classList.add('active');
@@ -6318,7 +6130,6 @@
                   renderAll(); 
               }
               // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
-              // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
 
               // --- REEMPLAZA LA FUNCIÓN COMPLETA ---
               function handleMainActionClick() {
@@ -6358,21 +6169,11 @@
                * Muestra u oculta el botón "Eliminar Seleccionados" según si hay
                * casillas marcadas en la tabla de la pestaña activa.
                */
-/**
-               * Muestra u oculta los botones de acción según el número de casillas marcadas.
-               * - Si hay 1 seleccionada: Muestra el panel de Editar/Eliminar.
-               * - Si hay >1 seleccionadas: Muestra el botón "Eliminar Seleccionados".
-               * - Si no hay ninguna: Oculta todo.
-               */
               function updateDeleteButtonVisibility() {
-                  const activeTabElement = document.querySelector('.tab-pane.active');
-                  const singleActionModal = document.getElementById('single-action-modal');
-                  if (!activeTabElement || !singleActionModal) return;
+                  const activeTab = document.querySelector('.tab-pane.active').id.replace('-content', '');
+                  let selector;
+                  let selectAllCheckbox;
 
-                  const activeTab = activeTabElement.id.replace('-content', '');
-                  let selector, selectAllCheckbox;
-
-                  // Define los selectores según la pestaña activa
                   if (activeTab === 'registros') {
                       selector = '.transaction-checkbox';
                       selectAllCheckbox = selectAllRegistrosCheckbox;
@@ -6384,34 +6185,23 @@
                       selectAllCheckbox = selectAllRecurrentesCheckbox;
                   } else {
                       deleteSelectedBtn.classList.add('hidden');
-                      singleActionModal.classList.remove('active');
                       return;
                   }
 
                   const allCheckboxes = document.querySelectorAll(`#${activeTab}-content ${selector}`);
                   const checkedCheckboxes = document.querySelectorAll(`#${activeTab}-content ${selector}:checked`);
-                  const checkedCount = checkedCheckboxes.length;
                   
-                  // ===== LÓGICA PRINCIPAL =====
-                  if (checkedCount === 1) {
-                      // Si hay exactamente UNA selección
-                      deleteSelectedBtn.classList.add('hidden'); // Oculta el botón viejo
-                      singleActionModal.classList.add('active');   // Muestra el nuevo panel
-                  } else if (checkedCount > 1) {
-                      // Si hay MÁS DE UNA selección
-                      deleteSelectedBtn.classList.remove('hidden'); // Muestra el botón viejo
-                      singleActionModal.classList.remove('active');    // Oculta el nuevo panel
+                  if (checkedCheckboxes.length > 0) {
+                      deleteSelectedBtn.classList.remove('hidden');
                   } else {
-                      // Si NO HAY NINGUNA selección
-                      deleteSelectedBtn.classList.add('hidden'); // Oculta ambos
-                      singleActionModal.classList.remove('active');
+                      deleteSelectedBtn.classList.add('hidden');
                   }
 
                   // Actualiza el estado del checkbox "seleccionar todo"
-                  if (allCheckboxes.length > 0 && checkedCount === allCheckboxes.length) {
+                  if (allCheckboxes.length > 0 && checkedCheckboxes.length === allCheckboxes.length) {
                       selectAllCheckbox.checked = true;
                       selectAllCheckbox.indeterminate = false;
-                  } else if (checkedCount > 0) {
+                  } else if (checkedCheckboxes.length > 0) {
                       selectAllCheckbox.checked = false;
                       selectAllCheckbox.indeterminate = true;
                   } else {
@@ -6476,63 +6266,6 @@
                       }
                   );
               }
-              
-
-              /**
-               * Obtiene la información del único elemento seleccionado en la tabla activa.
-               * @returns { {id: string, tab: string} | null }
-               */
-              function getSingleSelectedItem() {
-                  const activeTab = document.querySelector('.tab-pane.active')?.id.replace('-content', '');
-                  const checkedCheckbox = document.querySelector(`#${activeTab}-content input[type="checkbox"]:checked`);
-                  
-                  if (checkedCheckbox && activeTab) {
-                      return {
-                          id: checkedCheckbox.dataset.id,
-                          tab: activeTab
-                      };
-                  }
-                  return null;
-              }
-
-              /**
-               * Maneja la acción de edición para el único elemento seleccionado.
-               */
-              function handleSingleEditAction() {
-                  const selected = getSingleSelectedItem();
-                  if (!selected) return;
-
-                  // Llama a la función de abrir modal correspondiente según la pestaña
-                  if (selected.tab === 'registros') {
-                      openTransactionModal(selected.id);
-                  } else if (selected.tab === 'recurrentes') {
-                      openRecurringExpenseModal(selected.id);
-                  } else if (selected.tab === 'proyeccion') {
-                      showToast("La edición solo está disponible en la pestaña 'Registros'.", "info");
-                  }
-                  
-                  document.getElementById('single-action-modal').classList.remove('active');
-              }
-
-              /**
-               * Maneja la acción de eliminación para el único elemento seleccionado.
-               */
-              function handleSingleDeleteAction() {
-                  const selected = getSingleSelectedItem();
-                  if (!selected) return;
-                  
-                  // Llama a la función de eliminar correspondiente según la pestaña
-                  if (selected.tab === 'registros') {
-                      deleteTransaction(selected.id);
-                  } else if (selected.tab === 'recurrentes') {
-                      deleteRecurringExpense(selected.id);
-                  } else if (selected.tab === 'proyeccion') {
-                      deleteProjection(selected.id);
-                  }
-
-                  document.getElementById('single-action-modal').classList.remove('active');
-              }
-              
               // --- PEGA AQUÍ EL CÓDIGO NUEVO ---
               /**
                * Procesa los gastos recurrentes para registrar automáticamente los que han vencido
