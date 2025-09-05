@@ -1448,10 +1448,10 @@
                           font-size: 0.75rem; /* ~12px, texto más pequeño */
                       }
 
-                      /* 3. Reduce el tamaño del texto y el espaciado dentro de los inputs y selects */
+                      /* 3. Ajusta el tamaño del texto para EVITAR ZOOM AUTOMÁTICO en iOS */
                       input, select {
-                          font-size: 0.875rem; /* ~14px */
-                          padding: 0.4rem;    /* Menos espaciado interno */
+                          font-size: 16px; /* <-- CAMBIO CLAVE: Mínimo para evitar zoom en iPhone */
+                          padding: 0.6rem 0.5rem; /* Ajustamos el padding para que se vea bien */
                       }
 
                       /* 4. Hace más pequeñas las etiquetas de radio "Ingreso" y "Gasto" */
