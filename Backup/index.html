@@ -6,6 +6,15 @@
     <title>
       Gestor de Presupuesto Web
     </title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gestor Web">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png">    
+    
+    <link rel="manifest" href="manifest.json">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -148,6 +157,7 @@
               #main-header-bar {
                 transition: height 0.3s ease-in-out;                
               }
+
               #barr {
                 background-color: var(--bg-dark-tertiary);
                 transition: all 0.3s ease-in-out;/*
@@ -1665,10 +1675,33 @@
                   opacity: 1;
               }
 
+              /* --- Estilos para la Pantalla de Bienvenida en Móvil --- */
+              /* Por defecto, está oculto */
+              #mobile-fullscreen-prompt {
+                  display: none;
+              }
+
+              /* Solo se muestra en pantallas de hasta 768px (móviles y tablets) */
+              @media (max-width: 768px) {
+                  #mobile-fullscreen-prompt.active {
+                      display: flex; /* Se muestra usando flexbox para centrar contenido */
+                  }
+              }              
+
 
     </style>
   </head>
   <body class="mt-56 view-dashboard">
+
+    <div id="mobile-fullscreen-prompt" class="fixed inset-0 bg-gray-900 bg-opacity-95 z-[9999] flex-col items-center justify-center text-center p-8 hidden">
+      <img src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png" alt="Logo" class="w-24 h-auto mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4">Bienvenido a tu Gestor Financiero</h2>
+      <p class="text-gray-300 mb-8">Toca el botón para iniciar en modo de pantalla completa y disfrutar de una mejor experiencia.</p>
+      <button id="enter-fullscreen-btn" class="bg-blue-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105">
+        Iniciar Aplicación
+      </button>
+    </div>  
+    
     <div class="loading-overlay active" id="loading-overlay">
       <div class="spinner">
       </div>
@@ -2904,7 +2937,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.3.3
+              Versión 4.3.5
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3199,6 +3232,26 @@
                           // =================== FIN DE LA CORRECCIÓN IMPORTANTE ===================                          
                           
                           await loadUserDataAndListen(); // Cargar datos del usuario una once autenticado
+                          // --- LÓGICA PARA PANTALLA COMPLETA AUTOMÁTICA EN MÓVIL ---
+                          const promptElement = document.getElementById('mobile-fullscreen-prompt');
+                          const enterFullscreenBtn = document.getElementById('enter-fullscreen-btn');
+
+                          // Función para detectar si es un dispositivo móvil
+                          const isMobile = () => window.innerWidth <= 768;
+
+                          // Solo ejecuta esta lógica si estamos en un móvil
+                          if (isMobile()) {
+                              // Muestra la pantalla de bienvenida
+                              promptElement.classList.add('active');
+
+                              // Añade el evento al botón
+                              enterFullscreenBtn.addEventListener('click', () => {
+                                  // Llama a tu función existente para entrar en pantalla completa
+                                  enterFullscreen(document.documentElement);
+                                  // Oculta la pantalla de bienvenida después de tocar el botón
+                                  promptElement.classList.remove('active');
+                              });
+                          }                          
                           initApp(); // Inicializar la UI de la aplicación
                       } else {
                           // Si no hay usuario, intentar iniciar sesión anónimamente (para el entorno Canvas)
@@ -6628,8 +6681,22 @@
                   console.log("[Auto-Registro] Datos listos. Iniciando la verificación de gastos recurrentes.");
                   // Llama a la función principal que hace el trabajo.
                   processRecurringExpenses();
-              }              
+              }
               
+              // --- REGISTRAR EL SERVICE WORKER PARA LA PWA ---
+              // Esto le dice al navegador que empiece a usar nuestro "ayudante" para el modo sin conexión.
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                      console.log('Service Worker registrado con éxito:', registration);
+                    })
+                    .catch(error => {
+                      console.log('Fallo en el registro del Service Worker:', error);
+                    });
+                });
+              }              
+
           });
     </script>
     <script>
