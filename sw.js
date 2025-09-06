@@ -7,7 +7,7 @@ const urlsToCache = [
   '/index.html',
   // NOTA: Si añades archivos CSS o JS locales, deberás agregarlos aquí también.
   // Por ahora, como usas CDNs, solo necesitamos los básicos.
-  'https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png'
+  'https://res.cloudinary.com/datwdagbf/image/upload/v1756514685/proyeccion_hh3xyt.png'
 ];
 
 // Evento "install": se dispara cuando el Service Worker se instala por primera vez.

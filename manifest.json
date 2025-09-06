@@ -1,6 +1,6 @@
 {
-  "name": "Foresee - Gestor Financiero",  // Puedes ajustar el nombre completo
-  "short_name": "Foresee",               // Nombre corto para el icono
+  "name": "Foresee - Gestor Financiero",
+  "short_name": "Foresee",
   "description": "Tu panel de control financiero Foresee, moderno y eficiente.",
   "start_url": ".",
   "display": "standalone",
