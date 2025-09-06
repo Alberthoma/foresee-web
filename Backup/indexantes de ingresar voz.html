@@ -1082,7 +1082,7 @@
               display: grid;
               grid-template-columns: repeat(3, 1fr);
               gap: 1.5rem; /* 24px */
-              margin: 1.5rem 2rem 1rem 2rem; /* Margen superior, horizontal, inferior */
+              margin: 0 2rem 1rem 2rem; /* Margen superior, horizontal, inferior */
             }
 
             /* 2. Estilo base para cada tarjeta (reemplaza a 'bg-white p-6 rounded-xl etc.') */
@@ -1422,6 +1422,7 @@
                   /* AJUSTE PARA IMÁGENES DEL DASHBOARD EN MÓVIL */
               }
 
+
               @media (max-width: 768px) {
                   /* Identificadores de los modales a modificar */
                   .modal#transaction-modal,
@@ -1636,7 +1637,7 @@
               }
               .btn{
               display: flex;
-              overflow-x: auto;              
+              overflow-x: auto;
               }
 
               .tab-button{
@@ -1651,8 +1652,6 @@
                 border-radius: 10px;
                 margin-bottom: 2px;
               }
-
-              #main-container{margin-top: 7rem;}
 
               /* ====================================================================== */
               /* ===== ESTILOS PARA BOTÓN DE INFO Y TOOLTIP EN TABLAS - 03/09/2025 ==== */
@@ -1788,32 +1787,29 @@
               
             </div>
           
-              <div class="contenedor-botones flex-col md:flex-row md:items-center md:justify-between">
+            <div class="contenedor-botones flex-col md:flex-row md:items-center md:justify-between">
               <div class="btn" id="tabs">
                 
                 <button class="tab-button" data-tab="registros">
                     <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514689/registro_mc8ed8.png" alt="Icono Registros" class="w-14 mb-1" />
                     <span>Registros</span>
                 </button>
-                <button class="tab-button" id="quick-voice-record-btn">
-                    <img src="https://res.cloudinary.com/datwdagbf/image/upload/v1757199087/voz_w5ctvq.png" alt="Icono Grabar Gasto" class="w-14 mb-1" />
-                    <span>Voz</span>
-                </button>
+
                 <button class="tab-button" data-tab="proyeccion">
                     <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png" alt="Icono Proyección" class="h-12 w-14 mb-1" />
                     <span>Proyección</span>
                 </button>                
                 <button class="tab-button" data-tab="recurrentes">
                     <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514673/gastos-recurrentes2_udrbey.png" alt="Icono recurrentes" class="h-11 w-11 mb-1" />
-                    <span>Gastos<br>Recurrentes</span>
+                    <span>Gastos Recurrentes</span>
                 </button>
                 <button class="tab-button" data-tab="tarjetas">
                     <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514697/tarjetas2_z3jokx.png" alt="Icono tarjetas" class="h-12 w-12 mb-1" />
-                    <span>Tarjetas<br>de Crédito</span>
+                    <span>Tarjetas de Crédito</span>
                 </button>
                 <button class="tab-button" data-tab="saldos">
                     <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514692/saldos_lntcfz.png" alt="Icono saldos" class="h-9 w-12 mb-1" />
-                    <span>Saldos<br>de Cuentas</span>
+                    <span>Saldos de Cuentas</span>
                 </button>
                 <button class="tab-button" data-tab="calculadora">
                     <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514686/proyeccion2_iqtpug.png" alt="Icono calculadora" class="h-9 w-10 mb-1" />
@@ -2527,17 +2523,9 @@
       <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col" style="max-height: 90vh;">
         <div class="p-6 border-b flex justify-between items-center bg-gray-50 rounded-t-2xl">
           <h2 class="text-1xl font-bold hover:bg-blue-700 text-gray-800" id="modal-title">Registrar Transacción</h2>
-          <div class="flex items-center">
-            <button id="voice-recognition-btn" type="button" class="text-gray-400 hover:text-blue-500 transition-colors duration-200 mr-4" title="Registrar por Voz">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-mic-fill" viewBox="0 0 16 16">
-                <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0z"/>
-                <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
-              </svg>
-            </button>
-            <button class="text-gray-400 hover:text-gray-600" id="close-transaction-modal-btn" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-          </div>
+          <button class="text-gray-400 hover:text-gray-600" id="close-transaction-modal-btn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
         </div>
         
         <form class="flex flex-col flex-grow overflow-hidden" id="transaction-form" novalidate>
@@ -2951,7 +2939,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.3.8
+              Versión 4.3.7
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3338,10 +3326,6 @@
                   authForm.addEventListener('submit', handleLogin);
                   registerBtn.addEventListener('click', handleRegister);
                   logoutBtn.addEventListener('click', handleLogout);
-                  // pegar aqui el nuevo código
-                  document.getElementById('voice-recognition-btn').addEventListener('click', handleVoiceCommand);
-                  // pegar aqui el nuevo código
-                  document.getElementById('quick-voice-record-btn').addEventListener('click', handleQuickVoiceRecord);
 
                   // Botones de Pantalla Completa
                   document.getElementById('IdbtOpenScreen').addEventListener('click', () => enterFullscreen(document.documentElement));
@@ -6333,12 +6317,9 @@
               }
 
               // ================== REEMPLAZA ESTA FUNCIÓN COMPLETA =================
-              // pegar aqui el nuevo código
+              // ================== REEMPLAZA ESTA FUNCIÓN COMPLETA =================
               function switchTab(tabName) {
-                  // Si no se proporciona un nombre de pestaña, no hace nada.
-                  if (!tabName) return;
-
-                  // 1. Oculta todos los paneles de contenido y quita la clase 'active' de todos los botones.
+                  // Lógica para activar la pestaña correcta
                   document.querySelectorAll('.tab-pane').forEach(pane => {
                       pane.classList.add('hidden');
                       pane.classList.remove('active');
@@ -6346,64 +6327,79 @@
                   document.querySelectorAll('.tab-button').forEach(button => {
                       button.classList.remove('active');
                   });
-
-                  // 2. Encuentra y muestra el panel de contenido correcto.
                   const activePane = document.getElementById(`${tabName}-content`);
-                  if (!activePane) {
-                      console.warn(`No se encontró el panel de contenido para la pestaña: ${tabName}`);
-                      return; 
-                  }
+
+                  // ===== LÍNEA DE CORRECCIÓN AÑADIDA AQUÍ =====
+                  // Si no se encuentra un panel (como cuando se hace clic en "Salir"), la función se detiene.
+                  if (!activePane) return; 
+                  
                   activePane.classList.remove('hidden');
                   activePane.classList.add('active');
-                  
-                  // 3. (CORRECCIÓN CLAVE) Encuentra el botón de pestaña que corresponde y lo marca como activo.
-                  const activeButton = document.querySelector(`button[data-tab="${tabName}"]`);
-                  if (activeButton) {
-                      activeButton.classList.add('active');
-                  }
+                  document.querySelector(`button[data-tab="${tabName}"]`).classList.add('active');
 
-                  // 4. Lógica para mostrar los botones de acción correctos para cada pestaña.
+                  // Lógica para controlar Títulos y Botones
+                  const mainContentTitle = document.getElementById('main-content-title');
                   const saveBudgetsBtn = document.getElementById('save-budgets-btn');
                   const migrateAllRecurringBtn = document.getElementById('migrate-all-recurring-btn');
-                  
-                  // Ocultar TODOS los botones de acción primero.
+
+                  // 1. Ocultar TODOS los botones de acción primero
                   mainActionBtn.classList.add('hidden');
                   saveBudgetsBtn.classList.add('hidden');
                   migrateAllRecurringBtn.classList.add('hidden');
-                  deleteSelectedBtn.classList.add('hidden');
-                  
-                  // Limpiar checkboxes "seleccionar todo".
+                  // PEGA AQUÍ EL CÓDIGO (1 de 2)
+                  deleteSelectedBtn.classList.add('hidden'); // Ocultar siempre al cambiar de pestaña
+                  // Limpiar los checkboxes "seleccionar todo"
                   selectAllRegistrosCheckbox.checked = false;
                   selectAllProyeccionCheckbox.checked = false;
                   selectAllRecurrentesCheckbox.checked = false;
 
-                  // Muestra el BOTÓN ESPECÍFICO para la pestaña activa.
+                  // 2. Mostrar el título y el BOTÓN ESPECÍFICO para la pestaña activa
                   switch (tabName) {
                       case 'registros':
+                          //mainContentTitle.textContent = 'Registros de Transacciones'.remove('hidden');//
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Registrar Transacción';
                           break;
                       case 'proyeccion':
+                          //mainContentTitle.textContent = 'Proyección de Transacciones';//
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Registrar Proyección';
                           break;
+                      
                       case 'recurrentes':
+                          //mainContentTitle.textContent = 'Gastos Recurrentes';//
                           migrateAllRecurringBtn.classList.remove('hidden');
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Añadir Gasto Recurrente';
                           break;
+
                       case 'tarjetas':
+                          //mainContentTitle.textContent = 'Tarjetas de Crédito';//
                           mainActionBtn.classList.remove('hidden');
                           mainActionBtnText.textContent = 'Añadir Tarjeta';
                           break;
+                      case 'saldos':
+                          //mainContentTitle.textContent = 'Saldos de Cuentas';
+                          break;
+                      case 'calculadora':
+                          //mainContentTitle.textContent = 'Calculadora de Salario';
+                          break;
+                      case 'reportes':
+                          //mainContentTitle.textContent = 'Reportes Financieros';
+                          break;
                       case 'presupuesto':
+                          //mainContentTitle.textContent = 'Gestión de Presupuesto Mensual';
                           saveBudgetsBtn.classList.remove('hidden');
+                          break;
+                      case 'configuración':
+                          //mainContentTitle.textContent = 'Configuración General';
                           break;
                   }
 
-                  // 5. Vuelve a dibujar todo el contenido para reflejar los cambios.
+                  // 3. Llamar a renderAll() para asegurar que TODAS las tablas se dibujen
                   renderAll(); 
               }
+              // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
               // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
 
               // --- REEMPLAZA LA FUNCIÓN COMPLETA ---
@@ -6562,149 +6558,8 @@
                       }
                   );
               }
-              // pegar aqui el nuevo código
-              /**
-               * Orquesta el flujo de grabación por voz con un solo clic desde la barra de pestañas.
-               */
-              const handleQuickVoiceRecord = () => {
-                  // 1. Asegurarse de que la vista de la tabla de registros esté activa.
-                  switchTab('registros');
-                  // 2. Iniciar el proceso de comando de voz (que a su vez abrirá el modal).
-                  handleVoiceCommand();
-              };              
+              
 
-            // Función para el reconocimiento de voz y llenado del formulario
-            const handleVoiceCommand = () => {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (!SpeechRecognition) {
-                    showToast("Tu navegador no soporta el reconocimiento de voz.", "error");
-                    return;
-                }
-
-                // --- ¡CORRECCIÓN CLAVE! ---
-                // Movemos la apertura del modal aquí, ANTES de empezar a escuchar.
-                // Esto asegura que el usuario vea el formulario inmediatamente.
-                openTransactionModal();
-
-                const recognition = new SpeechRecognition();
-                recognition.lang = 'es-ES';
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 1;
-
-                const voiceBtn = document.getElementById('voice-recognition-btn');
-                const quickVoiceBtnImg = document.querySelector('#quick-voice-record-btn img');
-
-                if (voiceBtn) voiceBtn.classList.add('text-red-500'); 
-                if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '0.5';
-
-                setTimeout(() => {
-                    try {
-                        recognition.start();
-                    } catch (e) {
-                        console.error("Error al iniciar el reconocimiento (posiblemente ya estaba activo):", e);
-                        if (voiceBtn) voiceBtn.classList.remove('text-red-500');
-                        if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
-                    }
-                }, 150);
-
-                recognition.onresult = (event) => {
-                    const speechResult = event.results[0][0].transcript.toLowerCase();
-                    console.log('Comando de voz:', speechResult);
-                    
-                    // Ya no es necesario abrir el modal aquí, porque ya está abierto.
-                    
-                    parseSpeech(speechResult);
-
-                    if (speechResult.includes('guardar')) {
-                        document.getElementById('save-transaction-btn').click();
-                    }
-                };
-                
-                const stopListening = () => {
-                    recognition.stop();
-                    if (voiceBtn) voiceBtn.classList.remove('text-red-500');
-                    if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
-                };
-
-                recognition.onspeechend = stopListening;
-                recognition.onend = stopListening;
-
-                recognition.onerror = (event) => {
-                    if (event.error === 'not-allowed') {
-                        showToast("Se necesita permiso para usar el micrófono.", "error");
-                    } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
-                        showToast('Error de voz: ' + event.error, "error");
-                    }
-                    console.error('Error en el reconocimiento de voz:', event.error);
-                    stopListening();
-                };
-            };
-
-            // Función para analizar el comando de voz y rellenar el formulario
-            const parseSpeech = (text) => {
-                // --- VALORES POR DEFECTO ---
-                // 1. Asumir la fecha de hoy por defecto.
-                document.getElementById('transaction-date').valueAsDate = new Date();
-                // 2. Asumir un banco por defecto (el primero de la lista)
-                const firstBank = appState.banks.length > 0 ? appState.banks[0] : '';
-                document.getElementById('transaction-bank').value = firstBank;
-
-
-                // --- ANÁLISIS DEL COMANDO ---
-
-                // Tipo de transacción
-                let typeToSet = 'expense'; // Gasto por defecto
-                if (text.includes('ingreso') || text.includes('gané')) {
-                    typeToSet = 'income';
-                }
-                // En tu index, el tipo se maneja con radio buttons
-                document.querySelector(`input[name="transaction-type"][value="${typeToSet}"]`).checked = true;
-                
-                // Monto
-                let amountMatch = text.match(/(\d[\d,.]*)\s*(mil|dólares|pesos)?/);
-                if (amountMatch) {
-                    let amount = parseFloat(amountMatch[1].replace(/[.,]/g, ''));
-                    if (amountMatch[2] === 'mil') {
-                        amount *= 1000;
-                    }
-                    document.getElementById('transaction-amount').value = amount;
-                }
-
-                // Fecha (solo se modifica si se menciona "ayer")
-                if (text.includes('ayer')) {
-                    let yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    document.getElementById('transaction-date').valueAsDate = yesterday;
-                }
-                
-                // Categoría y Descripción
-                const categories = appState.categories.map(c => c.name.toLowerCase());
-                let foundCategory = false;
-                let descriptionValue = text;
-
-                for (const cat of categories) {
-                    if (text.includes(cat)) {
-                        document.getElementById('transaction-category').value = appState.categories.find(c => c.name.toLowerCase() === cat).name;
-                        descriptionValue = toTitleCase(cat);
-                        foundCategory = true;
-                        break;
-                    }
-                }
-                
-                document.getElementById('transaction-description').value = descriptionValue;
-                if (!foundCategory) {
-                     document.getElementById('transaction-category').value = 'Otros'; // O la categoría por defecto que tengas
-                }
-
-                // Banco (solo se modifica si se menciona uno específico)
-                const banks = appState.banks.map(b => b.toLowerCase());
-                for (const bank of banks) {
-                    if (text.includes(bank)) {
-                        document.getElementById('transaction-bank').value = appState.banks.find(b => b.toLowerCase() === bank);
-                        break;
-                    }
-                }
-            };
               /**
                * Obtiene la información del único elemento seleccionado en la tabla activa.
                * @returns { {id: string, tab: string} | null }
