@@ -13,8 +13,6 @@
     <meta name="apple-mobile-web-app-title" content="Gestor Web">
     <link rel="apple-touch-icon" href="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png">    
     
-    <link rel="manifest" href="manifest.json">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -6681,22 +6679,7 @@
                   console.log("[Auto-Registro] Datos listos. Iniciando la verificación de gastos recurrentes.");
                   // Llama a la función principal que hace el trabajo.
                   processRecurringExpenses();
-              }
-              
-              // --- REGISTRAR EL SERVICE WORKER PARA LA PWA ---
-              // Esto le dice al navegador que empiece a usar nuestro "ayudante" para el modo sin conexión.
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                  navigator.serviceWorker.register('./sw.js')
-                    .then(registration => {
-                      console.log('Service Worker registrado con éxito:', registration);
-                    })
-                    .catch(error => {
-                      console.log('Fallo en el registro del Service Worker:', error);
-                    });
-                });
               }              
-
           });
     </script>
     <script>
