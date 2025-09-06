@@ -1,19 +1,19 @@
 {
-  "name": "Gestor Financiero Web",
-  "short_name": "Gestor Web",
-  "description": "Tu panel de control financiero, moderno y eficiente.",
+  "name": "Foresee - Gestor Financiero",  // Puedes ajustar el nombre completo
+  "short_name": "Foresee",               // Nombre corto para el icono
+  "description": "Tu panel de control financiero Foresee, moderno y eficiente.",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#111827",
   "theme_color": "#1f2937",
   "icons": [
     {
-      "src": "https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png",
+      "src": "https://res.cloudinary.com/datwdagbf/image/upload/v1756514685/proyeccion_hh3xyt.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png",
+      "src": "https://res.cloudinary.com/datwdagbf/image/upload/v1756514685/proyeccion_hh3xyt.png",
       "sizes": "512x512",
       "type": "image/png"
     }
