@@ -1689,8 +1689,17 @@
                   #mobile-fullscreen-prompt.active {
                       display: flex; /* Se muestra usando flexbox para centrar contenido */
                   }
+              }  
+              
+              * pegar aqui el nuevo código */
+              #voice-input-panel.visible {
+                display: block;
+                animation: fadeIn 0.3s ease-in-out;
+              }
+              @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
               }              
-
 
     </style>
   </head>
@@ -1936,6 +1945,19 @@
               </select>
               <input class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-month" type="month"/>
             </div>
+
+            <div id="voice-input-panel" class="hidden mb-4 p-4 border rounded-lg bg-gray-800 border-gray-700">
+              <label for="voice-text-input" class="block text-sm font-medium text-gray-400 mb-2">Dicta tu transacción aquí. Di "guardar" al final para registrarla automáticamente.</label>
+              <textarea id="voice-text-input" rows="3" class="w-full p-2.5 bg-gray-900 border border-gray-600 rounded-lg text-gray-200 focus:ring-2 focus:ring-blue-500" placeholder="Ej: Gasto 50 dólares en gasolina en wells fargo ayer guardar..."></textarea>
+              <div class="flex justify-end mt-2">
+                <button id="save-voice-text-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                  Guardar Voz
+                </button>
+                <button id="cancel-voice-text-btn" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition ml-2">
+                  Cancelar
+                </button>
+              </div>
+            </div>            
 
             <div id="registros-content" class="tab-pane active">
                 <div class="overflow-x-auto">
@@ -2951,7 +2973,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.3.8
+              Versión 4.3.9
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3342,6 +3364,12 @@
                   document.getElementById('voice-recognition-btn').addEventListener('click', handleVoiceCommand);
                   // pegar aqui el nuevo código
                   document.getElementById('quick-voice-record-btn').addEventListener('click', handleQuickVoiceRecord);
+
+                  // pegar aqui el nuevo código
+                  document.getElementById('save-voice-text-btn').addEventListener('click', processAndSaveVoiceText);
+                  document.getElementById('cancel-voice-text-btn').addEventListener('click', () => {
+                    document.getElementById('voice-input-panel').classList.add('hidden');
+                  });
 
                   // Botones de Pantalla Completa
                   document.getElementById('IdbtOpenScreen').addEventListener('click', () => enterFullscreen(document.documentElement));
@@ -6407,14 +6435,16 @@
               // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
 
               // --- REEMPLAZA LA FUNCIÓN COMPLETA ---
+              // pegar aqui el nuevo código
               function handleMainActionClick() {
-                  const activeTab = document.querySelector('.tab-button.active').dataset.tab;
+                  // Esta función ya no necesita la lógica de 'proyeccion' ya que el botón no aparece ahí.
+                  const activeTabButton = document.querySelector('.tab-button.active');
+                  if (!activeTabButton) return; // Si no hay pestaña activa, no hace nada.
+                  
+                  const activeTab = activeTabButton.dataset.tab;
                   
                   if (activeTab === 'registros') {
-                      modalContext = 'registros'; // Establece el contexto para una transacción real
-                      openTransactionModal();
-                  } else if (activeTab === 'proyeccion') {
-                      modalContext = 'proyeccion'; // Establece el contexto para una proyección
+                      modalContext = 'registros';
                       openTransactionModal();
                   } else if (activeTab === 'recurrentes') {
                       openRecurringExpenseModal();
@@ -6422,6 +6452,58 @@
                       openCreditCardModal();
                   }
               }
+
+              // pegar aqui el nuevo código
+              /**
+               * Procesa el texto del panel de voz, lo analiza y guarda la transacción directamente.
+               */
+              async function processAndSaveVoiceText() {
+                  const voiceTextArea = document.getElementById('voice-text-input');
+                  const text = voiceTextArea.value;
+
+                  if (!text.trim()) {
+                      showToast("La caja de texto está vacía. No hay nada que guardar.", "info");
+                      return;
+                  }
+
+                  // 1. Llama a nuestro nuevo analizador inteligente
+                  const transactionData = parseSpeech(text);
+
+                  if (!transactionData) {
+                      // Si parseSpeech devuelve null, es porque faltó un dato clave (como el monto).
+                      // El propio parseSpeech ya habrá mostrado el error específico.
+                      return;
+                  }
+
+                  // 2. Guarda la transacción directamente en Firebase
+                  showLoading();
+                  const appId = firebaseProjectId;
+                  const transactionsColRef = collection(db, `artifacts/${appId}/users/${userId}/transactions`);
+                  const projectionsColRef = collection(db, `artifacts/${appId}/users/${userId}/projections`);
+                  
+                  try {
+                      const batch = writeBatch(db);
+                      const newDocRef = doc(transactionsColRef);
+                      const newId = newDocRef.id;
+
+                      batch.set(doc(transactionsColRef, newId), { ...transactionData, id: newId });
+                      batch.set(doc(projectionsColRef, newId), { ...transactionData, id: newId });
+                      
+                      await batch.commit();
+                      showToast("Transacción por voz registrada con éxito.", "success");
+
+                      // 3. Oculta el panel de voz
+                      const voicePanel = document.getElementById('voice-input-panel');
+                      voicePanel.classList.add('hidden');
+                      voicePanel.classList.remove('visible');
+
+                  } catch (error) {
+                      console.error("[Firestore] Error al guardar transacción por voz:", error);
+                      showMessageModal("Error al Guardar", "No se pudo guardar el registro por voz.", "error");
+                  } finally {
+                      hideLoading();
+                  }
+              }              
       
               function formatCurrency(amount) {
                   return new Intl.NumberFormat('es-US', { style: 'currency', currency: 'USD' }).format(amount);
@@ -6562,149 +6644,153 @@
                       }
                   );
               }
+
               // pegar aqui el nuevo código
               /**
-               * Orquesta el flujo de grabación por voz con un solo clic desde la barra de pestañas.
+               * Orquesta el flujo de grabación por voz: muestra el panel de texto y activa el micrófono.
                */
               const handleQuickVoiceRecord = () => {
                   // 1. Asegurarse de que la vista de la tabla de registros esté activa.
                   switchTab('registros');
-                  // 2. Iniciar el proceso de comando de voz (que a su vez abrirá el modal).
+
+                  // 2. Muestra el nuevo panel de entrada de voz.
+                  const voicePanel = document.getElementById('voice-input-panel');
+                  voicePanel.classList.remove('hidden');
+                  voicePanel.classList.add('visible');
+
+                  // 3. Iniciar el proceso de comando de voz (que ahora escribirá en el textarea).
                   handleVoiceCommand();
               };              
 
-            // Función para el reconocimiento de voz y llenado del formulario
-            const handleVoiceCommand = () => {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (!SpeechRecognition) {
-                    showToast("Tu navegador no soporta el reconocimiento de voz.", "error");
-                    return;
-                }
+              // pegar aqui el nuevo código
+              /**
+               * Inicia el reconocimiento de voz y transcribe el resultado en el panel de texto.
+               */
+              const handleVoiceCommand = () => {
+                  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                  if (!SpeechRecognition) {
+                      showToast("Tu navegador no soporta el reconocimiento de voz.", "error");
+                      return;
+                  }
+                  
+                  const voiceTextArea = document.getElementById('voice-text-input');
+                  const quickVoiceBtnImg = document.querySelector('#quick-voice-record-btn img');
+                  
+                  voiceTextArea.value = ''; // Limpia el área de texto
+                  voiceTextArea.placeholder = 'Escuchando... por favor, habla ahora.';
 
-                // --- ¡CORRECCIÓN CLAVE! ---
-                // Movemos la apertura del modal aquí, ANTES de empezar a escuchar.
-                // Esto asegura que el usuario vea el formulario inmediatamente.
-                openTransactionModal();
+                  const recognition = new SpeechRecognition();
+                  recognition.lang = 'es-ES';
+                  recognition.interimResults = true; // Muestra resultados mientras hablas
+                  recognition.continuous = true; // Sigue escuchando
+                  
+                  if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '0.5';
 
-                const recognition = new SpeechRecognition();
-                recognition.lang = 'es-ES';
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 1;
+                  recognition.start();
 
-                const voiceBtn = document.getElementById('voice-recognition-btn');
-                const quickVoiceBtnImg = document.querySelector('#quick-voice-record-btn img');
+                  recognition.onresult = (event) => {
+                      let transcript = '';
+                      for (let i = event.resultIndex; i < event.results.length; ++i) {
+                          transcript += event.results[i][0].transcript;
+                      }
+                      voiceTextArea.value = transcript;
 
-                if (voiceBtn) voiceBtn.classList.add('text-red-500'); 
-                if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '0.5';
+                      // Si el usuario dice "guardar", simulamos un clic en el botón.
+                      if (transcript.toLowerCase().includes('guardar')) {
+                          recognition.stop();
+                          document.getElementById('save-voice-text-btn').click();
+                      }
+                  };
 
-                setTimeout(() => {
-                    try {
-                        recognition.start();
-                    } catch (e) {
-                        console.error("Error al iniciar el reconocimiento (posiblemente ya estaba activo):", e);
-                        if (voiceBtn) voiceBtn.classList.remove('text-red-500');
-                        if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
-                    }
-                }, 150);
+                  recognition.onend = () => {
+                      if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
+                      voiceTextArea.placeholder = 'Ej: Gasto 50 dólares en gasolina en wells fargo ayer guardar...';
+                  };
+                  
+                  recognition.onerror = (event) => {
+                      if (event.error === 'not-allowed') {
+                          showToast("Se necesita permiso para usar el micrófono.", "error");
+                      } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
+                          showToast('Error de voz: ' + event.error, "error");
+                      }
+                      console.error('Error en el reconocimiento de voz:', event.error);
+                      if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
+                      voiceTextArea.placeholder = 'Hubo un error al escuchar.';
+                  };
+              };
 
-                recognition.onresult = (event) => {
-                    const speechResult = event.results[0][0].transcript.toLowerCase();
-                    console.log('Comando de voz:', speechResult);
-                    
-                    // Ya no es necesario abrir el modal aquí, porque ya está abierto.
-                    
-                    parseSpeech(speechResult);
+              // pegar aqui el nuevo código
+              /**
+               * Analiza una cadena de texto y extrae la información de una transacción.
+               * @param {string} text - El texto dictado por el usuario.
+               * @returns {object|null} Un objeto con los datos de la transacción o null si falta información clave.
+               */
+              const parseSpeech = (text) => {
+                  const lowerText = text.toLowerCase();
+                  let transaction = {};
 
-                    if (speechResult.includes('guardar')) {
-                        document.getElementById('save-transaction-btn').click();
-                    }
-                };
-                
-                const stopListening = () => {
-                    recognition.stop();
-                    if (voiceBtn) voiceBtn.classList.remove('text-red-500');
-                    if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
-                };
+                  // 1. Determinar Tipo de Transacción (Gasto por defecto)
+                  if (lowerText.includes('ingreso') || lowerText.includes('gané')) {
+                      transaction.type = 'income';
+                  } else {
+                      transaction.type = 'expense';
+                  }
 
-                recognition.onspeechend = stopListening;
-                recognition.onend = stopListening;
+                  // 2. Extraer Monto
+                  const amountMatch = lowerText.match(/(\d[\d,.]*)\s*(mil|dólares|pesos|usd)?/);
+                  if (amountMatch) {
+                      let amount = parseFloat(amountMatch[1].replace(/[.,]/g, ''));
+                      if (amountMatch[2] === 'mil') amount *= 1000;
+                      transaction.amount = amount;
+                  } else {
+                      showToast("No se pudo detectar un monto en el comando.", "error");
+                      return null; // El monto es obligatorio
+                  }
 
-                recognition.onerror = (event) => {
-                    if (event.error === 'not-allowed') {
-                        showToast("Se necesita permiso para usar el micrófono.", "error");
-                    } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
-                        showToast('Error de voz: ' + event.error, "error");
-                    }
-                    console.error('Error en el reconocimiento de voz:', event.error);
-                    stopListening();
-                };
-            };
+                  // 3. Determinar Fecha (Hoy por defecto)
+                  transaction.date = new Date().toISOString().split('T')[0];
+                  if (lowerText.includes('ayer')) {
+                      let yesterday = new Date();
+                      yesterday.setDate(yesterday.getDate() - 1);
+                      transaction.date = yesterday.toISOString().split('T')[0];
+                  }
 
-            // Función para analizar el comando de voz y rellenar el formulario
-            const parseSpeech = (text) => {
-                // --- VALORES POR DEFECTO ---
-                // 1. Asumir la fecha de hoy por defecto.
-                document.getElementById('transaction-date').valueAsDate = new Date();
-                // 2. Asumir un banco por defecto (el primero de la lista)
-                const firstBank = appState.banks.length > 0 ? appState.banks[0] : '';
-                document.getElementById('transaction-bank').value = firstBank;
+                  // 4. Encontrar Banco (El primero de la lista por defecto)
+                  transaction.bank = appState.banks.length > 0 ? appState.banks[0] : 'General';
+                  for (const bank of appState.banks) {
+                      if (lowerText.includes(bank.toLowerCase())) {
+                          transaction.bank = bank;
+                          break;
+                      }
+                  }
 
+                  // 5. Encontrar Categoría y Descripción (Regla clave)
+                  let foundCategory = false;
+                  // Palabras clave que actúan como descripción y mapean a una categoría
+                  const keywordMap = {
+                      'comida': 'Comida', 'mercado': 'Comida', 'publix': 'Comida',
+                      'gasolina': 'Transporte', 'transporte': 'Transporte',
+                      'alquiler': 'Vivienda', 'hipoteca': 'Vivienda',
+                      'internet': 'Servicios', 'luz': 'Servicios', 'agua': 'Servicios',
+                      'amazon': 'Compras', 'walmart': 'Compras', 'compras': 'Compras',
+                  };
 
-                // --- ANÁLISIS DEL COMANDO ---
+                  for (const keyword in keywordMap) {
+                      if (lowerText.includes(keyword)) {
+                          transaction.description = toTitleCase(keyword); // La palabra clave es la descripción
+                          transaction.category = keywordMap[keyword];
+                          foundCategory = true;
+                          break;
+                      }
+                  }
 
-                // Tipo de transacción
-                let typeToSet = 'expense'; // Gasto por defecto
-                if (text.includes('ingreso') || text.includes('gané')) {
-                    typeToSet = 'income';
-                }
-                // En tu index, el tipo se maneja con radio buttons
-                document.querySelector(`input[name="transaction-type"][value="${typeToSet}"]`).checked = true;
-                
-                // Monto
-                let amountMatch = text.match(/(\d[\d,.]*)\s*(mil|dólares|pesos)?/);
-                if (amountMatch) {
-                    let amount = parseFloat(amountMatch[1].replace(/[.,]/g, ''));
-                    if (amountMatch[2] === 'mil') {
-                        amount *= 1000;
-                    }
-                    document.getElementById('transaction-amount').value = amount;
-                }
+                  if (!foundCategory) {
+                      transaction.description = "Registro por voz"; // Descripción genérica
+                      transaction.category = 'Otros'; // Categoría genérica
+                  }
 
-                // Fecha (solo se modifica si se menciona "ayer")
-                if (text.includes('ayer')) {
-                    let yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    document.getElementById('transaction-date').valueAsDate = yesterday;
-                }
-                
-                // Categoría y Descripción
-                const categories = appState.categories.map(c => c.name.toLowerCase());
-                let foundCategory = false;
-                let descriptionValue = text;
-
-                for (const cat of categories) {
-                    if (text.includes(cat)) {
-                        document.getElementById('transaction-category').value = appState.categories.find(c => c.name.toLowerCase() === cat).name;
-                        descriptionValue = toTitleCase(cat);
-                        foundCategory = true;
-                        break;
-                    }
-                }
-                
-                document.getElementById('transaction-description').value = descriptionValue;
-                if (!foundCategory) {
-                     document.getElementById('transaction-category').value = 'Otros'; // O la categoría por defecto que tengas
-                }
-
-                // Banco (solo se modifica si se menciona uno específico)
-                const banks = appState.banks.map(b => b.toLowerCase());
-                for (const bank of banks) {
-                    if (text.includes(bank)) {
-                        document.getElementById('transaction-bank').value = appState.banks.find(b => b.toLowerCase() === bank);
-                        break;
-                    }
-                }
-            };
+                  return transaction;
+              };
               /**
                * Obtiene la información del único elemento seleccionado en la tabla activa.
                * @returns { {id: string, tab: string} | null }
