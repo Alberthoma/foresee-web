@@ -2973,7 +2973,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.4.0
+              Versión 4.3.9
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3117,9 +3117,6 @@
               let unsubscribeRecurring = null;
               let unsubscribeCreditCards = null;
               // =======================================================
-
-              // pegar aqui el nuevo código
-              let isProcessingVoice = false; // <-- AÑADE ESTA LÍNEA
 
               // Pega el nuevo código aquí
               let modalContext = 'registros'; // Para saber desde qué pestaña se abre el modal              
@@ -6665,7 +6662,6 @@
                   handleVoiceCommand();
               };              
 
-
               // pegar aqui el nuevo código
               /**
                * Inicia el reconocimiento de voz y transcribe el resultado en el panel de texto.
@@ -6680,9 +6676,6 @@
                   const voiceTextArea = document.getElementById('voice-text-input');
                   const quickVoiceBtnImg = document.querySelector('#quick-voice-record-btn img');
                   
-                  // NUEVO: Reiniciamos el "seguro" cada vez que se inicia el comando de voz.
-                  isProcessingVoice = false;
-
                   voiceTextArea.value = ''; // Limpia el área de texto
                   voiceTextArea.placeholder = 'Escuchando... por favor, habla ahora.';
 
@@ -6702,11 +6695,8 @@
                       }
                       voiceTextArea.value = transcript;
 
-                      // MODIFICADO: Ahora comprobamos si la palabra "guardar" está presente Y si nuestro "seguro" está activado.
-                      if (transcript.toLowerCase().includes('guardar') && !isProcessingVoice) {
-                          // NUEVO: Activamos el seguro para que no se pueda volver a entrar aquí.
-                          isProcessingVoice = true; 
-                          
+                      // Si el usuario dice "guardar", simulamos un clic en el botón.
+                      if (transcript.toLowerCase().includes('guardar')) {
                           recognition.stop();
                           document.getElementById('save-voice-text-btn').click();
                       }
@@ -6729,7 +6719,6 @@
                   };
               };
 
-
               // pegar aqui el nuevo código
               /**
                * Analiza una cadena de texto y extrae la información de una transacción.
@@ -6739,30 +6728,22 @@
               const parseSpeech = (text) => {
                   const lowerText = text.toLowerCase();
                   let transaction = {};
-                  let remainingText = lowerText; // Texto que se irá reduciendo
 
                   // 1. Determinar Tipo de Transacción (Gasto por defecto)
-                  if (lowerText.includes('ingreso') || lowerText.includes('gané') || lowerText.includes('recibí')) {
+                  if (lowerText.includes('ingreso') || lowerText.includes('gané')) {
                       transaction.type = 'income';
                   } else {
                       transaction.type = 'expense';
                   }
 
-                  // 2. Extraer Monto (Lógica mejorada para decimales)
-                  // Caso 1: "18 con 99", "18 punto 99"
-                  const decimalMatch = lowerText.match(/(\d+)\s*(con|punto)\s*(\d+)/);
-                  // Caso 2: "18.99" o simplemente "18"
-                  const numericMatch = lowerText.match(/(\d[\d,.]*)\s*(dólar|dólares|usd)?/);
-
-                  if (decimalMatch) {
-                      transaction.amount = parseFloat(`${decimalMatch[1]}.${decimalMatch[3]}`);
-                      // Eliminar la parte del monto del texto para facilitar la búsqueda de descripción
-                      remainingText = remainingText.replace(decimalMatch[0], '');
-                  } else if (numericMatch) {
-                      transaction.amount = parseFloat(numericMatch[1].replace(',', '.'));
-                      remainingText = remainingText.replace(numericMatch[0], '');
+                  // 2. Extraer Monto
+                  const amountMatch = lowerText.match(/(\d[\d,.]*)\s*(mil|dólares|pesos|usd)?/);
+                  if (amountMatch) {
+                      let amount = parseFloat(amountMatch[1].replace(/[.,]/g, ''));
+                      if (amountMatch[2] === 'mil') amount *= 1000;
+                      transaction.amount = amount;
                   } else {
-                      showToast("No se pudo detectar un monto válido en el comando.", "error");
+                      showToast("No se pudo detectar un monto en el comando.", "error");
                       return null; // El monto es obligatorio
                   }
 
@@ -6783,65 +6764,33 @@
                       }
                   }
 
-                  // 5. Encontrar Categoría y Descripción (Lógica mejorada)
+                  // 5. Encontrar Categoría y Descripción (Regla clave)
+                  let foundCategory = false;
+                  // Palabras clave que actúan como descripción y mapean a una categoría
                   const keywordMap = {
-                      'comida': { category: 'Comida', desc: 'Comida' },
-                      'mercado': { category: 'Comida', desc: 'Mercado' },
-                      'publix': { category: 'Comida', desc: 'Publix' },
-                      'gasolina': { category: 'Transporte', desc: 'Gasolina' },
-                      'transporte': { category: 'Transporte', desc: 'Transporte' },
-                      'alquiler': { category: 'Vivienda', desc: 'Alquiler' },
-                      'hipoteca': { category: 'Vivienda', desc: 'Hipoteca' },
-                      'internet': { category: 'Servicios', desc: 'Internet' },
-                      'luz': { category: 'Servicios', desc: 'Factura de Luz' },
-                      'agua': { category: 'Servicios', desc: 'Factura de Agua' },
-                      'amazon': { category: 'Compras', desc: 'Amazon' },
-                      'walmart': { category: 'Compras', desc: 'Walmart' },
-                      'compras': { category: 'Compras', desc: 'Compras Varias' }
+                      'comida': 'Comida', 'mercado': 'Comida', 'publix': 'Comida',
+                      'gasolina': 'Transporte', 'transporte': 'Transporte',
+                      'alquiler': 'Vivienda', 'hipoteca': 'Vivienda',
+                      'internet': 'Servicios', 'luz': 'Servicios', 'agua': 'Servicios',
+                      'amazon': 'Compras', 'walmart': 'Compras', 'compras': 'Compras',
                   };
 
-                  let foundCategory = false;
-                  
-                  // Intento 1: Buscar por palabras clave predefinidas
                   for (const keyword in keywordMap) {
                       if (lowerText.includes(keyword)) {
-                          transaction.description = toTitleCase(keywordMap[keyword].desc);
-                          transaction.category = keywordMap[keyword].category;
+                          transaction.description = toTitleCase(keyword); // La palabra clave es la descripción
+                          transaction.category = keywordMap[keyword];
                           foundCategory = true;
                           break;
                       }
                   }
 
-                  // Intento 2: Si no se encontró por palabra clave, buscar descripción explícita
                   if (!foundCategory) {
-                      // Busca patrones como "en [descripción]" o "para [descripción]"
-                      const descMatch = remainingText.match(/(en|para|de)\s+([\w\s]+)/);
-                      if (descMatch && descMatch[2]) {
-                          // Tomamos la descripción encontrada y la limpiamos
-                          const extractedDesc = descMatch[2].replace(/guardar/g, '').trim();
-                          if (extractedDesc) {
-                            transaction.description = toTitleCase(extractedDesc);
-                            // Aquí podrías tener una lógica futura para asignar una categoría basada en esta descripción
-                            transaction.category = 'Otros'; // Por ahora, la categoría es genérica
-                          }
-                      }
-                  }
-
-                  // Si después de todo no hay descripción, usamos la genérica
-                  if (!transaction.description) {
-                      transaction.description = "Registro por voz";
-                      transaction.category = 'Otros';
-                  }
-
-                  // Si ya tenemos categoría por palabra clave, no la sobrescribimos
-                  if (!transaction.category) {
-                      transaction.category = 'Otros';
+                      transaction.description = "Registro por voz"; // Descripción genérica
+                      transaction.category = 'Otros'; // Categoría genérica
                   }
 
                   return transaction;
               };
-
-              
               /**
                * Obtiene la información del único elemento seleccionado en la tabla activa.
                * @returns { {id: string, tab: string} | null }
