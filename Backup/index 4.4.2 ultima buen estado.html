@@ -2965,70 +2965,6 @@
               </button>
             </div>
           </div>
-        </div>
-        <div class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4" id="import-options-modal">
-          <div class="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col" style="max-height: 90vh;">
-            <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
-              <h2 class="text-2xl font-bold text-gray-700">
-                Opciones de Importación
-              </h2>
-              <button class="text-gray-400 hover:text-gray-600" id="close-import-options-btn">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              </button>
-            </div>
-            <div class="p-8 flex-grow overflow-y-auto space-y-6">
-              <div>
-                <p class="text-gray-600 mb-4">Selecciona las secciones que deseas importar desde el archivo JSON. Las secciones que selecciones reemplazarán los datos actuales.</p>
-                <button id="select-import-file-btn" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mb-2">Seleccionar Archivo JSON</button>
-                <p id="selected-file-name" class="text-sm text-center text-gray-500 italic">Ningún archivo seleccionado.</p>
-              </div>
-              <div id="import-checkboxes-container" class="space-y-3 hidden">
-                <h3 class="text-lg font-semibold border-b pb-2">Secciones a Importar:</h3>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" id="import-all-checkbox" class="h-5 w-5 accent-blue-600 mr-3">
-                  <span class="font-bold text-gray-800">Importar Todo</span>
-                </label>
-                <hr>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" data-section="transactions" class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3">
-                  <span>Registros (Transacciones)</span>
-                </label>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" data-section="projections" class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3">
-                  <span>Proyección</span>
-                </label>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" data-section="recurringExpenses" class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3">
-                  <span>Gastos Recurrentes</span>
-                </label>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" data-section="creditCards" class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3">
-                  <span>Tarjetas de Crédito</span>
-                </label>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" data-section="budgets" class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3">
-                  <span>Presupuestos</span>
-                </label>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" data-section="config" class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3">
-                  <span>Configuración (Categorías, Bancos, Descripciones)</span>
-                </label>
-                <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-                  <input type="checkbox" data-section="general" class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3">
-                  <span>General (Saldo Inicial y Alias)</span>
-                </label>
-              </div>
-            </div>
-            <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-              <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300" id="cancel-import-btn" type="button">
-                  Cancelar
-              </button>
-              <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center disabled:bg-gray-400" id="confirm-import-btn" type="button" disabled>
-                  Confirmar Importación
-                  <span class="btn-spinner hidden"></span>
-              </button>
-            </div>
-          </div>
         </div>        
 
         <footer class="bg-gray-800 text-white py-4">
@@ -3037,7 +2973,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.4.3
+              Versión 4.4.0
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3183,8 +3119,8 @@
               // =======================================================
 
               // pegar aqui el nuevo código
-              let isProcessingVoice = false;
-              let importedFileData = null; // Para guardar los datos del archivo JSON importado
+              let isProcessingVoice = false; // <-- AÑADE ESTA LÍNEA
+
               // Pega el nuevo código aquí
               let modalContext = 'registros'; // Para saber desde qué pestaña se abre el modal              
               let isAuthReady = false; // Bandera para saber si la autenticación ha terminado
@@ -3427,10 +3363,12 @@
                   authForm.addEventListener('submit', handleLogin);
                   registerBtn.addEventListener('click', handleRegister);
                   logoutBtn.addEventListener('click', handleLogout);
-                  
+                  // pegar aqui el nuevo código
                   document.getElementById('voice-recognition-btn').addEventListener('click', handleVoiceCommand);
+                  // pegar aqui el nuevo código
                   document.getElementById('quick-voice-record-btn').addEventListener('click', handleQuickVoiceRecord);
 
+                  // pegar aqui el nuevo código
                   document.getElementById('save-voice-text-btn').addEventListener('click', processAndSaveVoiceText);
                   document.getElementById('cancel-voice-text-btn').addEventListener('click', () => {
                     document.getElementById('voice-input-panel').classList.add('hidden');
@@ -3477,48 +3415,8 @@
 
                   document.getElementById('export-pdf-btn').addEventListener('click', exportToPDF);
                   document.getElementById('export-json-btn').addEventListener('click', exportData);
-
-                  // --- LÍNEAS MODIFICADAS Y AÑADIDAS PARA LA IMPORTACIÓN SELECTIVA ---
-                  // El botón de importar ahora abre el nuevo modal de opciones
-                  document.getElementById('import-json-btn').addEventListener('click', () => {
-                      // Resetea el estado del modal de importación antes de mostrarlo
-                      document.getElementById('selected-file-name').textContent = 'Ningún archivo seleccionado.';
-                      document.getElementById('import-checkboxes-container').classList.add('hidden');
-                      document.getElementById('confirm-import-btn').disabled = true;
-                      document.querySelectorAll('.import-section-checkbox, #import-all-checkbox').forEach(cb => cb.checked = false);
-                      importedFileData = null;
-                      document.getElementById('import-options-modal').classList.add('active');
-                  });
-
+                  document.getElementById('import-json-btn').addEventListener('click', () => importFileInput.click());
                   importFileInput.addEventListener('change', importData);
-
-                  // --- NUEVOS LISTENERS PARA EL MODAL DE IMPORTACIÓN ---
-                  document.getElementById('select-import-file-btn').addEventListener('click', () => importFileInput.click());
-                  document.getElementById('confirm-import-btn').addEventListener('click', processSelectiveImport);
-
-                  const closeImportModal = () => document.getElementById('import-options-modal').classList.remove('active');
-                  document.getElementById('close-import-options-btn').addEventListener('click', closeImportModal);
-                  document.getElementById('cancel-import-btn').addEventListener('click', closeImportModal);
-                  document.getElementById('import-options-modal').addEventListener('click', (e) => {
-                      if (e.target.id === 'import-options-modal') closeImportModal();
-                  });
-
-                  // Lógica para el checkbox "Importar Todo"
-                  document.getElementById('import-all-checkbox').addEventListener('change', (e) => {
-                      document.querySelectorAll('.import-section-checkbox').forEach(cb => {
-                          cb.checked = e.target.checked;
-                      });
-                  });
-                  
-                  // Lógica para desmarcar "Importar Todo" si un checkbox individual se desmarca
-                  document.querySelectorAll('.import-section-checkbox').forEach(checkbox => {
-                      checkbox.addEventListener('change', () => {
-                          const allCheckboxes = document.querySelectorAll('.import-section-checkbox');
-                          const allChecked = Array.from(allCheckboxes).every(cb => cb.checked);
-                          document.getElementById('import-all-checkbox').checked = allChecked;
-                      });
-                  });
-                  // --- FIN DE LAS MODIFICACIONES DE IMPORTACIÓN ---
 
                   creditCardModal.addEventListener('click', (e) => { if (e.target === creditCardModal) closeCreditCardModal(); });
                   document.getElementById('credit-card-cancel-btn').addEventListener('click', closeCreditCardModal);
@@ -3645,6 +3543,9 @@
 
                       });
                   }
+                  // =========================================================================
+                  // ===== PEGA EL NUEVO CÓDIGO DE LOS BOTONES DEL PANEL DE ACCIONES AQUÍ =====
+                  // =========================================================================
                   document.getElementById('single-action-edit-btn').addEventListener('click', handleSingleEditAction);
                   document.getElementById('single-action-delete-btn').addEventListener('click', handleSingleDeleteAction);
                   document.getElementById('single-action-cancel-btn').addEventListener('click', () => {
@@ -3656,9 +3557,16 @@
                       }
                       updateDeleteButtonVisibility(); // Oculta el panel
                   });
+                  // =========================================================================
+                  // ===== FIN DEL NUEVO CÓDIGO A PEGAR =====================================
+                  // =========================================================================
 
                   listenersAttached = true;
               }
+
+              // ... Aquí termina la función setupEventListeners() ...
+
+
 
               // PEGA EL SIGUIENTE BLOQUE DE CÓDIGO AQUÍ
               // --- LÓGICA PARA EL TOOLTIP DE INFORMACIÓN DE TRANSACCIÓN ---
@@ -3999,7 +3907,7 @@
                       console.error("[Firestore] Error al escuchar tarjetas de crédito:", error);
                       showMessageModal("Error de Carga", "Hubo un problema al cargar tus tarjetas de crédito.", "error");
                   });
-                  /* ===== PEGA AQUÍ EL SIGUIENTE BLOQUE ===== */
+
                   unsubscribeProjections = onSnapshot(projectionsColRef, (snapshot) => {
                       console.log("[Firestore] onSnapshot projections fired.");
                       appState.projections = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -4008,7 +3916,6 @@
                       console.error("[Firestore] Error al escuchar proyecciones:", error);
                       showMessageModal("Error de Carga", "Hubo un problema al cargar tus proyecciones.", "error");
                   });
-                  
               }
       
               // --- REEMPLAZA las dos funciones existentes con estas dos ---
@@ -4260,25 +4167,17 @@
                   updateDeleteButtonVisibility();
               }
 
+              // --- REEMPLAZA LA FUNCIÓN COMPLETA ---
               function renderProyeccionTable() {
-                  const projections = getDynamicProjections();
-                  let runningBalance = appState.openingBalance;
-                  
-                  const selectedMonth = filterMonth.value;
-                  if (selectedMonth) {
-                      const transactionsBeforeFilter = appState.transactions
-                          .filter(t => t.date.substring(0, 7) < selectedMonth)
-                          .sort((a, b) => new Date(a.date) - new Date(b.date));
-                      transactionsBeforeFilter.forEach(t => {
-                          runningBalance += (t.type === 'income' ? t.amount : -t.amount);
-                      });
-                  }
+                  const filteredTransactions = getFilteredTransactionsForProyeccion();
+                  let runningBalance = 0; 
                                   
                   proyeccionTableBody.innerHTML = '';
+                  
                   const tableElement = document.querySelector('#proyeccion-content table');
                   const footerElement = tableElement.querySelector('tfoot');
 
-                  if (projections.length === 0) {
+                  if (filteredTransactions.length === 0) {
                       proyeccionTableBody.classList.add('hidden');
                       if (footerElement) footerElement.classList.add('hidden');
                       noProyeccionMessage.classList.remove('hidden');
@@ -4287,45 +4186,37 @@
                       if (footerElement) footerElement.classList.remove('hidden');
                       noProyeccionMessage.classList.add('hidden');
 
-                      projections.forEach(p => {
-                          runningBalance += (p.type === 'income' ? p.amount : -p.amount);
+                      filteredTransactions.forEach(t => {
+                          runningBalance += (t.type === 'income' ? t.amount : -t.amount);
                           const balanceStyle = runningBalance < 0 ? 'color: var(--expense-color);' : 'color: var(--electric-blue);';
                           const row = document.createElement('tr');
                           
                           let rowTextColorClass = '';
-                          if (p.category === 'Transferencia Interna') rowTextColorClass = 'transfer-text-row';
-                          else if (p.type === 'income') rowTextColorClass = 'income-text-row';
+                          if (t.category === 'Transferencia Interna') rowTextColorClass = 'transfer-text-row';
+                          else if (t.type === 'income') rowTextColorClass = 'income-text-row';
                           else rowTextColorClass = 'expense-text-row';
-                          
-                          if (p.isVirtual || p.isPureProjection) {
-                              row.style.fontStyle = 'italic';
-                              row.style.opacity = '0.75';
-                          }
                           row.className = rowTextColorClass;
 
                           const cellCheckbox = row.insertCell();
                           cellCheckbox.className = "px-2 py-4 text-center";
-                          if (!p.isVirtual) {
-                            cellCheckbox.innerHTML = `<input type="checkbox" class="projection-checkbox" data-id="${p.id}">`;
-                          }
-                          
-                          // El resto de las celdas (Fecha, Descripción, etc.) no cambian
+                          cellCheckbox.innerHTML = `<input type="checkbox" class="projection-checkbox" data-id="${t.id}">`;
+
                           const cellDate = row.insertCell();
                           cellDate.className = "px-6 py-4 whitespace-nowrap text-sm";
-                          cellDate.innerHTML = `<span class="desktop-date">${formatDate(p.date)}</span><span class="mobile-date">${formatDateForMobile(p.date)}</span>`;
+                          cellDate.innerHTML = `<span class="desktop-date">${formatDate(t.date)}</span><span class="mobile-date">${formatDateForMobile(t.date)}</span>`;
                           
                           const cellDesc = row.insertCell();
                           cellDesc.className = "px-6 py-4 whitespace-nowrap text-sm";
-                          cellDesc.textContent = p.description;
+                          cellDesc.textContent = t.description;
 
                           const cellCat = row.insertCell();
                           cellCat.className = "px-6 py-4 whitespace-nowrap text-sm flex items-center";
-                          cellCat.innerHTML = `${getCategoryDisplay(p.category)}<button class="info-btn" data-description="${p.description}">i</button>`;
+                          cellCat.innerHTML = `${getCategoryDisplay(t.category)}<button class="info-btn" data-description="${t.description}">i</button>`;
 
                           const cellAmount = row.insertCell();
                           cellAmount.className = "px-6 py-4 whitespace-nowrap text-sm text-right";
                           cellAmount.style.fontWeight = '400';
-                          cellAmount.textContent = formatCurrency(p.amount);
+                          cellAmount.textContent = formatCurrency(t.amount);
 
                           const cellBalance = row.insertCell();
                           cellBalance.className = "px-6 py-4 whitespace-nowrap text-sm text-right balance-cell-bg";
@@ -4334,39 +4225,22 @@
                           const cellActions = row.insertCell();
                           cellActions.className = "px-6 py-4 whitespace-nowrap text-center text-sm";
                           cellActions.style.fontWeight = '400';
+                          cellActions.innerHTML = `<button data-id="${t.id}" class="delete-projection-btn text-red-600 hover:text-red-900">Eliminar</button>`;
                           
-                          // --- NUEVA LÓGICA DE ACCIONES ---
-                          if (p.isVirtual) {
-                              // Si es una proyección de un gasto recurrente, no tiene acciones.
-                              cellActions.innerHTML = `<span>(Proyectado)</span>`;
-                          } else if (p.isPureProjection) {
-                              // Si es una proyección manual: se puede EDITAR y ELIMINAR la proyección.
-                              cellActions.innerHTML = `<button data-id="${p.id}" class="edit-projection-btn edit-btn mr-3">Editar</button><button data-id="${p.id}" class="delete-projection-btn text-red-600 hover:text-red-900">Eliminar</button>`;
-                          } else {
-                              // Si es una transacción real: ahora también se podrá EDITAR y ELIMINAR la transacción.
-                              cellActions.innerHTML = `<button data-id="${p.id}" class="edit-projection-btn edit-btn mr-3">Editar</button><button data-id="${p.id}" class="delete-transaction-btn text-red-600 hover:text-red-900">Eliminar</button>`;
-                          }
-
                           proyeccionTableBody.appendChild(row);
                       });
-                      
-                      const totalIncome = projections.filter(p => p.type === 'income').reduce((sum, p) => sum + p.amount, 0);
-                      const totalExpenses = projections.filter(p => p.type === 'expense').reduce((sum, p) => sum + p.amount, 0);
+
+                      const totalIncome = filteredTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+                      const totalExpenses = filteredTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
                       tableElement.querySelector('tfoot tr td:first-child').colSpan = 3;
                       document.getElementById('proyeccion-total-income').textContent = formatCurrency(totalIncome);
                       document.getElementById('proyeccion-total-expenses').textContent = formatCurrency(totalExpenses);
                   }
                   
-                  // --- ACTIVACIÓN DE BOTONES INTELIGENTE MEJORADA ---
-                  document.querySelectorAll('#proyeccion-content .delete-transaction-btn').forEach(btn => btn.addEventListener('click', (e) => deleteTransaction(e.target.dataset.id)));
-                  document.querySelectorAll('#proyeccion-content .delete-projection-btn').forEach(btn => btn.addEventListener('click', (e) => deleteProjection(e.target.dataset.id)));
-                  
-                  // Nuevo listener para el botón de editar proyección
-                  document.querySelectorAll('#proyeccion-content .edit-projection-btn').forEach(btn => btn.addEventListener('click', (e) => {
-                      modalContext = 'proyeccion'; // Asegura el contexto correcto
-                      openTransactionModal(e.target.dataset.id);
-                  }));
-              }  
+                  // ¡PARTE CRÍTICA! Aquí se vuelven a activar los botones después de crear la tabla.
+                  document.querySelectorAll('.delete-projection-btn').forEach(btn => btn.addEventListener('click', (e) => deleteProjection(e.target.dataset.id)));
+                  updateDeleteButtonVisibility();
+              }    
 
               // --- REEMPLAZA LA FUNCIÓN COMPLETA ---
               function renderBankBalances() {
@@ -4794,46 +4668,41 @@
                * La corrección clave es que el event listener para el botón de cerrar 'X'
                * se declara aquí. Esto garantiza que el botón siempre funcionará al abrir el modal.
                */
-function openTransactionModal(id = null) {
+              function openTransactionModal(id = null) {
                   transactionForm.reset();
                   clearValidationErrors();
                   populateModalDropdowns();
                   populateDescriptionDatalist();
                   
                   if (id) {
-                      // ¡LÓGICA MEJORADA! Busca tanto en transacciones como en proyecciones.
-                      let item = appState.transactions.find(t => t.id === id);
-                      let sourceCollection = 'transactions';
-                      
-                      if (!item) {
-                          item = appState.projections.find(p => p.id === id);
-                          sourceCollection = 'projections';
-                      }
-
-                      if (item) {
-                          const title = sourceCollection === 'projections' ? 'Editar Proyección' : 'Editar Transacción';
-                          document.getElementById('modal-title').textContent = title;
-                          document.getElementById('transaction-id').value = item.id;
-                          document.getElementById('transaction-date').value = item.date;
-                          document.getElementById('transaction-description').value = item.description;
-                          document.getElementById('transaction-category').value = item.category;
-                          document.getElementById('transaction-bank').value = item.bank;
-                          document.getElementById('transaction-amount').value = item.amount;
-                          document.querySelector(`input[name="transaction-type"][value="${item.type}"]`).checked = true;
+                      // Lógica para editar una transacción existente (sin cambios)
+                      const transaction = appState.transactions.find(t => t.id === id);
+                      if (transaction) {
+                          document.getElementById('modal-title').textContent = 'Editar Transacción';
+                          document.getElementById('transaction-id').value = transaction.id;
+                          document.getElementById('transaction-date').value = transaction.date;
+                          document.getElementById('transaction-description').value = transaction.description;
+                          document.getElementById('transaction-category').value = transaction.category;
+                          document.getElementById('transaction-bank').value = transaction.bank;
+                          document.getElementById('transaction-amount').value = transaction.amount;
+                          document.querySelector(`input[name="transaction-type"][value="${transaction.type}"]`).checked = true;
                       } else {
-                          showMessageModal("Error", "Elemento no encontrado.", "error");
+                          showMessageModal("Error", "Transacción no encontrada.", "error");
                           return;
                       }
                   } else {
-                      // Lógica para un nuevo registro/proyección (depende del modalContext)
-                      const title = modalContext === 'proyeccion' ? 'Registrar Proyección' : 'Registrar Transacción';
-                      document.getElementById('modal-title').textContent = title;
+                      // Lógica para una nueva transacción (sin cambios)
+                      document.getElementById('modal-title').textContent = 'Registrar Transacción';
                       document.getElementById('transaction-id').value = '';
                       document.getElementById('transaction-date').valueAsDate = new Date();
-                      document.querySelector('input[name="transaction-type"][value="expense"]').checked = true;
+                      document.querySelector('input[name="transaction-type"][value="income"]').checked = true;
                   }
                   
+                  // Muestra el modal
                   transactionModal.classList.add('active');
+                  
+                  // --- ¡CORRECCIÓN IMPORTANTE! ---
+                  // Ponemos el foco en el primer campo para iniciar la navegación con 'Enter'.
                   document.getElementById('transaction-date').focus();
               }
               // ================================ FIN DEL PEGADO ===============================
@@ -4845,7 +4714,7 @@ function openTransactionModal(id = null) {
       
               // ================================== PEGA AQUÍ ==================================
               // --- REEMPLAZA LA FUNCIÓN COMPLETA CON ESTA VERSIÓN ---
-async function handleFormSubmit(e) {
+              async function handleFormSubmit(e) {
                   e.preventDefault();
                   clearValidationErrors();
 
@@ -4871,27 +4740,53 @@ async function handleFormSubmit(e) {
                   const saveBtn = document.getElementById('save-transaction-btn');
                   showButtonLoading(saveBtn);
                   const appId = firebaseProjectId;
+                  const transactionsColRef = collection(db, `artifacts/${appId}/users/${userId}/transactions`);
+                  const projectionsColRef = collection(db, `artifacts/${appId}/users/${userId}/projections`);
                   const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/user_data/preferences`);
 
-                  // --- ¡NUEVA LÓGICA DE DECISIÓN! ---
-                  // Determina la colección correcta basándose en el contexto del modal.
-                  const targetCollection = modalContext === 'proyeccion' ? 'projections' : 'transactions';
-                  const collectionRef = collection(db, `artifacts/${appId}/users/${userId}/${targetCollection}`);
-                  
                   const transactionData = { date, description, category, bank, amount, type };
 
                   try {
-                      if (id) {
-                          // Lógica de actualización (funciona para ambas colecciones)
-                          const docRef = doc(collectionRef, id);
-                          await setDoc(docRef, transactionData, { merge: true });
-                          showToast(`${modalContext === 'proyeccion' ? 'Proyección' : 'Transacción'} actualizada.`, "success");
-                          closeTransactionModal(); 
-                      } else {
-                          // Lógica de creación (funciona para ambas colecciones)
-                          const newDocRef = doc(collectionRef);
-                          await setDoc(newDocRef, { ...transactionData, id: newDocRef.id });
-                          showToast(`${modalContext === 'proyeccion' ? 'Proyección' : 'Transacción'} registrada.`, "success");
+                      if (modalContext === 'registros') {
+                          // Si estamos en la pestaña REGISTROS
+                          if (id) {
+                              // --- LÓGICA DE ACTUALIZACIÓN MODIFICADA ---
+                              // Al editar, se actualizan AMBAS colecciones a la vez.
+                              const batch = writeBatch(db);
+                              const transactionDocRef = doc(transactionsColRef, id);
+                              const projectionDocRef = doc(projectionsColRef, id); // Apunta al mismo ID en la otra colección
+
+                              batch.set(transactionDocRef, transactionData, { merge: true });
+                              batch.set(projectionDocRef, transactionData, { merge: true });
+                              
+                              await batch.commit();
+                              showToast("Transacción actualizada en Registros y Proyección.", "success");
+                              closeTransactionModal(); 
+                          } else {
+                              // Al crear, se registra en paralelo en AMBAS colecciones con el MISMO ID
+                              const batch = writeBatch(db);
+                              // Se genera un único ID para ambos registros
+                              const newDocRef = doc(transactionsColRef); 
+                              const newId = newDocRef.id;
+
+                              batch.set(doc(transactionsColRef, newId), { ...transactionData, id: newId });
+                              batch.set(doc(projectionsColRef, newId), { ...transactionData, id: newId });
+                              
+                              await batch.commit();
+                              showToast("Transacción registrada en Registros y Proyección.", "success");
+                          }
+                      } else if (modalContext === 'proyeccion') {
+                          // Si estamos en la pestaña PROYECCION (esta lógica no cambia)
+                          if (id) {
+                              console.warn("La edición solo es posible desde la pestaña Registros.");
+                              closeTransactionModal();
+                              return;
+                          } else {
+                              // Al crear, se registra SOLO en la colección de proyecciones
+                              const newProjectionRef = doc(projectionsColRef);
+                              await setDoc(newProjectionRef, { ...transactionData, id: newProjectionRef.id });
+                              showToast("Proyección registrada exitosamente.", "success");
+                          }
                       }
 
                       if (!id) { // Solo si es una entrada nueva
@@ -4910,7 +4805,7 @@ async function handleFormSubmit(e) {
                           document.getElementById('transaction-date').focus();
                       }
                   } catch (error) {
-                      console.error(`[Firestore] Error al guardar en ${targetCollection}:`, error);
+                      console.error("[Firestore] Error al guardar:", error);
                       showMessageModal("Error al Guardar", "No se pudo guardar el registro.", "error");
                   } finally {
                       hideButtonLoading(saveBtn);
@@ -4921,18 +4816,23 @@ async function handleFormSubmit(e) {
               // --- REEMPLAZA la función 'archiveTransaction' con estas DOS ---
               // --- REEMPLAZA LA FUNCIÓN COMPLETA CON ESTA VERSIÓN ---
               async function deleteTransaction(id) {
-                  openConfirmModal('Eliminar Transacción', 'Esta acción eliminará la transacción permanentemente. ¿Continuar?', async () => {
+                  openConfirmModal('Eliminar Transacción', 'Esta acción eliminará la transacción permanentemente de sus Registros y de su Proyección. ¿Continuar?', async () => {
                       showLoading();
                       const appId = firebaseProjectId;
-                      // Ahora solo necesitamos apuntar a la colección de transacciones
                       const transactionDocRef = doc(db, `artifacts/${appId}/users/${userId}/transactions`, id);
+                      const projectionDocRef = doc(db, `artifacts/${appId}/users/${userId}/projections`, id); // Apunta al mismo ID
 
                       try {
-                          await deleteDoc(transactionDocRef);
-                          showToast("Transacción eliminada con éxito.", "success");
+                          // Usamos un batch para asegurar que ambas eliminaciones ocurran juntas
+                          const batch = writeBatch(db);
+                          batch.delete(transactionDocRef);
+                          batch.delete(projectionDocRef);
+                          await batch.commit();
+
+                          showToast("Transacción eliminada de Registros y Proyección.", "success");
                       } catch (error) {
-                          console.error("[Firestore] Error al eliminar transacción:", error);
-                          showMessageModal("Error al Eliminar", "No se pudo eliminar la transacción.", "error");
+                          console.error("[Firestore] Error al eliminar transacción sincronizada:", error);
+                          showMessageModal("Error al Eliminar", "No se pudo eliminar la transacción de ambas secciones.", "error");
                       } finally {
                           hideLoading();
                       }
@@ -4940,24 +4840,22 @@ async function handleFormSubmit(e) {
               }
 
               async function deleteProjection(id) {
-                  openConfirmModal('Eliminar Proyección', 'Esto eliminará esta proyección simulada. ¿Continuar?', async () => {
+                  // Borra solo de 'Proyección' y NO afecta los saldos
+                  openConfirmModal('Eliminar Proyección', 'Esta acción eliminará el registro únicamente de esta pestaña. No afectará sus saldos ni la pestaña de Registros. ¿Continuar?', async () => {
                       showLoading();
                       const appId = firebaseProjectId;
-                      // Apunta a la colección de proyecciones
                       const projectionDocRef = doc(db, `artifacts/${appId}/users/${userId}/projections`, id);
-
                       try {
                           await deleteDoc(projectionDocRef);
-                          showToast("Proyección eliminada con éxito.", "success");
+                          showToast("Registro eliminado de Proyección.", "success");
                       } catch (error) {
-                          console.error("[Firestore] Error al eliminar proyección:", error);
                           showMessageModal("Error al Eliminar", "No se pudo eliminar la proyección.", "error");
                       } finally {
                           hideLoading();
                       }
                   });
-              }              
-
+              }
+      
               function openTransferModal() {
                   closeTransactionModal();
                   transferForm.reset();
@@ -5463,7 +5361,7 @@ async function handleFormSubmit(e) {
                       const appId = firebaseProjectId;
                       const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/user_data/preferences`);
                       const transactionsColRef = collection(db, `artifacts/${appId}/users/${userId}/transactions`);
-
+                      const projectionsColRef = collection(db, `artifacts/${appId}/users/${userId}/projections`); // AÑADIDO: Referencia a la colección de proyecciones.
                       
                       console.log("[Firestore] Reiniciando datos del período, conservando toda la configuración...");
 
@@ -5482,7 +5380,10 @@ async function handleFormSubmit(e) {
                           const transactionsSnapshot = await getDocs(transactionsColRef);
                           transactionsSnapshot.docs.forEach(d => batch.delete(doc(transactionsColRef, d.id)));
 
-
+                          // AÑADIDO: Borrar todas las proyecciones existentes.
+                          const projectionsSnapshot = await getDocs(projectionsColRef);
+                          projectionsSnapshot.docs.forEach(d => batch.delete(doc(projectionsColRef, d.id)));
+      
                           // MODIFICADO: Actualizamos el documento de preferencias.
                           // Se elimina la línea que reiniciaba las descripciones.
                           batch.update(userDocRef, {
@@ -5495,7 +5396,7 @@ async function handleFormSubmit(e) {
                           // Reconstruimos el estado local de la aplicación.
                           appState = {
                               transactions: [],                   // Reiniciado
-
+                              projections: [],                    // AÑADIDO: Se limpia el estado local de proyecciones.
                               categories: categoriesToKeep,       // Conservado
                               banks: banksToKeep,                 // Conservado
                               descriptions: descriptionsToKeep,     // MODIFICADO: Se usan las descripciones conservadas.
@@ -6026,166 +5927,117 @@ async function handleFormSubmit(e) {
               }
       
               function exportData() {
-                  // Exportar el estado actual de appState, que está sincronizado con Firestore.
-                  // Esta versión incluye todas las secciones solicitadas.
+                  // Exportar el estado actual de appState (que ya está sincronizado con Firestore)
                   const dataToExport = {
                       transactions: appState.transactions,
-                      projections: appState.projections, // Añadido
                       categories: appState.categories,
                       banks: appState.banks,
                       descriptions: appState.descriptions,
                       recurringExpenses: appState.recurringExpenses,
                       creditCards: appState.creditCards,
                       openingBalance: appState.openingBalance,
-                      userAlias: appState.userAlias,
-                      categoryBudgets: appState.categoryBudgets, // Añadido
+                      userAlias: appState.userAlias, // Exportar el alias
+                      // Futura mejora: Exportar presupuestos por categoría
+                      // categoryBudgets: appState.categoryBudgets,
                   };
                   const dataStr = JSON.stringify(dataToExport, null, 2);
                   const dataBlob = new Blob([dataStr], {type: "application/json"});
                   const url = URL.createObjectURL(dataBlob);
                   const link = document.createElement('a');
-                  link.download = `foresee_backup_${new Date().toISOString().split('T')[0]}.json`;
+                  link.download = `presupuesto_datos_${new Date().toISOString().split('T')[0]}.json`;
                   link.href = url;
                   link.click();
                   URL.revokeObjectURL(url);
-                  showToast("Copia de seguridad completa exportada a JSON.", "success");
+                  showToast("Datos exportados a JSON exitosamente.", "success");
               }
       
-              function importData(event) {
+              async function importData(event) {
                   const file = event.target.files[0];
                   if (!file) return;
-
+      
                   const reader = new FileReader();
                   reader.onload = function(e) {
                       try {
-                          importedFileData = JSON.parse(e.target.result);
-                          document.getElementById('selected-file-name').textContent = file.name;
-                          document.getElementById('import-checkboxes-container').classList.remove('hidden');
-                          document.getElementById('confirm-import-btn').disabled = false;
-                          showToast("Archivo cargado. Selecciona qué importar.", "info");
+                          const importedState = JSON.parse(e.target.result);
+                          openConfirmModal('Importar Datos', 'Esto reemplazará tus registros, proyecciones, gastos recurrentes, tarjetas y presupuestos con los datos del archivo. Tu configuración de categorías, bancos y alias NO será modificada. ¿Deseas continuar?', async () => {
+                              showLoading();
+                              const appId = firebaseProjectId;
+                              const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/user_data/preferences`);
+                              const transactionsColRef = collection(db, `artifacts/${appId}/users/${userId}/transactions`);
+                              const projectionsColRef = collection(db, `artifacts/${appId}/users/${userId}/projections`); // AÑADIDO: Referencia a proyecciones
+                              const recurringExpensesColRef = collection(db, `artifacts/${appId}/users/${userId}/recurringExpenses`);
+                              const creditCardsColRef = collection(db, `artifacts/${appId}/users/${userId}/creditCards`);
+                              console.log("[Firestore] Importando datos con categorías preservadas...");
+      
+                              try {
+                                  const batch = writeBatch(db);
+      
+                                  // --- Borrar datos de colecciones existentes ---
+                                  const currentTransactions = await getDocs(transactionsColRef);
+                                  currentTransactions.docs.forEach(d => batch.delete(doc(transactionsColRef, d.id)));
+                                  
+                                  const currentProjections = await getDocs(projectionsColRef); // AÑADIDO: Limpiar proyecciones
+                                  currentProjections.docs.forEach(d => batch.delete(doc(projectionsColRef, d.id)));
+                                  
+                                  const currentRecurring = await getDocs(recurringExpensesColRef);
+                                  currentRecurring.docs.forEach(d => batch.delete(doc(recurringExpensesColRef, d.id)));
+                                  
+                                  const currentCreditCards = await getDocs(creditCardsColRef);
+                                  currentCreditCards.docs.forEach(d => batch.delete(doc(creditCardsColRef, d.id)));
+      
+                                  // --- Actualizar solo los campos necesarios en las preferencias ---
+                                  // MODIFICADO: Se usa batch.update() en lugar de batch.set()
+                                  // Se eliminan 'categories', 'banks', 'descriptions', 'openingBalance' y 'userAlias'
+                                  batch.update(userDocRef, {
+                                      categoryBudgets: importedState.categoryBudgets || {}, // AÑADIDO: Se importan los presupuestos
+                                  });
+      
+                                  // --- Escribir nuevos datos en las colecciones ---
+                                  if (importedState.transactions) {
+                                    importedState.transactions.forEach(tx => {
+                                        const newTxRef = doc(transactionsColRef);
+                                        batch.set(newTxRef, { ...tx, id: newTxRef.id });
+                                    });
+                                  }
+
+                                  // AÑADIDO: Lógica para importar proyecciones
+                                  if (importedState.projections) {
+                                    importedState.projections.forEach(proj => {
+                                        const newProjRef = doc(projectionsColRef);
+                                        batch.set(newProjRef, { ...proj, id: newProjRef.id });
+                                    });
+                                  }
+      
+                                  if (importedState.recurringExpenses) {
+                                    importedState.recurringExpenses.forEach(re => {
+                                        const newReRef = doc(recurringExpensesColRef);
+                                        batch.set(newReRef, { ...re, id: newReRef.id });
+                                    });
+                                  }
+      
+                                  if (importedState.creditCards) {
+                                    importedState.creditCards.forEach(cc => {
+                                        const newCcRef = doc(creditCardsColRef);
+                                        batch.set(newCcRef, { ...cc, id: newCcRef.id });
+                                    });
+                                  }
+      
+                                  await batch.commit();
+                                  showMessageModal("Importación Exitosa", "Los datos han sido importados correctamente, manteniendo tu configuración de categorías.", "success");
+                                  // onSnapshot se encargará de actualizar appState y el renderizado
+                              } catch (error) {
+                                  console.error("[Firestore] Error al importar datos a Firebase:", error);
+                                  showMessageModal("Error de Importación", "Hubo un error al importar los datos. Asegúrate de que el archivo sea válido.", "error");
+                              } finally {
+                                  hideLoading();
+                              }
+                          });
                       } catch (error) {
-                          importedFileData = null;
-                          document.getElementById('selected-file-name').textContent = 'Error al leer el archivo. Intenta de nuevo.';
-                          document.getElementById('import-checkboxes-container').classList.add('hidden');
-                          document.getElementById('confirm-import-btn').disabled = true;
-                          showMessageModal('Error de Archivo', 'El archivo seleccionado no es un archivo JSON válido.', "error");
+                          showMessageModal('Error de Archivo', 'El archivo seleccionado no es un archivo de datos válido.', "error");
                       }
                   };
                   reader.readAsText(file);
-                  importFileInput.value = ''; // Limpiar el input para permitir volver a seleccionar el mismo archivo
-              }
-
-              async function processSelectiveImport() {
-                  if (!importedFileData) {
-                      showToast("Primero debes seleccionar un archivo JSON válido.", "error");
-                      return;
-                  }
-              
-                  const sectionsToImport = {};
-                  const checkboxes = document.querySelectorAll('.import-section-checkbox:checked');
-                  if (checkboxes.length === 0) {
-                      showToast("Debes seleccionar al menos una sección para importar.", "error");
-                      return;
-                  }
-              
-                  checkboxes.forEach(cb => {
-                      sectionsToImport[cb.dataset.section] = true;
-                  });
-              
-                  // --- CAMBIO CLAVE: Primero cerramos el modal de opciones ---
-                  // Esto asegura que el modal de confirmación sea lo único visible.
-                  document.getElementById('import-options-modal').classList.remove('active');
-              
-                  // Ahora, abrimos el modal de confirmación
-                  openConfirmModal(
-                      'Confirmar Importación Selectiva',
-                      'Esto reemplazará permanentemente los datos de las secciones seleccionadas con la información del archivo. Esta acción no se puede deshacer. ¿Deseas continuar?',
-                      async () => {
-                          showLoading(); // Muestra el spinner de "Cargando..."
-                          const appId = firebaseProjectId;
-                          const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/user_data/preferences`);
-              
-                          try {
-                              const batch = writeBatch(db);
-              
-                              // Función auxiliar para limpiar una colección
-                              const clearCollection = async (collectionName) => {
-                                  const collectionRef = collection(db, `artifacts/${appId}/users/${userId}/${collectionName}`);
-                                  const snapshot = await getDocs(collectionRef);
-                                  snapshot.docs.forEach(d => batch.delete(doc(collectionRef, d.id)));
-                              };
-              
-                              // Función auxiliar para poblar una colección
-                              const populateCollection = (collectionName, data) => {
-                                  if (data && Array.isArray(data)) {
-                                      const collectionRef = collection(db, `artifacts/${appId}/users/${userId}/${collectionName}`);
-                                      data.forEach(item => {
-                                          const newDocRef = doc(collectionRef);
-                                          const itemWithId = { ...item, id: newDocRef.id };
-                                          batch.set(newDocRef, itemWithId);
-                                      });
-                                  }
-                              };
-              
-                              // --- PROCESAR CADA SECCIÓN SELECCIONADA ---
-                              if (sectionsToImport.transactions) {
-                                  await clearCollection('transactions');
-                                  populateCollection('transactions', importedFileData.transactions);
-                              }
-                              if (sectionsToImport.projections) {
-                                  await clearCollection('projections');
-                                  populateCollection('projections', importedFileData.projections);
-                              }
-                              if (sectionsToImport.recurringExpenses) {
-                                  await clearCollection('recurringExpenses');
-                                  populateCollection('recurringExpenses', importedFileData.recurringExpenses);
-                              }
-                              if (sectionsToImport.creditCards) {
-                                  await clearCollection('creditCards');
-                                  populateCollection('creditCards', importedFileData.creditCards);
-                              }
-              
-                              const preferencesUpdate = {};
-                              let configUpdated = false;
-              
-                              if (sectionsToImport.budgets && importedFileData.categoryBudgets) {
-                                  preferencesUpdate.categoryBudgets = importedFileData.categoryBudgets;
-                                  configUpdated = true;
-                              }
-                              if (sectionsToImport.config) {
-                                  if (importedFileData.categories) preferencesUpdate.categories = importedFileData.categories;
-                                  if (importedFileData.banks) preferencesUpdate.banks = importedFileData.banks;
-                                  if (importedFileData.descriptions) preferencesUpdate.descriptions = importedFileData.descriptions;
-                                  configUpdated = true;
-                              }
-                              if (sectionsToImport.general) {
-                                  if (importedFileData.openingBalance !== undefined) preferencesUpdate.openingBalance = importedFileData.openingBalance;
-                                  if (importedFileData.userAlias !== undefined) preferencesUpdate.userAlias = importedFileData.userAlias;
-                                  configUpdated = true;
-                              }
-              
-                              if (configUpdated) {
-                                  batch.update(userDocRef, preferencesUpdate);
-                              }
-                              
-                              await batch.commit();
-                              
-                              // Reseteamos la data del archivo importado
-                              importedFileData = null;
-                              
-                              // --- MEJORA EN LA RETROALIMENTACIÓN ---
-                              // El modal de confirmación se cierra automáticamente (ya programado)
-                              // y ahora mostramos un modal de éxito claro.
-                              showMessageModal("Importación Exitosa", "Los datos de las secciones seleccionadas se han importado correctamente.", "success");
-                              
-                          } catch (error) {
-                              console.error("[Firestore] Error durante la importación selectiva:", error);
-                              showMessageModal("Error de Importación", "Hubo un error al importar los datos. El proceso pudo quedar incompleto.", "error");
-                          } finally {
-                              hideLoading(); // Oculta el spinner de "Cargando..."
-                          }
-                      }
-                  );
+                  importFileInput.value = ''; // Limpiar el input de archivo
               }
       
               // --- UTILIDADES Y VALIDACIÓN ---
@@ -6198,60 +6050,8 @@ async function handleFormSubmit(e) {
               function formatDateForMobile(dateString) {
                   const date = new Date(dateString + 'T00:00:00');
                   return date.getDate().toString();
-              } 
+              }              
 
-              /**
-               * GENERA LA VISTA DE PROYECCIÓN DINÁMICAMENTE.
-               * Combina las transacciones reales del mes con los gastos recurrentes
-               * que aún no han sido registrados en ese mes.
-               * @returns {Array<Object>} Una lista unificada y ordenada de transacciones para la proyección.
-               */
-              function getDynamicProjections() {
-                  const realTransactions = getFilteredTransactions();
-                  const recurringExpenses = appState.recurringExpenses;
-                  
-                  // --- NUEVO: Obtener proyecciones manuales filtradas ---
-                  const selectedMonthFilter = filterMonth.value;
-                  const descriptionFilter = filterDescription.value.toLowerCase();
-                  const categoryFilter = filterCategory.value;
-                  const manualProjections = appState.projections.filter(p => {
-                      if (!p || typeof p.date !== 'string') return false;
-                      const matchesMonth = !selectedMonthFilter || p.date.substring(0, 7) === selectedMonthFilter;
-                      const matchesDescription = (p.description || '').toLowerCase().includes(descriptionFilter);
-                      const matchesCategory = !categoryFilter || p.category === categoryFilter;
-                      return matchesMonth && matchesDescription && matchesCategory;
-                  }).map(p => ({ ...p, isPureProjection: true })); // Añadimos una bandera para identificarlas
-
-                  if (!selectedMonthFilter) return [...realTransactions, ...manualProjections].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                  const [year, month] = selectedMonthFilter.split('-').map(Number);
-                  
-                  const projectedFromRecurring = recurringExpenses.map(re => ({
-                      id: `recurring-${re.id}`,
-                      date: new Date(year, month - 1, re.day).toISOString().split('T')[0],
-                      description: re.description,
-                      category: re.category,
-                      bank: re.bank,
-                      amount: re.amount,
-                      type: 'expense',
-                      isVirtual: true // Bandera para proyecciones de recurrentes
-                  }));
-
-                  // Filtra las proyecciones recurrentes que ya existen como transacciones REALES
-                  const futureProjections = projectedFromRecurring.filter(proj => {
-                      return !realTransactions.some(realTx => 
-                          realTx.date === proj.date &&
-                          realTx.description.toLowerCase() === proj.description.toLowerCase() &&
-                          realTx.category === proj.category
-                      );
-                  });
-
-                  // --- NUEVO: Combinar las TRES listas y ordenar por fecha ---
-                  const combinedList = [...realTransactions, ...manualProjections, ...futureProjections];
-                  combinedList.sort((a, b) => new Date(a.date) - new Date(b.date));
-                  
-                  return combinedList;
-              }
               // ================== REEMPLAZA ESTE BLOQUE COMPLETO ==================
               /**
                * Entra en el modo de pantalla completa con depuración.
@@ -6566,9 +6366,10 @@ async function handleFormSubmit(e) {
               // ================== REEMPLAZA ESTA FUNCIÓN COMPLETA =================
               // pegar aqui el nuevo código
               function switchTab(tabName) {
+                  // Si no se proporciona un nombre de pestaña, no hace nada.
                   if (!tabName) return;
 
-                  // 1. Oculta todos los paneles y desactiva todos los botones de pestañas
+                  // 1. Oculta todos los paneles de contenido y quita la clase 'active' de todos los botones.
                   document.querySelectorAll('.tab-pane').forEach(pane => {
                       pane.classList.add('hidden');
                       pane.classList.remove('active');
@@ -6577,79 +6378,77 @@ async function handleFormSubmit(e) {
                       button.classList.remove('active');
                   });
 
-                  // 2. Muestra el panel y activa el botón de la pestaña correcta
+                  // 2. Encuentra y muestra el panel de contenido correcto.
                   const activePane = document.getElementById(`${tabName}-content`);
-                  const activeButton = document.querySelector(`button[data-tab="${tabName}"]`);
-                  if (activePane) {
-                      activePane.classList.remove('hidden');
-                      activePane.classList.add('active');
+                  if (!activePane) {
+                      console.warn(`No se encontró el panel de contenido para la pestaña: ${tabName}`);
+                      return; 
                   }
+                  activePane.classList.remove('hidden');
+                  activePane.classList.add('active');
+                  
+                  // 3. (CORRECCIÓN CLAVE) Encuentra el botón de pestaña que corresponde y lo marca como activo.
+                  const activeButton = document.querySelector(`button[data-tab="${tabName}"]`);
                   if (activeButton) {
                       activeButton.classList.add('active');
                   }
 
-                  // 3. Lógica centralizada para gestionar los botones de acción
-                  const actionButtons = {
-                      main: document.getElementById('main-action-btn'),
-                      saveBudget: document.getElementById('save-budgets-btn'),
-                      migrateRecurring: document.getElementById('migrate-all-recurring-btn'),
-                      deleteSelected: document.getElementById('delete-selected-btn')
-                  };
+                  // 4. Lógica para mostrar los botones de acción correctos para cada pestaña.
+                  const saveBudgetsBtn = document.getElementById('save-budgets-btn');
+                  const migrateAllRecurringBtn = document.getElementById('migrate-all-recurring-btn');
                   
-                  // Oculta todos los botones de acción primero para empezar de cero
-                  Object.values(actionButtons).forEach(btn => btn && btn.classList.add('hidden'));
+                  // Ocultar TODOS los botones de acción primero.
+                  mainActionBtn.classList.add('hidden');
+                  saveBudgetsBtn.classList.add('hidden');
+                  migrateAllRecurringBtn.classList.add('hidden');
+                  deleteSelectedBtn.classList.add('hidden');
+                  
+                  // Limpiar checkboxes "seleccionar todo".
+                  selectAllRegistrosCheckbox.checked = false;
+                  selectAllProyeccionCheckbox.checked = false;
+                  selectAllRecurrentesCheckbox.checked = false;
 
-                  // Muestra los botones específicos para la pestaña activa
+                  // Muestra el BOTÓN ESPECÍFICO para la pestaña activa.
                   switch (tabName) {
                       case 'registros':
-                          actionButtons.main.classList.remove('hidden');
-                          document.getElementById('main-action-btn-text').textContent = 'Registrar Transacción';
+                          mainActionBtn.classList.remove('hidden');
+                          mainActionBtnText.textContent = 'Registrar Transacción';
                           break;
                       case 'proyeccion':
-                          actionButtons.main.classList.remove('hidden');
-                          document.getElementById('main-action-btn-text').textContent = 'Registrar Proyección';
+                          mainActionBtn.classList.remove('hidden');
+                          mainActionBtnText.textContent = 'Registrar Proyección';
                           break;
                       case 'recurrentes':
-                          actionButtons.main.classList.remove('hidden');
-                          actionButtons.migrateRecurring.classList.remove('hidden');
-                          document.getElementById('main-action-btn-text').textContent = 'Añadir Gasto Recurrente';
+                          migrateAllRecurringBtn.classList.remove('hidden');
+                          mainActionBtn.classList.remove('hidden');
+                          mainActionBtnText.textContent = 'Añadir Gasto Recurrente';
                           break;
                       case 'tarjetas':
-                          actionButtons.main.classList.remove('hidden');
-                          document.getElementById('main-action-btn-text').textContent = 'Añadir Tarjeta';
+                          mainActionBtn.classList.remove('hidden');
+                          mainActionBtnText.textContent = 'Añadir Tarjeta';
                           break;
                       case 'presupuesto':
-                          actionButtons.saveBudget.classList.remove('hidden');
+                          saveBudgetsBtn.classList.remove('hidden');
                           break;
                   }
-                  
-                  // Limpia checkboxes "seleccionar todo" al cambiar de pestaña
-                  if (selectAllRegistrosCheckbox) selectAllRegistrosCheckbox.checked = false;
-                  if (selectAllProyeccionCheckbox) selectAllProyeccionCheckbox.checked = false;
-                  if (selectAllRecurrentesCheckbox) selectAllRecurrentesCheckbox.checked = false;
-                  
-                  // Actualiza la visibilidad del botón "Eliminar Seleccionados"
-                  updateDeleteButtonVisibility();
-                  
-                  // 5. Vuelve a dibujar el contenido necesario para la nueva pestaña
-                  renderAll();
+
+                  // 5. Vuelve a dibujar todo el contenido para reflejar los cambios.
+                  renderAll(); 
               }
               // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
 
-
+              // --- REEMPLAZA LA FUNCIÓN COMPLETA ---
+              // pegar aqui el nuevo código
               function handleMainActionClick() {
+                  // Esta función ya no necesita la lógica de 'proyeccion' ya que el botón no aparece ahí.
                   const activeTabButton = document.querySelector('.tab-button.active');
-                  if (!activeTabButton) return; 
-
+                  if (!activeTabButton) return; // Si no hay pestaña activa, no hace nada.
+                  
                   const activeTab = activeTabButton.dataset.tab;
-
-                  // Lógica CONTEXTUAL para abrir el modal
+                  
                   if (activeTab === 'registros') {
-                      modalContext = 'registros'; // Establece el contexto a 'registros'
+                      modalContext = 'registros';
                       openTransactionModal();
-                  } else if (activeTab === 'proyeccion') {
-                      modalContext = 'proyeccion'; // Establece el contexto a 'proyeccion'
-                      openTransactionModal(); // Sí, abre el mismo modal, pero el contexto lo cambia todo
                   } else if (activeTab === 'recurrentes') {
                       openRecurringExpenseModal();
                   } else if (activeTab === 'tarjetas') {
@@ -6683,16 +6482,17 @@ async function handleFormSubmit(e) {
                   showLoading();
                   const appId = firebaseProjectId;
                   const transactionsColRef = collection(db, `artifacts/${appId}/users/${userId}/transactions`);
-                  
+                  const projectionsColRef = collection(db, `artifacts/${appId}/users/${userId}/projections`);
                   
                   try {
-                      // Se simplifica el proceso: ya no se necesita un "batch".
+                      const batch = writeBatch(db);
                       const newDocRef = doc(transactionsColRef);
                       const newId = newDocRef.id;
 
-                      // Ahora solo se guarda en la colección de transacciones.
-                      await setDoc(newDocRef, { ...transactionData, id: newId });
-
+                      batch.set(doc(transactionsColRef, newId), { ...transactionData, id: newId });
+                      batch.set(doc(projectionsColRef, newId), { ...transactionData, id: newId });
+                      
+                      await batch.commit();
                       showToast("Transacción por voz registrada con éxito.", "success");
 
                       // 3. Oculta el panel de voz
