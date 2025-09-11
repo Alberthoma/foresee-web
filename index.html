@@ -119,7 +119,7 @@
                   --electric-red: #ef4444;       /* Rojo vibrante */
                   --electric-orange: #f97316;    /* Naranja */
                   --electric-purple: #8b5cf6;    /* Púrpura */
-                  
+                  --electric-yellow: #facc15;    /* Amarillo eléctrico
                   /* Colores para transacciones */
                   --income-color: var(--electric-green);
                   --expense-color: var(--electric-red);
@@ -888,9 +888,44 @@
                 margin: -1rem; /* Truco para que ocupe todo el espacio del contenedor padre */
                 border-radius: 0.75rem;
             } 
-            
+
+ /* ====================================================================== */
+            /* ===== ESTILOS MEJORADOS PARA TARJETAS DE SALDO - 10/09/2025 ========= */
             /* ====================================================================== */
-            /* ===== AJUSTES DE VISUALES EN TABLA PRESUPUESTO by Gemini - 22/08/2025 ==== */
+            .balance-card-label {
+                padding: 1rem;
+                border-radius: 0.5rem; /* 8px */
+                text-align: center;
+                font-weight: 700;
+                font-size: 2rem; /* 32px */
+                transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            }
+            .balance-card-label:hover {
+                transform: scale(1.03); /* Efecto de crecimiento al pasar el mouse */
+            }
+
+            .balance-card-positive {
+                background-color: rgba(34, 197, 94, 0.15); /* Fondo verde translúcido */
+                color: var(--income-color);
+                /* Efecto de relieve y neón */
+                box-shadow: 
+                    0 8px 15px rgba(0, 0, 0, 0.3),  /* Sombra inferior para profundidad */
+                    inset 0 1px 1px rgba(255, 255, 255, 0.2), /* Brillo superior interior */
+                    inset 0 0 8px rgba(34, 197, 94, 0.4); /* Resplandor neón interior */
+            }
+
+            .balance-card-negative {
+                background-color: rgba(239, 68, 68, 0.15); /* Fondo rojo translúcido */
+                color: var(--expense-color);
+                /* Efecto de relieve y neón */
+                box-shadow: 
+                    0 8px 15px rgba(0, 0, 0, 0.3),  /* Sombra inferior para profundidad */
+                    inset 0 1px 1px rgba(255, 255, 255, 0.2), /* Brillo superior interior */
+                    inset 0 0 8px rgba(239, 68, 68, 0.4); /* Resplandor neón interior */
+            }
+
+            /* ====================================================================== */
+            /* ===== AJUSTES DE VISUALES EN TABLA PRESUPUESTO
             /* ====================================================================== */
 
             /* 1. Cambia el color del texto de la primera columna ('Categoría') a blanco */
@@ -1120,12 +1155,40 @@
             #monthly-income { color: var(--income-color); }
             #monthly-expenses { color: var(--expense-color); }
 
-            /* 4. Estilo para el contenedor del icono */
-            .card-icon-wrapper {
-                background-color: var(--bg-dark-tertiary);
-                padding: 0.75rem; /* 12px */
-                border-radius: 9999px; /* fully rounded */
-            }
+
+
+              /* --- Alertas de Tarjetas y Recurrentes --- */
+              #credit-card-alerts, #recurring-alerts {
+                margin: 0.5rem 2rem 0 2rem; /* mt-2 mx-8 */
+                font-size: 0.875rem; /* text-sm */
+              }
+              #credit-card-alerts p, 
+              #recurring-alerts p {
+                padding: 0.5rem;
+                margin-bottom: 0.25rem;
+                border-radius: 0.375rem;
+                box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1);
+              }
+              /* Estilo para alertas de PELIGRO (2 días o menos) */
+              #recurring-alerts p.danger {
+                background-color: rgba(239, 68, 68, 0.1); /* Rojo translúcido */
+                border-left: 4px solid var(--electric-red);
+                color: var(--electric-red);
+              }
+              /* Estilo para alertas de ADVERTENCIA (3 a 5 días) */
+
+              #recurring-alerts p.warning {
+                background-color: rgba(250, 204, 21, 0.15); /* Amarillo translúcido */
+                border-left: 4px solid var(--electric-yellow);
+                color: var(--electric-yellow);
+              }
+
+              #credit-card-alerts svg, #recurring-alerts svg {
+                  display: inline-block;
+                  width: 1.25rem;
+                  height: 1.25rem;
+                  margin-right: 0.5rem;
+              }
 
               /* --- Alertas de Tarjetas y Recurrentes --- */
               #credit-card-alerts, #recurring-alerts {
@@ -1206,8 +1269,8 @@
               }
 
               .card-icon-wrapper img {
-                  height: 48px;     /* Tamaño de la imagen más pequeño y consistente */
-                  width: 48px;      /* Hacemos que sea un cuadrado para que no se deforme */
+                  height: 64px;     /* Tamaño de la imagen más pequeño y consistente */
+                  width:auto;      /* Hacemos que sea un cuadrado para que no se deforme */
               }
               .card-icon-wrapper {
                   width: 62px;      /* Ancho fijo y más pequeño para el círculo */
@@ -2205,7 +2268,7 @@
             <p id="monthly-income">$0.00</p>
           </div>
           <div class="card-icon-wrapper">
-            <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514677/ingreso_yhpbrn.png" alt="Icono Ingresos" class="">
+            <img src="https://res.cloudinary.com/datwdagbf/image/upload/v1757548984/ingresos1_mhofiz.png" alt="Icono Ingresos" class="">
           </div>
         </div>
         <div id="expense-card" class="dashboard-card">
@@ -2214,7 +2277,7 @@
             <p id="monthly-expenses">$0.00</p>
           </div>
           <div class="card-icon-wrapper">
-            <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514672/gasto_dowgd2.png" alt="Icono Gastos" class="">
+            <img src="https://res.cloudinary.com/datwdagbf/image/upload/v1757548983/egresos1_zpgahj.png" alt="Icono Gastos" class="">
           </div>
         </div>
       </div>
@@ -4431,12 +4494,9 @@
               function renderAll() {
                   renderDashboard();
                   renderTransactionsTable();
-
-                  // Pega el nuevo código aquí
                   renderProyeccionTable();
-
                   renderConfigurationLists();
-                  renderCreditCardAlerts(); // Renderizar alertas de tarjetas
+                  //renderCreditCardAlerts(); // Renderizar alertas de tarjetas
                   renderRecurringAlerts(); // Renderizar alertas de recurrentes
                   renderHeaderAlias(); // Asegurarse de que el alias se muestre correctamente
                   const activeTabElement = document.querySelector('.tab-pane.active');
@@ -4671,13 +4731,11 @@
                   }));
               }  
 
-              // --- REEMPLAZA LA FUNCIÓN COMPLETA ---
               function renderBankBalances() {
                   const balancesGrid = document.getElementById('bank-balances-grid');
                   const noBalancesMessage = document.getElementById('no-balances-message');
                   balancesGrid.innerHTML = ''; 
 
-                  // Filtrar solo transacciones activas
                   const activeTransactions = appState.transactions.filter(t => !t.isArchived);
 
                   const bankBalances = appState.banks.map(bankName => {
@@ -4694,17 +4752,26 @@
                       noBalancesMessage.classList.remove('hidden');
                       balancesGrid.classList.add('hidden');
                   } else {
-                      noBalancesMessage.classList.add('hidden');
+                      noBalancesMessage.classList.remove('hidden');
                       balancesGrid.classList.remove('hidden');
 
                       bankBalances.forEach(bank => {
-                          const balanceColor = bank.balance >= 0 ? 'text-green-600' : 'text-red-600';
+                          // **LÓGICA MODIFICADA**
+                          // Asignamos la nueva clase de la tarjeta (positiva o negativa)
+                          const balanceClass = bank.balance >= 0 ? 'balance-card-positive' : 'balance-card-negative';
+                          
                           const card = document.createElement('div');
-                          card.className = 'bg-white p-6 rounded-xl shadow-md flex flex-col justify-between';
+                          // Eliminamos estilos de la tarjeta principal para que no interfieran
+                          card.className = 'bg-white p-4 rounded-xl shadow-md flex flex-col justify-between';
+                          
+                          // **ESTRUCTURA HTML MEJORADA**
+                          // Aplicamos las nuevas clases directamente a la etiqueta <p> del saldo
                           card.innerHTML = `
                               <div>
-                                  <p class="text-lg font-semibold text-gray-700">${bank.name}</p>
-                                  <p class="text-3xl font-bold ${balanceColor} mt-2">${formatCurrency(bank.balance)}</p>
+                                  <p class="text-lg font-semibold text-gray-700 mb-3">${bank.name}</p>
+                                  <p class="balance-card-label ${balanceClass}">
+                                      ${formatCurrency(bank.balance)}
+                                  </p>
                               </div>
                           `;
                           balancesGrid.appendChild(card);
@@ -4943,9 +5010,6 @@
                   }
               }
 
-              /**
-               * Renders on-screen reminders for recurring expenses due in the next 5 days.
-               */
               function renderRecurringAlerts() {
                   const recurringAlertsDiv = document.getElementById('recurring-alerts');
                   recurringAlertsDiv.innerHTML = '';
@@ -4956,31 +5020,36 @@
                       const expenseDay = parseInt(expense.day, 10);
                       const nextDueDate = new Date(today.getFullYear(), today.getMonth(), expenseDay);
                       
-                      // If the due date has passed in the current month, check next month
+                      // Si la fecha de pago de este mes ya pasó, calcula para el mes siguiente.
                       if (today.getDate() > expenseDay) {
                           nextDueDate.setMonth(nextDueDate.getMonth() + 1);
                       }
 
                       const daysDiff = Math.ceil((nextDueDate - today) / (1000 * 60 * 60 * 24));
 
+                      // Nueva lógica: notificar si faltan 5 días o menos.
                       if (daysDiff >= 0 && daysDiff <= 5) {
                           let message = `¡Atención! El pago de "${expense.description}" vence en ${daysDiff} día(s). Monto: ${formatCurrency(expense.amount)}.`;
                           if (daysDiff === 0) {
                               message = `¡Atención! El pago de "${expense.description}" vence HOY. Monto: ${formatCurrency(expense.amount)}.`;
                           }
-                          alerts.push(message);
+                          
+                          // Determina el tipo de alerta (peligro o advertencia) según los días restantes.
+                          const alertType = daysDiff <= 2 ? 'danger' : 'warning';
+                          alerts.push({ text: message, type: alertType });
                       }
                   });
 
                   if (alerts.length > 0) {
-                      alerts.forEach(alertText => {
+                      alerts.forEach(alert => {
                           const p = document.createElement('p');
-                          p.className = 'bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 mb-1 rounded-md shadow-sm';
-                          p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>${alertText}`;
+                          // Asigna la clase 'danger' o 'warning' para que coincida con el CSS que creamos.
+                          p.className = alert.type; 
+                          p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>${alert.text}`;
                           recurringAlertsDiv.appendChild(p);
                       });
                   }
-              }              
+              }          
       
       
               // --- MODALES Y NOTIFICACIONES ---
@@ -6919,8 +6988,6 @@
                   currentMonthFilterValue = filterMonth.value;
               }
 
-              // ================== REEMPLAZA ESTA FUNCIÓN COMPLETA =================
-              // pegar aqui el nuevo código
               function switchTab(tabName) {
                   if (!tabName) return;
 
@@ -6978,7 +7045,17 @@
                           actionButtons.saveBudget.classList.remove('hidden');
                           break;
                   }
-                  
+                  // --- ¡AQUÍ ESTÁ LA MODIFICACIÓN! ---
+                  // Este bloque controla la visibilidad de los filtros en la vista de ESCRITORIO.
+                  const filtersContainer = document.getElementById('filters-container');
+                  if (filtersContainer && window.innerWidth > 768) { // Solo se aplica en pantallas grandes
+                      if (tabName === 'registros') {
+                          filtersContainer.style.display = 'flex'; // Muestra los filtros
+                      } else {
+                          filtersContainer.style.display = 'none';  // Oculta los filtros
+                      }
+                  }
+                  // --- FIN DE LA MODIFICACIÓN ---                  
                   // Limpia checkboxes "seleccionar todo" al cambiar de pestaña
                   if (selectAllRegistrosCheckbox) selectAllRegistrosCheckbox.checked = false;
                   if (selectAllProyeccionCheckbox) selectAllProyeccionCheckbox.checked = false;
