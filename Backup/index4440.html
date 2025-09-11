@@ -2081,72 +2081,6 @@
               #migrate-all-recurring-btn {
                   display: none !important;
               }
-
-              /* ====================================================================== */
-              /* ===== ESTILOS PARA EL SELECTOR VISUAL DE CATEGORÍAS - 10/09/2025 ===== */
-              /* ====================================================================== */
-
-              /* 1. Estilo para el botón principal en el formulario */
-              #category-select-button {
-                  background-color: var(--bg-dark-tertiary);
-                  border: 1px solid var(--border-dark);
-                  color: var(--text-light-primary);
-                  transition: all 0.2s ease;
-                  display: flex;
-                  align-items: center;
-                  gap: 4px; /* Espacio entre el icono y el texto */
-                  padding-top: 0.20rem;    /* 8px */
-                  padding-bottom: 0.15rem; /* 8px */
-                  padding-left: 0.5rem;  /* 12px */
-                  padding-right: 0.5rem; /* 12px */
-              }
-
-              #category-select-button:hover {
-                  border-color: var(--electric-blue);
-              }
-
-              /* 2. Estilo para el ícono dentro del botón, una vez seleccionado */
-              #category-select-button img {
-                  width: 24px;
-                  height: 24px;
-              }
-
-              /* 3. Estilos para la parrilla de selección en el nuevo modal */
-              #category-select-grid {
-                  display: grid;
-                  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-                  gap: 1.5rem;
-              }
-
-              /* Usamos un estilo similar al que ya tenías para la creación de categorías */
-              .category-select-option {
-                  cursor: pointer;
-                  padding: 0.5rem;
-                  border-radius: 0.75rem;
-                  border: 2px solid transparent;
-                  transition: all 0.2s ease-in-out;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  background-color: var(--bg-dark-tertiary);
-                  text-align: center;
-              }
-              .category-select-option:hover {
-                  transform: scale(1.1);
-                  border-color: var(--electric-blue);
-              }
-              .category-select-option img {
-                  width: 48px;
-                  height: 48px;
-                  margin-bottom: 0.5rem;
-              }
-              .category-select-option span {
-                  font-size: 0.75rem; /* 12px */
-                  color: var(--text-light-secondary);
-                  line-height: 1.2;
-              }
-
     </style>
   </head>
   <body class="mt-56 view-dashboard">
@@ -2318,7 +2252,7 @@
         </div>
       </div>
 
-      <div id="dashboard">
+<div id="dashboard">
         <div id="balance-card" class="dashboard-card">
           <div>
             <p>Saldo Actual</p>
@@ -3021,11 +2955,8 @@
             </div>
 
             <div id="transaction-modal-type-container"> <div>
-                <label for="category-select-button">Categoría</label>
-                <button type="button" id="category-select-button" class="w-full p-3 border rounded-lg text-left">
-                  <span>Seleccionar Categoría...</span>
-                </button>
-                <input type="hidden" id="transaction-category-hidden" required>
+                <label for="transaction-category">Categoría</label>
+                <select id="transaction-category" required></select>
                 <span class="input-error-message" id="transaction-category-error"></span>
               </div>
               <div>
@@ -3466,31 +3397,7 @@
               </button>
             </div>
           </div>
-        </div>
-        
-        <div class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4" id="category-select-modal">
-          <div class="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col" style="max-height: 90vh;">
-            <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg flex-shrink-0">
-              <h2 class="text-2xl font-bold text-gray-700">
-                Selecciona una Categoría
-              </h2>
-              <button class="text-gray-400 hover:text-gray-600" id="close-category-select-modal-btn">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              </button>
-            </div>
-
-            <div class="p-8 flex-grow overflow-y-auto">
-              <div class="mb-6">
-                <button id="open-add-category-from-select-btn" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center">
-                  + Añadir Nueva Categoría
-                </button>
-              </div>
-
-              <div id="category-select-grid" class="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1rem;">
-                </div>
-            </div>
-          </div>
-        </div>       
+        </div>        
 
         <footer class="bg-gray-800 text-white py-4">
           <div class="container mx-auto text-center">
@@ -3498,7 +3405,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 4.4.4.1
+              Versión 4.4.4.0
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3655,8 +3562,6 @@
               let initialTransactionsLoaded = false;
               let initialRecurringLoaded = false;
               let recurringProcessed = false;
-
-              let isAddingCategoryFromTransaction = false; // <--- ¡Añade esta línea!
       
               // --- ELEMENTOS DEL DOM ---
               const mainContentWrapper = document.getElementById('main-content-wrapper');
@@ -3734,15 +3639,6 @@
               const recurringBankError = document.getElementById('recurring-bank-error');
               const recurringDayError = document.getElementById('recurring-day-error');
               const creditCardBankError = document.getElementById('credit-card-bank-error');
-
-              const categorySelectModal = document.getElementById('category-select-modal');
-              const categorySelectGrid = document.getElementById('category-select-grid');
-              const categorySelectButton = document.getElementById('category-select-button');
-              const transactionCategoryHiddenInput = document.getElementById('transaction-category-hidden');
-              const closeCategorySelectModalBtn = document.getElementById('close-category-select-modal-btn');
-
-              const openAddCategoryFromSelectBtn = document.getElementById('open-add-category-from-select-btn'); // <--- ¡Añade esta línea!
-
               const creditCardDueDateError = document.getElementById('credit-card-due-date-error');
               const creditCardAmountError = document.getElementById('credit-card-amount-error');
               const creditCardRateError = document.getElementById('credit-card-rate-error');
@@ -3886,24 +3782,6 @@
                   if (closeContentViewBtn) {
                       closeContentViewBtn.addEventListener('click', showDashboardView);
                   }
-
-                  // Eventos para el nuevo selector de categorías
-                  categorySelectButton.addEventListener('click', openCategorySelector);
-                  closeCategorySelectModalBtn.addEventListener('click', () => categorySelectModal.classList.remove('active'));
-                  categorySelectModal.addEventListener('click', (e) => {
-                      if (e.target === categorySelectModal) {
-                          categorySelectModal.classList.remove('active');
-                      }
-                  });
-                  
-                  // Listener para el botón "+ Añadir Nueva Categoría" dentro del selector
-                  openAddCategoryFromSelectBtn.addEventListener('click', () => {
-                      isAddingCategoryFromTransaction = true; // Activamos nuestra "memoria"
-
-                      categorySelectModal.classList.remove('active'); // <-- ¡LÍNEA AÑADIDA! Cierra el modal actual
-
-                      openAddCategoryModal(); // Abrimos el modal de creación
-                  });
 
                   const logoutTabBtn = document.getElementById('logout-tab-btn');
                   if (logoutTabBtn) {
@@ -4377,7 +4255,6 @@
                */
               function closeAddCategoryModal() {
                   document.getElementById('category-icon-modal').classList.remove('active');
-                  isAddingCategoryFromTransaction = false; // <-- ¡Añade esta línea!
               }
               
               /**
@@ -5322,26 +5199,11 @@
                       if (item) {
                           const title = sourceCollection === 'projections' ? 'Editar Proyección' : 'Editar Transacción';
                           document.getElementById('modal-title').textContent = title;
-
-                          // ... dentro de openTransactionModal, en el bloque if(item)
                           document.getElementById('transaction-id').value = item.id;
                           document.getElementById('transaction-date').value = item.date;
                           document.getElementById('transaction-description').value = item.description;
-
-                          // --- LÓGICA MODIFICADA PARA ACTUALIZAR EL SELECTOR VISUAL ---
-                          const categoryObject = appState.categories.find(c => c.name === item.category);
-                          if (categoryObject) {
-                              categorySelectButton.innerHTML = `
-                                  <img src="${categoryObject.icon || DEFAULT_ICON}" alt="${categoryObject.name}">
-                                  <span>${categoryObject.name}</span>
-                              `;
-                              transactionCategoryHiddenInput.value = categoryObject.name;
-                          }
-                          // --- FIN DE LA LÓGICA MODIFICADA ---
-
+                          document.getElementById('transaction-category').value = item.category;
                           document.getElementById('transaction-bank').value = item.bank;
-
-
                           document.getElementById('transaction-amount').value = item.amount;
                           document.querySelector(`input[name="transaction-type"][value="${item.type}"]`).checked = true;
                       } else {
@@ -5380,46 +5242,6 @@
                   transactionModal.classList.remove('active');
                   clearValidationErrors(); // Limpiar errores al cerrar el modal
               }
-
-              /**
-               * Abre el modal de selección de categorías y lo puebla con los iconos.
-               */
-              function openCategorySelector() {
-                  categorySelectGrid.innerHTML = ''; // Limpia la parrilla anterior
-
-                  appState.categories.forEach(cat => {
-                      // No mostramos categorías especiales como 'Transferencia Interna' en el selector
-                      if (cat.name === 'Transferencia Interna') return;
-
-                      const option = document.createElement('div');
-                      option.className = 'category-select-option';
-                      option.dataset.categoryName = cat.name; // Guardamos el nombre para usarlo después
-
-                      option.innerHTML = `
-                          <img src="${cat.icon || DEFAULT_ICON}" alt="${cat.name}">
-                          <span>${cat.name}</span>
-                      `;
-
-                      // ¡La magia sucede aquí!
-                      option.addEventListener('click', () => {
-                          // 1. Actualiza el botón visual
-                          categorySelectButton.innerHTML = `
-                              <img src="${cat.icon || DEFAULT_ICON}" alt="${cat.name}">
-                              <span>${cat.name}</span>
-                          `;
-                          // 2. Guarda el valor en el campo oculto
-                          transactionCategoryHiddenInput.value = cat.name;
-
-                          // 3. Cierra el modal de selección
-                          categorySelectModal.classList.remove('active');
-                      });
-
-                      categorySelectGrid.appendChild(option);
-                  });
-
-                  categorySelectModal.classList.add('active');
-              }
-
       
               // ================================== PEGA AQUÍ ==================================
               // --- REEMPLAZA LA FUNCIÓN COMPLETA CON ESTA VERSIÓN ---
@@ -5430,7 +5252,7 @@
                   const description = toTitleCase(document.getElementById('transaction-description').value.trim());
                   const amount = parseFloat(document.getElementById('transaction-amount').value);
                   const date = document.getElementById('transaction-date').value;
-                  const category = transactionCategoryHiddenInput.value;
+                  const category = document.getElementById('transaction-category').value;
                   const bank = document.getElementById('transaction-bank').value;
                   const type = document.querySelector('input[name="transaction-type"]:checked').value;
                   const id = document.getElementById('transaction-id').value;
@@ -5706,30 +5528,8 @@
                       console.log("[Firestore] Añadiendo categoría:", newCategory);
                       await updateDoc(userDocRef, { categories: updatedCategories });
                       
+                      closeAddCategoryModal(); // Cierra el modal de iconos
                       showToast(`Categoría "${name}" añadida.`, "success");
-
-                      // ===== ¡AQUÍ ESTÁ LA MAGIA! =====
-                      // Si venimos del flujo de añadir transacción...
-                      if (isAddingCategoryFromTransaction) {
-                          // 1. Actualizamos el botón del formulario de transacción con la nueva categoría
-                          categorySelectButton.innerHTML = `
-                              <img src="${newCategory.icon || DEFAULT_ICON}" alt="${newCategory.name}">
-                              <span>${newCategory.name}</span>
-                          `;
-                          // 2. Guardamos el valor en el campo oculto
-                          transactionCategoryHiddenInput.value = newCategory.name;
-
-                          // 3. Cerramos TODOS los modales abiertos
-                          closeAddCategoryModal();
-                          categorySelectModal.classList.remove('active');
-
-                          // 4. Reseteamos nuestra "memoria" para la próxima vez
-                          isAddingCategoryFromTransaction = false;
-                      } else {
-                          // Si no, simplemente cerramos el modal de creación (comportamiento normal)
-                          closeAddCategoryModal();
-                      }
-
                   } catch (error) {
                       console.error("[Firestore] Error al añadir categoría:", error);
                       showMessageModal("Error al Añadir Categoría", "No se pudo añadir la categoría.", "error");
