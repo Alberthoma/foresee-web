@@ -272,6 +272,86 @@
               #dashboard .bg-blue-100, #dashboard .bg-green-100, #dashboard .bg-red-100 {
                 background-color: var(--bg-dark-tertiary);
               }
+
+               /* === NEÓN + 3D PARA TARJETAS DEL DASHBOARD === */
+
+              /* Activa perspectiva para que el hover tenga efecto 3D 
+              #dashboard { perspective: 900px; }*/
+
+               /*Base 3D para todas las tarjetas */
+
+
+              /*Realce “flotante” al pasar el mouse: leve tilt 3D */
+
+
+              /* Aro de brillo externo (neón) – controlado por color por tarjeta 
+              #dashboard > div::before {
+                content: "";
+                position: absolute;
+                inset: -2px;                /* sale un pelín para dar halo 
+                border-radius: inherit;
+                pointer-events: none;
+                filter: blur(6px);
+                opacity: .85;
+                transition: opacity .25s ease, filter .25s ease;
+              }
+
+              /* — Tarjeta 1: SALDO ACTUAL → neón azul — 
+              #dashboard > div:nth-child(1) {
+                /* capa de brillo externo y profundidad 
+                box-shadow:
+                  0 12px 24px rgba(0,0,0,0.45),
+                  0 0 14px rgba(14,165,233,.35),
+                  0 0 28px rgba(14,165,233,.20),
+                  0 2px 0 rgba(14,165,233,.25) inset;
+                border-color: rgba(14,165,233,.45);
+              }
+              #dashboard > div:nth-child(1)::before {
+                box-shadow:
+                  0 0 18px var(--electric-blue),
+                  0 0 36px var(--electric-blue),
+                  0 0 54px rgba(14,165,233,.6);
+              }
+
+              /* — Tarjeta 2: INGRESOS DEL MES → neón verde — 
+              #dashboard > div:nth-child(2) {
+                box-shadow:
+                  0 12px 24px rgba(0,0,0,0.45),
+                  0 0 14px rgba(34,197,94,.35),
+                  0 0 28px rgba(34,197,94,.20),
+                  0 2px 0 rgba(34,197,94,.25) inset;
+                border-color: rgba(34,197,94,.45);
+              }
+              #dashboard > div:nth-child(2)::before {
+                box-shadow:
+                  0 0 18px var(--electric-green),
+                  0 0 36px var(--electric-green),
+                  0 0 54px rgba(34,197,94,.6);
+              }
+
+              /* — Tarjeta 3: GASTOS DEL MES → neón rojo — 
+              #dashboard > div:nth-child(3) {
+                box-shadow:
+                  0 12px 24px rgba(0,0,0,0.45),
+                  0 0 14px rgba(239,68,68,.35),
+                  0 0 28px rgba(239,68,68,.20),
+                  0 2px 0 rgba(239,68,68,.25) inset;
+                border-color: rgba(239,68,68,.45);
+              }
+              #dashboard > div:nth-child(3)::before {
+                box-shadow:
+                  0 0 18px var(--electric-red),
+                  0 0 36px var(--electric-red),
+                  0 0 54px rgba(239,68,68,.6);
+              }
+
+              /* Opcional: intensificar el halo en hover 
+              #dashboard > div:hover::before {
+                filter: blur(7px);
+                opacity: 1;
+              }*/             
+
+              /* --- ESTILOS DE MODALES Y NOTIFICACIONES --- */
               
               .modal { display: none; z-index: 100; }
               .modal.active { display: flex; }
@@ -2067,70 +2147,6 @@
                   line-height: 1.2;
               }
 
-              /* ====================================================================== */
-              /* ===== NUEVOS ESTILOS EN CSS PURO PARA FORMULARIO GUIADO - 13/09/2025 ==== */
-              /* ====================================================================== */
-
-              /* 1. Estilos para el contenedor del campo (agrupa etiqueta e input) */
-              .guided-form-field {
-                  margin-bottom: 1rem; /* Espacio entre cada campo */
-              }
-
-              /* 2. Estilos para las etiquetas (label) */
-              .guided-form-label {
-                  display: block;
-                  color: var(--text-light-secondary);
-                  font-weight: 500;
-                  font-size: 0.875rem; /* 14px */
-                  margin-bottom: 0.25rem; /* Espacio entre la etiqueta y el input */
-              }
-
-              /* 3. Estilos generales para los inputs de texto, número, fecha y select */
-              .guided-form-input,
-              .guided-form-select {
-                  width: 100%;
-                  background-color: var(--bg-dark-tertiary);
-                  border: 1px solid var(--border-dark);
-                  color: var(--text-light-primary);
-                  border-radius: 0.5rem; /* 8px */
-                  padding: 0.75rem; /* 12px */
-                  font-size: 1rem; /* 16px */
-                  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-                  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
-              }
-
-              /* 4. Estilos para el botón de selección de categoría */
-              .guided-form-category-button {
-                  width: 100%;
-                  background-color: var(--bg-dark-tertiary);
-                  border: 1px solid var(--border-dark);
-                  color: var(--text-light-primary);
-                  border-radius: 0.5rem;
-                  padding: 0.75rem;
-                  font-size: 1rem;
-                  text-align: left;
-                  cursor: pointer;
-                  display: flex; /* Para alinear icono y texto */
-                  align-items: center;
-                  gap: 8px;
-                  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-              }
-              .guided-form-category-button img {
-                  width: 24px;
-                  height: 24px;
-              }
-
-
-              /* 5. Efecto de Foco (cuando se hace clic en un input) */
-              .guided-form-input:focus,
-              .guided-form-select:focus,
-              .guided-form-category-button:focus {
-                  outline: none;
-                  border-color: var(--electric-blue);
-                  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.4);
-              }
-
-
     </style>
   </head>
   <body class="mt-56 view-dashboard">
@@ -2356,13 +2372,7 @@
               <button class="bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 hidden" id="main-action-btn">
                 <span id="main-action-btn-text"></span>
               </button>
-              <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition flex items-center space-x-2 hidden" id="add-income-btn">
-                <span>+ Ingreso</span>
-              </button>
-              <button class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition flex items-center space-x-2 hidden" id="add-expense-btn">
-                <span>+ Gasto</span>
-              </button>
-              </div>
+          </div>
           <button id="toggle-filters-btn" class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs">
               Filtros
           </button>
@@ -2980,10 +2990,7 @@
       </main>
     </div>
 
-  <div class="modal" id="transaction-modal"> 
-      <div id="transaction-modal-content"> 
-        <div id="transaction-modal-header"> 
-          <h2 id="modal-title">Registrar Transacción</h2>
+<div class="modal" id="transaction-modal"> <div id="transaction-modal-content"> <div id="transaction-modal-header"> <h2 id="modal-title">Registrar Transacción</h2>
           <div class="flex items-center">
             <button id="voice-recognition-btn" type="button" class="text-gray-400 hover:text-blue-500 transition-colors duration-200 mr-4" title="Registrar por Voz">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-mic-fill" viewBox="0 0 16 16">
@@ -2998,48 +3005,58 @@
         </div>
         
         <form id="transaction-form" novalidate>
-          <div id="transaction-modal-body">
-            <input id="transaction-id" type="hidden"/>
-            <input id="transaction-type-hidden" type="hidden"/>
-
-            <div class="guided-form-field">
-              <label for="transaction-date" class="guided-form-label">Fecha</label>
-              <input id="transaction-date" required type="date" class="guided-form-input"/>
+          <div id="transaction-modal-body"> <input id="transaction-id" type="hidden"/>
+            
+            <div>
+              <label for="transaction-date">Fecha</label>
+              <input id="transaction-date" required type="date"/>
               <span class="input-error-message" id="transaction-date-error"></span>
             </div>
-            
-            <div class="guided-form-field">
-                <label for="category-select-button" class="guided-form-label">Categoría</label>
-                <button type="button" id="category-select-button" class="guided-form-category-button">
-                  <span>Seleccionar Categoría...</span>
-                </button>
-                <input type="hidden" id="transaction-category-hidden" required>
-                <span class="input-error-message" id="transaction-category-error"></span>
-            </div>
 
-            <div class="guided-form-field">
-              <label for="transaction-amount" class="guided-form-label">Monto</label>
-              <input id="transaction-amount" required step="0.01" type="number" placeholder="0.00" class="guided-form-input"/>
-              <span class="input-error-message" id="transaction-amount-error"></span>
-            </div>
-            
-            <div class="guided-form-field">
-              <label for="transaction-bank" class="guided-form-label">Banco/Cuenta</label>
-              <select id="transaction-bank" required class="guided-form-select"></select>
-              <span class="input-error-message" id="transaction-bank-error"></span>
-            </div>
-
-            <div class="guided-form-field">
-              <label for="transaction-description" class="guided-form-label">Descripción</label>
-              <input id="transaction-description" list="description-list" required type="text" placeholder="Ej: Compra de supermercado" class="guided-form-input"/>
+            <div>
+              <label for="transaction-description">Descripción</label>
+              <input id="transaction-description" list="description-list" required type="text" placeholder="Ej: Compra de supermercado"/>
               <datalist id="description-list"></datalist>
               <span class="input-error-message" id="transaction-description-error"></span>
             </div>
 
+            <div id="transaction-modal-type-container"> <div>
+                <label for="category-select-button">Categoría</label>
+                <button type="button" id="category-select-button" class="w-full p-3 border rounded-lg text-left">
+                  <span>Seleccionar Categoría...</span>
+                </button>
+                <input type="hidden" id="transaction-category-hidden" required>
+                <span class="input-error-message" id="transaction-category-error"></span>
+              </div>
+              <div>
+                <label for="transaction-bank">Banco/Cuenta</label>
+                <select id="transaction-bank" required></select>
+                <span class="input-error-message" id="transaction-bank-error"></span>
+              </div>
+            </div>
+
+            <div>
+              <label for="transaction-amount">Monto</label>
+              <input id="transaction-amount" required step="0.01" type="number" placeholder="0.00"/>
+              <span class="input-error-message" id="transaction-amount-error"></span>
+            </div>
+
+            <div>
+              <label>Tipo de Transacción</label>
+              <div id="transaction-modal-type-container"> <div>
+                  <input class="radio-type-input" id="type-income" name="transaction-type" type="radio" value="income" checked/>
+                  <label class="radio-type-label" for="type-income">Ingreso</label>
+                </div>
+                <div>
+                  <input class="radio-type-input" id="type-expense" name="transaction-type" type="radio" value="expense"/>
+                  <label class="radio-type-label" for="type-expense">Gasto</label>
+                </div>
+              </div>
+              <span class="input-error-message" id="transaction-type-error"></span>
+            </div>
           </div>
 
-          <div id="transaction-modal-footer"> 
-            <button class="w-full sm:w-auto bg-green-100 text-green-800 px-4 py-2 rounded-lg hover:bg-green-200 text-sm font-semibold" id="open-transfer-modal-btn" type="button">
+          <div id="transaction-modal-footer"> <button class="w-full sm:w-auto bg-green-100 text-green-800 px-4 py-2 rounded-lg hover:bg-green-200 text-sm font-semibold" id="open-transfer-modal-btn" type="button">
               Transferencia Interna
             </button>
             <div class="w-full sm:w-auto flex justify-end gap-4">
@@ -3481,7 +3498,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 0.0.0.1
+              Versión 4.4.4.1
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3901,20 +3918,6 @@
                   authForm.addEventListener('submit', handleLogin);
                   registerBtn.addEventListener('click', handleRegister);
                   logoutBtn.addEventListener('click', handleLogout);
-
-                  // ===== INICIO DEL CÓDIGO AÑADIDO =====
-                  // Eventos para los nuevos botones de Ingreso y Gasto
-                  document.getElementById('add-income-btn').addEventListener('click', () => {
-                      const activeTab = document.querySelector('.tab-pane.active')?.id.replace('-content', '');
-                      modalContext = activeTab === 'proyeccion' ? 'proyeccion' : 'registros';
-                      openTransactionModal({ type: 'income' });
-                  });
-                  document.getElementById('add-expense-btn').addEventListener('click', () => {
-                      const activeTab = document.querySelector('.tab-pane.active')?.id.replace('-content', '');
-                      modalContext = activeTab === 'proyeccion' ? 'proyeccion' : 'registros';
-                      openTransactionModal({ type: 'expense' });
-                  });
-                  // ===== FIN DEL CÓDIGO AÑADIDO =====                  
                   
                   document.getElementById('voice-recognition-btn').addEventListener('click', handleVoiceCommand);
                   document.getElementById('quick-voice-record-btn').addEventListener('click', handleQuickVoiceRecord);
@@ -4080,23 +4083,7 @@
                   const closeRecurringBtn = document.getElementById('close-recurring-modal-btn');
                   if(closeRecurringBtn) closeRecurringBtn.addEventListener('click', closeRecurringExpenseModal);
 
-                  // ===== INICIO DEL CÓDIGO A REEMPLAZAR =====
-                  // Nuevo listener para la fecha que abre el selector de categoría
-                  const transactionDateInput = document.getElementById('transaction-date');
-                  if(transactionDateInput) {
-                      transactionDateInput.addEventListener('change', () => {
-                          openCategorySelector();
-                      });
-                      transactionDateInput.addEventListener('keydown', (e) => {
-                          if (e.key === 'Enter') {
-                              e.preventDefault(); // Evita que se envíe el formulario
-                              openCategorySelector();
-                          }
-                      });
-                  }
-
                   const setupEnterKeyNavigation = (formId, fieldIds) => {
-                  // ===== FIN DEL CÓDIGO A REEMPLAZAR =====
                       const form = document.getElementById(formId);
                       if (!form) return;
                       fieldIds.forEach((fieldId, index) => {
@@ -4112,8 +4099,7 @@
                       });
                   };
 
-                  // Orden de navegación con "Enter" actualizado
-                  setupEnterKeyNavigation('transaction-form', ['transaction-date', 'transaction-amount', 'transaction-bank', 'transaction-description', 'save-transaction-btn']);
+                  setupEnterKeyNavigation('transaction-form', ['transaction-date', 'transaction-description', 'transaction-category', 'transaction-bank', 'transaction-amount', 'save-transaction-btn']);
                   setupEnterKeyNavigation('recurring-expense-form', ['recurring-description', 'recurring-category', 'recurring-bank', 'recurring-amount', 'recurring-day', 'save-recurring-btn']);
 
                   deleteSelectedBtn.addEventListener('click', handleDeleteSelected);
@@ -5307,20 +5293,24 @@
                * @param {'income'|'expense'} options.type - El tipo de transacción a preseleccionar.
                * @param {boolean} options.lockType - Si es true, deshabilita el otro tipo de transacción.
                */
-
               function openTransactionModal(options = {}) {
-                  // ===== INICIO DEL CÓDIGO A REEMPLAZAR =====
-                  const { id = null, type = 'expense' } = options; // lockType ya no es necesario
+                  const { id = null, type = 'expense', lockType = false } = options;
 
                   transactionForm.reset();
                   clearValidationErrors();
                   populateModalDropdowns();
                   populateDescriptionDatalist();
 
-                  // Establece el tipo de transacción en el campo oculto
-                  document.getElementById('transaction-type-hidden').value = type;
+                  // Referencias a los botones de tipo
+                  const incomeRadio = document.getElementById('type-income');
+                  const expenseRadio = document.getElementById('type-expense');
+                  
+                  // Primero, resetea los radios a su estado normal (ambos habilitados)
+                  incomeRadio.disabled = false;
+                  expenseRadio.disabled = false;
 
                   if (id) {
+                      // Lógica existente para editar un elemento
                       let item = appState.transactions.find(t => t.id === id);
                       let sourceCollection = 'transactions';
                       
@@ -5333,10 +5323,12 @@
                           const title = sourceCollection === 'projections' ? 'Editar Proyección' : 'Editar Transacción';
                           document.getElementById('modal-title').textContent = title;
 
+                          // ... dentro de openTransactionModal, en el bloque if(item)
                           document.getElementById('transaction-id').value = item.id;
                           document.getElementById('transaction-date').value = item.date;
                           document.getElementById('transaction-description').value = item.description;
 
+                          // --- LÓGICA MODIFICADA PARA ACTUALIZAR EL SELECTOR VISUAL ---
                           const categoryObject = appState.categories.find(c => c.name === item.category);
                           if (categoryObject) {
                               categorySelectButton.innerHTML = `
@@ -5345,33 +5337,44 @@
                               `;
                               transactionCategoryHiddenInput.value = categoryObject.name;
                           }
-                          
-                          document.getElementById('transaction-bank').value = item.bank;
-                          document.getElementById('transaction-amount').value = item.amount;
-                          
-                          // Actualizamos el campo oculto también al editar
-                          document.getElementById('transaction-type-hidden').value = item.type;
+                          // --- FIN DE LA LÓGICA MODIFICADA ---
 
+                          document.getElementById('transaction-bank').value = item.bank;
+
+
+                          document.getElementById('transaction-amount').value = item.amount;
+                          document.querySelector(`input[name="transaction-type"][value="${item.type}"]`).checked = true;
                       } else {
                           showMessageModal("Error", "Elemento no encontrado.", "error");
                           return;
                       }
                   } else {
+                      // Lógica para un nuevo registro
                       const title = modalContext === 'proyeccion' ? 'Registrar Proyección' : 'Registrar Transacción';
                       document.getElementById('modal-title').textContent = title;
                       document.getElementById('transaction-id').value = '';
                       document.getElementById('transaction-date').valueAsDate = new Date();
                       
-                      // Reseteamos el selector de categoría a su estado inicial
-                       categorySelectButton.innerHTML = `<span>Seleccionar Categoría...</span>`;
-                       transactionCategoryHiddenInput.value = '';
+                      // Preselecciona el tipo según las opciones
+                      if (type === 'income') {
+                          incomeRadio.checked = true;
+                      } else {
+                          expenseRadio.checked = true;
+                      }
+
+                      // Bloquea el tipo opuesto si se especifica
+                      if (lockType) {
+                          if (type === 'income') {
+                              expenseRadio.disabled = true;
+                          } else {
+                              incomeRadio.disabled = true;
+                          }
+                      }
                   }
                   
                   transactionModal.classList.add('active');
                   document.getElementById('transaction-date').focus();
-                  // ===== FIN DEL CÓDIGO A REEMPLAZAR =====
               }
-
       
               function closeTransactionModal() {
                   transactionModal.classList.remove('active');
@@ -5409,9 +5412,6 @@
 
                           // 3. Cierra el modal de selección
                           categorySelectModal.classList.remove('active');
-
-                          // 4. (NUEVO) Pone el foco en el campo del monto
-                          document.getElementById('transaction-amount').focus();
                       });
 
                       categorySelectGrid.appendChild(option);
@@ -5432,14 +5432,13 @@
                   const date = document.getElementById('transaction-date').value;
                   const category = transactionCategoryHiddenInput.value;
                   const bank = document.getElementById('transaction-bank').value;
-                  const type = document.getElementById('transaction-type-hidden').value; // <-- LÍNEA MODIFICADA
+                  const type = document.querySelector('input[name="transaction-type"]:checked').value;
                   const id = document.getElementById('transaction-id').value;
 
                   let isValid = true;
                   if (!validateRequired(document.getElementById('transaction-date'), transactionDateError, "La fecha es obligatoria.")) isValid = false;
                   if (!validateRequired(document.getElementById('transaction-description'), transactionDescriptionError, "La descripción es obligatoria.")) isValid = false;
-                  // CORRECCIÓN: Apuntamos al input oculto correcto para la validación de la categoría.
-                  if (!validateRequired(document.getElementById('transaction-category-hidden'), transactionCategoryError, "La categoría es obligatoria.")) isValid = false;
+                  if (!validateRequired(document.getElementById('transaction-category'), transactionCategoryError, "La categoría es obligatoria.")) isValid = false;
                   if (!validateRequired(document.getElementById('transaction-bank'), transactionBankError, "El banco/cuenta es obligatorio.")) isValid = false;
                   if (!validatePositiveNumber(document.getElementById('transaction-amount'), transactionAmountError, "El monto debe ser un número positivo.")) isValid = false;
                   if (!isValid) {
@@ -7192,9 +7191,7 @@
                   currentMonthFilterValue = filterMonth.value;
               }
 
-
               function switchTab(tabName) {
-                  // ===== INICIO DEL CÓDIGO A REEMPLAZAR =====
                   if (!tabName) return;
 
                   // 1. Oculta todos los paneles y desactiva todos los botones de pestañas
@@ -7222,9 +7219,7 @@
                       main: document.getElementById('main-action-btn'),
                       saveBudget: document.getElementById('save-budgets-btn'),
                       migrateRecurring: document.getElementById('migrate-all-recurring-btn'),
-                      deleteSelected: document.getElementById('delete-selected-btn'),
-                      addIncome: document.getElementById('add-income-btn'), // Nuevo botón
-                      addExpense: document.getElementById('add-expense-btn') // Nuevo botón
+                      deleteSelected: document.getElementById('delete-selected-btn')
                   };
                   
                   // Oculta todos los botones de acción primero para empezar de cero
@@ -7233,10 +7228,12 @@
                   // Muestra los botones específicos para la pestaña activa
                   switch (tabName) {
                       case 'registros':
+                          actionButtons.main.classList.remove('hidden');
+                          document.getElementById('main-action-btn-text').textContent = 'Registrar Transacción';
+                          break;
                       case 'proyeccion':
-                          // Muestra los botones de Ingreso y Gasto
-                          actionButtons.addIncome.classList.remove('hidden');
-                          actionButtons.addExpense.classList.remove('hidden');
+                          actionButtons.main.classList.remove('hidden');
+                          document.getElementById('main-action-btn-text').textContent = 'Registrar Proyección';
                           break;
                       case 'recurrentes':
                           actionButtons.main.classList.remove('hidden');
@@ -7251,25 +7248,29 @@
                           actionButtons.saveBudget.classList.remove('hidden');
                           break;
                   }
-                  
+                  // --- ¡AQUÍ ESTÁ LA MODIFICACIÓN! ---
+                  // Este bloque controla la visibilidad de los filtros en la vista de ESCRITORIO.
                   const filtersContainer = document.getElementById('filters-container');
-                  if (filtersContainer && window.innerWidth > 768) { 
+                  if (filtersContainer && window.innerWidth > 768) { // Solo se aplica en pantallas grandes
                       if (tabName === 'registros') {
-                          filtersContainer.style.display = 'flex'; 
+                          filtersContainer.style.display = 'flex'; // Muestra los filtros
                       } else {
-                          filtersContainer.style.display = 'none';  
+                          filtersContainer.style.display = 'none';  // Oculta los filtros
                       }
                   }
-                                    
+                  // --- FIN DE LA MODIFICACIÓN ---                  
+                  // Limpia checkboxes "seleccionar todo" al cambiar de pestaña
                   if (selectAllRegistrosCheckbox) selectAllRegistrosCheckbox.checked = false;
                   if (selectAllProyeccionCheckbox) selectAllProyeccionCheckbox.checked = false;
                   if (selectAllRecurrentesCheckbox) selectAllRecurrentesCheckbox.checked = false;
                   
+                  // Actualiza la visibilidad del botón "Eliminar Seleccionados"
                   updateDeleteButtonVisibility();
                   
+                  // 5. Vuelve a dibujar el contenido necesario para la nueva pestaña
                   renderAll();
-                  // ===== FIN DEL CÓDIGO A REEMPLAZAR =====
               }
+              // ================== FIN DE LA FUNCIÓN A REEMPLAZAR =================
 
 
               function handleMainActionClick() {
