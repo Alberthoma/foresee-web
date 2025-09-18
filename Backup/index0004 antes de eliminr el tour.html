@@ -23,6 +23,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
 
     <script type="module">
               import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -595,6 +597,114 @@
               #export-pdf-btn, #export-json-btn { background-color: var(--bg-dark-tertiary); border: 1px solid var(--border-dark); }
               #import-json-btn { background-color: var(--electric-purple); }
               #reset-data-btn { background-color: var(--electric-red); }
+
+              /* --- CORRECCIÓN DEFINITIVA PARA EL TOUR DEMO (Shepherd.js) --- */
+              .shepherd-tour-witfinances.shepherd-element { /* <--- CORREGIDO: Sin espacio aquí */
+                  background-color: var(--bg-dark-secondary) !important;
+                  border: 1px solid var(--border-dark) !important;
+                  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+              }
+
+              .shepherd-tour-witfinances .shepherd-header {
+                  background-color: var(--bg-dark-primary) !important;
+                  border-bottom: 1px solid var(--border-dark) !important;
+              }
+
+              .shepherd-tour-witfinances .shepherd-text {
+                  color: var(--text-light-primary) !important;
+              }
+
+              .shepherd-tour-witfinances .shepherd-title {
+                  color: var(--electric-blue) !important;
+              }
+
+              .shepherd-tour-witfinances .shepherd-cancel-icon { 
+                  color: var(--text-light-secondary); 
+              }
+
+              .shepherd-tour-witfinances .shepherd-cancel-icon:hover { 
+                  color: var(--text-light-primary); 
+              }
+
+              .shepherd-tour-witfinances .shepherd-footer { 
+                  padding: 0 1.5rem 1rem; 
+              }
+
+              .shepherd-tour-witfinances .shepherd-button {
+                  border: none;
+                  border-radius: 8px;
+                  padding: 0.75rem 1.5rem;
+                  font-weight: 600;
+                  cursor: pointer;
+                  transition: all 0.2s ease;
+              }
+
+              .shepherd-tour-witfinances .shepherd-button:not(.shepherd-button-secondary) {
+                  background-color: var(--electric-blue);
+                  color: white;
+              }
+
+              .shepherd-tour-witfinances .shepherd-button:not(.shepherd-button-secondary):hover {
+                  background-color: #0ea4e9d5;
+                  transform: translateY(-2px);
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+              }
+
+              .shepherd-tour-witfinances .shepherd-button.shepherd-button-secondary {
+                  background-color: transparent;
+                  color: var(--electric-blue);
+              }
+
+              .shepherd-tour-witfinances .shepherd-button.shepherd-button-secondary:hover {
+                  background-color: var(--bg-dark-tertiary);
+              }
+
+              .shepherd-tour-witfinances .shepherd-arrow::before {
+                  background-color: var(--bg-dark-secondary) !important;
+                  border: 1px solid var(--border-dark) !important;
+                  border-top: none !important;
+                  border-right: none !important;
+              }
+
+              /* --- ESTILOS PARA EL AVISO DEL TOUR (TOAST) --- */
+              #tour-toast {
+                  background-color: var(--bg-dark-secondary);
+                  border: 1px solid var(--border-dark);
+                  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+              }
+
+              #tour-toast .font-bold {
+                  color: var(--text-light-primary);
+              }
+
+              #tour-toast .text-sm {
+                  color: var(--text-light-secondary);
+              }
+
+              #tour-toast svg {
+                  color: var(--electric-blue);
+              }
+
+              #tour-toast #start-tour-btn-toast {
+                  background-color: var(--electric-blue);
+                  color: var(--text-light-primary);
+              }
+
+              #tour-toast #start-tour-btn-toast:hover {
+                  background-color: #0ea4e9c8;
+              }
+
+              #tour-toast #close-tour-toast-btn {
+                  color: var(--text-light-primary);
+              }
+
+              #tour-toast #close-tour-toast-btn:hover {
+                  color: var(--text-light-primary);
+              }
+
+              /* ====================================================================== */
+              /* ===== AJUSTES DE ESTILO ADICIONALES by Gemini - 22/08/2025 ===== */
+              /* ====================================================================== */
 
               /* 1. Encabezado de tabla para Proyección (igual que Registros) */
               #proyeccion-content thead {
@@ -2356,6 +2466,27 @@
           </div>  
       </header>
   
+      <div id="tour-toast" class="fixed bottom-5 right-5 z-50 max-w-sm bg-white rounded-lg shadow-lg flex items-center gap-4 p-4 transition-transform transform">
+        <div class="flex-shrink-0">
+          <svg class="h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>        
+        <div class="flex-grow">
+          <p class="font-bold text-gray-800">¿Eres nuevo aquí?</p>
+          <p class="text-sm text-gray-600">Toma un tour rápido para conocer todas las funciones.</p>
+        </div>
+        
+        <div class="flex flex-col items-center gap-2">
+          <button id="start-tour-btn-toast" class="bg-blue-600 text-white text-sm font-semibold py-1 px-3 rounded-md hover:bg-blue-700 w-full">
+            Iniciar
+          </button>
+          <button id="close-tour-toast-btn" class="text-xs text-gray-500 hover:underline">
+            Ahora no
+          </button>
+        </div>
+      </div>
+
       <div id="dashboard">
         <div id="balance-card" class="dashboard-card">
           <div>
@@ -3565,7 +3696,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 0.0.0.5
+              Versión 0.0.0.4
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3883,7 +4014,9 @@
                       showMessageModal("Error de Autenticación", "Hubo un problema con la autenticación. Por favor, recarga la página.", "error");
                   } finally {
                       hideLoading(); // Asegurarse de ocultar la carga SIEMPRE al final del onAuthStateChanged
-
+                  
+                      // Pega la nueva línea aquí
+                      initializeTour(); // Inicia el tour solo cuando la app está lista
                   }
               }, (error) => {
                   console.error("[Auth State Changed] Error en el listener de autenticación:", error); // Debugging
@@ -4812,8 +4945,8 @@
                   }
       
                   // ¡PARTE CRÍTICA! Aquí se vuelven a activar los botones después de crear la tabla.
-                  document.querySelectorAll('#registros-content .edit-btn').forEach(btn => btn.addEventListener('click', (e) => openTransactionModal({ id: e.target.dataset.id })));
-                  document.querySelectorAll('#registros-content .delete-btn').forEach(btn => btn.addEventListener('click', (e) => deleteTransaction(e.target.dataset.id)));
+                  document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', (e) => openTransactionModal(e.target.dataset.id)));
+                  document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => deleteTransaction(e.target.dataset.id)));
                   updateDeleteButtonVisibility();
               }
 
@@ -8066,5 +8199,167 @@
                   document.getElementById('netPayResult').textContent = formatCurrency(netPay);
               });              
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
+
+    <script>
+  // --- REEMPLAZA el script del tour existente con este bloque ---    
+    function initializeTour() {
+        const tourToast = document.getElementById('tour-toast');
+        const startTourBtn = document.getElementById('start-tour-btn-toast');
+        const closeTourBtn = document.getElementById('close-tour-toast-btn');
+
+        // Si el usuario ya vio el tour en esta sesión, no mostramos el aviso
+        if (sessionStorage.getItem('tourViewed')) {
+            tourToast.style.display = 'none';
+            return;
+        }
+
+        if (!tourToast || !startTourBtn || !closeTourBtn) {
+            console.error("Los elementos del toast para el tour no se encontraron.");
+            return;
+        }
+
+        const tour = new Shepherd.Tour({
+            useModalOverlay: true,
+            defaultStepOptions: {
+                cancelIcon: { enabled: true },
+                classes: 'shepherd-tour-witfinances',
+                scrollTo: { behavior: 'smooth', block: 'center' }
+            }
+        });
+
+        // --- INICIO DEL TUTORIAL ---
+
+// --- INICIO DEL TUTORIAL ---
+
+        tour.addStep({
+            id: 'step-0-welcome',
+            title: '¡Bienvenido a tu Panel de Control!',
+            text: `Aquí tienes una vista rápida y poderosa de tu situación actual. Es el punto de partida para tomar decisiones inteligentes cada día.`,
+            attachTo: { element: '#dashboard', on: 'bottom' },
+            // ----- LÍNEA MODIFICADA -----
+            // ANTES: buttons: [{ action() { return this.next(); }, text: 'Empezar el Tour &rarr;' }]
+            // AHORA: Simula un clic en la primera pestaña del tour para sincronizar la UI
+            buttons: [{ 
+                action() { 
+                    document.querySelector('[data-tab="configuración"]').click(); // <-- ESTO SINCRONIZA LA VISTA
+                    return this.next(); 
+                }, 
+                text: 'Empezar el Tour &rarr;' 
+            }]
+        });
+        
+        tour.addStep({
+            id: 'step-1-configuracion',
+            title: 'Paso 1: Los Cimientos',
+            text: `<p>Todo gran plan comienza con una buena base. Aquí personalizarás la aplicación para que hable tu mismo idioma financiero.</p>
+                   <p><strong>Crea tus Categorías</strong> (Vivienda, Comida) y tus <strong>Cuentas</strong> (Efectivo, Cuenta Principal) para tener un sistema a tu medida.</p>`,
+            attachTo: { element: '[data-tab="configuración"]', on: 'bottom' },
+            buttons: [
+                { action() { return this.back(); }, text: '&larr; Atrás', classes: 'shepherd-button-secondary' },
+                { action() { document.querySelector('[data-tab="configuración"]').click(); return this.next(); }, text: '¡Entendido!' }
+            ]
+        });
+
+        tour.addStep({
+            id: 'step-2-recurrentes',
+            title: 'Paso 2: Dibuja tu Mapa Financiero',
+            text: `<p>Ahora, vamos a registrar esos gastos que llegan todos los meses sin falta: alquiler, internet, suscripciones...</p>
+                   <p>Al hacerlo una vez, la app los registrará por ti cada nuevo mes. ¡Ahorrarás tiempo y nunca olvidarás un pago!</p>`,
+            attachTo: { element: '[data-tab="recurrentes"]', on: 'bottom' },
+            buttons: [
+                { action() { document.querySelector('[data-tab="configuración"]').click(); return this.back(); }, text: '&larr; Atrás', classes: 'shepherd-button-secondary' },
+                { action() { document.querySelector('[data-tab="recurrentes"]').click(); return this.next(); }, text: 'Siguiente &rarr;' }
+            ]
+        });
+
+        tour.addStep({
+            id: 'step-3-tarjetas',
+            title: 'Paso 3: Conquista tus Tarjetas',
+            text: `<p>Esta sección es tu centro de comando para la libertad. Añade tus tarjetas, tu deuda actual y, lo más importante, <strong>en cuántos meses quieres saldarla.</strong></p>
+                   <p>La app calculará el <strong>pago mensual sugerido</strong> para que cumplas tu meta y te alertará de las fechas de pago.</p>
+                   <p><strong>Consejo de Finanzas:</strong> Una vez que las tengas todas aquí, puedes usar el <strong>Método Avalancha</strong> (pagar primero la de mayor interés) o <strong>Bola de Nieve</strong> (pagar primero la de menor deuda). ¡Tú decides la estrategia!</p>`,
+            attachTo: { element: '[data-tab="tarjetas"]', on: 'bottom' },
+            buttons: [
+                { action() { document.querySelector('[data-tab="recurrentes"]').click(); return this.back(); }, text: '&larr; Atrás', classes: 'shepherd-button-secondary' },
+                { action() { document.querySelector('[data-tab="tarjetas"]').click(); return this.next(); }, text: '¡Qué Potente! &rarr;' }
+            ]
+        });
+
+        tour.addStep({
+            id: 'step-4-presupuesto',
+            title: 'Paso 4: Crea tu Plan de Gastos',
+            text: `<p>Ahora que sabes cuánto se va en gastos fijos, vamos a planificar el resto.</p>
+                   <p>Asigna un límite de gasto a cada categoría (Ej: $400 en Alimentación). A medida que registres tus movimientos, verás en tiempo real <strong>cuánto te queda disponible.</strong> ¡Es el fin de las fugas de dinero!</p>`,
+            attachTo: { element: '[data-tab="presupuesto"]', on: 'bottom' },
+            buttons: [
+                { action() { document.querySelector('[data-tab="tarjetas"]').click(); return this.back(); }, text: '&larr; Atrás', classes: 'shepherd-button-secondary' },
+                { action() { document.querySelector('[data-tab="presupuesto"]').click(); return this.next(); }, text: '¡Excelente! &rarr;' }
+            ]
+        });
+
+        tour.addStep({
+            id: 'step-5-registros',
+            title: 'Paso 5: El Hábito Diario',
+            text: `<p>Esta es la acción principal que mantendrá todo al día. Cada vez que recibas un ingreso o hagas un gasto, anótalo aquí.</p>
+                   <p>Este botón cambiará según la pestaña en la que estés. En 'Registros', te permitirá añadir una nueva transacción rápidamente.</p>`,
+            attachTo: { element: '[data-tab="registros"]', on: 'bottom' },
+            buttons: [
+                { action() { document.querySelector('[data-tab="presupuesto"]').click(); return this.back(); }, text: '&larr; Atrás', classes: 'shepherd-button-secondary' },
+                { action() { document.querySelector('[data-tab="registros"]').click(); return this.next(); }, text: 'Entendido, ¡a registrar!' }
+            ]
+        });
+
+        tour.addStep({
+            id: 'step-6-reportes',
+            title: 'Paso 6: Analiza y Aprende',
+            text: `<p>Después de unos días, la magia sucede aquí. En <strong>Reportes</strong>, verás gráficos claros que te dirán exactamente a dónde se va tu dinero.</p>
+                   <p>En <strong>Saldos de Cuentas</strong>, tendrás un resumen de cuánto dinero tienes en cada una de tus cuentas. ¡Información es poder!</p>`,
+            attachTo: { element: '[data-tab="reportes"]', on: 'bottom' },
+            buttons: [
+                { action() { document.querySelector('[data-tab="registros"]').click(); return this.back(); }, text: '&larr; Atrás', classes: 'shepherd-button-secondary' },
+                { action() { document.querySelector('[data-tab="reportes"]').click(); return this.next(); }, text: 'Ver mis Gráficos &rarr;' }
+            ]
+        });
+
+        tour.addStep({
+            id: 'step-7-final',
+            title: '¡Estás Listo para Tomar el Control!',
+            text: `<p>¡Felicidades! Has completado el recorrido. Recuerda, la clave del éxito financiero es la <strong>constancia.</strong></p>
+                   <p>Usa la app a diario y transforma tu relación con el dinero. ¡Ahora es tu turno de empezar a construir el futuro que deseas!</p>`,
+            buttons: [{ action() { return this.complete(); }, text: 'Finalizar y Empezar' }]
+        });
+
+        // --- FIN DEL TUTORIAL ---
+
+        const restoreView = () => {
+            const mostrarBtn = document.getElementById('mostrar');
+            if (mostrarBtn && !mostrarBtn.classList.contains('hidden')) {
+                mostrarBtn.click();
+            }
+        };
+
+        tour.on('complete', () => { 
+            sessionStorage.setItem('tourViewed', 'true');
+            restoreView();
+        });
+        tour.on('cancel', () => { 
+            sessionStorage.setItem('tourViewed', 'true');
+            restoreView();
+        });
+
+        startTourBtn.addEventListener('click', () => {
+            tourToast.style.display = 'none';
+            tour.start();
+        });
+
+        closeTourBtn.addEventListener('click', () => {
+            tourToast.style.display = 'none';
+            sessionStorage.setItem('tourViewed', 'true');
+        });
+    }
+    </script>    
+
   </body>
 </html>
