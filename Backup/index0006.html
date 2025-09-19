@@ -2046,22 +2046,22 @@
                   background-color: #0ea4e9d5;
               }
 
-            #tutorials-modal.active { /* <-- ¡LA CORRECCIÓN CLAVE ESTÁ AQUÍ! */
-                /* Posicionamiento y centrado */
-                position: fixed;
-                inset: 0; /* Cubre toda la pantalla */
-                display: flex;
-                align-items: center; /* Centra verticalmente */
-                justify-content: center; /* Centra horizontalmente */
-                padding: 1rem; /* Espacio en los bordes para pantallas pequeñas */
+#tutorials-modal.active { /* <-- ¡LA CORRECCIÓN CLAVE ESTÁ AQUÍ! */
+    /* Posicionamiento y centrado */
+    position: fixed;
+    inset: 0; /* Cubre toda la pantalla */
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    padding: 1rem; /* Espacio en los bordes para pantallas pequeñas */
 
-                /* Apilamiento (muy importante) */
-                z-index: 5000; /* Valor alto para que se sobreponga a todo */
+    /* Apilamiento (muy importante) */
+    z-index: 5000; /* Valor alto para que se sobreponga a todo */
 
-                /* Fondo oscuro semitransparente */
-                background-color: rgba(17, 24, 39, 0.85); /* Fondo oscuro consistente con tu tema */
-                backdrop-filter: blur(4px); /* Efecto de desenfoque opcional */
-            }              
+    /* Fondo oscuro semitransparente */
+    background-color: rgba(17, 24, 39, 0.85); /* Fondo oscuro consistente con tu tema */
+    backdrop-filter: blur(4px); /* Efecto de desenfoque opcional */
+}              
 
               /* 2. Estilos para el Contenido del Modal de Tutoriales */
               #tutorials-modal-content {
@@ -2203,7 +2203,8 @@
                   #tutorials-modal-body {
                       flex-direction: row; /* Lado a lado en PC */
                   }
-              }                
+              }              
+
 
     </style>
   </head>
@@ -2464,9 +2465,6 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Categoría
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Banco
-                        </th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Monto
                         </th>
@@ -2477,7 +2475,7 @@
                           Acciones
                         </th>
                       </tr>
-                    </thead>             
+                    </thead>                
                     <tbody class="bg-white divide-y divide-gray-200" id="transactions-table-body">
                     </tbody>
                     <tfoot class="bg-gray-50 border-t-2 border-gray-300">
@@ -3567,7 +3565,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 0.0.0.7
+              Versión 0.0.0.5
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
@@ -3578,7 +3576,7 @@
             </div>
           </div>
         </footer>
-    <script src="numberParser.js"></script>  
+      
     <script>
           document.addEventListener('DOMContentLoaded', () => {
               const { jsPDF } = window.jspdf;
@@ -4353,7 +4351,7 @@
       
               // ===== REEMPLAZA LA FUNCIÓN handleLogout() EXISTENTE CON ESTA =====
 
-              // ===== REEMPLAZA TU FUNCIÓN handleLogout CON ESTAS DOS NUEVAS FUNCIONES =====
+// ===== REEMPLAZA TU FUNCIÓN handleLogout CON ESTAS DOS NUEVAS FUNCIONES =====
 
               /**
                * "Cuelga" todas las llamadas a la base de datos para evitar errores al cerrar sesión.
@@ -4735,7 +4733,7 @@
                   checkBudgetLimits();                  
               }
       
-function renderTransactionsTable() {
+              function renderTransactionsTable() {
                   const selectedMonth = filterMonth.value;
                   const activeTransactions = appState.transactions; 
                   
@@ -4788,12 +4786,6 @@ function renderTransactionsTable() {
                           const cellCat = row.insertCell();
                           cellCat.className = "px-6 py-4 whitespace-nowrap text-sm flex items-center";
                           cellCat.innerHTML = `${getCategoryDisplay(t.category)}<button class="info-btn" data-description="${t.description}">i</button>`;
-                          
-                          // ===== ¡NUEVA CELDA AÑADIDA! =====
-                          const cellBank = row.insertCell();
-                          cellBank.className = "px-6 py-4 whitespace-nowrap text-sm";
-                          cellBank.textContent = t.bank;
-                          // ===================================
 
                           const cellAmount = row.insertCell();
                           cellAmount.className = "px-6 py-4 whitespace-nowrap text-sm text-right";
@@ -4814,11 +4806,7 @@ function renderTransactionsTable() {
 
                       const totalIncome = filteredTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
                       const totalExpenses = filteredTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
-                      
-                      // ===== ¡AJUSTE DEL FOOTER! =====
-                      tableElement.querySelector('tfoot tr td:first-child').colSpan = 4; // Ajustado a 4 para alinear
-                      // =================================
-                      
+                      tableElement.querySelector('tfoot tr td:first-child').colSpan = 3;
                       document.getElementById('registros-total-income').textContent = formatCurrency(totalIncome);
                       document.getElementById('registros-total-expenses').textContent = formatCurrency(totalExpenses);
                   }
@@ -7352,7 +7340,7 @@ function renderTransactionsTable() {
                   }
 
                   // 1. Llama a nuestro nuevo analizador inteligente
-                  const transactionData = parseSpeechV2(text);
+                  const transactionData = parseSpeech(text);
 
                   if (!transactionData) {
                       // Si parseSpeech devuelve null, es porque faltó un dato clave (como el monto).
@@ -7529,18 +7517,25 @@ function renderTransactionsTable() {
                   );
               }
 
-// pegar aqui el nuevo código
+              // pegar aqui el nuevo código
               /**
                * Orquesta el flujo de grabación por voz: muestra el panel de texto y activa el micrófono.
                */
               const handleQuickVoiceRecord = () => {
+                  // 1. Asegurarse de que la vista de la tabla de registros esté activa.
                   switchTab('registros');
+
+                  // 2. Muestra el nuevo panel de entrada de voz.
                   const voicePanel = document.getElementById('voice-input-panel');
                   voicePanel.classList.remove('hidden');
                   voicePanel.classList.add('visible');
-                  handleVoiceCommand();
-              };
 
+                  // 3. Iniciar el proceso de comando de voz (que ahora escribirá en el textarea).
+                  handleVoiceCommand();
+              };              
+
+
+              // pegar aqui el nuevo código
               /**
                * Inicia el reconocimiento de voz y transcribe el resultado en el panel de texto.
                */
@@ -7553,27 +7548,34 @@ function renderTransactionsTable() {
                   
                   const voiceTextArea = document.getElementById('voice-text-input');
                   const quickVoiceBtnImg = document.querySelector('#quick-voice-record-btn img');
+                  
+                  // NUEVO: Reiniciamos el "seguro" cada vez que se inicia el comando de voz.
                   isProcessingVoice = false;
-                  voiceTextArea.value = '';
+
+                  voiceTextArea.value = ''; // Limpia el área de texto
                   voiceTextArea.placeholder = 'Escuchando... por favor, habla ahora.';
 
                   const recognition = new SpeechRecognition();
                   recognition.lang = 'es-ES';
-                  recognition.interimResults = true;
-                  recognition.continuous = true;
+                  recognition.interimResults = true; // Muestra resultados mientras hablas
+                  recognition.continuous = true; // Sigue escuchando
+                  
                   if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '0.5';
 
                   recognition.start();
 
                   recognition.onresult = (event) => {
-                      let transcript = Array.from(event.results)
-                          .map(result => result[0])
-                          .map(result => result.transcript)
-                          .join('');
+                      let transcript = '';
+                      for (let i = event.resultIndex; i < event.results.length; ++i) {
+                          transcript += event.results[i][0].transcript;
+                      }
                       voiceTextArea.value = transcript;
 
+                      // MODIFICADO: Ahora comprobamos si la palabra "guardar" está presente Y si nuestro "seguro" está activado.
                       if (transcript.toLowerCase().includes('guardar') && !isProcessingVoice) {
-                          isProcessingVoice = true;
+                          // NUEVO: Activamos el seguro para que no se pueda volver a entrar aquí.
+                          isProcessingVoice = true; 
+                          
                           recognition.stop();
                           document.getElementById('save-voice-text-btn').click();
                       }
@@ -7581,172 +7583,59 @@ function renderTransactionsTable() {
 
                   recognition.onend = () => {
                       if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
-                      voiceTextArea.placeholder = 'Ej: Gasto de mil doscientos en alquiler en wells fargo ayer guardar...';
+                      voiceTextArea.placeholder = 'Ej: Gasto 50 dólares en gasolina en wells fargo ayer guardar...';
                   };
                   
                   recognition.onerror = (event) => {
+                      if (event.error === 'not-allowed') {
+                          showToast("Se necesita permiso para usar el micrófono.", "error");
+                      } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
+                          showToast('Error de voz: ' + event.error, "error");
+                      }
                       console.error('Error en el reconocimiento de voz:', event.error);
                       if (quickVoiceBtnImg) quickVoiceBtnImg.style.opacity = '1';
                       voiceTextArea.placeholder = 'Hubo un error al escuchar.';
                   };
               };
-              
+
+
+              // pegar aqui el nuevo código
               /**
-               * MODULO PARSER DE NÚMEROS
-               * Sistema autocontenido para interpretar números complejos en español.
+               * Analiza una cadena de texto y extrae la información de una transacción.
+               * @param {string} text - El texto dictado por el usuario.
+               * @returns {object|null} Un objeto con los datos de la transacción o null si falta información clave.
                */
-              const numberParser = (() => {
-                  const wordValues = { 'cero': 0, 'un': 1, 'una': 1, 'uno': 1, 'dos': 2, 'tres': 3, 'cuatro': 4, 'cinco': 5, 'seis': 6, 'siete': 7, 'ocho': 8, 'nueve': 9, 'diez': 10, 'once': 11, 'doce': 12, 'trece': 13, 'catorce': 14, 'quince': 15, 'dieciséis': 16, 'diecisiete': 17, 'dieciocho': 18, 'diecinueve': 19, 'veinte': 20, 'veintiún': 21, 'veintiuno': 21, 'veintidós': 22, 'veintitrés': 23, 'veinticuatro': 24, 'veinticinco': 25, 'veintiséis': 26, 'veintisiete': 27, 'veintiocho': 28, 'veintinueve': 29, 'treinta': 30, 'cuarenta': 40, 'cincuenta': 50, 'sesenta': 60, 'setenta': 70, 'ochenta': 80, 'noventa': 90, 'cien': 100, 'ciento': 100, 'doscientos': 200, 'trescientos': 300, 'cuatrocientos': 400, 'quinientos': 500, 'seiscientos': 600, 'setecientos': 700, 'ochocientos': 800, 'novecientos': 900 };
-                  const multipliers = { 'mil': 1000 };
-
-                  const parseChunk = (words) => {
-                      return words.reduce((acc, word) => acc + (wordValues[word] || 0), 0);
-                  };
-
-                  const parseSpanishNumber = (text) => {
-                      if (!text || typeof text !== 'string') return null;
-                      const cleanText = text.toLowerCase().trim();
-                      let integerPartStr = cleanText, decimalPartStr = '';
-                      const decimalSeparators = [' con ', ' punto '];
-
-                      for (const separator of decimalSeparators) {
-                          if (cleanText.includes(separator)) {
-                              const parts = cleanText.split(separator);
-                              integerPartStr = parts[0];
-                              decimalPartStr = parts.slice(1).join(separator);
-                              break;
-                          }
-                      }
-
-                      const words = integerPartStr.split(/\s+/).filter(w => w !== 'y' && w);
-                      let total = 0, currentChunk = [];
-                      
-                      for (const word of words) {
-                          if (multipliers[word]) {
-                              const chunkValue = currentChunk.length > 0 ? parseChunk(currentChunk) : 1;
-                              total += chunkValue * multipliers[word];
-                              currentChunk = [];
-                          } else {
-                              currentChunk.push(word);
-                          }
-                      }
-                      total += parseChunk(currentChunk);
-
-                      if (decimalPartStr) {
-                          const decimalWords = decimalPartStr.split(/\s+/).filter(w => w !== 'y' && w);
-                          total += parseChunk(decimalWords) / 100;
-                      }
-
-                      return total > 0 ? total : null;
-                  };
-                  return { parse: parseSpanishNumber };
-              })();
-
-
-
-// ===================== PEGA ESTA FUNCIÓN DE AYUDA =====================
-              /**
-               * Calcula la distancia de Levenshtein entre dos strings (mide su similitud).
-               * Un resultado bajo (0, 1, 2) significa que son muy similares.
-               */
-              const levenshtein = (s1, s2) => {
-                  if (!s1.length) return s2.length;
-                  if (!s2.length) return s1.length;
-                  const arr = [];
-                  for (let i = 0; i <= s2.length; i++) {
-                      arr[i] = [i];
-                      for (let j = 1; j <= s1.length; j++) {
-                          arr[i][j] = i === 0 ? j : Math.min(
-                              arr[i - 1][j] + 1,
-                              arr[i][j - 1] + 1,
-                              arr[i - 1][j - 1] + (s1[j - 1] === s2[i - 1] ? 0 : 1)
-                          );
-                      }
-                  }
-                  return arr[s2.length][s1.length];
-              };
-// ===================== FIN DE LA FUNCIÓN DE AYUDA =====================
-// ===================== REEMPLAZA TU FUNCIÓN parseSpeechV2 CON ESTA =====================
-              /**
-               * Analiza una cadena de texto de voz para extraer información de forma inteligente
-               * usando coincidencia aproximada (Levenshtein) para robustez.
-               */
-              const parseSpeechV2 = (text) => {
-                  let lowerText = text.toLowerCase();
+              const parseSpeech = (text) => {
+                  const lowerText = text.toLowerCase();
                   let transaction = {};
-                  let remainingText = ` ${lowerText.replace(/\bguardar\b/g, '')} `;
+                  let remainingText = lowerText; // Texto que se irá reduciendo
 
-                  // --- Prioridad #1: Extraer el MONTO ---
-                  let amountFound = false;
-                  // (La lógica para encontrar el monto sigue siendo la misma)
-                  const numberWordMatch = remainingText.match(/(?:de|del|por)\s+((?:[a-zA-Z\s]+?))\s+(?:dólar|dólares|bolívares|euros)/);
-                  if (numberWordMatch && numberWordMatch[1]) {
-                      const parsedAmount = numberParser.parse(numberWordMatch[1].trim());
-                      if (parsedAmount) {
-                          transaction.amount = parsedAmount;
-                          remainingText = remainingText.replace(numberWordMatch[0], ' ');
-                          amountFound = true;
-                      }
+                  // 1. Determinar Tipo de Transacción (Gasto por defecto)
+                  if (lowerText.includes('ingreso') || lowerText.includes('gané') || lowerText.includes('recibí')) {
+                      transaction.type = 'income';
+                  } else {
+                      transaction.type = 'expense';
                   }
-                  if (!amountFound) {
-                      const hybridMatch = remainingText.match(/(\d+)\s*(?:con|punto|,)\s*(\d+)/);
-                      if (hybridMatch) {
-                          transaction.amount = parseFloat(`${hybridMatch[1]}.${hybridMatch[2]}`);
-                          remainingText = remainingText.replace(hybridMatch[0], ' ');
-                          amountFound = true;
-                      }
-                  }
-                  if (!amountFound) {
-                      const numericMatch = remainingText.match(/(\d[\d,.]*)/);
-                      if (numericMatch) {
-                          transaction.amount = parseFloat(numericMatch[1].replace(',', '.'));
-                          remainingText = remainingText.replace(numericMatch[0], ' ');
-                          amountFound = true;
-                      }
-                  }
-                  if (!amountFound) {
+
+                  // 2. Extraer Monto (Lógica mejorada para decimales)
+                  // Caso 1: "18 con 99", "18 punto 99"
+                  const decimalMatch = lowerText.match(/(\d+)\s*(con|punto)\s*(\d+)/);
+                  // Caso 2: "18.99" o simplemente "18"
+                  const numericMatch = lowerText.match(/(\d[\d,.]*)\s*(dólar|dólares|usd)?/);
+
+                  if (decimalMatch) {
+                      transaction.amount = parseFloat(`${decimalMatch[1]}.${decimalMatch[3]}`);
+                      // Eliminar la parte del monto del texto para facilitar la búsqueda de descripción
+                      remainingText = remainingText.replace(decimalMatch[0], '');
+                  } else if (numericMatch) {
+                      transaction.amount = parseFloat(numericMatch[1].replace(',', '.'));
+                      remainingText = remainingText.replace(numericMatch[0], '');
+                  } else {
                       showToast("No se pudo detectar un monto válido en el comando.", "error");
-                      return null;
+                      return null; // El monto es obligatorio
                   }
 
-                  // --- Prioridad #2: Encontrar el BANCO con Coincidencia Aproximada ---
-                  let bestBankMatch = { name: null, distance: 3, phrase: '' }; // Umbral: Acepta hasta 2 errores
-                  const textWords = remainingText.trim().split(/\s+/);
-
-                  for (const bank of appState.banks) {
-                      const bankLower = bank.toLowerCase();
-                      const bankWordCount = bank.split(' ').length;
-                      for (let i = 0; i <= textWords.length - bankWordCount; i++) {
-                          const phrase = textWords.slice(i, i + bankWordCount).join(' ');
-                          const distance = levenshtein(phrase, bankLower);
-                          if (distance < bestBankMatch.distance) {
-                              bestBankMatch = { name: bank, distance: distance, phrase: phrase };
-                          }
-                      }
-                  }
-
-                  if (bestBankMatch.name) {
-                      transaction.bank = bestBankMatch.name;
-                      remainingText = remainingText.replace(bestBankMatch.phrase, ' ');
-                  }
-                  
-                  // --- Prioridad #3: Encontrar la CATEGORÍA ---
-                  const sortedCategories = [...appState.categories].sort((a, b) => b.name.length - a.name.length);
-                  for (const category of sortedCategories) {
-                      if (remainingText.includes(category.name.toLowerCase())) {
-                          transaction.category = category.name;
-                          remainingText = remainingText.replace(category.name.toLowerCase(), ' ');
-                          break;
-                      }
-                  }
-
-                  // --- Rellenar datos restantes ---
-                  const incomeKeywords = ['ingreso', 'gané', 'recibí', 'depósito', 'salario'];
-                  transaction.type = incomeKeywords.some(kw => lowerText.includes(kw)) ? 'income' : 'expense';
-                  transaction.description = toTitleCase(remainingText.trim());
-                  if (!transaction.description) transaction.description = "Registro por voz";
-                  if (!transaction.category) transaction.category = transaction.type === 'income' ? 'Ingreso' : 'Compras';
-                  if (!transaction.bank) transaction.bank = appState.banks.length > 0 ? appState.banks[0] : 'General';
+                  // 3. Determinar Fecha (Hoy por defecto)
                   transaction.date = new Date().toISOString().split('T')[0];
                   if (lowerText.includes('ayer')) {
                       let yesterday = new Date();
@@ -7754,9 +7643,90 @@ function renderTransactionsTable() {
                       transaction.date = yesterday.toISOString().split('T')[0];
                   }
 
+                  // 4. Encontrar Banco (El primero de la lista por defecto)
+                  transaction.bank = appState.banks.length > 0 ? appState.banks[0] : 'General';
+                  for (const bank of appState.banks) {
+                      if (lowerText.includes(bank.toLowerCase())) {
+                          transaction.bank = bank;
+                          break;
+                      }
+                  }
+
+                  // 5. Encontrar Categoría y Descripción (Lógica mejorada)
+                  const keywordMap = {
+                      'comida': { category: 'Comida', desc: 'Comida' },
+                      'mercado': { category: 'Comida', desc: 'Mercado' },
+                      'publix': { category: 'Comida', desc: 'Publix' },
+                      'gasolina': { category: 'Transporte', desc: 'Gasolina' },
+                      'transporte': { category: 'Transporte', desc: 'Transporte' },
+                      'alquiler': { category: 'Vivienda', desc: 'Alquiler' },
+                      'hipoteca': { category: 'Vivienda', desc: 'Hipoteca' },
+                      'internet': { category: 'Servicios', desc: 'Internet' },
+                      'luz': { category: 'Servicios', desc: 'Factura de Luz' },
+                      'agua': { category: 'Servicios', desc: 'Factura de Agua' },
+                      'amazon': { category: 'Compras', desc: 'Amazon' },
+                      'walmart': { category: 'Compras', desc: 'Walmart' },
+                      'compras': { category: 'Compras', desc: 'Compras Varias' }
+                  };
+
+                  let foundCategory = false;
+                  
+                  // Intento 1: Buscar por palabras clave predefinidas
+                  for (const keyword in keywordMap) {
+                      if (lowerText.includes(keyword)) {
+                          transaction.description = toTitleCase(keywordMap[keyword].desc);
+                          transaction.category = keywordMap[keyword].category;
+                          foundCategory = true;
+                          break;
+                      }
+                  }
+
+                  // Intento 2: Si no se encontró por palabra clave, buscar descripción explícita
+                  if (!foundCategory) {
+                      // Busca patrones como "en [descripción]" o "para [descripción]"
+                      const descMatch = remainingText.match(/(en|para|de)\s+([\w\s]+)/);
+                      if (descMatch && descMatch[2]) {
+                          // Tomamos la descripción encontrada y la limpiamos
+                          const extractedDesc = descMatch[2].replace(/guardar/g, '').trim();
+                          if (extractedDesc) {
+                            transaction.description = toTitleCase(extractedDesc);
+                            // Aquí podrías tener una lógica futura para asignar una categoría basada en esta descripción
+                            transaction.category = 'Otros'; // Por ahora, la categoría es genérica
+                          }
+                      }
+                  }
+
+                  // Si después de todo no hay descripción, usamos la genérica
+                  if (!transaction.description) {
+                      transaction.description = "Registro por voz";
+                      transaction.category = 'Otros';
+                  }
+
+                  // Si ya tenemos categoría por palabra clave, no la sobrescribimos
+                  if (!transaction.category) {
+                      transaction.category = 'Otros';
+                  }
+
                   return transaction;
               };
-// ===================== FIN DE LA FUNCIÓN DEFINITIVA =====================
+
+              
+              /**
+               * Obtiene la información del único elemento seleccionado en la tabla activa.
+               * @returns { {id: string, tab: string} | null }
+               */
+              function getSingleSelectedItem() {
+                  const activeTab = document.querySelector('.tab-pane.active')?.id.replace('-content', '');
+                  const checkedCheckbox = document.querySelector(`#${activeTab}-content input[type="checkbox"]:checked`);
+                  
+                  if (checkedCheckbox && activeTab) {
+                      return {
+                          id: checkedCheckbox.dataset.id,
+                          tab: activeTab
+                      };
+                  }
+                  return null;
+              }
 
               /**
                * Maneja la acción de edición para el único elemento seleccionado.
@@ -7767,12 +7737,11 @@ function renderTransactionsTable() {
 
                   // Llama a la función de abrir modal correspondiente según la pestaña
                   if (selected.tab === 'registros') {
-                      openTransactionModal({ id: selected.id });
+                      openTransactionModal(selected.id);
                   } else if (selected.tab === 'recurrentes') {
                       openRecurringExpenseModal(selected.id);
                   } else if (selected.tab === 'proyeccion') {
-                      modalContext = 'proyeccion';
-                      openTransactionModal({ id: selected.id });
+                      showToast("La edición solo está disponible en la pestaña 'Registros'.", "info");
                   }
                   
                   document.getElementById('single-action-modal').classList.remove('active');
