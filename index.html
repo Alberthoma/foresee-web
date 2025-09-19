@@ -1128,11 +1128,21 @@
                       display: none;
                   }
 
-                  /* ===== INICIO: SOLUCIÓN DEFINITIVA ANCHO DE CELDA (MÓVIL) - 19/09/2025 ===== */
-                  #registros-content td:nth-child(4) {
-                    width: max-content; /* Fuerza a la columna a ser tan ancha como su contenido sin saltos de línea */
+                  /* ===== INICIO: OCULTAR TEXTO DE CATEGORÍA EN MÓVIL - 19/09/2025 ===== */
+                  /* Oculta el nombre (texto) de la categoría, dejando solo el ícono y el botón de info. */
+                  #registros-content td:nth-child(4) > span {
+                    display: none;
                   }
-                  /* ===== FIN: SOLUCIÓN DEFINITIVA ===== */
+                  /* ===== FIN: CORRECCIÓN ===== */
+
+
+                  /* ===== INICIO: CORRECCIÓN DE ALINEACIÓN EN CELDA CATEGORÍA (MÓVIL) - 19/09/2025 ===== */
+                  /* Esta regla evita que el texto y el ícono de la categoría se rompan en varias líneas,
+                     solucionando el problema del "recuadro" interno. */
+                  #registros-content td:nth-child(4) {
+                    white-space: nowrap;
+                  }
+                  /* ===== FIN: CORRECCIÓN ===== */
                   
               }
               /* Ocultamos el botón en la vista de escritorio */
@@ -3576,7 +3586,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 0.0.0.8
+              Versión 0.0.0.9
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
