@@ -657,7 +657,7 @@
             }
             
             /* ====================================================================== */
-            /* ===== AJUSTE DE COLOR EN TABLA REGISTROS by Gemini - 22/08/2025 ==== */
+            /* ===== AJUSTE DE COLOR EN TABLA REGISTROS
             /* ====================================================================== */
 
             /* Esta regla anula el color de toda la fila para las primeras 3 columnas,
@@ -1121,6 +1121,8 @@
                   /* Ocultamos la columna de descripción en móvil, ya que tenemos el botón */
                   #registros-content th:nth-child(3),
                   #registros-content td:nth-child(3),
+                  #registros-content th:nth-child(5),
+                  #registros-content td:nth-child(5),
                   #proyeccion-content th:nth-child(3),
                   #proyeccion-content td:nth-child(3) {
                       display: none;
@@ -1182,11 +1184,11 @@
 
               @media (max-width: 768px) {
                   /* Oculta el texto (span) dentro de la cuarta columna */
-                  #registros-content tbody td:nth-child(4) span,
+                  /*#registros-content tbody td:nth-child(4) span,
                   #proyeccion-content tbody td:nth-child(4) span,
                   #recurrentes-content tbody td:nth-child(4) span {
                       display: none;
-                  }
+                  }*/
 
                   /* Centra el icono en la celda */
                   #registros-content tbody td:nth-child(4),
@@ -1210,8 +1212,8 @@
 
                   #registros-content th:nth-child(3),
                   #registros-content td:nth-child(3),
-                  #registros-content th:nth-child(7),
-                  #registros-content td:nth-child(7),
+                  #registros-content th:nth-child(8),
+                  #registros-content td:nth-child(8),
                   #proyeccion-content th:nth-child(3),
                   #proyeccion-content td:nth-child(3),
                   #proyeccion-content th:nth-child(7),
@@ -3567,7 +3569,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 0.0.0.7
+              Versión 0.0.0.8
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
