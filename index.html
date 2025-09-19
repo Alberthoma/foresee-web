@@ -1127,14 +1127,13 @@
                   #proyeccion-content td:nth-child(3) {
                       display: none;
                   }
-                  /* ===== INICIO: ANCHO FLEXIBLE PARA CELDA CATEGORÍA (MÓVIL) - 19/09/2025 ===== */
+
+                  /* ===== INICIO: SOLUCIÓN DEFINITIVA ANCHO DE CELDA (MÓVIL) - 19/09/2025 ===== */
                   #registros-content td:nth-child(4) {
-                    display: table-cell;    /* Restaura el comportamiento natural de la celda */
-                    vertical-align: middle; /* Centra verticalmente el contenido */
+                    width: max-content; /* Fuerza a la columna a ser tan ancha como su contenido sin saltos de línea */
                   }
-                  /* ===== FIN: ANCHO FLEXIBLE ===== */
-
-
+                  /* ===== FIN: SOLUCIÓN DEFINITIVA ===== */
+                  
               }
               /* Ocultamos el botón en la vista de escritorio */
               @media (min-width: 769px) {
@@ -3577,7 +3576,7 @@
               © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
             </p>
             <p id="app-version" class="text-xs text-gray-400 mt-1">
-              Versión 0.0.0.8.1
+              Versión 0.0.0.8
             </p>
             <div class="text-xs mt-2 space-x-4">
               <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline">Política de Privacidad</a>
