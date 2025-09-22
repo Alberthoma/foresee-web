@@ -2009,54 +2009,6 @@
           display: flex;
         }
       }
-
-      /* --- Estilo para hacer visible el panel de acción única --- */
-      #single-action-modal.active #single-action-modal-content {
-        transform: translateY(0);
-      }
-
-      /* Estilos para la cuadrícula del modal de selección de categoría */
-      #category-select-grid {
-        display: grid;
-        /* Define que habrá varias columnas que se ajustan automáticamente */
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 1rem;
-      }
-
-      /* Estilos para cada ítem individual en la cuadrícula */
-      .category-select-option {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 8px;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 1px solid var(--border-dark);
-        background-color: var(--bg-dark-tertiary);
-        transition: all 0.2s ease-in-out;
-        text-align: center;
-      }
-
-      .category-select-option:hover {
-        transform: scale(1.05);
-        border-color: var(--electric-blue);
-      }
-
-      /* Controla el tamaño de la imagen (ícono) */
-      .category-select-option img {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 4px;
-      }
-
-      /* Controla el tamaño del texto debajo del ícono */
-      .category-select-option span {
-        font-size: 0.7rem;
-        line-height: 1.2;
-        color: var(--text-light-secondary);
-        word-break: break-word;
-      }
     </style>
   </head>
   <body class="mt-56 view-dashboard">
@@ -4211,7 +4163,10 @@
             </button>
           </div>
 
-          <div id="category-select-grid"></div>
+          <div
+            id="category-select-grid"
+            class="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1rem;"
+          ></div>
         </div>
       </div>
     </div>
@@ -4279,7 +4234,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.4</p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.3</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -4430,35 +4385,25 @@
             title: 'Paso 1: Construye tu Universo Financiero (La Configuración Inicial)',
             description:
               'Tu Viaje Hacia la Libertad Financiera Comienza Aquí. La Base del Éxito: Antes de que puedas conquistar tus finanzas, necesitas un mapa claro. Foresee te ayuda a crear ese mapa en minutos, no horas. Tu Misión: Ve a la pestaña Configuración (⚙️) y completa tres tareas rápidas: 1. Añade tus Categorías Personalizadas: ¿Gastos en Comida? ¿Ingresos por Freelance? ¿O tal vez un presupuesto para Ocio? Crea categorías que reflejen tu vida real. 2. Registra tus Bancos: Añade todas las cuentas bancarias que usas regularmente. Foresee las usará para categorizar automáticamente tus transacciones futuras. 3. Define Descripciones Clave: ¿Pagas Netflix cada mes? ¿O tienes un gasto recurrente en Amazon? Añade esas descripciones para que Foresee pueda reconocerlas y categorizarlas automáticamente en el futuro. ¡Y listo! Has creado el esqueleto de tu sistema financiero personal en minutos.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512589/Paso_1_Bienvenida_y_Gestion_de_Categoria_y_Bancos_plya2u.mp4', // <-- REEMPLAZA ESTE ENLACE
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757888123/Categorias_y_Bancos_knxkoh.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
             title: 'Paso 2: Automatiza tu Tranquilidad (Gastos Recurrentes)',
             description:
               ' Pon tus pagos en automático. Registra una vez tus gastos fijos en Gastos Recurrentes y Foresee los repetirá cada mes avisándote antes del vencimiento, así evitas olvidos, recargos y preocupaciones.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512570/Paso_2_Gastos_Recurrentes_mboofi.mp4', // <-- REEMPLAZA ESTE ENLACE
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757891641/Gastos_recurrentes_fejxpq.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
             title: 'Paso 3: Domina tus Deudas (Tarjetas de Crédito 💳)',
             description:
               'De Monstruo a Herramienta: Tu Centro de Comando de Deudas. El Poder de la Claridad: Las tarjetas de crédito pueden ser una fuente de ansiedad terrible. Las tratamos como un tema tabú. Foresee les pone luz, convirtiéndolas en un desafío manejable con un plan de ataque claro. Tu Misión: Ve a la pestaña Tarjetas de Crédito (💳). Ingresa cada tarjeta con su deuda actual, la tasa de interés y la fecha de pago. Y aquí viene la magia: dile a Foresee en cuántos meses quieres liquidar esa deuda. La aplicación calculará automáticamente el Pago Mensual Sugerido para que alcances tu meta. Además, recibirás alertas en el panel principal para que nunca se te pase una fecha de pago. ¡Elige tu Estrategia para la Victoria! Método Avalancha: Paga primero la tarjeta con el interés más alto. Ahorrarás más dinero a largo plazo. Método Bola de Nieve: Paga primero la tarjeta con la deuda más pequeña. Obtendrás una victoria rápida que te llenará de motivación para seguir. Foresee te da la información para que TÚ elijas tu camino hacia la libertad.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512577/Paso_3_Targetas_de_Credito_krqk9f.mp4', // <-- REEMPLAZA ESTE ENLACE
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757799979/Tarjetas_de_Credito_mnbwb9.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
-            title: '4 Registro Diaro: El Hábito que lo Cambia Todo (Registra tus Movimientos)',
+            title: 'El Hábito que lo Cambia Todo (Registra tus Movimientos)',
             description:
               'Micro-acciones, Resultados Gigantes. La Clave del Éxito: El control financiero se construye con un pequeño hábito diario. Foresee lo hace tan fácil que se sentirá como una segunda naturaleza. Tu Misión: Cada vez que compres algo o recibas dinero, tienes tres maneras de registrar tus transacciones: En la pantalla principal presiona el signo más (Ingresos del mes +) o el menos (Gastos del mes -)  dependiendo de la operación que quieras registrar. O haz clic en Registros (en los iconos de la barra superior primero a la derecha). se abrirá una tabla con dos botones selecciona Ingreso o Gasto – Bienvenida la magia y practicidad de las tablas, porque  al pulsar  ese mismo botón Registro puedes ver una tabla  con todos tus movimientos de manera detallada y así llevarás un control más preciso. En cualquiera de las dos opciones anteriores que hayas elegido se abrirá un formulario,  rellena los campos: Fecha, Categoría, Monto, Banco, Detalles. ¡Listo! Todos tus saldos, presupuestos y reportes se actualizan al instante.🚀 ¡Función Estrella! El Registro por Voz. ¿No tienes tiempo? ¿Vas caminando? Presiona el ícono de Voz (🎤) y simplemente di: Gasto en gasolina por 50 dólares con la tarjeta de Wells Fargo. ¡Foresee lo entenderá y lo registrará por ti! Es la forma más rápida y sencilla de mantener tus finanzas al día.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512590/Paso_4_Registro_Diaro_cujs8c.mp4', // <-- REEMPLAZA ESTE ENLACE
-          },
-          {
-            title: 'Paso 5 Reportes Presupuesto y  Tablas',
-            description: 'X',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512588/Paso_5_Reportes_Presupuesto_y_Tablas_p0zj9b.mp4', // <-- REEMPLAZA ESTE ENLACE
-          },
-          {
-            title: 'Paso 6 Proyeccion',
-            description: 'X',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758514065/Paso_6_Proyeccion_bhrr1a.mp4', // <-- REEMPLAZA ESTE ENLACE
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757799983/Registro_diario_ingresos_o_gastos_qekpzn.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
         ];
 
@@ -8323,43 +8268,6 @@
               }
             },
           );
-        }
-
-        /**
-         * Obtiene el ID y la pestaña del único elemento seleccionado en la tabla activa.
-         * @returns {{id: string, tab: string}|null} El objeto con el ID y la pestaña, o null si no hay una selección única.
-         */
-        function getSingleSelectedItem() {
-          const activeTabElement = document.querySelector('.tab-pane.active');
-          if (!activeTabElement) return null;
-
-          const activeTab = activeTabElement.id.replace('-content', '');
-          let checkboxClass = '';
-
-          // Lógica para encontrar la clase correcta del checkbox
-          switch (activeTab) {
-            case 'registros':
-              checkboxClass = 'transaction-checkbox';
-              break;
-            case 'proyeccion':
-              checkboxClass = 'projection-checkbox';
-              break;
-            case 'recurrentes':
-              checkboxClass = 'recurring-checkbox';
-              break;
-            default:
-              return null;
-          }
-
-          const checkedCheckbox = document.querySelector(
-            `#${activeTab}-content .${checkboxClass}:checked`,
-          );
-
-          if (checkedCheckbox) {
-            return { id: checkedCheckbox.dataset.id, tab: activeTab };
-          }
-
-          return null;
         }
 
         // --- UTILIDADES Y VALIDACIÓN ---
