@@ -858,13 +858,12 @@
       }
 
       /* --- Filtros --- */
+      #filter-description,
       #filter-category,
-      #filter-bank, /* <-- Se añade el nuevo filtro de banco */
       #filter-month {
         background-color: var(--bg-dark-tertiary);
         border: 1px solid var(--border-dark);
         color: var(--text-light-primary);
-        border-radius: 0.5rem; /* Pequeña mejora para consistencia visual */
       }
 
       /* --- Panel de Entrada por Voz --- */
@@ -2400,39 +2399,36 @@
               <span>+ Gasto</span>
             </button>
           </div>
-
-          <div
-            class="flex flex-row items-center justify-center gap-4 flex-grow"
-            id="filters-container"
+          <button
+            id="toggle-filters-btn"
+            class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs"
           >
-            <select
-              class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              id="filter-category"
-            >
-              <option value="">Todas las categorías</option>
-            </select>
+            Filtros
+          </button>
+          <button class="aparecer" id="mostrar">
+            <span>X</span>
+          </button>
+        </div>
 
-            <select class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-bank">
-              <option value="">Todos los bancos</option>
-            </select>
-
-            <input
-              class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              id="filter-month"
-              type="month"
-            />
-          </div>
-          <div class="flex items-center">
-            <button
-              id="toggle-filters-btn"
-              class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs"
-            >
-              Filtros
-            </button>
-            <button class="aparecer ml-2" id="mostrar">
-              <span>X</span>
-            </button>
-          </div>
+        <div class="flex flex-col md:flex-row gap-4 mb-4" id="filters-container">
+          <input
+            class="flex-grow p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            id="filter-description"
+            placeholder="Filtrar por descripción..."
+            type="text"
+          />
+          <select
+            class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            id="filter-category"
+            type="text"
+          >
+            <option value="">Todas las categorías</option>
+          </select>
+          <input
+            class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            id="filter-month"
+            type="month"
+          />
         </div>
 
         <div
@@ -4283,7 +4279,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.5</p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.4</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -4766,7 +4762,7 @@
             currentMonthFilterValue = filterMonth.value;
             renderAll();
           });
-          document.getElementById('filter-bank').addEventListener('change', renderAll);
+          filterDescription.addEventListener('input', renderAll);
           filterCategory.addEventListener('change', renderAll);
 
           document.querySelectorAll('.tab-button').forEach((button) => {
@@ -5501,55 +5497,44 @@
           );
         }
 
-        // CÓDIGO NUEVO (DESPUÉS) - PEGA TODO ESTE BLOQUE
-        /**
-         * NUEVA FUNCIÓN GENÉRICA: Obtiene transacciones con filtros específicos.
-         * Esta es la nueva "herramienta" principal para buscar datos.
-         * @param {object} filters - Un objeto con los criterios de filtrado.
-         */
-        function getTransactions(filters = {}) {
-          const { month, category, bank, description, source = appState.transactions } = filters;
+        function getFilteredTransactions() {
+          const selectedMonth = filterMonth.value;
+          const descriptionFilter = filterDescription.value.toLowerCase();
+          const categoryFilter = filterCategory.value;
 
-          return source
+          return appState.transactions
             .filter((t) => {
-              if (!t || typeof t.date !== 'string') return false;
+              // Se añade una comprobación para asegurar que la transacción 't' y 't.date' existen antes de usarlos.
+              if (!t || typeof t.date !== 'string') {
+                console.warn('Se encontró una transacción sin fecha válida:', t);
+                return false; // Se ignora esta transacción para evitar el error.
+              }
 
               const transactionMonth = t.date.substring(0, 7);
-
-              const matchesMonth = !month || transactionMonth === month;
-              const matchesCategory = !category || t.category === category;
-              const matchesBank = !bank || t.bank === bank;
-              const matchesDescription =
-                !description ||
-                (t.description || '').toLowerCase().includes(description.toLowerCase());
-
-              return matchesMonth && matchesCategory && matchesBank && matchesDescription;
+              const matchesMonth = !selectedMonth || transactionMonth === selectedMonth;
+              // Se asegura que t.description exista antes de llamar a toLowerCase()
+              const matchesDescription = (t.description || '')
+                .toLowerCase()
+                .includes(descriptionFilter);
+              const matchesCategory = !categoryFilter || t.category === categoryFilter;
+              return matchesMonth && matchesDescription && matchesCategory;
             })
             .sort((a, b) => {
+              // Orden principal: por fecha
               const dateComparison = new Date(a.date) - new Date(b.date);
-              if (dateComparison !== 0) return dateComparison;
-              if (a.type === 'income' && b.type !== 'income') return -1;
-              if (a.type !== 'income' && b.type === 'income') return 1;
-              return 0;
+              if (dateComparison !== 0) {
+                return dateComparison;
+              }
+
+              // Orden secundario: dentro de la misma fecha, los ingresos van primero
+              if (a.type === 'income' && b.type !== 'income') {
+                return -1; // 'a' (ingreso) va antes que 'b'
+              }
+              if (a.type !== 'income' && b.type === 'income') {
+                return 1; // 'b' (ingreso) va antes que 'a'
+              }
+              return 0; // Mantener el orden relativo si son del mismo tipo
             });
-        }
-
-        /**
-         * FUNCIÓN ACTUALIZADA: Usada SOLO por la tabla de Registros.
-         * Lee los filtros de la interfaz y llama a la nueva función genérica.
-         */
-        function getFilteredTransactions() {
-          const month = filterMonth.value;
-          const category = filterCategory.value;
-          const bank = document.getElementById('filter-bank').value; // Leemos el nuevo filtro de banco
-
-          // Llama a la función genérica pasando TODOS los filtros de la UI
-          return getTransactions({
-            month: month,
-            category: category,
-            bank: bank,
-            // No pasamos 'description' porque ya no existe el filtro
-          });
         }
 
         function getFilteredTransactionsForProyeccion() {
@@ -5678,7 +5663,7 @@
         }
 
         function renderDashboard() {
-          const transactionsForMonth = getTransactions({ month: filterMonth.value }); // Usa transacciones activas del mes
+          const transactionsForMonth = getFilteredTransactions(); // Usa transacciones activas del mes
           const income = transactionsForMonth
             .filter((t) => t.type === 'income')
             .reduce((sum, t) => sum + t.amount, 0);
@@ -6013,7 +5998,7 @@
           budgetTableBody.classList.remove('hidden');
           noCategoriesMessage.classList.add('hidden');
 
-          const transactionsForMonth = getTransactions({ month: filterMonth.value });
+          const transactionsForMonth = getFilteredTransactions();
           const expensesByCategory = transactionsForMonth
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
@@ -6077,7 +6062,7 @@
         }
 
         function renderReports() {
-          const transactionsForMonth = getTransactions({ month: filterMonth.value });
+          const transactionsForMonth = getFilteredTransactions();
           const expensesByCategory = transactionsForMonth
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
@@ -8395,25 +8380,31 @@
          * que aún no han sido registrados en ese mes.
          * @returns {Array<Object>} Una lista unificada y ordenada de transacciones para la proyección.
          */
-
         function getDynamicProjections() {
-          const realTransactions = getTransactions({ month: filterMonth.value });
+          const realTransactions = getFilteredTransactions();
           const recurringExpenses = appState.recurringExpenses;
+
+          // --- NUEVO: Obtener proyecciones manuales filtradas ---
           const selectedMonthFilter = filterMonth.value;
+          const descriptionFilter = filterDescription.value.toLowerCase();
+          const categoryFilter = filterCategory.value;
+          const manualProjections = appState.projections
+            .filter((p) => {
+              if (!p || typeof p.date !== 'string') return false;
+              const matchesMonth =
+                !selectedMonthFilter || p.date.substring(0, 7) === selectedMonthFilter;
+              const matchesDescription = (p.description || '')
+                .toLowerCase()
+                .includes(descriptionFilter);
+              const matchesCategory = !categoryFilter || p.category === categoryFilter;
+              return matchesMonth && matchesDescription && matchesCategory;
+            })
+            .map((p) => ({ ...p, isPureProjection: true })); // Añadimos una bandera para identificarlas
 
-          // Se eliminan las variables 'descriptionFilter' y 'categoryFilter' que no se usan o causan error
-
-          // Ahora, las proyecciones manuales se obtienen sin filtros extra, solo por mes
-          const manualProjections = getTransactions({
-            month: selectedMonthFilter,
-            source: appState.projections,
-          }).map((p) => ({ ...p, isPureProjection: true }));
-
-          if (!selectedMonthFilter) {
+          if (!selectedMonthFilter)
             return [...realTransactions, ...manualProjections].sort(
               (a, b) => new Date(a.date) - new Date(b.date),
             );
-          }
 
           const [year, month] = selectedMonthFilter.split('-').map(Number);
 
@@ -8425,9 +8416,10 @@
             bank: re.bank,
             amount: re.amount,
             type: 'expense',
-            isVirtual: true,
+            isVirtual: true, // Bandera para proyecciones de recurrentes
           }));
 
+          // Filtra las proyecciones recurrentes que ya existen como transacciones REALES
           const futureProjections = projectedFromRecurring.filter((proj) => {
             return !realTransactions.some(
               (realTx) =>
@@ -8437,6 +8429,7 @@
             );
           });
 
+          // --- NUEVO: Combinar las TRES listas y ordenar por fecha ---
           const combinedList = [...realTransactions, ...manualProjections, ...futureProjections];
           combinedList.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -8768,7 +8761,6 @@
             'name',
             'Todas las categorías',
           );
-          populateSelectWithOptions('filter-bank', appState.banks, null, null, 'Todos los bancos');
         }
 
         function populateModalDropdowns() {
