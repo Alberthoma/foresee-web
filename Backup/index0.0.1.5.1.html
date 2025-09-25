@@ -6130,7 +6130,7 @@
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">${getCategoryDisplay(
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 flex items-center">${getCategoryDisplay(
                             categoryName,
                           )}</td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
@@ -6185,7 +6185,9 @@
                 'flex justify-between items-center text-sm p-2 bg-gray-50 rounded-md';
               // --- LÍNEA MODIFICADA ---
               item.innerHTML = `
-                              <span class="text-gray-700">${getCategoryDisplay(category)}</span>
+                              <span class="text-gray-700 flex items-center">${getCategoryDisplay(
+                                category,
+                              )}</span>
                               <span class="font-medium text-red-500">${formatCurrency(
                                 amount,
                               )}</span>
