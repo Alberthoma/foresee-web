@@ -491,15 +491,6 @@
         margin-top: 1px;
       }
 
-      #registros-content table,
-      #proyeccion-content table,
-      #recurrentes-content table,
-      #tarjetas-content table,
-      #presupuesto-content table {
-        width: 100%;
-        margin: 1px auto 0;
-      }
-
       th,
       td {
         border: 1px solid #ddd;
@@ -829,10 +820,6 @@
         padding-left: 2px;
         padding-right: 2px;
         width: 1%;
-        white-space: nowrap;
-      }
-
-      #proyeccion-content td:nth-child(4) {
         white-space: nowrap;
       }
 
@@ -1675,11 +1662,6 @@
         color: var(--text-light-secondary);
       }
 
-      #proyeccion-content td:nth-child(4),
-      #registros-content td:nth-child(4) {
-        white-space: nowrap;
-      }
-
       /* ====================================================================== */
       /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)
               /* ====================================================================== */
@@ -1885,6 +1867,10 @@
         #proyeccion-content td:nth-child(4) > span,
         #registros-content td:nth-child(4) > span {
           display: none;
+        }
+
+        #registros-content td:nth-child(4) {
+          white-space: nowrap;
         }
 
         #registros-content tbody td:nth-child(4),
@@ -2526,8 +2512,8 @@
               </thead>
               <tbody class="bg-white divide-y divide-gray-200" id="transactions-table-body"></tbody>
               <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr class="hidden md:table-row">
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="4">
+                <tr>
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
                     Total Ingresos:
                   </td>
                   <td
@@ -2536,36 +2522,12 @@
                   >
                     $0.00
                   </td>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase">
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
                     Total Gastos:
                   </td>
                   <td
                     class="px-6 py-4 text-right text-red-600 text-sm"
                     id="registros-total-expenses"
-                  >
-                    $0.00
-                  </td>
-                  <td></td>
-                </tr>
-
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Gastos:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-red-600 text-sm"
-                    id="mobile-registros-total-expenses"
-                  >
-                    $0.00
-                  </td>
-                </tr>
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Ingresos:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-green-600 text-sm"
-                    id="mobile-registros-total-income"
                   >
                     $0.00
                   </td>
@@ -2619,10 +2581,9 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200" id="proyeccion-table-body"></tbody>
-
               <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr class="hidden md:table-row">
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="3">
+                <tr>
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
                     Total Ingresos:
                   </td>
                   <td
@@ -2631,35 +2592,12 @@
                   >
                     $0.00
                   </td>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase">
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
                     Total Gastos:
                   </td>
                   <td
                     class="px-6 py-4 text-right text-red-600 text-sm"
                     id="proyeccion-total-expenses"
-                  >
-                    $0.00
-                  </td>
-                  <td></td>
-                </tr>
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Gastos Proyectados:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-red-600 text-sm"
-                    id="mobile-proyeccion-total-expenses"
-                  >
-                    $0.00
-                  </td>
-                </tr>
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Ingresos Proyectados:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-green-600 text-sm"
-                    id="mobile-proyeccion-total-income"
                   >
                     $0.00
                   </td>
@@ -2716,23 +2654,14 @@
                 class="bg-white divide-y divide-gray-200"
                 id="recurring-expenses-table-body"
               ></tbody>
-              <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr class="hidden md:table-row">
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="6">
+              <tfoot class="bg-gray-50">
+                <tr>
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="5">
                     Total Mensual Proyectado
                   </td>
-                  <td class="px-6 py-4 text-center text-red-700 text-sm" id="recurring-total">
-                    $0.00
-                  </td>
-                </tr>
-
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Mensual:
-                  </td>
                   <td
-                    class="px-4 py-3 text-center text-red-700 text-sm"
-                    id="mobile-recurring-total"
+                    class="px-6 py-4 whitespace-nowrap text-center text-sm text-red-700"
+                    id="recurring-total"
                   >
                     $0.00
                   </td>
@@ -4354,7 +4283,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.6</p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.5</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -4551,7 +4480,6 @@
         const transactionModal = document.getElementById('transaction-modal');
         const transactionForm = document.getElementById('transaction-form');
         const transactionsTableBody = document.getElementById('transactions-table-body');
-
         const noTransactionsMessage = document.getElementById('no-transactions-message');
         const proyeccionTableBody = document.getElementById('proyeccion-table-body');
         const noProyeccionMessage = document.getElementById('no-proyeccion-message');
@@ -5829,7 +5757,7 @@
               cellDesc.className = 'px-6 py-4 whitespace-nowrap text-sm';
               cellDesc.textContent = t.description;
               const cellCat = row.insertCell();
-              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm';
+              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm flex items-center';
               cellCat.innerHTML = `${getCategoryDisplay(
                 t.category,
               )}<button class="info-btn" data-description="${t.description}">i</button>`;
@@ -5863,16 +5791,11 @@
               .reduce((sum, t) => sum + t.amount, 0);
 
             // ===== ¡AJUSTE DEL FOOTER! =====
-            //tableElement.querySelector('tfoot tr td:first-child').colSpan = 4; // Ajustado a 4 para alinear
+            tableElement.querySelector('tfoot tr td:first-child').colSpan = 4; // Ajustado a 4 para alinear
             // =================================
             document.getElementById('registros-total-income').textContent =
               formatCurrency(totalIncome);
             document.getElementById('registros-total-expenses').textContent =
-              formatCurrency(totalExpenses);
-            // AÑADE ESTAS DOS LÍNEAS
-            document.getElementById('mobile-registros-total-income').textContent =
-              formatCurrency(totalIncome);
-            document.getElementById('mobile-registros-total-expenses').textContent =
               formatCurrency(totalExpenses);
           }
 
@@ -5956,7 +5879,7 @@
               cellDesc.textContent = p.description;
 
               const cellCat = row.insertCell();
-              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm';
+              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm flex items-center';
               cellCat.innerHTML = `${getCategoryDisplay(
                 p.category,
               )}<button class="info-btn" data-description="${p.description}">i</button>`;
@@ -5998,17 +5921,10 @@
             const totalExpenses = projections
               .filter((p) => p.type === 'expense')
               .reduce((sum, p) => sum + p.amount, 0);
-
-            // Actualiza los totales de escritorio
+            tableElement.querySelector('tfoot tr td:first-child').colSpan = 3;
             document.getElementById('proyeccion-total-income').textContent =
               formatCurrency(totalIncome);
             document.getElementById('proyeccion-total-expenses').textContent =
-              formatCurrency(totalExpenses);
-
-            // Actualiza los nuevos totales de móvil
-            document.getElementById('mobile-proyeccion-total-income').textContent =
-              formatCurrency(totalIncome);
-            document.getElementById('mobile-proyeccion-total-expenses').textContent =
               formatCurrency(totalExpenses);
           }
 
@@ -7596,7 +7512,8 @@
             cellDesc.textContent = re.description;
 
             const cellCat = row.insertCell();
-            cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+            cellCat.className =
+              'px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center';
             cellCat.innerHTML = getCategoryDisplay(re.category);
 
             const cellAmount = row.insertCell();
@@ -7619,11 +7536,8 @@
             (sum, expense) => sum + expense.amount,
             0,
           );
-
-          // Actualiza los totales de escritorio y móvil
+          table.querySelector('tfoot tr td:first-child').colSpan = 6;
           document.getElementById('recurring-total').textContent = formatCurrency(totalRecurring);
-          document.getElementById('mobile-recurring-total').textContent =
-            formatCurrency(totalRecurring);
 
           // ¡PARTE CRÍTICA! Aquí se vuelven a activar los botones después de crear la tabla.
           document
