@@ -4581,51 +4581,6 @@
       </div>
     </div>
 
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="shared-expense-bank-modal"
-    >
-      <div class="bg-white rounded-lg shadow-xl w-full max-w-sm flex flex-col">
-        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0">
-          Seleccionar Banco para el Pago
-        </h2>
-        <div class="p-6 flex-grow">
-          <p id="shared-expense-summary" class="text-gray-600 mb-4 text-center"></p>
-          <div>
-            <label
-              class="block text-sm font-medium text-gray-700 mb-1"
-              for="shared-expense-bank-select"
-            >
-              Banco/Cuenta de Origen
-            </label>
-            <select
-              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              id="shared-expense-bank-select"
-              required=""
-            ></select>
-            <span class="input-error-message" id="shared-expense-bank-error"></span>
-          </div>
-        </div>
-        <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-          <button
-            class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-            id="cancel-shared-expense-bank-btn"
-            type="button"
-          >
-            Cancelar
-          </button>
-          <button
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
-            id="confirm-shared-expense-bank-btn"
-            type="submit"
-          >
-            Registrar Pago
-            <span class="btn-spinner hidden"></span>
-          </button>
-        </div>
-      </div>
-    </div>
-
     <button id="open-tutorials-btn" title="Ver Videos Tutoriales">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -4689,7 +4644,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.0/p></p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.8</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -4827,7 +4782,6 @@
         let recognition = null; // <-- Esta variable recordará el estado del micrófono
         let userId = null;
         let unsubscribePreferences = null;
-        let tempSharedExpenseData = null; // Datos temporales para gastos compartidos
         let unsubscribeTransactions = null;
         let unsubscribeProjections = null;
         let unsubscribeRecurring = null;
@@ -4859,34 +4813,26 @@
             url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512570/Paso_2_Gastos_Recurrentes_mboofi.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
-            title: 'Paso 3: De monstruo a herramienta. Domina tus Deudas (Tarjetas de Crédito 💳)',
+            title: 'Paso 3: Domina tus Deudas (Tarjetas de Crédito 💳)',
             description:
-              ' Las tarjetas de crédito ya no tienen por qué ser un peso, con Foresee se convierten en un plan claro y manejable. Registra cada tarjeta 💳 con su deuda, interés y fecha de pago define en cuántos meses quieres liquidar y Foresee calculará tu pago mensual sugerido. Además, recibirás alertas antes de cada vencimiento, para que nunca más un pago se te pase por alto.Foresee transforma la ansiedad en control y te devuelve la claridad que necesitas para avanzar con confianza.',
+              'De Monstruo a Herramienta: Tu Centro de Comando de Deudas. El Poder de la Claridad: Las tarjetas de crédito pueden ser una fuente de ansiedad terrible. Las tratamos como un tema tabú. Foresee les pone luz, convirtiéndolas en un desafío manejable con un plan de ataque claro. Tu Misión: Ve a la pestaña Tarjetas de Crédito (💳). Ingresa cada tarjeta con su deuda actual, la tasa de interés y la fecha de pago. Y aquí viene la magia: dile a Foresee en cuántos meses quieres liquidar esa deuda. La aplicación calculará automáticamente el Pago Mensual Sugerido para que alcances tu meta. Además, recibirás alertas en el panel principal para que nunca se te pase una fecha de pago. ¡Elige tu Estrategia para la Victoria! Método Avalancha: Paga primero la tarjeta con el interés más alto. Ahorrarás más dinero a largo plazo. Método Bola de Nieve: Paga primero la tarjeta con la deuda más pequeña. Obtendrás una victoria rápida que te llenará de motivación para seguir. Foresee te da la información para que TÚ elijas tu camino hacia la libertad.',
             url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512577/Paso_3_Targetas_de_Credito_krqk9f.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
             title: '4 Registro Diaro: El Hábito que lo Cambia Todo (Registra tus Movimientos)',
             description:
-              'El control de tu dinero empieza aquí con un registro. Con Foresee es fácil: un toque para ingresos, para gastos o la tabla que organiza todo al detalle. ¿Vas con prisa? Usa tu voz “Gasto en gasolina por 50 dólares”… y queda registrado. Un hábito pequeño, un impacto enorme. Foresee claridad y control en tus manos.',
+              'Micro-acciones, Resultados Gigantes. La Clave del Éxito: El control financiero se construye con un pequeño hábito diario. Foresee lo hace tan fácil que se sentirá como una segunda naturaleza. Tu Misión: Cada vez que compres algo o recibas dinero, tienes tres maneras de registrar tus transacciones: En la pantalla principal presiona el signo más (Ingresos del mes +) o el menos (Gastos del mes -)  dependiendo de la operación que quieras registrar. O haz clic en Registros (en los iconos de la barra superior primero a la derecha). se abrirá una tabla con dos botones selecciona Ingreso o Gasto – Bienvenida la magia y practicidad de las tablas, porque  al pulsar  ese mismo botón Registro puedes ver una tabla  con todos tus movimientos de manera detallada y así llevarás un control más preciso. En cualquiera de las dos opciones anteriores que hayas elegido se abrirá un formulario,  rellena los campos: Fecha, Categoría, Monto, Banco, Detalles. ¡Listo! Todos tus saldos, presupuestos y reportes se actualizan al instante.🚀 ¡Función Estrella! El Registro por Voz. ¿No tienes tiempo? ¿Vas caminando? Presiona el ícono de Voz (🎤) y simplemente di: Gasto en gasolina por 50 dólares con la tarjeta de Wells Fargo. ¡Foresee lo entenderá y lo registrará por ti! Es la forma más rápida y sencilla de mantener tus finanzas al día.',
             url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512590/Paso_4_Registro_Diaro_cujs8c.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
             title: 'Paso 5 Reportes Presupuesto y  Tablas',
-            description:
-              'Con Reportes, Saldos, Presupuesto y Tablas, Foresee te da una visión completa… y el poder de dirigir tu dinero con claridad.',
+            description: 'X',
             url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512588/Paso_5_Reportes_Presupuesto_y_Tablas_p0zj9b.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
-            title: 'Paso 6: Proyección — la esencia de Foresee.',
-            description:
-              'Anticipa lo que viene no solo mires lo que ya pasó.Registra tus ingresos, tus presupuestos y tus gastos diarios. Foresee hace el cálculo al instante. Sabrás cuánto puedes usar y cuánto puedes ahorrar. ¿Un mes corto o ajustado?  La Proyección te guía. Te ayuda a priorizar, a evitar excesos y a mantenerte en control. Cada número es claridad, cada proyección es poder. Con Proyección diriges tu dinero con inteligencia.',
+            title: 'Paso 6 Proyeccion',
+            description: 'X',
             url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758514065/Paso_6_Proyeccion_bhrr1a.mp4', // <-- REEMPLAZA ESTE ENLACE
-          },
-          {
-            title: 'Paso 7 Gastos Comunes',
-            description:
-              'Aquí tú actúas como el intermediario inteligente: recibes de cada persona su parte y luego cancelas el total.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1759005488/Gastos_comunes_kvozqf.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
         ];
 
@@ -5559,58 +5505,9 @@
             }
           });
 
-          // REEMPLAZA EL BLOQUE ANTERIOR CON ESTE CÓDIGO CORREGIDO
           gastosComunesTable.addEventListener('click', (e) => {
-            // === CORRECCIÓN INICIA AQUÍ ===
-            // 1. PRIMERO revisamos si se hizo clic en el botón 'OK'
-            const registerBtn = e.target.closest('.register-shared-expense-btn');
-            if (registerBtn) {
-              // 2. Detenemos la propagación para que no se active el modal de distribución
-              e.stopPropagation();
-
-              const dayInput = registerBtn.previousElementSibling;
-              const day = parseInt(dayInput.value, 10);
-
-              if (isNaN(day) || day < 1 || day > 31) {
-                showToast('Por favor, ingresa un día válido (1-31).', 'error');
-                dayInput.focus();
-                return;
-              }
-
-              const itemId = registerBtn.dataset.itemId;
-              const personIndex = parseInt(registerBtn.dataset.personIndex, 10);
-              const item = appState.gastosComunes.items.find((i) => i.id === itemId);
-              const person = appState.gastosComunes.people[personIndex];
-
-              if (!item || !person) {
-                showToast('Error: No se encontró el ítem o la persona.', 'error');
-                return;
-              }
-
-              const amount = calculateCellAmount(item, personIndex);
-              const description = `${person.name} - ${item.name}`;
-              const now = new Date();
-              const transactionDate = new Date(now.getFullYear(), now.getMonth(), day);
-              const formattedDate = transactionDate.toISOString().split('T')[0];
-
-              const dataForModal = {
-                amount,
-                description,
-                date: formattedDate,
-                category: 'Gastos Comunes',
-                originalItemId: itemId,
-                originalPersonIndex: personIndex,
-              };
-
-              openSharedExpenseBankModal(dataForModal);
-              return; // Salimos de la función una vez ejecutada la acción
-            }
-            // === CORRECCIÓN TERMINA AQUÍ ===
-
             const cell = e.target.closest('.distribution-cell');
-            // === LÍNEA MODIFICADA ===
-            // Ahora solo se abre el popover si se hizo clic en la celda PERO NO en el input de la fecha.
-            if (cell && !e.target.matches('.shared-expense-day-input')) {
+            if (cell) {
               showDistributionPopover(cell);
               return;
             }
@@ -5622,9 +5519,10 @@
                 (i) => i.id !== itemId,
               );
               saveGastosComunesState();
-              return;
+              return; // Añadido para evitar que se ejecute el siguiente bloque
             }
 
+            // --- INICIO DE LA LÓGICA AÑADIDA ---
             const deletePersonBtn = e.target.closest('.delete-person-btn');
             if (deletePersonBtn) {
               const personIndexToDelete = parseInt(deletePersonBtn.dataset.personIndex, 10);
@@ -5636,28 +5534,36 @@
                 `Eliminar a ${personName}`,
                 `¿Estás seguro de que quieres eliminar a "${personName}" y todos sus datos de la tabla? Esta acción no se puede deshacer.`,
                 () => {
+                  // 1. Elimina a la persona del array de personas
                   appState.gastosComunes.people.splice(personIndexToDelete, 1);
+
+                  // 2. Reajusta los datos de distribución en cada ítem para reflejar la eliminación
                   if (appState.gastosComunes.items) {
                     appState.gastosComunes.items.forEach((item) => {
                       if (!item.distribution) return;
+
                       const newDistribution = {};
                       Object.keys(item.distribution).forEach((keyStr) => {
                         const oldIndex = parseInt(keyStr, 10);
                         const value = item.distribution[keyStr];
+
                         if (oldIndex < personIndexToDelete) {
-                          newDistribution[oldIndex] = value;
+                          newDistribution[oldIndex] = value; // Se mantiene igual
                         } else if (oldIndex > personIndexToDelete) {
-                          newDistribution[oldIndex - 1] = value;
+                          newDistribution[oldIndex - 1] = value; // Se desplaza una posición hacia atrás
                         }
+                        // El índice de la persona eliminada simplemente se omite
                       });
                       item.distribution = newDistribution;
                     });
                   }
+
+                  // 3. Guarda el nuevo estado en la base de datos
                   saveGastosComunesState();
                 },
               );
-              return;
             }
+            // --- FIN DE LA LÓGICA AÑADIDA ---
           });
 
           // --- LÓGICA DEL POPOVER ACTUALIZADA ---
@@ -5725,18 +5631,6 @@
             }
           });
 
-          document
-            .getElementById('confirm-shared-expense-bank-btn')
-            .addEventListener('click', handleConfirmSharedExpense);
-          document
-            .getElementById('cancel-shared-expense-bank-btn')
-            .addEventListener('click', closeSharedExpenseBankModal);
-          document.getElementById('shared-expense-bank-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'shared-expense-bank-modal') {
-              closeSharedExpenseBankModal();
-            }
-          });
-
           // --- Event Listeners para el Modal de Tutoriales ---
           const openTutorialsBtn = document.getElementById('open-tutorials-btn');
           const closeTutorialsBtn = document.getElementById('close-tutorials-modal-btn');
@@ -5764,6 +5658,7 @@
           listenersAttached = true;
         }
 
+        // PEGA EL SIGUIENTE BLOQUE DE CÓDIGO AQUÍ
         // --- LÓGICA PARA EL TOOLTIP DE INFORMACIÓN DE TRANSACCIÓN ---
         document.body.addEventListener('click', (e) => {
           // Primero, si hay un tooltip visible, lo eliminamos.
@@ -10442,127 +10337,6 @@
         }
 
         /**
-         * Abre el modal de selección de banco para un pago de gasto común.
-         * @param {object} data - La información pre-calculada de la transacción.
-         */
-        function openSharedExpenseBankModal(data) {
-          tempSharedExpenseData = data; // Guardar datos temporalmente
-          const modal = document.getElementById('shared-expense-bank-modal');
-          const summaryEl = document.getElementById('shared-expense-summary');
-
-          // Poblar el resumen en el modal para que el usuario sepa qué está registrando
-          summaryEl.innerHTML = `
-                Registrando un gasto de <strong>${formatCurrency(data.amount)}</strong> por 
-                <strong>"${data.description}"</strong> con fecha 
-                <strong>${formatDate(data.date)}</strong>.
-            `;
-
-          // Poblar el select con los bancos del usuario
-          populateSelectWithOptions(
-            'shared-expense-bank-select',
-            appState.banks,
-            null,
-            null,
-            'Selecciona un banco...',
-          );
-
-          modal.classList.add('active');
-        }
-
-        /**
-         * Cierra el modal de selección de banco.
-         */
-        function closeSharedExpenseBankModal() {
-          const modal = document.getElementById('shared-expense-bank-modal');
-          modal.classList.remove('active');
-          tempSharedExpenseData = null; // Limpiar datos temporales para evitar errores
-          clearValidationErrors();
-        }
-
-        /**
-         * Maneja la confirmación final: añade el banco y guarda la transacción en Firebase.
-         */
-        async function handleConfirmSharedExpense() {
-          if (!tempSharedExpenseData) return;
-
-          const bankSelect = document.getElementById('shared-expense-bank-select');
-          const bankError = document.getElementById('shared-expense-bank-error');
-          const selectedBank = bankSelect.value;
-
-          if (!validateRequired(bankSelect, bankError, 'Debes seleccionar un banco.')) {
-            return;
-          }
-
-          const transactionData = {
-            ...tempSharedExpenseData,
-            bank: selectedBank,
-          };
-
-          const confirmBtn = document.getElementById('confirm-shared-expense-bank-btn');
-          showButtonLoading(confirmBtn);
-
-          const appId = firebaseProjectId;
-          const transactionsColRef = collection(
-            db,
-            `artifacts/${appId}/users/${userId}/transactions`,
-          );
-
-          try {
-            const newDocRef = doc(transactionsColRef);
-            const newId = newDocRef.id;
-
-            const dataToSave = {
-              id: newId,
-              date: transactionData.date,
-              description: transactionData.description,
-              category: transactionData.category,
-              bank: transactionData.bank,
-              amount: transactionData.amount,
-              type: 'expense',
-            };
-
-            await setDoc(newDocRef, dataToSave);
-            showToast('Pago de gasto común registrado con éxito.', 'success');
-
-            // === INICIO DE LA NUEVA LÓGICA DE PERSISTENCIA ===
-            // 1. Encontrar el ítem en el estado local.
-            const itemToUpdate = appState.gastosComunes.items.find(
-              (item) => item.id === transactionData.originalItemId,
-            );
-
-            if (itemToUpdate) {
-              const personIndex = transactionData.originalPersonIndex;
-              // Extraemos solo el día del string de fecha 'YYYY-MM-DD'
-              const dayOfPayment = new Date(transactionData.date + 'T00:00:00').getDate();
-
-              // 2. Asegurarse de que la estructura de distribución exista.
-              if (!itemToUpdate.distribution) itemToUpdate.distribution = {};
-              if (!itemToUpdate.distribution[personIndex])
-                itemToUpdate.distribution[personIndex] = { method: 'equal' };
-
-              // 3. Añadir la marca de que fue pagado en ese día.
-              itemToUpdate.distribution[personIndex].paidDay = dayOfPayment;
-
-              // 4. Guardar el estado completo de gastosComunes en Firebase.
-              // Esto disparará el 'onSnapshot' y la tabla se volverá a dibujar correctamente.
-              await saveGastosComunesState();
-            }
-            // === FIN DE LA NUEVA LÓGICA ===
-
-            closeSharedExpenseBankModal();
-          } catch (error) {
-            console.error('[Firestore] Error al registrar pago de gasto común:', error);
-            showMessageModal(
-              'Error al Registrar',
-              'No se pudo guardar el pago en la tabla de registros.',
-              'error',
-            );
-          } finally {
-            hideButtonLoading(confirmBtn);
-          }
-        }
-
-        /**
          * Guarda el estado actual de la sección de gastos comunes en Firebase.
          */
         async function saveGastosComunesState() {
@@ -10607,6 +10381,7 @@
           table.classList.remove('hidden');
           noDataMessage.classList.add('hidden');
 
+          // 1. Renderizar Cabecera (Thead) - CON LA CORRECCIÓN
           const headerRow = thead.insertRow();
           headerRow.innerHTML = `
             <th>Ítem a Pagar</th>
@@ -10614,6 +10389,8 @@
           `;
           people.forEach((person, index) => {
             const th = document.createElement('th');
+            // --- INICIO DE LA MODIFICACIÓN ---
+            // Se envuelven el nombre y el botón en un contenedor div para alinearlos con Flexbox.
             th.innerHTML = `
             <div class="person-header-container">
               <div contenteditable="true" class="person-name-editable" data-person-index="${index}">${
@@ -10622,10 +10399,12 @@
               <span class="delete-person-btn" data-person-index="${index}" title="Eliminar Persona">&#x2716;</span>
             </div>
           `;
+            // --- FIN DE LA MODIFICACIÓN ---
             headerRow.appendChild(th);
           });
           headerRow.insertAdjacentHTML('beforeend', '<th class="actions-column"></th>');
 
+          // El resto de la función (Tbody y Tfoot) permanece igual...
           items.forEach((item) => {
             const itemRow = tbody.insertRow();
             itemRow.dataset.itemId = item.id;
@@ -10641,11 +10420,7 @@
               distCell.className = 'distribution-cell';
               distCell.dataset.personIndex = personIndex;
 
-              // === INICIO DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
               const distData = item.distribution?.[personIndex] || { method: 'equal', value: 0 };
-              const paidDay = distData.paidDay; // Obtenemos el día de pago si existe.
-              const isPaid = !!paidDay;
-
               let indicatorText = '';
               switch (distData.method) {
                 case 'percentage':
@@ -10660,63 +10435,10 @@
               }
 
               const calculatedAmount = calculateCellAmount(item, personIndex);
-
-              // Aplicamos la clase de color verde si está pagado.
-              let amountClass = 'font-semibold text-lg';
-              if (isPaid) {
-                amountClass += ' text-green-500';
-              }
-
-              let inputAndButtonHtml = '';
-              if (isPaid) {
-                // Si está pagado, mostramos el input deshabilitado con el día y un check.
-                inputAndButtonHtml = `
-                  <input
-                    type="number"
-                    class="table-input w-14 text-center shared-expense-day-input"
-                    value="${paidDay}"
-                    disabled
-                    style="background-color: #2E3A4B; cursor: not-allowed;"
-                  >
-                  <button
-                    class="register-shared-expense-btn bg-green-800 text-white rounded px-2 py-1 text-xs"
-                    title="Pago ya registrado"
-                    disabled
-                  >
-                    ✔
-                  </button>
-                `;
-              } else {
-                // Si no está pagado, mostramos el input vacío y el botón 'OK'.
-                inputAndButtonHtml = `
-                  <input
-                    type="number"
-                    min="1" max="31"
-                    class="table-input w-14 text-center shared-expense-day-input"
-                    placeholder="Día"
-                    title="Día del pago (1-31)"
-                  >
-                  <button
-                    class="register-shared-expense-btn bg-green-600 text-white rounded px-2 py-1 text-xs hover:bg-green-700 transition"
-                    data-item-id="${item.id}"
-                    data-person-index="${personIndex}"
-                    title="Registrar este pago"
-                  >
-                    OK
-                  </button>
-                `;
-              }
-
               distCell.innerHTML = `
-                <div class="flex flex-col items-center gap-1">
-                    <span class="${amountClass}">${formatCurrency(calculatedAmount)}</span>
-                    <span class="method-indicator -mt-1">${indicatorText}</span>
-                    <div class="flex items-center gap-1 mt-1">
-                        ${inputAndButtonHtml}
-                    </div>
-                </div>
+                <span>${formatCurrency(calculatedAmount)}</span>
+                <span class="method-indicator">${indicatorText}</span>
               `;
-              // === FIN DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
             });
             itemRow.insertCell(
               people.length + 2,
