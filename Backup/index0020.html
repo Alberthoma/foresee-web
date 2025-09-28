@@ -14,7 +14,6 @@
       href="https://res.cloudinary.com/datwdagbf/image/upload/v1756514685/proyeccion_hh3xyt.png"
     />
 
-    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Foresee" />
@@ -545,12 +544,12 @@
         margin: 1px auto 0;
       }
 
-      /*th,
+      th,
       td {
         border: 1px solid #ddd;
         padding: 2px;
         text-align: left;
-      }*/
+      }
 
       table tr:first-child th:first-child {
         border-top-left-radius: 10px;
@@ -759,36 +758,13 @@
         height: 16px;
       }
 
-      /* Cuando el modal de autenticación está activo, oculta las secciones específicas del contenido */
-      body.auth-modal-active #open-tutorials-btn,
-      body.auth-modal-active .bttclose,
-      body.auth-modal-active #tabs,
-      body.auth-modal-active #dashboard,
-      body.auth-modal-active #main-container,
-      body.auth-modal-active #credit-card-alerts,
-      body.auth-modal-active #recurring-alerts {
+      body.auth-modal-active #main-content-wrapper {
         display: none;
-      }
-
-      /* Ancla el footer a la parte inferior de la pantalla en la vista de autenticación */
-      body.auth-modal-active footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
       }
 
       /* ====================================================================== */
       /* 5. ESTILOS ESPECÍFICOS POR PESTAÑA Y VISTA
               /* ====================================================================== */
-
-      /* --- Contenido de la celda de Categoría --- */
-      .category-cell-content {
-        display: flex;
-        align-items: center; /* Centra verticalmente el ícono, texto y botón */
-        justify-content: flex-start; /* Alinea todo al inicio de la celda */
-        gap: 4px; /* Añade un pequeño espacio entre elementos */
-        white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
-      }
 
       /* --- Dashboard y Alertas --- */
       #dashboard {
@@ -2128,10 +2104,6 @@
           padding: 4px 2px;
         }
 
-        .category-cell-content span {
-          display: none;
-        }
-
         #filters-container {
           display: none;
           flex-direction: column;
@@ -2313,11 +2285,11 @@
       id="auth-modal"
     >
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md flex flex-col">
-        <h2 class="text-2xl font-bold p-0 border-b flex-shrink-0 text-center">
-          Foresee Finances, <br /><span class="font-thin xx-small">Bienvenido</span>
+        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0 text-center">
+          Bienvenido al Gestor de Presupuesto
         </h2>
-        <div class="p-1 flex-grow">
-          <div class="mb-1 text-center">
+        <div class="p-6 flex-grow">
+          <div class="mb-4 text-center">
             <p class="text-gray-600">Inicia sesión o regístrate para acceder a tus datos.</p>
           </div>
           <form class="space-y-4" id="auth-form">
@@ -2326,7 +2298,7 @@
                 Correo Electrónico
               </label>
               <input
-                class="w-full p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                 id="auth-email"
                 required=""
                 type="email"
@@ -2338,7 +2310,7 @@
                 Contraseña
               </label>
               <input
-                class="w-full p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                 id="auth-password"
                 required=""
                 type="password"
@@ -2347,7 +2319,7 @@
             </div>
             <div class="flex flex-col sm:flex-row justify-between gap-3 pt-4">
               <button
-                class="flex-1 bg-blue-600 text-white mb-2 px-1 py-1 rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
+                class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
                 id="login-btn"
                 type="submit"
               >
@@ -2355,7 +2327,7 @@
                 <span class="btn-spinner hidden"> </span>
               </button>
               <button
-                class="flex-1 bg-green-600 text-white mb-2 px-1 py-1 rounded-lg hover:bg-green-700 transition flex items-center justify-center"
+                class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center"
                 id="register-btn"
                 type="button"
               >
@@ -2368,142 +2340,142 @@
       </div>
     </div>
 
-    <header>
-      <div id="main-header-bar" class="mt-0 fixed top-0 left-0 w-full h-32">
-        <div class="w-full pt-2 pb-2 flex items-center justify-between pr-4" id="barr">
-          <img
-            src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
-            alt="Logo"
-            class="logotipo pl-4"
-          />
-
-          <div class="flex-1 text-center">
-            <h1 class="text-3xl font-bold">GESTOR FINANCIERO Y DE PRESUPUESTO WEB</h1>
-            <p id="ptitul" class="text-lg">
-              Bienvenido,
-              <strong class="font-semibold" id="user-alias-display">Cargando...</strong>: Tu panel
-              de control financiero, moderno y eficiente.
-            </p>
-            <button id="open-brand-story-btn" class="btn-philosophy">
-              Conoce nuestra filosofía
-            </button>
-          </div>
-
-          <div class="flex flex-col items-end">
-            <button id="IdbtOpenScreen" class="btOpenScreen mb-1 mr-1">Pantalla Completa</button>
-            <button id="IdbtCloseScreen" class="btcloseScreen mb-1">Mostrar Navegador</button>
-            <button class="bttclose mr-6" id="logout-btn">
-              Cerrar Sesión
-              <span class="btn-spinner hidden"></span>
-            </button>
-          </div>
-        </div>
-
-        <div class="contenedor-botones flex-col md:flex-row md:items-center md:justify-between">
-          <div class="btn" id="tabs">
-            <button class="tab-button" data-tab="registros">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514689/registro_mc8ed8.png"
-                alt="Icono Registros"
-                class="w-14 mb-1"
-              />
-              <span>Registros</span>
-            </button>
-            <button class="tab-button" id="quick-voice-record-btn">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/v1757199087/voz_w5ctvq.png"
-                alt="Icono Grabar Gasto"
-                class="w-14 mb-1"
-              />
-              <span>Voz</span>
-            </button>
-            <button class="tab-button" data-tab="proyeccion">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png"
-                alt="Icono Proyección"
-                class="h-12 w-14 mb-1"
-              />
-              <span>Proyección</span>
-            </button>
-            <button class="tab-button" data-tab="recurrentes">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514673/gastos-recurrentes2_udrbey.png"
-                alt="Icono recurrentes"
-                class="h-11 w-11 mb-1"
-              />
-              <span>Gastos<br />Recurrentes</span>
-            </button>
-            <button class="tab-button" data-tab="gastos-comunes">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756767509/comunes_xjuxxt.png"
-                alt="Icono Gastos Comunes"
-                class="h-11 w-11 mb-1"
-              />
-              <span>Gastos<br />Comunes</span>
-            </button>
-            <button class="tab-button" data-tab="tarjetas">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514697/tarjetas2_z3jokx.png"
-                alt="Icono tarjetas"
-                class="h-12 w-12 mb-1"
-              />
-              <span>Tarjetas<br />de Crédito</span>
-            </button>
-            <button class="tab-button" data-tab="saldos">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514692/saldos_lntcfz.png"
-                alt="Icono saldos"
-                class="h-9 w-12 mb-1"
-              />
-              <span>Saldos<br />de Cuentas</span>
-            </button>
-            <button class="tab-button" data-tab="calculadora">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514686/proyeccion2_iqtpug.png"
-                alt="Icono calculadora"
-                class="h-9 w-10 mb-1"
-              />
-              <span>Calculadora</span>
-            </button>
-            <button class="tab-button" data-tab="reportes">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514690/reportes_qisw3e.png"
-                alt="Icono reportes"
-                class="h-9 w-11 mb-1"
-              />
-              <span>Reportes</span>
-            </button>
-            <button class="tab-button" data-tab="presupuesto">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514684/presupuesto_r7qkr9.png"
-                alt="Icono Presupuesto"
-                class="h-10 w-11 mb-1"
-              />
-              <span>Presupuesto</span>
-            </button>
-            <button class="tab-button" data-tab="configuración">
-              <img
-                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514668/configuracion_puo2ap.png"
-                alt="Icono configuración"
-                class="h-11 w-11 mb-1"
-              />
-              <span>Configuración</span>
-            </button>
-            <button class="tab-button" id="logout-tab-btn">
-              <div class="tab-icon-wrapper">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/v1756889218/51B410C2-D58E-47D8-9ECC-000296533E2C_udpy1y.png"
-                  alt="Icono Salir"
-                />
-              </div>
-              <span>Salir</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
     <div id="main-content-wrapper">
+      <header>
+        <div id="main-header-bar" class="mt-0 fixed top-0 left-0 w-full h-32">
+          <div class="w-full pt-2 pb-2 flex items-center justify-between pr-4" id="barr">
+            <img
+              src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
+              alt="Logo"
+              class="logotipo pl-4"
+            />
+
+            <div class="flex-1 text-center">
+              <h1 class="text-3xl font-bold">GESTOR FINANCIERO Y DE PRESUPUESTO WEB</h1>
+              <p id="ptitul" class="text-lg">
+                Bienvenido,
+                <strong class="font-semibold" id="user-alias-display">Cargando...</strong>: Tu panel
+                de control financiero, moderno y eficiente.
+              </p>
+              <button id="open-brand-story-btn" class="btn-philosophy">
+                Conoce nuestra filosofía
+              </button>
+            </div>
+
+            <div class="flex flex-col items-end">
+              <button id="IdbtOpenScreen" class="btOpenScreen mb-1 mr-1">Pantalla Completa</button>
+              <button id="IdbtCloseScreen" class="btcloseScreen mb-1">Mostrar Navegador</button>
+              <button class="bttclose mr-6" id="logout-btn">
+                Cerrar Sesión
+                <span class="btn-spinner hidden"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="contenedor-botones flex-col md:flex-row md:items-center md:justify-between">
+            <div class="btn" id="tabs">
+              <button class="tab-button" data-tab="registros">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514689/registro_mc8ed8.png"
+                  alt="Icono Registros"
+                  class="w-14 mb-1"
+                />
+                <span>Registros</span>
+              </button>
+              <button class="tab-button" id="quick-voice-record-btn">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/v1757199087/voz_w5ctvq.png"
+                  alt="Icono Grabar Gasto"
+                  class="w-14 mb-1"
+                />
+                <span>Voz</span>
+              </button>
+              <button class="tab-button" data-tab="proyeccion">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png"
+                  alt="Icono Proyección"
+                  class="h-12 w-14 mb-1"
+                />
+                <span>Proyección</span>
+              </button>
+              <button class="tab-button" data-tab="recurrentes">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514673/gastos-recurrentes2_udrbey.png"
+                  alt="Icono recurrentes"
+                  class="h-11 w-11 mb-1"
+                />
+                <span>Gastos<br />Recurrentes</span>
+              </button>
+              <button class="tab-button" data-tab="gastos-comunes">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756767509/comunes_xjuxxt.png"
+                  alt="Icono Gastos Comunes"
+                  class="h-11 w-11 mb-1"
+                />
+                <span>Gastos<br />Comunes</span>
+              </button>
+              <button class="tab-button" data-tab="tarjetas">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514697/tarjetas2_z3jokx.png"
+                  alt="Icono tarjetas"
+                  class="h-12 w-12 mb-1"
+                />
+                <span>Tarjetas<br />de Crédito</span>
+              </button>
+              <button class="tab-button" data-tab="saldos">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514692/saldos_lntcfz.png"
+                  alt="Icono saldos"
+                  class="h-9 w-12 mb-1"
+                />
+                <span>Saldos<br />de Cuentas</span>
+              </button>
+              <button class="tab-button" data-tab="calculadora">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514686/proyeccion2_iqtpug.png"
+                  alt="Icono calculadora"
+                  class="h-9 w-10 mb-1"
+                />
+                <span>Calculadora</span>
+              </button>
+              <button class="tab-button" data-tab="reportes">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514690/reportes_qisw3e.png"
+                  alt="Icono reportes"
+                  class="h-9 w-11 mb-1"
+                />
+                <span>Reportes</span>
+              </button>
+              <button class="tab-button" data-tab="presupuesto">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514684/presupuesto_r7qkr9.png"
+                  alt="Icono Presupuesto"
+                  class="h-10 w-11 mb-1"
+                />
+                <span>Presupuesto</span>
+              </button>
+              <button class="tab-button" data-tab="configuración">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514668/configuracion_puo2ap.png"
+                  alt="Icono configuración"
+                  class="h-11 w-11 mb-1"
+                />
+                <span>Configuración</span>
+              </button>
+              <button class="tab-button" id="logout-tab-btn">
+                <div class="tab-icon-wrapper">
+                  <img
+                    src="https://res.cloudinary.com/datwdagbf/image/upload/v1756889218/51B410C2-D58E-47D8-9ECC-000296533E2C_udpy1y.png"
+                    alt="Icono Salir"
+                  />
+                </div>
+                <span>Salir</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
       <div id="dashboard">
         <div id="balance-card" class="dashboard-card">
           <div>
@@ -2981,7 +2953,7 @@
                   <th
                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Interés (Anual %)
+                    Tasa Interés (Anual %)
                   </th>
                   <th
                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -4717,7 +4689,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.1/p></p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.0/p></p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -6486,9 +6458,9 @@
               cellDesc.textContent = t.description;
               const cellCat = row.insertCell();
               cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm';
-              cellCat.innerHTML = `<div class="category-cell-content">${getCategoryDisplay(
+              cellCat.innerHTML = `${getCategoryDisplay(
                 t.category,
-              )}<button class="info-btn" data-description="${t.description}">i</button></div>`;
+              )}<button class="info-btn" data-description="${t.description}">i</button>`;
               const cellBank = row.insertCell();
               cellBank.className = 'px-6 py-4 whitespace-nowrap text-sm';
               cellBank.textContent = t.bank;
@@ -6613,9 +6585,9 @@
 
               const cellCat = row.insertCell();
               cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm';
-              cellCat.innerHTML = `<div class="category-cell-content">${getCategoryDisplay(
+              cellCat.innerHTML = `${getCategoryDisplay(
                 p.category,
-              )}<button class="info-btn" data-description="${p.description}">i</button></div>`;
+              )}<button class="info-btn" data-description="${p.description}">i</button>`;
 
               const cellAmount = row.insertCell();
               cellAmount.className = 'px-6 py-4 whitespace-nowrap text-sm text-right';
@@ -8603,9 +8575,9 @@
                     <td class="px-4 py-4 whitespace-nowrap text-sm font-weight: 400 text-gray-900">${
                       card.bank
                     }</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-center">${
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Día ${
                       card.dueDate
-                    }</td>
+                    } de cada mes</td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="amount" value="${Number(
                       card.amount,
                     ).toFixed(2)}" step="0.01"></td>
@@ -8615,7 +8587,7 @@
                     <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="months" value="${
                       card.months
                     }" min="1"></td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-blue-600 monthly-payment-cell text-right">${formatCurrency(
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-blue-600 monthly-payment-cell">${formatCurrency(
                       monthlyPayment,
                     )}</td>
                     <td class="px-4 py-4 whitespace-nowrap text-center text-sm font-weight: 400">
