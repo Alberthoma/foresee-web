@@ -979,68 +979,10 @@
         display: none !important;
       }
 
-      /* --- Estilos para el Checkbox de Exclusión en Tarjetas --- */
-      .exclude-checkbox {
-        appearance: none;
-        -webkit-appearance: none;
-        background-color: transparent;
-        margin: 0;
-        font: inherit;
-        color: currentColor;
-        width: 1.25em;
-        height: 1.25em;
-        border: 0.15em solid var(--border-dark);
-        border-radius: 50%;
-        transform: translateY(-0.075em);
-        display: grid;
-        place-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-      }
-      .exclude-checkbox:hover {
-        border-color: var(--electric-blue);
-      }
-      .exclude-checkbox::before {
-        content: '';
-        width: 0.75em;
-        height: 0.75em;
-        border-radius: 50%;
-        transform: scale(0);
-        transition: 120ms transform ease-in-out;
-        box-shadow: inset 1em 1em var(--electric-blue);
-      }
-      .exclude-checkbox:checked::before {
-        transform: scale(1);
-      }
       /* --- Pestaña Tarjetas de Crédito --- */
       #tarjetas-content .table-input {
         background-color: var(--bg-dark-primary);
         border: 1px solid var(--border-dark);
-      }
-
-      #tarjetas-content tfoot td {
-        padding: 0.75rem 1rem; /* Adds vertical and horizontal spacing */
-        text-align: right; /* Aligns all text to the right */
-        font-size: 0.875rem; /* 14px font size */
-        vertical-align: middle;
-      }
-
-      /* Style for labels like "Totals" */
-      #tarjetas-content tfoot td[colspan] {
-        color: var(--text-light-secondary); /* Uses your secondary text color (dimmer) */
-        font-weight: 600; /* Semibold font */
-      }
-
-      /* Style for total amounts */
-      #tarjetas-content tfoot td:not([colspan]) {
-        color: var(--text-light-primary); /* Uses your main text color (brighter) */
-        font-weight: 700; /* Bold font */
-        font-size: 1rem; /* 16px, slightly larger for emphasis */
-      }
-
-      /* Specific style for the suggested monthly payment total */
-      #tarjetas-content tfoot #cc-total-monthly {
-        color: var(--electric-blue); /* Uses your blue accent color */
       }
 
       #tarjetas-content thead th,
@@ -3022,12 +2964,6 @@
               <thead class="bg-gray-50">
                 <tr>
                   <th
-                    class="text-center px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    title="Excluir del Total Adeudado"
-                  >
-                    Excluir
-                  </th>
-                  <th
                     class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Banco
@@ -3041,16 +2977,6 @@
                     class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Monto Adeudado
-                  </th>
-                  <th
-                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Línea de Crédito
-                  </th>
-                  <th
-                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Saldo Disponible
                   </th>
                   <th
                     class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -3075,20 +3001,27 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200" id="credit-cards-table-body"></tbody>
-
-              <tfoot>
+              <tfoot class="bg-gray-50">
                 <tr>
-                  <td colspan="3">Totales</td>
-                  <td id="cc-total-amount">$0.00</td>
-                  <td id="cc-total-limit">$0.00</td>
-                  <td id="cc-total-available">$0.00</td>
-                  <td colspan="2">Total Pago Mensual Sugerido</td>
-                  <td id="cc-total-monthly">$0.00</td>
+                  <td colspan="2" class="px-4 py-4 text-right text-sm font-semibold text-gray-700">
+                    Total Monto Adeudado
+                  </td>
+                  <td class="px-4 py-4 text-sm font-bold text-gray-900" id="cc-total-amount">
+                    $0.00
+                  </td>
+                  <td colspan="2" class="px-4 py-4 text-right text-sm font-semibold text-gray-700">
+                    Total Pago Mensual Sugerido
+                  </td>
+                  <td class="px-4 py-4 text-sm font-bold text-blue-700" id="cc-total-monthly">
+                    $0.00
+                  </td>
                   <td></td>
                 </tr>
               </tfoot>
             </table>
-            <p id="no-credit-cards-message">No has añadido ninguna tarjeta de crédito.</p>
+            <p class="text-center text-gray-500 py-8" id="no-credit-cards-message">
+              No has añadido ninguna tarjeta de crédito.
+            </p>
           </div>
         </div>
 
@@ -4787,7 +4720,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.3</p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.2</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -8639,24 +8572,14 @@
           if (appState.creditCards.length === 0) {
             creditCardsTableBody.classList.add('hidden');
             noCreditCardsMessage.classList.remove('hidden');
-            // Limpiamos los totales si no hay tarjetas
-            document.getElementById('cc-total-amount').textContent = formatCurrency(0);
-            document.getElementById('cc-total-limit').textContent = formatCurrency(0);
-            document.getElementById('cc-total-available').textContent = formatCurrency(0);
-            document.getElementById('cc-total-monthly').textContent = formatCurrency(0);
             return;
           }
 
           creditCardsTableBody.classList.remove('hidden');
           noCreditCardsMessage.classList.add('hidden');
 
+          // ORDENAR POR FECHA DE PAGO (dueDate) DE MENOR A MAYOR
           const sortedCards = [...appState.creditCards].sort((a, b) => a.dueDate - b.dueDate);
-
-          // Variables para calcular los totales
-          let totalAdeudado = 0;
-          let totalLimite = 0;
-          // La variable totalDisponible ya no se calcula aquí dentro del bucle
-          let totalPagoMensual = 0;
 
           sortedCards.forEach((card) => {
             const row = document.createElement('tr');
@@ -8678,80 +8601,47 @@
             row.className = bgColor;
 
             const monthlyPayment = calculateMonthlyPayment(card.amount, card.rate, card.months);
-            const creditLimit = parseFloat(card.limit) || 0;
-            const debtAmount = parseFloat(card.amount) || 0;
-            const availableBalance = creditLimit - debtAmount;
-
-            // Lógica de sumatoria de totales
-            if (!card.exclude) {
-              // Solo suma si la tarjeta NO está excluida
-              totalAdeudado += debtAmount;
-            }
-            totalLimite += creditLimit;
-            // totalDisponible += availableBalance; // <-- ERROR LÓGICO ELIMINADO DE AQUÍ
-            totalPagoMensual += monthlyPayment;
 
             row.innerHTML = `
-              <td class="px-2 py-4 whitespace-nowrap text-center">
-                  <input type="checkbox" class="exclude-checkbox card-data-input" data-field="exclude" ${
-                    card.exclude ? 'checked' : ''
-                  }>
-              </td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm font-weight: 400 text-gray-900">${
-                card.bank
-              }</td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-center">${
-                card.dueDate
-              }</td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm">
-                  <input type="number" class="table-input card-data-input" data-field="amount" value="${debtAmount.toFixed(
-                    2,
-                  )}" step="0.01">
-              </td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm">
-                  <input type="number" class="table-input card-data-input" data-field="limit" value="${creditLimit.toFixed(
-                    2,
-                  )}" placeholder="0.00" step="0.01">
-              </td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-green-600 text-right">${formatCurrency(
-                availableBalance,
-              )}</td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm">
-                  <input type="number" class="table-input card-data-input" data-field="rate" value="${Number(
-                    card.rate,
-                  ).toFixed(2)}" step="0.01">
-              </td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm">
-                  <input type="number" class="table-input card-data-input" data-field="months" value="${
-                    card.months
-                  }" min="1">
-              </td>
-              <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-blue-600 monthly-payment-cell text-right">${formatCurrency(
-                monthlyPayment,
-              )}</td>
-              <td class="px-4 py-4 whitespace-nowrap text-center text-sm font-weight: 400">
-                <button class="delete-card-btn text-red-600 hover:text-red-900" data-id="${
-                  card.id
-                }">Eliminar</button>
-              </td>
-            `;
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-weight: 400 text-gray-900">${
+                      card.bank
+                    }</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-center">${
+                      card.dueDate
+                    }</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="amount" value="${Number(
+                      card.amount,
+                    ).toFixed(2)}" step="0.01"></td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="rate" value="${Number(
+                      card.rate,
+                    ).toFixed(2)}" step="0.01"></td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="months" value="${
+                      card.months
+                    }" min="1"></td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-blue-600 monthly-payment-cell text-right">${formatCurrency(
+                      monthlyPayment,
+                    )}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center text-sm font-weight: 400">
+                      <button class="delete-card-btn text-red-600 hover:text-red-900" data-id="${
+                        card.id
+                      }">Eliminar</button>
+                    </td>
+                  `;
             creditCardsTableBody.appendChild(row);
+            // Totales
+            const totalAdeudado = sortedCards.reduce((s, c) => s + (parseFloat(c.amount) || 0), 0);
+            const totalPago = sortedCards.reduce(
+              (s, c) => s + calculateMonthlyPayment(c.amount, c.rate, c.months),
+              0,
+            );
+
+            // Pinta los totales
+            const totalAmountEl = document.getElementById('cc-total-amount');
+            const totalMonthlyEl = document.getElementById('cc-total-monthly');
+            if (totalAmountEl) totalAmountEl.textContent = formatCurrency(totalAdeudado);
+            if (totalMonthlyEl) totalMonthlyEl.textContent = formatCurrency(totalPago);
           });
 
-          // --- INICIO DE LA CORRECCIÓN LÓGICA ---
-          // Se calcula el total disponible DESPUÉS del bucle para asegurar consistencia
-          const totalDisponible = totalLimite - totalAdeudado;
-          // --- FIN DE LA CORRECCIÓN LÓGICA ---
-
-          // Pinta los totales en el footer
-          document.getElementById('cc-total-amount').textContent = formatCurrency(totalAdeudado);
-          document.getElementById('cc-total-limit').textContent = formatCurrency(totalLimite);
-          document.getElementById('cc-total-available').textContent =
-            formatCurrency(totalDisponible); // Ahora usa el valor corregido
-          document.getElementById('cc-total-monthly').textContent =
-            formatCurrency(totalPagoMensual);
-
-          // Vuelve a añadir los listeners a los botones de eliminar
           document
             .querySelectorAll('.delete-card-btn')
             .forEach((btn) =>
@@ -8764,18 +8654,11 @@
 
           const inputElement = e.target;
           const field = inputElement.dataset.field;
-          let value;
+          let value = parseFloat(inputElement.value);
 
-          // Determina el tipo de valor a guardar (booleano para el checkbox, número para los inputs)
-          if (inputElement.type === 'checkbox') {
-            value = inputElement.checked;
-          } else {
-            value = parseFloat(inputElement.value);
-          }
-
-          // Validación en línea para los campos numéricos de la tabla
-          if (inputElement.type === 'number') {
-            let isValid = true;
+          // Validación en línea para los campos de la tabla
+          let isValid = true;
+          if (field === 'amount' || field === 'rate' || field === 'months') {
             if (isNaN(value) || value < 0) {
               showToast(`El valor para "${field}" debe ser un número positivo.`, 'error');
               inputElement.value = inputElement.defaultValue; // Revertir al valor original
@@ -8786,27 +8669,36 @@
               inputElement.value = inputElement.defaultValue;
               isValid = false;
             }
-            if (!isValid) return; // Detener si la validación falla
           }
 
-          showButtonLoading(inputElement); // Simula carga en el input
+          if (!isValid) return; // Detener si la validación falla
+
+          showButtonLoading(inputElement); // Mostrar spinner en el input (simulado)
           const appId = firebaseProjectId;
-          const cardId = e.target.closest('tr').dataset.cardId;
           const creditCardDocRef = doc(
             db,
             `artifacts/${appId}/users/${userId}/creditCards`,
-            cardId,
+            e.target.closest('tr').dataset.cardId,
           );
 
           try {
-            console.log(`[Firestore] Actualizando tarjeta ${cardId}, campo ${field}: ${value}`);
+            console.log(
+              `[Firestore] Actualizando tarjeta ${
+                e.target.closest('tr').dataset.cardId
+              }, campo ${field}: ${value}`,
+            ); // Debugging
             await updateDoc(creditCardDocRef, { [field]: value });
             showToast('Datos de tarjeta actualizados.', 'success');
+            // El onSnapshot se encargará de re-renderizar la tabla y actualizar los cálculos
           } catch (error) {
-            console.error('[Firestore] Error al actualizar datos de la tarjeta:', error);
-            showMessageModal('Error al Actualizar Tarjeta', 'No se pudieron actualizar los datos.');
+            console.error('[Firestore] Error al actualizar datos de la tarjeta:', error); // Debugging
+            showMessageModal(
+              'Error al Actualizar Tarjeta',
+              'No se pudieron actualizar los datos de la tarjeta. Verifica tu conexión a internet y tus reglas de seguridad de Firestore.',
+              'error',
+            );
           } finally {
-            hideButtonLoading(inputElement);
+            hideButtonLoading(inputElement); // Ocultar spinner
           }
         }
 
@@ -8938,8 +8830,6 @@
             amount: amount,
             rate: rate,
             months: months,
-            limit: 0,
-            exclude: false,
           };
           try {
             console.log('[Firestore] Añadiendo nueva tarjeta de crédito.'); // Debugging

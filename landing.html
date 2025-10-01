@@ -1,294 +1,735 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Foresee — Domina tu dinero en minutos</title>
-  <meta name="description" content="Foresee te da claridad inmediata: registra por voz, proyecta tu saldo del mes y disfruta reportes visuales. Sin conectar bancos. Gratis." />
-  <meta name="theme-color" content="#111827" />
-  <meta property="og:title" content="Foresee — Domina tu dinero en minutos" />
-  <meta property="og:description" content="Registra por voz, proyecta tu saldo y entiende tus gastos. Sin bancos. Gratis." />
-  <meta property="og:image" content="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png" />
-  <meta property="og:type" content="website" />
-
-  <style>
-    :root{
-      --bg-dark-primary:#111827; /* Fondo principal */
-      --bg-dark-secondary:#1f2937; /* Tarjetas */
-      --bg-dark-tertiary:#374151; /* Inputs */
-      --border-dark:#4b5563;      /* Bordes */
-      --text-light-primary:#f3f4f6; /* Texto principal */
-      --text-light-secondary:#9ca3af; /* Texto secundario */
-      --electric-blue:#0ea5e9;    /* Azul brillante */
-      --electric-green:#22c55e;   /* Verde lima */
-      --electric-red:#ef4444;     /* Rojo vibrante */
-      --electric-orange:#f97316;  /* Naranja */
-      --electric-purple:#8b5cf6;  /* Púrpura */
-      --glow: 0 0 24px rgba(34,197,94,.35);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-      color:var(--text-light-primary); background: radial-gradient(1200px 600px at 10% -10%, rgba(14,165,233,.15), transparent 60%),
-                                       radial-gradient(800px 400px at 90% 10%, rgba(34,197,94,.15), transparent 60%),
-                                       var(--bg-dark-primary);
-      line-height:1.5;
-    }
-    a{color:inherit; text-decoration:none}
-    img{max-width:100%; display:block}
-    .container{width:min(1120px, 92%); margin-inline:auto}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-      padding:.9rem 1.2rem; border-radius:14px; font-weight:700; letter-spacing:.2px;
-      background:linear-gradient(135deg, var(--electric-green), #34d399); color:#0b1512;
-      box-shadow:var(--glow); border:1px solid rgba(255,255,255,.06);
-      transition:transform .2s ease, box-shadow .2s ease, filter .2s ease; cursor:pointer
-    }
-    .btn:hover{transform:translateY(-2px); filter:saturate(1.1); box-shadow:0 10px 28px rgba(34,197,94,.25)}
-    .btn.alt{background:transparent; color:var(--text-light-primary); border:1px solid rgba(255,255,255,.12)}
-    header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(8px); background:rgba(17,24,39,.6); border-bottom:1px solid rgba(255,255,255,.06)}
-    .nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
-    .brand{display:flex; align-items:center; gap:.75rem}
-    .brand img{width:40px; height:auto; filter:drop-shadow(0 6px 18px rgba(14,165,233,.25))}
-    .brand span{font-weight:900; letter-spacing:.2px}
-    nav ul{display:flex; gap:1rem; list-style:none; margin:0; padding:0}
-    nav a{padding:.5rem .75rem; border-radius:10px; color:var(--text-light-secondary)}
-    nav a:hover{background:rgba(255,255,255,.06); color:var(--text-light-primary)}
-    .hero{padding:clamp(3rem, 6vw, 6rem) 0; text-align:center}
-    .eyebrow{font-size:.85rem; color:var(--text-light-secondary); text-transform:uppercase; letter-spacing:.18em}
-    .title{font-size:clamp(2.2rem, 5vw, 3.4rem); line-height:1.1; margin:.6rem auto; max-width:18ch; font-weight:900}
-    .subtitle{color:var(--text-light-secondary); max-width:56ch; margin:.9rem auto 1.6rem}
-    .cta-row{display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.4rem}
-    .trust{display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.2rem; color:var(--text-light-secondary); font-size:.95rem}
-
-    .features{display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:2rem 0}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:1.15rem}
-    .card h3{margin:.2rem 0 .4rem; font-size:1.05rem}
-    .badge{display:inline-block; font-weight:700; font-size:.75rem; color:#0b1512; background:linear-gradient(135deg, var(--electric-blue), #38bdf8); padding:.3rem .55rem; border-radius:8px}
-
-    .how{display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:2.6rem 0}
-    .step{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:1.1rem}
-    .step .num{font-weight:900; font-size:1.1rem; color:#a7f3d0}
-
-    .gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:2.2rem 0}
-    .shot{aspect-ratio:16/10; background:linear-gradient(180deg, rgba(14,165,233,.12), rgba(34,197,94,.1)); border:1px dashed rgba(255,255,255,.16); border-radius:14px; display:grid; place-items:center; color:var(--text-light-secondary); font-weight:600}
-
-    .lead{display:grid; gap:1rem; grid-template-columns: 1.2fr .8fr; align-items:center; margin:3rem 0; padding:1.5rem; background:linear-gradient(120deg, rgba(34,197,94,.12), rgba(14,165,233,.12)); border:1px solid rgba(255,255,255,.08); border-radius:18px}
-    .lead form{display:flex; gap:.6rem; flex-wrap:wrap}
-    input, select{background:var(--bg-dark-tertiary); color:var(--text-light-primary); border:1px solid rgba(255,255,255,.12); padding:.85rem .9rem; border-radius:12px; outline:none; width:100%}
-    input::placeholder{color:var(--text-light-secondary)}
-    .form-row{display:grid; grid-template-columns:2fr 3fr 2fr auto; gap:.6rem; width:100%}
-    .status{font-size:.95rem; color:var(--text-light-secondary); margin-top:.6rem}
-
-    .pricing{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:2.4rem 0}
-    .price{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:1.2rem}
-    .price h3{margin:.2rem 0 .4rem}
-
-    .faq{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:2.2rem 0}
-    .qa{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:1rem}
-
-    footer{border-top:1px solid rgba(255,255,255,.06); color:var(--text-light-secondary); padding:1.2rem 0; text-align:center}
-
-    @media (max-width: 960px){
-      .features, .how, .gallery, .pricing, .faq{grid-template-columns:1fr 1fr}
-      .lead{grid-template-columns:1fr}
-      .form-row{grid-template-columns:1fr}
-    }
-    @media (max-width: 640px){
-      nav ul{display:none}
-      .features, .how, .gallery, .pricing, .faq{grid-template-columns:1fr}
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="container nav">
-      <a class="brand" href="#top" aria-label="Inicio">
-        <img src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png" alt="Foresee logo" />
-        <span>Foresee</span>
-      </a>
-      <nav aria-label="Principal">
-        <ul>
-          <li><a href="#caracteristicas">Características</a></li>
-          <li><a href="#como-funciona">Cómo funciona</a></li>
-          <li><a href="#capturas">Capturas</a></li>
-          <li><a href="#precios">Precios</a></li>
-          <li><a href="#faq">FAQ</a></li>
-        </ul>
-      </nav>
-      <a class="btn" href="https://alberthoma.github.io/foresee-web/index.html">Probar demo</a>
-    </div>
-  </header>
-
-  <main id="top">
-    <section class="hero container" aria-labelledby="hero-title">
-      <p class="eyebrow">Privado por diseño · Sin conectar bancos</p>
-      <h1 class="title" id="hero-title">Prevé tu mes, registra por voz y domina tu dinero.</h1>
-      <p class="subtitle">Foresee te da claridad inmediata: **lo que gastas**, **lo que falta por pagar** y **cómo llegas al día 30**. Fácil, rápido e incluso divertido.</p>
-      <div class="cta-row">
-        <a class="btn" href="#registro">Empezar gratis</a>
-        <a class="btn alt" href="#calculadora">Calcular salario neto (Florida)</a>
-      </div>
-      <div class="trust">
-        <span class="badge">Registro por Voz</span>
-        <span>Presupuesto vivo</span>
-        <span>Proyección de saldo</span>
-        <span>Reportes visuales</span>
-      </div>
-    </section>
-
-    <section class="container" id="caracteristicas" aria-labelledby="feat-title">
-      <h2 class="eyebrow" id="feat-title">Características clave</h2>
-      <div class="features">
-        <article class="card"><h3>Privacidad total</h3><p>No conectas tus bancos. Eres dueño de tus datos.</p></article>
-        <article class="card"><h3>Registro en 5s</h3><p>“Gasto 12 en café, <b>guardar</b>”. Y listo.</p></article>
-        <article class="card"><h3>Proyección del mes</h3><p>Ve tu <b>saldo futuro</b> antes de gastar.</p></article>
-        <article class="card"><h3>Presupuesto vivo</h3><p>Cuánto llevas vs cuánto te queda por categoría.</p></article>
-        <article class="card"><h3>Recurrentes automáticos</h3><p>Alquiler, internet, suscripciones… una vez y olvida.</p></article>
-        <article class="card"><h3>Reportes visuales</h3><p>Entiende hábitos de un vistazo y decide mejor.</p></article>
-      </div>
-    </section>
-
-    <section class="container" id="como-funciona" aria-labelledby="how-title">
-      <h2 class="eyebrow" id="how-title">Cómo funciona</h2>
-      <div class="how">
-        <article class="step"><div class="num">1</div><h3>Configura</h3><p>Crea 3–5 categorías, añade tus cuentas y saldo inicial.</p></article>
-        <article class="step"><div class="num">2</div><h3>Automatiza</h3><p>Registra tus fijos mensuales en Recurrentes.</p></article>
-        <article class="step"><div class="num">3</div><h3>Registra</h3><p>Añade movimientos manualmente o por voz. Todo se actualiza al instante.</p></article>
-        <article class="step"><div class="num">4</div><h3>Presupuesta</h3><p>Define límites; verás gastado vs restante en tiempo real.</p></article>
-        <article class="step"><div class="num">5</div><h3>Proyecta</h3><p>Simula el mes y decide con la claridad de mañana.</p></article>
-        <article class="step"><div class="num">6</div><h3>Comprende</h3><p>Usa los reportes para detectar oportunidades de ahorro.</p></article>
-      </div>
-      <div class="cta-row"><a class="btn" href="https://alberthoma.github.io/foresee-web/index.html">Ver demo ahora</a></div>
-    </section>
-
-    <section class="container" id="capturas" aria-labelledby="cap-title">
-      <h2 class="eyebrow" id="cap-title">Capturas del producto</h2>
-      <div class="gallery">
-        <div class="shot">Configuración · Categorías</div>
-        <div class="shot">Recurrentes · Fijos</div>
-        <div class="shot">Registros · Voz</div>
-        <div class="shot">Presupuesto · Gastado/Restante</div>
-        <div class="shot">Proyección · Saldo futuro</div>
-        <div class="shot">Reportes · Categorías</div>
-      </div>
-    </section>
-
-    <section class="container lead" id="registro" aria-labelledby="lead-title">
-      <div>
-        <h2 class="title" style="font-size:clamp(1.6rem,4vw,2.2rem); margin:0 0 .4rem">Recupera la paz mental financiera</h2>
-        <p class="subtitle" style="margin:0">Únete a la lista temprana: prueba Foresee antes que nadie y recibe recursos exclusivos.</p>
-      </div>
-      <form id="lead-form" aria-labelledby="lead-title">
-        <div class="form-row">
-          <input required type="text" name="name" placeholder="Tu nombre" aria-label="Nombre" />
-          <input required type="email" name="email" placeholder="Tu correo" aria-label="Correo" />
-          <select name="segment" aria-label="Perfil">
-            <option value="">Perfil (opcional)</option>
-            <option>Empleado por horas (Florida)</option>
-            <option>Empleado fijo</option>
-            <option>Emprendedor</option>
-            <option>Estudiante</option>
-          </select>
-          <button class="btn" id="lead-submit" type="submit">Unirme</button>
-        </div>
-        <div class="status" id="lead-status" role="status" aria-live="polite"></div>
-      </form>
-    </section>
-
-    <section class="container" id="calculadora" aria-labelledby="calc-title">
-      <h2 class="eyebrow" id="calc-title">Gancho útil · Florida</h2>
-      <div class="card">
-        <h3 style="margin:0 0 .4rem">Calcula tu salario neto (Florida)</h3>
-        <p class="subtitle" style="margin:.2rem 0 1rem">Ingresa tus datos y obtén tu neto real en segundos. Ideal para trabajadores por horas.</p>
-        <div class="cta-row"><a class="btn" href="https://alberthoma.github.io/foresee-web/index.html#calc-salario">Abrir calculadora</a><a class="btn alt" href="#faq">Preguntas frecuentes</a></div>
-      </div>
-    </section>
-
-    <section class="container" id="precios" aria-labelledby="price-title">
-      <h2 class="eyebrow" id="price-title">Precios</h2>
-      <div class="pricing">
-        <article class="price"><h3>Gratis</h3><p>Registros, Presupuesto, Recurrentes, Proyección, Reportes.</p></article>
-        <article class="price"><h3>Pro (próximamente)</h3><p>Metas, rachas, exportaciones avanzadas y más.</p></article>
-        <article class="price"><h3>Equipo (próximamente)</h3><p>Colaboración y reportes compartidos.</p></article>
-      </div>
-    </section>
-
-    <section class="container" id="faq" aria-labelledby="faq-title">
-      <h2 class="eyebrow" id="faq-title">FAQ</h2>
-      <div class="faq">
-        <article class="qa"><h3>¿Necesito conectar mis bancos?</h3><p>No. Foresee es privado por diseño: tú decides qué registras.</p></article>
-        <article class="qa"><h3>¿Funciona sin internet?</h3><p>La app funciona online. PWA y modo offline están en el roadmap.</p></article>
-        <article class="qa"><h3>¿Puedo registrar por voz?</h3><p>Sí. Di “Gasto 12 en café, <b>guardar</b>” y listo.</p></article>
-        <article class="qa"><h3>¿Puedo exportar mis datos?</h3><p>Sí, JSON y PDF para respaldo o compartir.</p></article>
-      </div>
-      <div class="cta-row"><a class="btn" href="#registro">Quiero acceso</a></div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">© <span id="yy"></span> Foresee · v4.4.0 · Hecho con claridad y cariño</div>
-  </footer>
-
-  <!-- Captura de leads usando tu mismo Firebase del index 4.4.0 -->
-  <script type="module">
-    // Ajusta si cambiaste la versión en tu index. Aquí usamos la misma 11.6.1
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Copiado del index 4.4.0 (público por diseño en Firebase)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCTicX5tqqVr3pK_RFqgvqpRavsUuTvS2g",
-      authDomain: "wittfinances-282f1.firebaseapp.com",
-      projectId: "wittfinances-282f1",
-      storageBucket: "wittfinances-282f1.firebasestorage.app",
-      messagingSenderId: "998192322959",
-      appId: "1:998192322959:web:e2afcdd7f47da3767853fa"
-    };
-
-    let app, auth, db;
-    try{
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
-      await signInAnonymously(auth);
-    }catch(e){
-      console.warn("Firebase no inicializado:", e);
-    }
-
-    const $ = (s)=>document.querySelector(s);
-    const form = $("#lead-form");
-    const status = $("#lead-status");
-    const btn = $("#lead-submit");
-    document.getElementById('yy').textContent = new Date().getFullYear();
-
-    form?.addEventListener("submit", async (ev)=>{
-      ev.preventDefault();
-      status.textContent = "Guardando…";
-      btn.disabled = true; btn.style.opacity = .7;
-      const fd = new FormData(form);
-      const payload = {
-        name: fd.get('name')?.toString().trim() || null,
-        email: fd.get('email')?.toString().trim() || null,
-        segment: fd.get('segment')?.toString() || null,
-        source: 'landing-v4.4.0',
-        createdAt: new Date().toISOString()
-      };
-
-      try{
-        if(!db){ throw new Error('DB no disponible'); }
-        await addDoc(collection(db, 'leads'), { ...payload, ts: serverTimestamp() });
-        status.textContent = "¡Listo! Te escribiremos pronto.";
-        form.reset();
-      }catch(err){
-        console.error(err);
-        status.innerHTML = "No se pudo guardar ahora. Escríbenos a <a href='mailto:hello@foresee.app'>hello@foresee.app</a>.";
-      }finally{
-        btn.disabled = false; btn.style.opacity = 1;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Foresee Finances — Tu guía hacia la estabilidad</title>
+    <meta
+      name="description"
+      content="Convierte el caos financiero en claridad. Foresee integra deudas, presupuestos, reportes y proyección en un solo flujo claro."
+    />
+    <link rel="preconnect" href="https://res.cloudinary.com" />
+    <style>
+      :root {
+        --bg: #0e0f12;
+        --card: #14161b;
+        --muted: #8b93a1;
+        --text: #edf1f7;
+        --brand: #69e0ff;
+        --brand-2: #7df0c6;
+        --accent: #ffd166;
       }
-    });
-  </script>
-</body>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue',
+          Arial, sans-serif;
+        line-height: 1.6;
+      }
+      a {
+        color: var(--brand);
+      }
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .nav {
+        position: sticky;
+        top: 0;
+        background: rgba(14, 15, 18, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 10;
+        border-bottom: 1px solid #222;
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 12px 0;
+      }
+      .nav img.logo {
+        height: 36px;
+        width: auto;
+        border-radius: 6px;
+      }
+      .nav a.link {
+        color: var(--text);
+        text-decoration: none;
+        opacity: 0.8;
+      }
+      .nav a.link:hover {
+        opacity: 1;
+      }
+      .btn {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #001014;
+        padding: 12px 18px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 8px 24px rgba(105, 224, 255, 0.25);
+      }
+      .btn.secondary {
+        background: #232730;
+        color: var(--text);
+        border: 1px solid #2f3440;
+      }
+      .hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: url('https://res.cloudinary.com/datwdagbf/image/upload/v1759021626/6_un_sistema_que_te_guie_y_Te_de_un_mapa_a_seguir_paso_a_paso_ielw9k.png')
+          center/cover no-repeat;
+        opacity: 0.25;
+        filter: saturate(1.2) contrast(1.1);
+      }
+      .hero .container {
+        padding: 80px 20px 60px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border: 1px solid #2a2e36;
+        border-radius: 999px;
+        background: #151821;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .h1 {
+        font-weight: 900;
+        font-size: 42px;
+        line-height: 1.1;
+        margin: 18px 0;
+      }
+      .h1 span {
+        background: linear-gradient(135deg, var(--brand), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hero p.lead {
+        font-size: 18px;
+        color: #c6cbd7;
+        max-width: 720px;
+      }
+      .hero-cta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid #222531;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      }
+      .section {
+        padding: 60px 0;
+        border-top: 1px solid #1d2027;
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .kpi {
+        background: #12141a;
+        border: 1px solid #20252f;
+        border-radius: 14px;
+        padding: 14px;
+        text-align: center;
+      }
+      .kpi b {
+        font-size: 22px;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+      .step video,
+      .step img {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid #222;
+        display: block;
+      }
+      .step h4 {
+        margin: 10px 0 4px;
+      }
+      .story {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        align-items: center;
+      }
+      .story img {
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid #222;
+      }
+      .benefits {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 10px;
+      }
+      .form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      fieldset {
+        border: 1px solid #262a35;
+        border-radius: 14px;
+        padding: 12px;
+      }
+      legend {
+        padding: 0 6px;
+        color: #aeb5c3;
+      }
+      label {
+        display: block;
+        margin: 8px 0;
+        color: #c9d1e3;
+      }
+      input[type='text'],
+      input[type='email'],
+      input[type='tel'],
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid #2b3040;
+        background: #0f1116;
+        color: #e8edf7;
+      }
+      .checkbox,
+      .radio {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin: 6px 0;
+      }
+      .small {
+        color: #9aa3b5;
+        font-size: 13px;
+      }
+      .footer {
+        padding: 28px 0;
+        color: #98a1b3;
+        border-top: 1px solid #1f232c;
+        margin-top: 40px;
+      }
+      hr.sep {
+        border: none;
+        border-top: 1px dashed #2b2f39;
+        margin: 18px 0;
+      }
+      @media (max-width: 840px) {
+        .grid-2,
+        .story {
+          grid-template-columns: 1fr;
+        }
+        .kpis {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <img
+          class="logo"
+          src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
+          alt="Foresee Finances logo"
+        />
+        <a class="link" href="#como-funciona">Cómo funciona</a>
+        <a class="link" href="#beneficios">Beneficios</a>
+        <a class="link" href="#encuesta">Encuesta</a>
+        <a class="link" href="#cta">Comenzar</a>
+        <div style="margin-left: auto"></div>
+        <a class="btn" href="#cta">Quiero claridad</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-bg"></div>
+      <div class="container grid-2">
+        <div class="card">
+          <div class="badge">Tu guía hacia la estabilidad</div>
+          <h1 class="h1">Convierte el caos financiero en <span>claridad</span> y control</h1>
+          <p class="lead">
+            Deja atrás el peso de las deudas. Anticípate al mes, elimina recargos por olvido y toma
+            decisiones con confianza. Todo en un flujo sencillo, visual y accionable.
+          </p>
+          <div class="kpis">
+            <div class="kpi">
+              <b>1</b>
+              <div>Centro unificado</div>
+            </div>
+            <div class="kpi">
+              <b>7</b>
+              <div>Pasos guiados</div>
+            </div>
+            <div class="kpi">
+              <b>∞</b>
+              <div>Tranquilidad</div>
+            </div>
+          </div>
+          <div class="hero-cta">
+            <a class="btn" href="#encuesta">Unirme a la lista</a>
+            <a class="btn secondary" href="#como-funciona">Ver cómo funciona</a>
+          </div>
+        </div>
+        <div class="card">
+          <img
+            src="https://res.cloudinary.com/datwdagbf/image/upload/v1759021617/10_v1xmfj.png"
+            alt="Escalera hacia estabilidad"
+          />
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container story">
+        <div>
+          <h2>Del peso… a la salida</h2>
+          <p>
+            Las deudas pueden abrumar. Pero el verdadero problema no son los números, es la idea de
+            que no hay salida. Aquí trazas un camino concreto, paso a paso, con resultados visibles.
+          </p>
+          <a class="btn" href="#encuesta">Quiero ser parte</a>
+        </div>
+        <img
+          src="https://res.cloudinary.com/datwdagbf/image/upload/v1759021618/2_yhphft.png"
+          alt="Peso de las deudas"
+        />
+      </div>
+    </section>
+
+    <section id="como-funciona" class="section">
+      <div class="container">
+        <h2>Cómo funciona — un mapa claro en 7 pasos</h2>
+        <div class="steps">
+          <div class="step card">
+            <video
+              controls
+              src="https://res.cloudinary.com/datwdagbf/video/upload/v1758512589/Paso_1_Bienvenida_y_Gestion_de_Categoria_y_Bancos_plya2u.mp4"
+              poster="https://res.cloudinary.com/datwdagbf/image/upload/v1759021619/5_que_te_ayuden_a_armar_ese_rompecabezas_financiero_i8jm3x.png"
+            ></video>
+            <h4>1) Construye tu Universo Financiero</h4>
+            <p>
+              Configura categorías, registra bancos y define descripciones clave. Un mapa listo en
+              minutos.
+            </p>
+          </div>
+          <div class="step card">
+            <video
+              controls
+              src="https://res.cloudinary.com/datwdagbf/video/upload/v1758512570/Paso_2_Gastos_Recurrentes_mboofi.mp4"
+              poster="https://res.cloudinary.com/datwdagbf/image/upload/v1759021617/1_gextto.png"
+            ></video>
+            <h4>2) Automatiza tu Tranquilidad</h4>
+            <p>
+              Registra una vez tus gastos fijos. Se repiten cada mes con aviso previo al
+              vencimiento.
+            </p>
+          </div>
+          <div class="step card">
+            <video
+              controls
+              src="https://res.cloudinary.com/datwdagbf/video/upload/v1758512577/Paso_3_Targetas_de_Credito_krqk9f.mp4"
+              poster="https://res.cloudinary.com/datwdagbf/image/upload/v1759021618/3_lr3t0q.png"
+            ></video>
+            <h4>3) De monstruo a herramienta</h4>
+            <p>
+              Registra tarjetas, define plazo para liquidar y recibe tu pago mensual sugerido +
+              alertas.
+            </p>
+          </div>
+          <div class="step card">
+            <video
+              controls
+              src="https://res.cloudinary.com/datwdagbf/video/upload/v1758512590/Paso_4_Registro_Diaro_cujs8c.mp4"
+              poster="https://res.cloudinary.com/datwdagbf/image/upload/v1759021619/5_que_te_ayuden_a_armar_ese_rompecabezas_financiero_i8jm3x.png"
+            ></video>
+            <h4>4) El hábito que lo cambia todo</h4>
+            <p>Registra en segundos con botones de ingreso/gasto, tabla detallada o voz 🎤.</p>
+          </div>
+          <div class="step card">
+            <video
+              controls
+              src="https://res.cloudinary.com/datwdagbf/video/upload/v1758512588/Paso_5_Reportes_Presupuesto_y_Tablas_p0zj9b.mp4"
+              poster="https://res.cloudinary.com/datwdagbf/image/upload/v1759021626/6_un_sistema_que_te_guie_y_Te_de_un_mapa_a_seguir_paso_a_paso_ielw9k.png"
+            ></video>
+            <h4>5) Reportes, Presupuesto y Tablas</h4>
+            <p>Ve porcentajes consumidos, saldos disponibles y un historial claro para decidir.</p>
+          </div>
+          <div class="step card">
+            <video
+              controls
+              src="https://res.cloudinary.com/datwdagbf/video/upload/v1758514065/Paso_6_Proyeccion_bhrr1a.mp4"
+              poster="https://res.cloudinary.com/datwdagbf/image/upload/v1759021626/6_un_sistema_que_te_guie_y_Te_de_un_mapa_a_seguir_paso_a_paso_ielw9k.png"
+            ></video>
+            <h4>6) Proyección — la esencia</h4>
+            <p>
+              Anticipa ingresos, gastos y ahorro real. Si el mes es corto, prioriza y evita excesos.
+            </p>
+          </div>
+          <div class="step card">
+            <video
+              controls
+              src="https://res.cloudinary.com/datwdagbf/video/upload/v1759005488/Gastos_comunes_kvozqf.mp4"
+              poster="https://res.cloudinary.com/datwdagbf/image/upload/v1759021618/3_lr3t0q.png"
+            ></video>
+            <h4>7) Gastos Comunes</h4>
+            <p>Reúne las partes de cada persona y cancela el total sin enredos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="beneficios" class="section">
+      <div class="container">
+        <h2>Beneficios emocionales y prácticos</h2>
+        <div class="grid-2" style="margin-top: 16px">
+          <div class="card">
+            <img
+              src="https://res.cloudinary.com/datwdagbf/image/upload/v1759021619/5_que_te_ayuden_a_armar_ese_rompecabezas_financiero_i8jm3x.png"
+              alt="Rompecabezas financiero"
+            />
+          </div>
+          <div class="card">
+            <ul>
+              <li>
+                <b>Tranquilidad emocional:</b> sin sustos de último minuto ni recargos por olvido.
+              </li>
+              <li>
+                <b>Claridad total:</b> deudas, presupuestos, reportes y proyección en un mismo
+                flujo.
+              </li>
+              <li>
+                <b>Control real:</b> convierte números en decisiones; prioriza y ajusta a tiempo.
+              </li>
+            </ul>
+            <div class="benefits">
+              <div class="kpi">
+                <b>Alertas</b>
+                <div>Antes del vencimiento</div>
+              </div>
+              <div class="kpi">
+                <b>Pago sugerido</b>
+                <div>Liquida con estrategia</div>
+              </div>
+              <div class="kpi">
+                <b>Presupuesto</b>
+                <div>% consumido y saldo</div>
+              </div>
+              <div class="kpi">
+                <b>Proyección</b>
+                <div>Disponible y ahorro</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container story">
+        <div>
+          <h2>El verdadero tesoro</h2>
+          <p>
+            Más allá de los números, buscas estabilidad y calma. Aquí, cada paso te acerca a esa
+            sensación de control sereno.
+          </p>
+          <a class="btn" href="#encuesta">Participar del piloto</a>
+        </div>
+        <img
+          src="https://res.cloudinary.com/datwdagbf/image/upload/v1759021619/7_y_Te_permita_avanzar_cada_vez_mas_wibht1.png"
+          alt="Tranquilidad emocional"
+        />
+      </div>
+    </section>
+
+    <section id="encuesta" class="section">
+      <div class="container">
+        <h2>Queremos conocerte mejor</h2>
+        <p class="small">
+          “Imagina que cada pregunta es una pequeña conversación sobre tu experiencia personal. No
+          hay respuestas correctas o incorrectas, solo tu realidad.”
+        </p>
+        <form
+          class="form card"
+          action="mailto:albertomatosgil@gmail.com"
+          method="post"
+          enctype="text/plain"
+        >
+          <fieldset>
+            <legend>
+              1. El peso de las deudas "A veces las deudas pesan tanto que preferimos no mirarlas…
+              otras veces sentimos que tenemos todo bajo control.¿En tu caso, cómo lo vives hoy?"
+            </legend>
+            <label
+              ><input type="radio" name="1_control_deudas" value="control_claro" /> Sí, tengo
+              control claro</label
+            >
+            <label
+              ><input type="radio" name="1_control_deudas" value="a_veces_evito" /> No, a veces lo
+              evito</label
+            >
+            <label
+              ><input type="radio" name="1_control_deudas" value="dificil_responder" /> Me resulta
+              difícil responder</label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              2. Tu manera de organizarte. "Cada persona tiene su estilo: algunos confían en la
+              memoria, otros usan libretas, hojas de Excel o simplemente revisan el banco cuando
+              pueden." Tú, ¿cómo lo haces hoy en día? (puedes marcar varias)
+            </legend>
+            <label><input type="checkbox" name="2_org" value="no_organizo" /> No lo organizo</label>
+            <label
+              ><input type="checkbox" name="2_org" value="memoria" /> Lo llevo en la memoria</label
+            >
+            <label
+              ><input type="checkbox" name="2_org" value="notas_excel" /> Uso notas, libretas o
+              Excel</label
+            >
+            <label
+              ><input type="checkbox" name="2_org" value="banco" /> Consulto el estado de cuenta del
+              banco</label
+            >
+            <label>Otra forma: <input type="text" name="2_org_otra" /></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              3. Los olvidos que cuestan: "Seguro conoces esa sensación incómoda cuando llega una
+              factura que olvidaste pagar… agua, luz, internet o la tarjeta de crédito." 👉 ¿Cada
+              cuánto tiempo te ocurre?
+            </legend>
+            <label><input type="radio" name="3_olvidos" value="nunca" /> Nunca</label>
+            <label
+              ><input type="radio" name="3_olvidos" value="rara_vez" /> Muy rara vez (1 vez al
+              año)</label
+            >
+            <label
+              ><input type="radio" name="3_olvidos" value="a_veces" /> A veces (cada 3–4
+              meses)</label
+            >
+            <label
+              ><input type="radio" name="3_olvidos" value="mensual" /> Con frecuencia (una vez al
+              mes)</label
+            >
+            <label
+              ><input type="radio" name="3_olvidos" value="varias" /> Muy seguido (varias veces al
+              mes)</label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              4. Imagina tenerlo todo junto. "Piensa en la tranquilidad de tener todas tus deudas y
+              pagos organizados en un solo lugar, con recordatorios claros y anticipados." 👉 ¿Qué
+              tanto valor tendría para ti algo así?
+            </legend>
+            <label
+              ><select name="4_valor">
+                <option>Nada valioso</option>
+                <option>Poco valioso</option>
+                <option>Valioso</option>
+                <option>Muy valioso</option>
+                <option>Imprescindible</option>
+              </select></label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              5. Lo que más te ayudaría. "Hay muchas formas de sentir control: recordatorios,
+              cálculos exactos, límites de gasto, reportes visuales…" 👉 ¿Cuáles 3 funciones te
+              servirían más? (elige hasta 3)
+            </legend>
+            <label
+              ><input type="checkbox" name="5_func" value="recordatorios" /> Recordatorios
+              automáticos antes de pagar</label
+            >
+            <label
+              ><input type="checkbox" name="5_func" value="pago_exact" /> Saber el pago exacto para
+              liquidar una deuda</label
+            >
+            <label
+              ><input type="checkbox" name="5_func" value="limites" /> Poner límites de gasto por
+              categoría</label
+            >
+            <label
+              ><input type="checkbox" name="5_func" value="proyeccion" /> Proyección del mes:
+              disponible/ahorro</label
+            >
+            <label
+              ><input type="checkbox" name="5_func" value="tablas" /> Tablas claras con
+              historial</label
+            >
+            <label
+              ><input type="checkbox" name="5_func" value="registro_rapido" /> Registrar rápido
+              ingresos o gastos</label
+            >
+            <label
+              ><input type="checkbox" name="5_func" value="graficos" /> Ver gastos en gráficos
+              simples</label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              6. Claridad total en segundos. "Imagina abrir tu celular o tu computadora y ver en un
+              solo panel: tus gastos del día, tus deudas pendientes, tus presupuestos, tus ingresos
+              futuros… y hasta el dinero que realmente te quedará para ahorrar." 👉 ¿Qué tan útil te
+              parecería tener esa claridad total?
+            </legend>
+            <label
+              ><select name="6_utilidad">
+                <option>Nada útil</option>
+                <option>Poco útil</option>
+                <option>Útil</option>
+                <option>Muy útil</option>
+                <option>Imprescindible</option>
+              </select></label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              7. La preocupación principal. "Cuando pensamos en dinero, siempre hay algo que nos
+              preocupa más que el resto." 👉 Para ti, ¿qué es lo que pesa más hoy?
+            </legend>
+            <label
+              ><input type="radio" name="7_preocupacion" value="cuanto_pagar" /> No sé cuánto pagar
+              para salir de deudas</label
+            >
+            <label
+              ><input type="radio" name="7_preocupacion" value="olvidos" /> Olvidar fechas de
+              pago</label
+            >
+            <label
+              ><input type="radio" name="7_preocupacion" value="no_se_va" /> No darme cuenta en qué
+              se me va el dinero</label
+            >
+            <label
+              ><input type="radio" name="7_preocupacion" value="pasarme" /> Pasarme de lo que había
+              planeado</label
+            >
+            <label
+              ><input type="radio" name="7_preocupacion" value="no_disponible" /> No saber cuánto
+              tendré disponible el próximo mes</label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              8. El cambio en tu organización. "Imagina que pudieras tener todo tu dinero —deudas,
+              gastos, ingresos y saldos— reunido en un solo lugar, fácil de entender y sin enredos."
+              👉 ¿Cuánto crees que eso cambiaría tu manera de organizarte?
+            </legend>
+            <label
+              ><select name="8_cambio">
+                <option>Nada</option>
+                <option>Poco</option>
+                <option>Bastante</option>
+                <option>Mucho</option>
+                <option>Cambiaría totalmente</option>
+              </select></label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              9. Evitar perder dinero. "Todos hemos perdido dinero alguna vez por olvidar un pago o
+              manejar mal nuestras cuentas." 👉 Si existiera una forma de evitarlo y mantener todo
+              bajo control, ¿cuánto estarías dispuesto(a) a invertir cada mes en esa tranquilidad?
+            </legend>
+            <label
+              ><select name="9_inversion">
+                <option>Nada, solo si es gratis</option>
+                <option>Entre $2 y $5</option>
+                <option>Entre $6 y $10</option>
+                <option>Más de $10</option>
+                <option>Prefiero pago anual con descuento</option>
+              </select></label
+            >
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              10. Lo recomendarías. "Imagina que un amigo te dice: ‘Estoy cansado de no saber dónde
+              se me va el dinero’… y tú conoces una forma sencilla de resolverlo." 👉 ¿Qué tan
+              probable sería que se la recomendaras? (0 a 10)
+            </legend>
+            <label><input type="text" name="10_nps" placeholder="0–10" /></label>
+          </fieldset>
+
+          <hr class="sep" />
+          <label>Nombre <input type="text" name="nombre" required /></label>
+          <label>Email <input type="email" name="email" required /></label>
+          <label>Teléfono <input type="tel" name="telefono" value="014076402735" /></label>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap">
+            <button class="btn" type="submit">Enviar respuestas</button>
+            <a class="btn secondary" href="#cta">Quiero ser parte</a>
+          </div>
+          <p class="small">
+            Tus datos se enviarán por correo a albertomatosgil@gmail.com. Al enviar aceptas ser
+            contactad@ para el piloto.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <section id="cta" class="section">
+      <div class="container card" style="text-align: center">
+        <img
+          src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
+          alt="Foresee logo"
+          style="height: 52px; border-radius: 10px; margin-bottom: 8px"
+        />
+        <h2>Empieza hoy… y conviértelo en hábito</h2>
+        <p>Pequeñas acciones diarias, resultados gigantes. Da el primer paso ahora.</p>
+        <a class="btn" href="#encuesta">Unirme a la lista de interesados</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        © 2025 Foresee Finances · Contacto:
+        <a href="mailto:albertomatosgil@gmail.com">albertomatosgil@gmail.com</a> · Tel: 014076402735
+      </div>
+    </footer>
+  </body>
 </html>
