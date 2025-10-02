@@ -4849,7 +4849,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.6</p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.5</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -4886,12 +4886,11 @@
         const getDocs = window.getDocs;
         const writeBatch = window.writeBatch;
 
-        // --- Lógica de Pull-to-Refresh Manual
+        // --- Lógica de Pull-to-Refresh Manual (SIN BIBLIOTECAS) ---
         const ptrContainer = document.getElementById('ptr-container');
         const ptrArrow = ptrContainer.querySelector('.ptr-arrow');
         let touchStartY = 0;
         let isRefreshing = false;
-        let isInteractingWithElement = false;
         const pullThreshold = 80; // La distancia que el usuario debe deslizar para que se active el refresco.
 
         // Esta es la acción principal que se ejecuta al refrescar.
@@ -4927,44 +4926,34 @@
 
         // Se activa cuando el usuario PONE el dedo en la pantalla.
         function handleTouchStart(e) {
-          // Verificamos si el toque comenzó en un botón, enlace u otro control.
-          const targetElement = e.target;
-          if (targetElement.closest('button, a, input, select, .tab-button')) {
-            isInteractingWithElement = true; // Activamos la bandera
-            return; // Salimos para no iniciar el pull-to-refresh
-          }
-          isInteractingWithElement = false; // Reseteamos la bandera
-
           if (isRefreshing || window.scrollY > 0) {
-            touchStartY = 0;
+            touchStartY = 0; // Se ignora si ya está refrescando o si no estamos en la cima de la página.
             return;
           }
-          touchStartY = e.touches[0].clientY;
+          touchStartY = e.touches[0].clientY; // Guarda la posición Y inicial del dedo.
         }
 
         // Se activa cuando el usuario MUEVE el dedo por la pantalla.
         function handleTouchMove(e) {
-          // Si la interacción comenzó en un botón, no hacemos nada aquí.
-          if (isInteractingWithElement) {
-            return;
-          }
-
           if (isRefreshing || touchStartY === 0) return;
 
           const currentY = e.touches[0].clientY;
           let pullDistance = currentY - touchStartY;
 
           if (pullDistance < 0) {
+            // Si desliza hacia arriba, se cancela.
             touchStartY = 0;
             resetPullToRefresh();
             return;
           }
 
+          // Solo si estamos en la cima de la página, prevenimos el scroll y mostramos el indicador.
           if (window.scrollY === 0) {
-            e.preventDefault(); // Esta línea ahora solo se ejecuta si NO se está interactuando con un botón.
+            e.preventDefault();
 
             ptrContainer.style.transform = `translateY(${pullDistance - 60}px)`;
 
+            // Si se desliza lo suficiente, gira la flecha para indicar "soltar para refrescar".
             if (pullDistance > pullThreshold) {
               ptrArrow.classList.add('release');
             } else {
@@ -4975,23 +4964,19 @@
 
         // Se activa cuando el usuario QUITA el dedo de la pantalla.
         function handleTouchEnd(e) {
-          // Si se estaba interactuando con un elemento, solo reseteamos la bandera y salimos.
-          if (isInteractingWithElement) {
-            isInteractingWithElement = false;
-            return;
-          }
-
           if (isRefreshing || touchStartY === 0) return;
 
           const pullDistance = e.changedTouches[0].clientY - touchStartY;
 
+          // Si soltó el dedo después de deslizar lo suficiente, se llama a la función de refresco.
           if (pullDistance > pullThreshold) {
             handleRefresh();
           } else {
+            // Si no, simplemente se oculta el indicador.
             resetPullToRefresh();
           }
 
-          touchStartY = 0;
+          touchStartY = 0; // Resetea la posición inicial para el próximo gesto.
         }
 
         if (!app || !db || !auth) {
@@ -5374,27 +5359,10 @@
           console.log('[initApp] Aplicación inicializada.'); // Debugging
         }
         function setupEventListeners() {
-          document.body.addEventListener('click', function (event) {
-            // Revisa si el elemento en el que se hizo clic (o su padre) es el botón de logout del header
-            if (event.target.closest('#logout-btn')) {
-              // Previene cualquier otro comportamiento por defecto si fuera necesario
-              event.preventDefault();
-              handleLogout();
-            }
-
-            // Revisa si el elemento en el que se hizo clic (o su padre) es el botón de salir de las pestañas
-            if (event.target.closest('#logout-tab-btn')) {
-              // Previene cualquier otro comportamiento por defecto
-              event.preventDefault();
-              handleLogout();
-            }
-          });
           if (listenersAttached) return; // Si ya están asignados, no hagas nada.
-          if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            document.body.addEventListener('touchstart', handleTouchStart, { passive: true });
-            document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
-            document.body.addEventListener('touchend', handleTouchEnd);
-          }
+          document.body.addEventListener('touchstart', handleTouchStart, { passive: true });
+          document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
+          document.body.addEventListener('touchend', handleTouchEnd);
           setupDashboardListeners();
           // --- Conectar el nuevo botón de cerrar vista (flecha) ---
           const closeContentViewBtn = document.getElementById('close-content-view-btn');
@@ -5417,11 +5385,19 @@
             categorySelectModal.classList.remove('active'); // <-- ¡LÍNEA AÑADIDA! Cierra el modal actual
             openAddCategoryModal(); // Abrimos el modal de creación
           });
+          const logoutTabBtn = document.getElementById('logout-tab-btn');
+          if (logoutTabBtn) {
+            // MODIFICADO: Añadimos 'e' y 'e.stopImmediatePropagation()'
+            logoutTabBtn.addEventListener('click', (e) => {
+              e.stopImmediatePropagation(); // ¡Esta es la línea clave!
+              handleLogout();
+            });
+          }
 
           // Eventos de Autenticación
           authForm.addEventListener('submit', handleLogin);
           registerBtn.addEventListener('click', handleRegister);
-
+          logoutBtn.addEventListener('click', handleLogout);
           // Eventos para los nuevos botones de Ingreso y Gasto
           document.getElementById('add-income-btn').addEventListener('click', () => {
             const activeTab = document
@@ -5878,7 +5854,7 @@
                 amount,
                 description,
                 date: formattedDate,
-                category: 'Gasto Común', // <--- ¡MEJORADO!
+                category: 'Gastos Comunes',
                 originalItemId: itemId,
                 originalPersonIndex: personIndex,
               };
@@ -7423,68 +7399,59 @@
          */
 
         function openTransactionModal(options = {}) {
-          const { id = null, type = 'expense' } = options;
+          const { id = null, type = 'expense' } = options; // lockType ya no es necesario
 
           transactionForm.reset();
           clearValidationErrors();
           populateModalDropdowns();
           populateDescriptionDatalist();
-
-          const modalTitle = document.getElementById('modal-title');
-          let effectiveType = type; // El tipo por defecto es el que se pasa en 'options'
-          let actionText = modalContext === 'proyeccion' ? 'Registrar Proyección de' : 'Registrar';
+          document.getElementById('transaction-type-hidden').value = type;
 
           if (id) {
-            // --- Lógica para EDITAR un registro existente ---
             let item = appState.transactions.find((t) => t.id === id);
             let sourceCollection = 'transactions';
+
             if (!item) {
               item = appState.projections.find((p) => p.id === id);
-              sourceCollection = 'proyections';
+              sourceCollection = 'projections';
             }
 
             if (item) {
-              effectiveType = item.type; // Sobrescribimos con el tipo real del item
-              actionText = sourceCollection === 'proyections' ? 'Editar Proyección de' : 'Editar';
-
-              // Llenar el formulario con los datos del item (esto no cambia)
+              const title =
+                sourceCollection === 'projections' ? 'Editar Proyección' : 'Editar Transacción';
+              document.getElementById('modal-title').textContent = title;
               document.getElementById('transaction-id').value = item.id;
               document.getElementById('transaction-date').value = item.date;
               document.getElementById('transaction-description').value = item.description;
+
               const categoryObject = appState.categories.find((c) => c.name === item.category);
               if (categoryObject) {
                 categorySelectButton.innerHTML = `
-                            <img src="${categoryObject.icon || DEFAULT_ICON}" alt="${
+                                  <img src="${categoryObject.icon || DEFAULT_ICON}" alt="${
                   categoryObject.name
                 }">
-                            <span>${categoryObject.name}</span>`;
+                                  <span>${categoryObject.name}</span>
+                              `;
                 transactionCategoryHiddenInput.value = categoryObject.name;
               }
+
               document.getElementById('transaction-bank').value = item.bank;
               document.getElementById('transaction-amount').value = item.amount;
+              document.getElementById('transaction-type-hidden').value = item.type;
             } else {
               showMessageModal('Error', 'Elemento no encontrado.', 'error');
               return;
             }
           } else {
-            // --- Lógica para un NUEVO registro (esto no cambia) ---
+            const title =
+              modalContext === 'proyeccion' ? 'Registrar Proyección' : 'Registrar Transacción';
+            document.getElementById('modal-title').textContent = title;
             document.getElementById('transaction-id').value = '';
             document.getElementById('transaction-date').valueAsDate = new Date();
             categorySelectButton.innerHTML = `<span>Seleccionar Categoría...</span>`;
             transactionCategoryHiddenInput.value = '';
           }
 
-          // --- LÓGICA UNIFICADA PARA CAMBIAR EL TÍTULO Y COLOR ---
-          if (effectiveType === 'income') {
-            modalTitle.textContent = `${actionText} Ingreso`;
-            modalTitle.style.color = 'var(--electric-green)'; // Verde
-          } else {
-            // Por defecto, es un gasto
-            modalTitle.textContent = `${actionText} Gasto`;
-            modalTitle.style.color = 'var(--electric-red)'; // Rojo
-          }
-
-          document.getElementById('transaction-type-hidden').value = effectiveType;
           transactionModal.classList.add('active');
           document.getElementById('transaction-date').focus();
         }
@@ -7492,7 +7459,6 @@
         function closeTransactionModal() {
           transactionModal.classList.remove('active');
           clearValidationErrors(); // Limpiar errores al cerrar el modal
-          document.getElementById('modal-title').style.color = ''; // Resetear color del título
         }
 
         /**
@@ -10852,7 +10818,7 @@
               category: transactionData.category,
               bank: transactionData.bank,
               amount: transactionData.amount,
-              type: 'income',
+              type: 'expense',
             };
 
             await setDoc(newDocRef, dataToSave);
