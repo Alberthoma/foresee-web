@@ -172,59 +172,6 @@
         min-height: 100%;
       }
 
-      /* --- Estilos para la funcionalidad Pull-to-Refresh --- */
-      #ptr-container {
-        position: fixed; /* Se queda fijo en la parte superior de la pantalla */
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform: translateY(-100%); /* Inicialmente oculto por encima de la pantalla */
-        transition: transform 0.3s ease; /* Animación suave para aparecer y desaparecer */
-        z-index: 998; /* Se asegura de que esté por encima del contenido pero debajo de los modales */
-      }
-
-      .ptr-arrow,
-      .ptr-spinner {
-        width: 28px;
-        height: 28px;
-        transition: transform 0.3s ease;
-      }
-
-      /* Estilo de la flecha que indica "deslizar" */
-      .ptr-arrow {
-        border: solid var(--text-light-secondary);
-        border-width: 0 3px 3px 0;
-        display: inline-block;
-        padding: 4px;
-        transform: rotate(45deg); /* Apunta hacia abajo */
-      }
-
-      /* Cuando el usuario desliza lo suficiente, la flecha gira para indicar "soltar" */
-      .ptr-arrow.release {
-        transform: rotate(-135deg);
-      }
-
-      /* Estilo del spinner (círculo giratorio) */
-      .ptr-spinner {
-        display: none; /* Oculto por defecto */
-        border: 4px solid rgba(243, 244, 246, 0.2);
-        border-left-color: var(--electric-blue); /* Usa el color azul de tu tema */
-        border-radius: 50%;
-        animation: spin 1s linear infinite; /* Usa la misma animación de giro que tus otros spinners */
-      }
-
-      /* Cuando está refrescando, se oculta la flecha y se muestra el spinner */
-      #ptr-container.refreshing .ptr-arrow {
-        display: none;
-      }
-      #ptr-container.refreshing .ptr-spinner {
-        display: block;
-      }
-
       .container {
         padding: 1px 1rem;
       }
@@ -2397,10 +2344,6 @@
     </style>
   </head>
   <body class="mt-56 view-dashboard">
-    <div id="ptr-container">
-      <div class="ptr-arrow"></div>
-      <div class="ptr-spinner"></div>
-    </div>
     <div
       id="mobile-fullscreen-prompt"
       class="fixed inset-0 bg-gray-900 bg-opacity-95 z-[9999] flex-col items-center justify-center text-center p-8 hidden"
@@ -4885,100 +4828,6 @@
         const query = window.query;
         const getDocs = window.getDocs;
         const writeBatch = window.writeBatch;
-
-        // --- Lógica de Pull-to-Refresh Manual (SIN BIBLIOTECAS) ---
-        const ptrContainer = document.getElementById('ptr-container');
-        const ptrArrow = ptrContainer.querySelector('.ptr-arrow');
-        let touchStartY = 0;
-        let isRefreshing = false;
-        const pullThreshold = 80; // La distancia que el usuario debe deslizar para que se active el refresco.
-
-        // Esta es la acción principal que se ejecuta al refrescar.
-        async function handleRefresh() {
-          isRefreshing = true;
-          ptrContainer.classList.add('refreshing');
-          ptrContainer.style.transform = 'translateY(0)'; // Mantiene el spinner visible mientras carga.
-
-          showToast('Actualizando datos...', 'info', 2000);
-          try {
-            // AQUÍ OCURRE LA MAGIA: Llamamos a tu función que carga todo desde Firebase.
-            await loadUserDataAndListen();
-            showToast('¡Datos actualizados!', 'success');
-          } catch (error) {
-            console.error('Error durante el refresco manual:', error);
-            showToast('No se pudieron actualizar los datos.', 'error');
-          } finally {
-            // Al terminar (con éxito o error), se oculta y resetea el indicador.
-            resetPullToRefresh();
-          }
-        }
-
-        // Esta función limpia y oculta el indicador.
-        function resetPullToRefresh() {
-          ptrContainer.style.transform = 'translateY(-100%)';
-          ptrContainer.classList.remove('refreshing');
-          ptrArrow.classList.remove('release');
-          // Retrasamos un poco el cambio de 'isRefreshing' para que las animaciones terminen.
-          setTimeout(() => {
-            isRefreshing = false;
-          }, 300);
-        }
-
-        // Se activa cuando el usuario PONE el dedo en la pantalla.
-        function handleTouchStart(e) {
-          if (isRefreshing || window.scrollY > 0) {
-            touchStartY = 0; // Se ignora si ya está refrescando o si no estamos en la cima de la página.
-            return;
-          }
-          touchStartY = e.touches[0].clientY; // Guarda la posición Y inicial del dedo.
-        }
-
-        // Se activa cuando el usuario MUEVE el dedo por la pantalla.
-        function handleTouchMove(e) {
-          if (isRefreshing || touchStartY === 0) return;
-
-          const currentY = e.touches[0].clientY;
-          let pullDistance = currentY - touchStartY;
-
-          if (pullDistance < 0) {
-            // Si desliza hacia arriba, se cancela.
-            touchStartY = 0;
-            resetPullToRefresh();
-            return;
-          }
-
-          // Solo si estamos en la cima de la página, prevenimos el scroll y mostramos el indicador.
-          if (window.scrollY === 0) {
-            e.preventDefault();
-
-            ptrContainer.style.transform = `translateY(${pullDistance - 60}px)`;
-
-            // Si se desliza lo suficiente, gira la flecha para indicar "soltar para refrescar".
-            if (pullDistance > pullThreshold) {
-              ptrArrow.classList.add('release');
-            } else {
-              ptrArrow.classList.remove('release');
-            }
-          }
-        }
-
-        // Se activa cuando el usuario QUITA el dedo de la pantalla.
-        function handleTouchEnd(e) {
-          if (isRefreshing || touchStartY === 0) return;
-
-          const pullDistance = e.changedTouches[0].clientY - touchStartY;
-
-          // Si soltó el dedo después de deslizar lo suficiente, se llama a la función de refresco.
-          if (pullDistance > pullThreshold) {
-            handleRefresh();
-          } else {
-            // Si no, simplemente se oculta el indicador.
-            resetPullToRefresh();
-          }
-
-          touchStartY = 0; // Resetea la posición inicial para el próximo gesto.
-        }
-
         if (!app || !db || !auth) {
           console.error('[App Init] Firebase no inicializado. La aplicación no puede funcionar.');
           return;
@@ -5360,9 +5209,6 @@
         }
         function setupEventListeners() {
           if (listenersAttached) return; // Si ya están asignados, no hagas nada.
-          document.body.addEventListener('touchstart', handleTouchStart, { passive: true });
-          document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
-          document.body.addEventListener('touchend', handleTouchEnd);
           setupDashboardListeners();
           // --- Conectar el nuevo botón de cerrar vista (flecha) ---
           const closeContentViewBtn = document.getElementById('close-content-view-btn');
