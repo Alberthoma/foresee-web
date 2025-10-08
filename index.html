@@ -3428,15 +3428,6 @@
                   ></label>
                 </div>
               </div>
-
-              <button
-                id="whatsapp-test-btn"
-                class="mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center"
-                type="button"
-              >
-                Probar envío de WhatsApp
-              </button>
-
               <button
                 class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center mt-4"
                 id="save-whatsapp-settings-btn"
@@ -11378,86 +11369,6 @@
           formatCurrency(postTaxDeductions);
         document.getElementById('netPayResult').textContent = formatCurrency(netPay);
       });
-
-      // URL de tu función desplegada:
-      const WA_FUNCTION_URL = 'https://us-central1-TU_PROJECT_ID.cloudfunctions.net/sendWhatsApp'; // REEMPLAZA
-
-      // Valida formato E.164 +XXXXXXXXXXX
-      function isE164(num) {
-        return /^\+\d{7,15}$/.test(num);
-      }
-
-      async function sendWhatsAppTest() {
-        const input = document.getElementById('whatsapp-number');
-        const err = document.getElementById('whatsapp-number-error');
-        const enabled = document.getElementById('whatsapp-notifications-enabled');
-
-        err.textContent = '';
-        const to = (input.value || '').trim();
-
-        if (!isE164(to)) {
-          err.textContent = 'Número inválido. Usa formato +123456789';
-          err.classList.add('active');
-          return;
-        }
-        if (!enabled.checked) {
-          err.textContent = "Activa el switch 'Notificaciones' para continuar.";
-          err.classList.add('active');
-          return;
-        }
-
-        const body =
-          '✅ Prueba de WhatsApp desde Foresee. Si recibes este mensaje, la integración funciona.';
-        try {
-          // Feedback mínimo
-          const btn = document.getElementById('whatsapp-test-btn');
-          btn.disabled = true;
-          btn.textContent = 'Enviando...';
-
-          const resp = await fetch(WA_FUNCTION_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ to, body }),
-          });
-
-          const data = await resp.json();
-          if (data && data.ok) {
-            showToast('¡Mensaje enviado! SID: ' + data.sid, 'success');
-          } else {
-            const msg = data && data.error ? data.error : 'Error desconocido';
-            showToast('Error al enviar: ' + msg, 'error');
-          }
-        } catch (e) {
-          showToast('Fallo de red o CORS: ' + (e && e.message ? e.message : e), 'error');
-        } finally {
-          const btn = document.getElementById('whatsapp-test-btn');
-          btn.disabled = false;
-          btn.textContent = 'Probar envío de WhatsApp';
-        }
-      }
-
-      // Hook de click
-      document.getElementById('whatsapp-test-btn')?.addEventListener('click', sendWhatsAppTest);
-
-      // Usa tu contenedor de toasts si ya existe; si no, pequeño fallback:
-      function showToast(msg, type) {
-        try {
-          // Si ya tienes un sistema de toasts con clases .toast.success/.error, úsalo.
-          const cont = document.getElementById('toast-container');
-          if (cont) {
-            const t = document.createElement('div');
-            t.className = 'toast ' + (type || 'info') + ' show';
-            t.textContent = msg;
-            cont.appendChild(t);
-            setTimeout(() => {
-              t.classList.remove('show');
-              cont.removeChild(t);
-            }, 4000);
-            return;
-          }
-        } catch (_) {}
-        alert(msg); // Fallback
-      }
     </script>
   </body>
 </html>
