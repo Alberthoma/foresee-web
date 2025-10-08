@@ -1,13 +1,21 @@
-# Sistema
+// Archivo: .gitignore
+// ACCIÓN: REEMPLAZAR
+
+# Archivos del sistema operativo
 Thumbs.db
 .DS_Store
-ECHO est  desactivado.
-# Logs
+
+# Archivos de registro (Logs)
 *.log
-ECHO est  desactivado.
-# Build tools comunes
+
+# Carpetas de dependencias y compilación
 node_modules/
 dist/
 build/
 
+# Archivos con secretos y configuraciones locales (¡MUY IMPORTANTE!)
+config.js
+.env.wittfinances-282f1
+
+# Otros archivos que has decidido ignorar (si es intencional, está bien)
 link.txt
