@@ -14,6 +14,7 @@
       href="https://res.cloudinary.com/datwdagbf/image/upload/v1756514685/proyeccion_hh3xyt.png"
     />
 
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Foresee" />
@@ -171,6 +172,59 @@
         min-height: 100%;
       }
 
+      /* --- Estilos para la funcionalidad Pull-to-Refresh --- */
+      #ptr-container {
+        position: fixed; /* Se queda fijo en la parte superior de la pantalla */
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-100%); /* Inicialmente oculto por encima de la pantalla */
+        transition: transform 0.3s ease; /* Animación suave para aparecer y desaparecer */
+        z-index: 998; /* Se asegura de que esté por encima del contenido pero debajo de los modales */
+      }
+
+      .ptr-arrow,
+      .ptr-spinner {
+        width: 28px;
+        height: 28px;
+        transition: transform 0.3s ease;
+      }
+
+      /* Estilo de la flecha que indica "deslizar" */
+      .ptr-arrow {
+        border: solid var(--text-light-secondary);
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 4px;
+        transform: rotate(45deg); /* Apunta hacia abajo */
+      }
+
+      /* Cuando el usuario desliza lo suficiente, la flecha gira para indicar "soltar" */
+      .ptr-arrow.release {
+        transform: rotate(-135deg);
+      }
+
+      /* Estilo del spinner (círculo giratorio) */
+      .ptr-spinner {
+        display: none; /* Oculto por defecto */
+        border: 4px solid rgba(243, 244, 246, 0.2);
+        border-left-color: var(--electric-blue); /* Usa el color azul de tu tema */
+        border-radius: 50%;
+        animation: spin 1s linear infinite; /* Usa la misma animación de giro que tus otros spinners */
+      }
+
+      /* Cuando está refrescando, se oculta la flecha y se muestra el spinner */
+      #ptr-container.refreshing .ptr-arrow {
+        display: none;
+      }
+      #ptr-container.refreshing .ptr-spinner {
+        display: block;
+      }
+
       .container {
         padding: 1px 1rem;
       }
@@ -233,8 +287,17 @@
       }
 
       .tab-button img {
-        height: 64px;
+        height: 56px;
         width: auto;
+      }
+
+      .tab-button span {
+        font-size: 0.75rem;
+        margin-top: 4px;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+        text-align: center;
+        white-space: nowrap;
       }
 
       .tab-button:hover {
@@ -478,6 +541,41 @@
         display: none;
       }
 
+      #distribution-input-modal .bg-white {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+      }
+      #distribution-input-modal h2,
+      #distribution-input-modal label {
+        color: var(--text-light-primary);
+      }
+      #distribution-input-modal input {
+        background-color: var(--bg-dark-tertiary);
+        border: 1px solid var(--border-dark);
+        color: var(--text-light-primary);
+      }
+      #distribution-input-modal input:focus {
+        border-color: var(--electric-blue);
+        box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.4);
+      }
+      #distribution-input-modal .border-b,
+      #distribution-input-modal .border-t {
+        border-color: var(--border-dark);
+      }
+      #distribution-input-modal #cancel-distribution-btn {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+      }
+      #distribution-input-modal #cancel-distribution-btn:hover {
+        background-color: var(--border-dark);
+      }
+      #distribution-input-modal #save-distribution-btn {
+        background-color: var(--electric-blue);
+      }
+      #distribution-input-modal #save-distribution-btn:hover {
+        background-color: #0c87bf;
+      }
+
       /* --- Tablas (Estilos Generales) --- */
       table {
         border-collapse: separate;
@@ -491,12 +589,21 @@
         margin-top: 1px;
       }
 
-      th,
+      #registros-content table,
+      #proyeccion-content table,
+      #recurrentes-content table,
+      #tarjetas-content table,
+      #presupuesto-content table {
+        width: 100%;
+        margin: 1px auto 0;
+      }
+
+      /*th,
       td {
         border: 1px solid #ddd;
         padding: 2px;
         text-align: left;
-      }
+      }*/
 
       table tr:first-child th:first-child {
         border-top-left-radius: 10px;
@@ -705,13 +812,36 @@
         height: 16px;
       }
 
-      body.auth-modal-active #main-content-wrapper {
+      /* Cuando el modal de autenticación está activo, oculta las secciones específicas del contenido */
+      body.auth-modal-active #open-tutorials-btn,
+      body.auth-modal-active .bttclose,
+      body.auth-modal-active #tabs,
+      body.auth-modal-active #dashboard,
+      body.auth-modal-active #main-container,
+      body.auth-modal-active #credit-card-alerts,
+      body.auth-modal-active #recurring-alerts {
         display: none;
+      }
+
+      /* Ancla el footer a la parte inferior de la pantalla en la vista de autenticación */
+      body.auth-modal-active footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
       }
 
       /* ====================================================================== */
       /* 5. ESTILOS ESPECÍFICOS POR PESTAÑA Y VISTA
               /* ====================================================================== */
+
+      /* --- Contenido de la celda de Categoría --- */
+      .category-cell-content {
+        display: flex;
+        align-items: center; /* Centra verticalmente el ícono, texto y botón */
+        justify-content: flex-start; /* Alinea todo al inicio de la celda */
+        gap: 4px; /* Añade un pequeño espacio entre elementos */
+        white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+      }
 
       /* --- Dashboard y Alertas --- */
       #dashboard {
@@ -823,6 +953,10 @@
         white-space: nowrap;
       }
 
+      #proyeccion-content td:nth-child(4) {
+        white-space: nowrap;
+      }
+
       #no-transactions-message,
       #no-recurring-expenses-message,
       #no-credit-cards-message,
@@ -858,12 +992,13 @@
       }
 
       /* --- Filtros --- */
-      #filter-description,
       #filter-category,
+      #filter-bank, /* <-- Se añade el nuevo filtro de banco */
       #filter-month {
         background-color: var(--bg-dark-tertiary);
         border: 1px solid var(--border-dark);
         color: var(--text-light-primary);
+        border-radius: 0.5rem; /* Pequeña mejora para consistencia visual */
       }
 
       /* --- Panel de Entrada por Voz --- */
@@ -897,10 +1032,68 @@
         display: none !important;
       }
 
+      /* --- Estilos para el Checkbox de Exclusión en Tarjetas --- */
+      .exclude-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: transparent;
+        margin: 0;
+        font: inherit;
+        color: currentColor;
+        width: 1.25em;
+        height: 1.25em;
+        border: 0.15em solid var(--border-dark);
+        border-radius: 50%;
+        transform: translateY(-0.075em);
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+      .exclude-checkbox:hover {
+        border-color: var(--electric-blue);
+      }
+      .exclude-checkbox::before {
+        content: '';
+        width: 0.75em;
+        height: 0.75em;
+        border-radius: 50%;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em var(--electric-blue);
+      }
+      .exclude-checkbox:checked::before {
+        transform: scale(1);
+      }
       /* --- Pestaña Tarjetas de Crédito --- */
       #tarjetas-content .table-input {
         background-color: var(--bg-dark-primary);
         border: 1px solid var(--border-dark);
+      }
+
+      #tarjetas-content tfoot td {
+        padding: 0.75rem 1rem; /* Adds vertical and horizontal spacing */
+        text-align: right; /* Aligns all text to the right */
+        font-size: 0.875rem; /* 14px font size */
+        vertical-align: middle;
+      }
+
+      /* Style for labels like "Totals" */
+      #tarjetas-content tfoot td[colspan] {
+        color: var(--text-light-secondary); /* Uses your secondary text color (dimmer) */
+        font-weight: 600; /* Semibold font */
+      }
+
+      /* Style for total amounts */
+      #tarjetas-content tfoot td:not([colspan]) {
+        color: var(--text-light-primary); /* Uses your main text color (brighter) */
+        font-weight: 700; /* Bold font */
+        font-size: 1rem; /* 16px, slightly larger for emphasis */
+      }
+
+      /* Specific style for the suggested monthly payment total */
+      #tarjetas-content tfoot #cc-total-monthly {
+        color: var(--electric-blue); /* Uses your blue accent color */
       }
 
       #tarjetas-content thead th,
@@ -1196,6 +1389,140 @@
 
       #results #netPayResult {
         color: var(--electric-blue);
+      }
+
+      /* ====================================================================== */
+      /* --- PESTAÑA GASTOS COMUNES --- */
+      /* ====================================================================== */
+
+      #gastos-comunes-content .table-input {
+        width: 100%;
+        padding: 6px 10px;
+        box-sizing: border-box;
+      }
+
+      /* Para alinear el texto del Ítem a la izquierda */
+      #gastos-comunes-content .item-name-input {
+        text-align: left;
+      }
+
+      /* REEMPLAZA la regla anterior con esta: */
+      #gastos-comunes-content .item-total-input {
+        padding-right: 10px !important; /* Aumentamos el valor y forzamos la regla */
+        text-align: right;
+      }
+
+      #gastos-comunes-content th,
+      #gastos-comunes-content td {
+        min-width: 150px;
+        white-space: nowrap;
+        padding: 8px;
+      }
+
+      #gastos-comunes-content th.actions-column,
+      #gastos-comunes-content td.actions-column {
+        min-width: 80px;
+        width: 80px;
+      }
+
+      #gastos-comunes-content th[contenteditable='true'] {
+        background-color: var(--bg-dark-primary);
+        cursor: text;
+        transition: all 0.2s ease;
+      }
+
+      #gastos-comunes-content th[contenteditable='true']:hover,
+      #gastos-comunes-content th[contenteditable='true']:focus {
+        outline: 2px solid var(--electric-blue);
+        background-color: var(--border-dark);
+      }
+
+      #gastos-comunes-content .distribution-cell {
+        cursor: pointer;
+        position: relative;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+      }
+
+      #gastos-comunes-content .distribution-cell:hover {
+        background-color: var(--border-dark);
+      }
+
+      #gastos-comunes-content .distribution-cell.active {
+        background-color: rgba(14, 165, 233, 0.15);
+        outline: 2px solid var(--electric-blue);
+      }
+
+      #gastos-comunes-content .distribution-cell .method-indicator {
+        font-size: 0.65rem;
+        color: var(--text-light-secondary);
+        display: block;
+        margin-top: 2px;
+      }
+
+      #distribution-popover {
+        position: absolute;
+        background-color: var(--bg-dark-primary);
+        border: 1px solid var(--border-dark);
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        overflow: hidden;
+      }
+
+      #distribution-popover div {
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: background-color 0.2s ease;
+        color: var(--text-light-primary);
+      }
+
+      #distribution-popover div:hover {
+        background-color: var(--electric-blue);
+        color: white;
+      }
+
+      #gastos-comunes-content tfoot td {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      #gastos-comunes-content tfoot .total-general {
+        color: var(--electric-orange);
+      }
+
+      #gastos-comunes-content .delete-person-btn,
+      #gastos-comunes-content .delete-item-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-light-secondary);
+      }
+      #gastos-comunes-content .delete-person-btn:hover,
+      #gastos-comunes-content .delete-item-btn:hover {
+        color: var(--electric-red);
+        transform: scale(1.1);
+      }
+
+      #gastos-comunes-content .person-header-container {
+        display: flex; /* Activa Flexbox para alinear elementos en una línea */
+        justify-content: space-between; /* Empuja el nombre a la izquierda y el botón a la derecha */
+        align-items: center; /* Centra verticalmente los elementos */
+        gap: 8px; /* Añade un pequeño espacio entre el nombre y el botón */
+      }
+
+      #gastos-comunes-content .person-name-editable {
+        flex-grow: 1; /* Permite que el nombre ocupe el espacio disponible */
+        text-align: left; /* Asegura que el texto del nombre comience a la izquierda */
+      }
+
+      #gastos-comunes-content .delete-person-btn {
+        flex-shrink: 0; /* Evita que el botón 'X' se encoja si el nombre es muy largo */
       }
 
       /* --- Íconos de Categoría y Modal de Selección --- */
@@ -1661,6 +1988,11 @@
         color: var(--text-light-secondary);
       }
 
+      #proyeccion-content td:nth-child(4),
+      #registros-content td:nth-child(4) {
+        white-space: nowrap;
+      }
+
       /* ====================================================================== */
       /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)
               /* ====================================================================== */
@@ -1818,7 +2150,9 @@
           background-color: var(--electric-red);
         }
 
-        /* Ocultar columnas en tablas */
+        /* Ocultar columnas en tablas 
+        #tarjetas-content th:nth-child(7),
+        #tarjetas-content td:nth-child(7),*/
         #registros-content th:nth-child(3),
         #registros-content td:nth-child(3),
         #registros-content th:nth-child(5),
@@ -1832,10 +2166,13 @@
         #recurrentes-content th:nth-child(6),
         #recurrentes-content td:nth-child(6),
         #recurrentes-content th:nth-child(7),
-        #recurrentes-content td:nth-child(7),
+        #recurrentes-content td:nth-child(7) {
+          display: none;
+        }
+
         #tarjetas-content th:nth-child(7),
         #tarjetas-content td:nth-child(7) {
-          display: none;
+          min-width: 120px; /* Asegura un ancho mínimo para que el input sea visible */
         }
 
         .info-btn {
@@ -1862,12 +2199,10 @@
           transform: scale(1.1);
         }
 
+        #recurrentes-content td:nth-child(4) > span,
+        #proyeccion-content td:nth-child(4) > span,
         #registros-content td:nth-child(4) > span {
           display: none;
-        }
-
-        #registros-content td:nth-child(4) {
-          white-space: nowrap;
         }
 
         #registros-content tbody td:nth-child(4),
@@ -1907,6 +2242,10 @@
         #proyeccion-content th {
           font-size: 1rem;
           padding: 4px 2px;
+        }
+
+        .category-cell-content span {
+          display: none;
         }
 
         #filters-container {
@@ -2007,9 +2346,81 @@
           display: flex;
         }
       }
+
+      /* --- Estilo para hacer visible el panel de acción única --- */
+      #single-action-modal.active #single-action-modal-content {
+        transform: translateY(0);
+      }
+
+      /* Estilos para la cuadrícula del modal de selección de categoría */
+      #category-select-grid {
+        display: grid;
+        /* Define que habrá varias columnas que se ajustan automáticamente */
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 1rem;
+      }
+
+      /* Estilos para cada ítem individual en la cuadrícula */
+      .category-select-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 1px solid var(--border-dark);
+        background-color: var(--bg-dark-tertiary);
+        transition: all 0.2s ease-in-out;
+        text-align: center;
+      }
+
+      .category-select-option:hover {
+        transform: scale(1.05);
+        border-color: var(--electric-blue);
+      }
+
+      /* Controla el tamaño de la imagen (ícono) */
+      .category-select-option img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 4px;
+      }
+
+      /* Controla el tamaño del texto debajo del ícono */
+      .category-select-option span {
+        font-size: 0.7rem;
+        line-height: 1.2;
+        color: var(--text-light-secondary);
+        word-break: break-word;
+      }
+
+      /* Estilos para el Toggle Switch de WhatsApp */
+      .toggle-checkbox:checked {
+        right: 0;
+        border-color: var(--electric-green);
+      }
+      .toggle-checkbox:checked + .toggle-label {
+        background-color: var(--electric-green);
+      }
+<<<<<<< HEAD
+      #whatsapp-number {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+        border: 1px solid var(--border-dark);
+      }
+      #whatsapp-number::placeholder {
+        color: var(--text-light-secondary);
+      }
+=======
+>>>>>>> 7850beae3a3813a00900a79025ad698f0e4bf621
     </style>
   </head>
   <body class="mt-56 view-dashboard">
+    <div id="ptr-container">
+      <div class="ptr-arrow"></div>
+      <div class="ptr-spinner"></div>
+    </div>
     <div
       id="mobile-fullscreen-prompt"
       class="fixed inset-0 bg-gray-900 bg-opacity-95 z-[9999] flex-col items-center justify-center text-center p-8 hidden"
@@ -2042,11 +2453,11 @@
       id="auth-modal"
     >
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md flex flex-col">
-        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0 text-center">
-          Bienvenido al Gestor de Presupuesto
+        <h2 class="text-2xl font-bold p-0 border-b flex-shrink-0 text-center">
+          Foresee Finances, <br /><span class="font-thin xx-small">Bienvenido</span>
         </h2>
-        <div class="p-6 flex-grow">
-          <div class="mb-4 text-center">
+        <div class="p-1 flex-grow">
+          <div class="mb-1 text-center">
             <p class="text-gray-600">Inicia sesión o regístrate para acceder a tus datos.</p>
           </div>
           <form class="space-y-4" id="auth-form">
@@ -2055,7 +2466,7 @@
                 Correo Electrónico
               </label>
               <input
-                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                class="w-full p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
                 id="auth-email"
                 required=""
                 type="email"
@@ -2067,7 +2478,7 @@
                 Contraseña
               </label>
               <input
-                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                class="w-full p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
                 id="auth-password"
                 required=""
                 type="password"
@@ -2076,7 +2487,7 @@
             </div>
             <div class="flex flex-col sm:flex-row justify-between gap-3 pt-4">
               <button
-                class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
+                class="flex-1 bg-blue-600 text-white mb-2 px-1 py-1 rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
                 id="login-btn"
                 type="submit"
               >
@@ -2084,7 +2495,7 @@
                 <span class="btn-spinner hidden"> </span>
               </button>
               <button
-                class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center"
+                class="flex-1 bg-green-600 text-white mb-2 px-1 py-1 rounded-lg hover:bg-green-700 transition flex items-center justify-center"
                 id="register-btn"
                 type="button"
               >
@@ -2097,134 +2508,142 @@
       </div>
     </div>
 
-    <div id="main-content-wrapper">
-      <header>
-        <div id="main-header-bar" class="mt-0 fixed top-0 left-0 w-full h-32">
-          <div class="w-full pt-2 pb-2 flex items-center justify-between pr-4" id="barr">
-            <img
-              src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
-              alt="Logo"
-              class="logotipo pl-4"
-            />
+    <header>
+      <div id="main-header-bar" class="mt-0 fixed top-0 left-0 w-full h-32">
+        <div class="w-full pt-2 pb-2 flex items-center justify-between pr-4" id="barr">
+          <img
+            src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
+            alt="Logo"
+            class="logotipo pl-4"
+          />
 
-            <div class="flex-1 text-center">
-              <h1 class="text-3xl font-bold">GESTOR FINANCIERO Y DE PRESUPUESTO WEB</h1>
-              <p id="ptitul" class="text-lg">
-                Bienvenido,
-                <strong class="font-semibold" id="user-alias-display">Cargando...</strong>: Tu panel
-                de control financiero, moderno y eficiente.
-              </p>
-              <button id="open-brand-story-btn" class="btn-philosophy">
-                Conoce nuestra filosofía
-              </button>
-            </div>
-
-            <div class="flex flex-col items-end">
-              <button id="IdbtOpenScreen" class="btOpenScreen mb-1 mr-1">Pantalla Completa</button>
-              <button id="IdbtCloseScreen" class="btcloseScreen mb-1">Mostrar Navegador</button>
-              <button class="bttclose mr-6" id="logout-btn">
-                Cerrar Sesión
-                <span class="btn-spinner hidden"></span>
-              </button>
-            </div>
+          <div class="flex-1 text-center">
+            <h1 class="text-3xl font-bold">GESTOR FINANCIERO Y DE PRESUPUESTO WEB</h1>
+            <p id="ptitul" class="text-lg">
+              Bienvenido,
+              <strong class="font-semibold" id="user-alias-display">Cargando...</strong>: Tu panel
+              de control financiero, moderno y eficiente.
+            </p>
+            <button id="open-brand-story-btn" class="btn-philosophy">
+              Conoce nuestra filosofía
+            </button>
           </div>
 
-          <div class="contenedor-botones flex-col md:flex-row md:items-center md:justify-between">
-            <div class="btn" id="tabs">
-              <button class="tab-button" data-tab="registros">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514689/registro_mc8ed8.png"
-                  alt="Icono Registros"
-                  class="w-14 mb-1"
-                />
-                <span>Registros</span>
-              </button>
-              <button class="tab-button" id="quick-voice-record-btn">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/v1757199087/voz_w5ctvq.png"
-                  alt="Icono Grabar Gasto"
-                  class="w-14 mb-1"
-                />
-                <span>Voz</span>
-              </button>
-              <button class="tab-button" data-tab="proyeccion">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png"
-                  alt="Icono Proyección"
-                  class="h-12 w-14 mb-1"
-                />
-                <span>Proyección</span>
-              </button>
-              <button class="tab-button" data-tab="recurrentes">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514673/gastos-recurrentes2_udrbey.png"
-                  alt="Icono recurrentes"
-                  class="h-11 w-11 mb-1"
-                />
-                <span>Gastos<br />Recurrentes</span>
-              </button>
-              <button class="tab-button" data-tab="tarjetas">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514697/tarjetas2_z3jokx.png"
-                  alt="Icono tarjetas"
-                  class="h-12 w-12 mb-1"
-                />
-                <span>Tarjetas<br />de Crédito</span>
-              </button>
-              <button class="tab-button" data-tab="saldos">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514692/saldos_lntcfz.png"
-                  alt="Icono saldos"
-                  class="h-9 w-12 mb-1"
-                />
-                <span>Saldos<br />de Cuentas</span>
-              </button>
-              <button class="tab-button" data-tab="calculadora">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514686/proyeccion2_iqtpug.png"
-                  alt="Icono calculadora"
-                  class="h-9 w-10 mb-1"
-                />
-                <span>Calculadora</span>
-              </button>
-              <button class="tab-button" data-tab="reportes">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514690/reportes_qisw3e.png"
-                  alt="Icono reportes"
-                  class="h-9 w-11 mb-1"
-                />
-                <span>Reportes</span>
-              </button>
-              <button class="tab-button" data-tab="presupuesto">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514684/presupuesto_r7qkr9.png"
-                  alt="Icono Presupuesto"
-                  class="h-10 w-11 mb-1"
-                />
-                <span>Presupuesto</span>
-              </button>
-              <button class="tab-button" data-tab="configuración">
-                <img
-                  src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514668/configuracion_puo2ap.png"
-                  alt="Icono configuración"
-                  class="h-11 w-11 mb-1"
-                />
-                <span>Configuración</span>
-              </button>
-              <button class="tab-button" id="logout-tab-btn">
-                <div class="tab-icon-wrapper">
-                  <img
-                    src="https://res.cloudinary.com/datwdagbf/image/upload/v1756889218/51B410C2-D58E-47D8-9ECC-000296533E2C_udpy1y.png"
-                    alt="Icono Salir"
-                  />
-                </div>
-                <span>Salir</span>
-              </button>
-            </div>
+          <div class="flex flex-col items-end">
+            <button id="IdbtOpenScreen" class="btOpenScreen mb-1 mr-1">Pantalla Completa</button>
+            <button id="IdbtCloseScreen" class="btcloseScreen mb-1">Mostrar Navegador</button>
+            <button class="bttclose mr-6" id="logout-btn">
+              Cerrar Sesión
+              <span class="btn-spinner hidden"></span>
+            </button>
           </div>
         </div>
-      </header>
 
+        <div class="contenedor-botones flex-col md:flex-row md:items-center md:justify-between">
+          <div class="btn" id="tabs">
+            <button class="tab-button" data-tab="registros">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514689/registro_mc8ed8.png"
+                alt="Icono Registros"
+                class="w-14 mb-1"
+              />
+              <span>Registros</span>
+            </button>
+            <button class="tab-button" id="quick-voice-record-btn">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/v1757199087/voz_w5ctvq.png"
+                alt="Icono Grabar Gasto"
+                class="w-14 mb-1"
+              />
+              <span>Voz</span>
+            </button>
+            <button class="tab-button" data-tab="proyeccion">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png"
+                alt="Icono Proyección"
+                class="h-12 w-14 mb-1"
+              />
+              <span>Proyección</span>
+            </button>
+            <button class="tab-button" data-tab="recurrentes">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514673/gastos-recurrentes2_udrbey.png"
+                alt="Icono recurrentes"
+                class="h-11 w-11 mb-1"
+              />
+              <span>Gastos<br />Recurrentes</span>
+            </button>
+            <button class="tab-button" data-tab="gastos-comunes">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756767509/comunes_xjuxxt.png"
+                alt="Icono Gastos Comunes"
+                class="h-11 w-11 mb-1"
+              />
+              <span>Gastos<br />Comunes</span>
+            </button>
+            <button class="tab-button" data-tab="tarjetas">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514697/tarjetas2_z3jokx.png"
+                alt="Icono tarjetas"
+                class="h-12 w-12 mb-1"
+              />
+              <span>Tarjetas<br />de Crédito</span>
+            </button>
+            <button class="tab-button" data-tab="saldos">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514692/saldos_lntcfz.png"
+                alt="Icono saldos"
+                class="h-9 w-12 mb-1"
+              />
+              <span>Saldos<br />de Cuentas</span>
+            </button>
+            <button class="tab-button" data-tab="calculadora">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514686/proyeccion2_iqtpug.png"
+                alt="Icono calculadora"
+                class="h-9 w-10 mb-1"
+              />
+              <span>Calculadora</span>
+            </button>
+            <button class="tab-button" data-tab="reportes">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514690/reportes_qisw3e.png"
+                alt="Icono reportes"
+                class="h-9 w-11 mb-1"
+              />
+              <span>Reportes</span>
+            </button>
+            <button class="tab-button" data-tab="presupuesto">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514684/presupuesto_r7qkr9.png"
+                alt="Icono Presupuesto"
+                class="h-10 w-11 mb-1"
+              />
+              <span>Presupuesto</span>
+            </button>
+            <button class="tab-button" data-tab="configuración">
+              <img
+                src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514668/configuracion_puo2ap.png"
+                alt="Icono configuración"
+                class="h-11 w-11 mb-1"
+              />
+              <span>Configuración</span>
+            </button>
+            <button class="tab-button" id="logout-tab-btn">
+              <div class="tab-icon-wrapper">
+                <img
+                  src="https://res.cloudinary.com/datwdagbf/image/upload/v1756889218/51B410C2-D58E-47D8-9ECC-000296533E2C_udpy1y.png"
+                  alt="Icono Salir"
+                />
+              </div>
+              <span>Salir</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="main-content-wrapper">
       <div id="dashboard">
         <div id="balance-card" class="dashboard-card">
           <div>
@@ -2349,36 +2768,39 @@
               <span>+ Gasto</span>
             </button>
           </div>
-          <button
-            id="toggle-filters-btn"
-            class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs"
-          >
-            Filtros
-          </button>
-          <button class="aparecer" id="mostrar">
-            <span>X</span>
-          </button>
-        </div>
 
-        <div class="flex flex-col md:flex-row gap-4 mb-4" id="filters-container">
-          <input
-            class="flex-grow p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            id="filter-description"
-            placeholder="Filtrar por descripción..."
-            type="text"
-          />
-          <select
-            class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            id="filter-category"
-            type="text"
+          <div
+            class="flex flex-row items-center justify-center gap-4 flex-grow"
+            id="filters-container"
           >
-            <option value="">Todas las categorías</option>
-          </select>
-          <input
-            class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            id="filter-month"
-            type="month"
-          />
+            <select
+              class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              id="filter-category"
+            >
+              <option value="">Todas las categorías</option>
+            </select>
+
+            <select class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-bank">
+              <option value="">Todos los bancos</option>
+            </select>
+
+            <input
+              class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              id="filter-month"
+              type="month"
+            />
+          </div>
+          <div class="flex items-center">
+            <button
+              id="toggle-filters-btn"
+              class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs"
+            >
+              Filtros
+            </button>
+            <button class="aparecer ml-2" id="mostrar">
+              <span>X</span>
+            </button>
+          </div>
         </div>
 
         <div
@@ -2458,8 +2880,8 @@
               </thead>
               <tbody class="bg-white divide-y divide-gray-200" id="transactions-table-body"></tbody>
               <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
+                <tr class="hidden md:table-row">
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="4">
                     Total Ingresos:
                   </td>
                   <td
@@ -2468,12 +2890,36 @@
                   >
                     $0.00
                   </td>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase">
                     Total Gastos:
                   </td>
                   <td
                     class="px-6 py-4 text-right text-red-600 text-sm"
                     id="registros-total-expenses"
+                  >
+                    $0.00
+                  </td>
+                  <td></td>
+                </tr>
+
+                <tr class="table-row md:hidden">
+                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
+                    Total Gastos:
+                  </td>
+                  <td
+                    class="px-4 py-3 text-right text-red-600 text-sm"
+                    id="mobile-registros-total-expenses"
+                  >
+                    $0.00
+                  </td>
+                </tr>
+                <tr class="table-row md:hidden">
+                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
+                    Total Ingresos:
+                  </td>
+                  <td
+                    class="px-4 py-3 text-right text-green-600 text-sm"
+                    id="mobile-registros-total-income"
                   >
                     $0.00
                   </td>
@@ -2527,9 +2973,10 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200" id="proyeccion-table-body"></tbody>
+
               <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
+                <tr class="hidden md:table-row">
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="3">
                     Total Ingresos:
                   </td>
                   <td
@@ -2538,12 +2985,35 @@
                   >
                     $0.00
                   </td>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="2">
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase">
                     Total Gastos:
                   </td>
                   <td
                     class="px-6 py-4 text-right text-red-600 text-sm"
                     id="proyeccion-total-expenses"
+                  >
+                    $0.00
+                  </td>
+                  <td></td>
+                </tr>
+                <tr class="table-row md:hidden">
+                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
+                    Total Gastos Proyectados:
+                  </td>
+                  <td
+                    class="px-4 py-3 text-right text-red-600 text-sm"
+                    id="mobile-proyeccion-total-expenses"
+                  >
+                    $0.00
+                  </td>
+                </tr>
+                <tr class="table-row md:hidden">
+                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
+                    Total Ingresos Proyectados:
+                  </td>
+                  <td
+                    class="px-4 py-3 text-right text-green-600 text-sm"
+                    id="mobile-proyeccion-total-income"
                   >
                     $0.00
                   </td>
@@ -2600,14 +3070,23 @@
                 class="bg-white divide-y divide-gray-200"
                 id="recurring-expenses-table-body"
               ></tbody>
-              <tfoot class="bg-gray-50">
-                <tr>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="5">
+              <tfoot class="bg-gray-50 border-t-2 border-gray-300">
+                <tr class="hidden md:table-row">
+                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="6">
                     Total Mensual Proyectado
                   </td>
+                  <td class="px-6 py-4 text-center text-red-700 text-sm" id="recurring-total">
+                    $0.00
+                  </td>
+                </tr>
+
+                <tr class="table-row md:hidden">
+                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
+                    Total Mensual:
+                  </td>
                   <td
-                    class="px-6 py-4 whitespace-nowrap text-center text-sm text-red-700"
-                    id="recurring-total"
+                    class="px-4 py-3 text-center text-red-700 text-sm"
+                    id="mobile-recurring-total"
                   >
                     $0.00
                   </td>
@@ -2625,32 +3104,48 @@
               <thead class="bg-gray-50">
                 <tr>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    class="text-center px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    title="Excluir del Total Adeudado"
+                  >
+                    Excluir
+                  </th>
+                  <th
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Banco
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Fecha de Pago
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Monto Adeudado
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Tasa Interés (Anual %)
+                    Línea de Crédito
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Saldo Disponible
+                  </th>
+                  <th
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Interés (Anual %)
+                  </th>
+                  <th
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Meses para Saldar
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    class="text-center px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Pago Mensual Sugerido
                   </th>
@@ -2662,29 +3157,77 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200" id="credit-cards-table-body"></tbody>
-              <tfoot class="bg-gray-50">
+
+              <tfoot>
                 <tr>
-                  <td colspan="2" class="px-4 py-4 text-right text-sm font-semibold text-gray-700">
-                    Total Monto Adeudado
-                  </td>
-                  <td class="px-4 py-4 text-sm font-bold text-gray-900" id="cc-total-amount">
-                    $0.00
-                  </td>
-                  <td colspan="2" class="px-4 py-4 text-right text-sm font-semibold text-gray-700">
-                    Total Pago Mensual Sugerido
-                  </td>
-                  <td class="px-4 py-4 text-sm font-bold text-blue-700" id="cc-total-monthly">
-                    $0.00
-                  </td>
+                  <td colspan="3">Totales</td>
+                  <td id="cc-total-amount">$0.00</td>
+                  <td id="cc-total-limit">$0.00</td>
+                  <td id="cc-total-available">$0.00</td>
+                  <td colspan="2">Total Pago Mensual Sugerido</td>
+                  <td id="cc-total-monthly">$0.00</td>
                   <td></td>
                 </tr>
               </tfoot>
             </table>
-            <p class="text-center text-gray-500 py-8" id="no-credit-cards-message">
-              No has añadido ninguna tarjeta de crédito.
-            </p>
+            <p id="no-credit-cards-message">No has añadido ninguna tarjeta de crédito.</p>
           </div>
         </div>
+
+        <div class="tab-pane hidden" id="gastos-comunes-content">
+          <div class="flex flex-col sm:flex-row gap-4 mb-4">
+            <button
+              id="add-shared-item-btn"
+              class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center space-x-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span>Añadir Ítem a Pagar</span>
+            </button>
+            <button
+              id="add-person-btn"
+              class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 11a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1v-1z"
+                ></path>
+              </svg>
+              <span>Añadir Persona</span>
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full" id="gastos-comunes-table">
+              <thead></thead>
+              <tbody></tbody>
+              <tfoot></tfoot>
+            </table>
+            <p class="text-center text-gray-500 py-8 hidden" id="no-shared-expenses-message">
+              Aún no hay gastos comunes. ¡Añade un ítem y una persona para empezar!
+            </p>
+          </div>
+          <div id="distribution-popover" class="hidden">
+            <div data-method="equal">Dividir en partes iguales</div>
+            <div data-method="percentage">Dividir por Porcentaje (%)</div>
+            <div data-method="manual">Ingresar Monto Manual</div>
+          </div>
+        </div>
+
         <div class="tab-pane hidden" id="saldos-content">
           <h3 class="text-lg font-semibold mb-4">Saldos Actuales por Cuenta</h3>
           <div
@@ -2842,6 +3385,69 @@
             </div>
           </div>
 
+          <div class="mt-6">
+            <h4 class="text-lg font-semibold mb-2">Notificaciones por WhatsApp</h4>
+            <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+              <p class="text-sm text-gray-400 mb-4">
+                Recibe recordatorios de tus pagos directamente en tu WhatsApp.
+                <a
+                  href="https://www.twilio.com/whatsapp"
+                  target="_blank"
+                  class="text-blue-400 hover:underline"
+                  >Requiere una cuenta de Twilio.</a
+                >
+              </p>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1" for="whatsapp-number">
+                  Número de WhatsApp (Formato: +14155238886)
+                </label>
+                <input
+                  class="w-full p-2 border rounded-lg mb-2"
+                  id="whatsapp-number"
+                  placeholder="+CódigoPaísNúmero"
+                  type="tel"
+                />
+                <span class="input-error-message" id="whatsapp-number-error"></span>
+              </div>
+              <div class="flex items-center justify-between mt-3">
+                <label
+                  for="whatsapp-notifications-enabled"
+                  class="text-sm font-medium text-gray-300"
+                >
+                  Activar notificaciones
+                </label>
+                <div
+                  class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"
+                >
+                  <input
+                    type="checkbox"
+                    name="toggle"
+                    id="whatsapp-notifications-enabled"
+                    class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+                  />
+                  <label
+<<<<<<< HEAD
+                    for="whatsapp-notifications-enabled"
+=======
+                    for="toggle"
+>>>>>>> 7850beae3a3813a00900a79025ad698f0e4bf621
+                    class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"
+                  ></label>
+                </div>
+              </div>
+              <button
+                class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center mt-4"
+                id="save-whatsapp-settings-btn"
+              >
+                Guardar Configuración de WhatsApp
+                <span class="btn-spinner hidden"></span>
+              </button>
+            </div>
+          </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7850beae3a3813a00900a79025ad698f0e4bf621
           <div class="mt-8 border-t pt-6">
             <h3 class="text-lg font-semibold mb-4">Cambiar Contraseña</h3>
             <form id="change-password-form" class="space-y-4">
@@ -3504,8 +4110,11 @@
               <span class="input-error-message" id="credit-card-amount-error"> </span>
             </div>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="credit-card-rate">
-                Tasa de Interés (Anual %)
+              <label
+                class="block text-sm font-medium text-gray-700 mb-1 text-center"
+                for="credit-card-rate"
+              >
+                Interés (Anual %)
               </label>
               <input
                 class="w-full p-2 border rounded-lg"
@@ -4161,10 +4770,101 @@
             </button>
           </div>
 
-          <div
-            id="category-select-grid"
-            class="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1rem;"
-          ></div>
+          <div id="category-select-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
+      id="distribution-input-modal"
+    >
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-sm flex flex-col">
+        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0" id="distribution-modal-title">
+          Ingresar Valor
+        </h2>
+        <div class="p-6 flex-grow">
+          <form id="distribution-form">
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 mb-1"
+                id="distribution-modal-label"
+                for="distribution-modal-input"
+              >
+                Valor
+              </label>
+              <input
+                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                id="distribution-modal-input"
+                required=""
+                step="0.01"
+                type="number"
+              />
+              <span class="input-error-message" id="distribution-modal-error"> </span>
+            </div>
+          </form>
+        </div>
+        <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
+          <button
+            class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
+            id="cancel-distribution-btn"
+            type="button"
+          >
+            Cancelar
+          </button>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
+            id="save-distribution-btn"
+            type="submit"
+            form="distribution-form"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
+      id="shared-expense-bank-modal"
+    >
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-sm flex flex-col">
+        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0">
+          Seleccionar Banco para el Pago
+        </h2>
+        <div class="p-6 flex-grow">
+          <p id="shared-expense-summary" class="text-gray-600 mb-4 text-center"></p>
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 mb-1"
+              for="shared-expense-bank-select"
+            >
+              Banco/Cuenta de Origen
+            </label>
+            <select
+              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              id="shared-expense-bank-select"
+              required=""
+            ></select>
+            <span class="input-error-message" id="shared-expense-bank-error"></span>
+          </div>
+        </div>
+        <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
+          <button
+            class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
+            id="cancel-shared-expense-bank-btn"
+            type="button"
+          >
+            Cancelar
+          </button>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
+            id="confirm-shared-expense-bank-btn"
+            type="submit"
+          >
+            Registrar Pago
+            <span class="btn-spinner hidden"></span>
+          </button>
         </div>
       </div>
     </div>
@@ -4232,7 +4932,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.1.1</p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.2.8</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -4268,6 +4968,115 @@
         const query = window.query;
         const getDocs = window.getDocs;
         const writeBatch = window.writeBatch;
+
+        // --- Lógica de Pull-to-Refresh Manual
+        const ptrContainer = document.getElementById('ptr-container');
+        const ptrArrow = ptrContainer.querySelector('.ptr-arrow');
+        let touchStartY = 0;
+        let isRefreshing = false;
+        let isInteractingWithElement = false;
+        const pullThreshold = 80; // La distancia que el usuario debe deslizar para que se active el refresco.
+
+        // Esta es la acción principal que se ejecuta al refrescar.
+        async function handleRefresh() {
+          isRefreshing = true;
+          ptrContainer.classList.add('refreshing');
+          ptrContainer.style.transform = 'translateY(0)'; // Mantiene el spinner visible mientras carga.
+
+          showToast('Actualizando datos...', 'info', 2000);
+          try {
+            // AQUÍ OCURRE LA MAGIA: Llamamos a tu función que carga todo desde Firebase.
+            await loadUserDataAndListen();
+            showToast('¡Datos actualizados!', 'success');
+          } catch (error) {
+            console.error('Error durante el refresco manual:', error);
+            showToast('No se pudieron actualizar los datos.', 'error');
+          } finally {
+            // Al terminar (con éxito o error), se oculta y resetea el indicador.
+            resetPullToRefresh();
+          }
+        }
+
+        // Esta función limpia y oculta el indicador.
+        function resetPullToRefresh() {
+          ptrContainer.style.transform = 'translateY(-100%)';
+          ptrContainer.classList.remove('refreshing');
+          ptrArrow.classList.remove('release');
+          // Retrasamos un poco el cambio de 'isRefreshing' para que las animaciones terminen.
+          setTimeout(() => {
+            isRefreshing = false;
+          }, 300);
+        }
+
+        // Se activa cuando el usuario PONE el dedo en la pantalla.
+        function handleTouchStart(e) {
+          // Verificamos si el toque comenzó en un botón, enlace u otro control.
+          const targetElement = e.target;
+          if (targetElement.closest('button, a, input, select, .tab-button')) {
+            isInteractingWithElement = true; // Activamos la bandera
+            return; // Salimos para no iniciar el pull-to-refresh
+          }
+          isInteractingWithElement = false; // Reseteamos la bandera
+
+          if (isRefreshing || window.scrollY > 0) {
+            touchStartY = 0;
+            return;
+          }
+          touchStartY = e.touches[0].clientY;
+        }
+
+        // Se activa cuando el usuario MUEVE el dedo por la pantalla.
+        function handleTouchMove(e) {
+          // Si la interacción comenzó en un botón, no hacemos nada aquí.
+          if (isInteractingWithElement) {
+            return;
+          }
+
+          if (isRefreshing || touchStartY === 0) return;
+
+          const currentY = e.touches[0].clientY;
+          let pullDistance = currentY - touchStartY;
+
+          if (pullDistance < 0) {
+            touchStartY = 0;
+            resetPullToRefresh();
+            return;
+          }
+
+          if (window.scrollY === 0) {
+            e.preventDefault(); // Esta línea ahora solo se ejecuta si NO se está interactuando con un botón.
+
+            ptrContainer.style.transform = `translateY(${pullDistance - 60}px)`;
+
+            if (pullDistance > pullThreshold) {
+              ptrArrow.classList.add('release');
+            } else {
+              ptrArrow.classList.remove('release');
+            }
+          }
+        }
+
+        // Se activa cuando el usuario QUITA el dedo de la pantalla.
+        function handleTouchEnd(e) {
+          // Si se estaba interactuando con un elemento, solo reseteamos la bandera y salimos.
+          if (isInteractingWithElement) {
+            isInteractingWithElement = false;
+            return;
+          }
+
+          if (isRefreshing || touchStartY === 0) return;
+
+          const pullDistance = e.changedTouches[0].clientY - touchStartY;
+
+          if (pullDistance > pullThreshold) {
+            handleRefresh();
+          } else {
+            resetPullToRefresh();
+          }
+
+          touchStartY = 0;
+        }
+
         if (!app || !db || !auth) {
           console.error('[App Init] Firebase no inicializado. La aplicación no puede funcionar.');
           return;
@@ -4360,10 +5169,17 @@
           userAlias: null,
           categoryBudgets: {},
           budgetAlertsShown: {},
+          gastosComunes: {
+            // Estructura de datos para la nueva sección
+            people: [], // Array de objetos { name: 'Nombre' }
+            items: [], // Array de objetos { id, name, totalAmount, distribution: {} }
+          },
         };
 
+        let recognition = null; // <-- Esta variable recordará el estado del micrófono
         let userId = null;
         let unsubscribePreferences = null;
+        let tempSharedExpenseData = null; // Datos temporales para gastos compartidos
         let unsubscribeTransactions = null;
         let unsubscribeProjections = null;
         let unsubscribeRecurring = null;
@@ -4376,31 +5192,53 @@
         let initialTransactionsLoaded = false;
         let initialRecurringLoaded = false;
         let recurringProcessed = false;
+
+        let unsubscribeGastosComunes = null;
+        let activePopoverCell = null;
+        let distributionModalCallback = null;
         let isAddingCategoryFromTransaction = false;
         const tutorialVideos = [
           {
             title: 'Paso 1: Construye tu Universo Financiero (La Configuración Inicial)',
             description:
               'Tu Viaje Hacia la Libertad Financiera Comienza Aquí. La Base del Éxito: Antes de que puedas conquistar tus finanzas, necesitas un mapa claro. Foresee te ayuda a crear ese mapa en minutos, no horas. Tu Misión: Ve a la pestaña Configuración (⚙️) y completa tres tareas rápidas: 1. Añade tus Categorías Personalizadas: ¿Gastos en Comida? ¿Ingresos por Freelance? ¿O tal vez un presupuesto para Ocio? Crea categorías que reflejen tu vida real. 2. Registra tus Bancos: Añade todas las cuentas bancarias que usas regularmente. Foresee las usará para categorizar automáticamente tus transacciones futuras. 3. Define Descripciones Clave: ¿Pagas Netflix cada mes? ¿O tienes un gasto recurrente en Amazon? Añade esas descripciones para que Foresee pueda reconocerlas y categorizarlas automáticamente en el futuro. ¡Y listo! Has creado el esqueleto de tu sistema financiero personal en minutos.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757888123/Categorias_y_Bancos_knxkoh.mp4', // <-- REEMPLAZA ESTE ENLACE
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512589/Paso_1_Bienvenida_y_Gestion_de_Categoria_y_Bancos_plya2u.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
             title: 'Paso 2: Automatiza tu Tranquilidad (Gastos Recurrentes)',
             description:
               ' Pon tus pagos en automático. Registra una vez tus gastos fijos en Gastos Recurrentes y Foresee los repetirá cada mes avisándote antes del vencimiento, así evitas olvidos, recargos y preocupaciones.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757891641/Gastos_recurrentes_fejxpq.mp4', // <-- REEMPLAZA ESTE ENLACE
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512570/Paso_2_Gastos_Recurrentes_mboofi.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
-            title: 'Paso 3: Domina tus Deudas (Tarjetas de Crédito 💳)',
+            title: 'Paso 3: De monstruo a herramienta. Domina tus Deudas (Tarjetas de Crédito 💳)',
             description:
-              'De Monstruo a Herramienta: Tu Centro de Comando de Deudas. El Poder de la Claridad: Las tarjetas de crédito pueden ser una fuente de ansiedad terrible. Las tratamos como un tema tabú. Foresee les pone luz, convirtiéndolas en un desafío manejable con un plan de ataque claro. Tu Misión: Ve a la pestaña Tarjetas de Crédito (💳). Ingresa cada tarjeta con su deuda actual, la tasa de interés y la fecha de pago. Y aquí viene la magia: dile a Foresee en cuántos meses quieres liquidar esa deuda. La aplicación calculará automáticamente el Pago Mensual Sugerido para que alcances tu meta. Además, recibirás alertas en el panel principal para que nunca se te pase una fecha de pago. ¡Elige tu Estrategia para la Victoria! Método Avalancha: Paga primero la tarjeta con el interés más alto. Ahorrarás más dinero a largo plazo. Método Bola de Nieve: Paga primero la tarjeta con la deuda más pequeña. Obtendrás una victoria rápida que te llenará de motivación para seguir. Foresee te da la información para que TÚ elijas tu camino hacia la libertad.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757799979/Tarjetas_de_Credito_mnbwb9.mp4', // <-- REEMPLAZA ESTE ENLACE
+              ' Las tarjetas de crédito ya no tienen por qué ser un peso, con Foresee se convierten en un plan claro y manejable. Registra cada tarjeta 💳 con su deuda, interés y fecha de pago define en cuántos meses quieres liquidar y Foresee calculará tu pago mensual sugerido. Además, recibirás alertas antes de cada vencimiento, para que nunca más un pago se te pase por alto.Foresee transforma la ansiedad en control y te devuelve la claridad que necesitas para avanzar con confianza.',
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512577/Paso_3_Targetas_de_Credito_krqk9f.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
           {
-            title: 'El Hábito que lo Cambia Todo (Registra tus Movimientos)',
+            title: '4 Registro Diaro: El Hábito que lo Cambia Todo (Registra tus Movimientos)',
             description:
-              'Micro-acciones, Resultados Gigantes. La Clave del Éxito: El control financiero se construye con un pequeño hábito diario. Foresee lo hace tan fácil que se sentirá como una segunda naturaleza. Tu Misión: Cada vez que compres algo o recibas dinero, tienes tres maneras de registrar tus transacciones: En la pantalla principal presiona el signo más (Ingresos del mes +) o el menos (Gastos del mes -)  dependiendo de la operación que quieras registrar. O haz clic en Registros (en los iconos de la barra superior primero a la derecha). se abrirá una tabla con dos botones selecciona Ingreso o Gasto – Bienvenida la magia y practicidad de las tablas, porque  al pulsar  ese mismo botón Registro puedes ver una tabla  con todos tus movimientos de manera detallada y así llevarás un control más preciso. En cualquiera de las dos opciones anteriores que hayas elegido se abrirá un formulario,  rellena los campos: Fecha, Categoría, Monto, Banco, Detalles. ¡Listo! Todos tus saldos, presupuestos y reportes se actualizan al instante.🚀 ¡Función Estrella! El Registro por Voz. ¿No tienes tiempo? ¿Vas caminando? Presiona el ícono de Voz (🎤) y simplemente di: Gasto en gasolina por 50 dólares con la tarjeta de Wells Fargo. ¡Foresee lo entenderá y lo registrará por ti! Es la forma más rápida y sencilla de mantener tus finanzas al día.',
-            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1757799983/Registro_diario_ingresos_o_gastos_qekpzn.mp4', // <-- REEMPLAZA ESTE ENLACE
+              'El control de tu dinero empieza aquí con un registro. Con Foresee es fácil: un toque para ingresos, para gastos o la tabla que organiza todo al detalle. ¿Vas con prisa? Usa tu voz “Gasto en gasolina por 50 dólares”… y queda registrado. Un hábito pequeño, un impacto enorme. Foresee claridad y control en tus manos.',
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512590/Paso_4_Registro_Diaro_cujs8c.mp4', // <-- REEMPLAZA ESTE ENLACE
+          },
+          {
+            title: 'Paso 5 Reportes Presupuesto y  Tablas',
+            description:
+              'Con Reportes, Saldos, Presupuesto y Tablas, Foresee te da una visión completa… y el poder de dirigir tu dinero con claridad.',
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512588/Paso_5_Reportes_Presupuesto_y_Tablas_p0zj9b.mp4', // <-- REEMPLAZA ESTE ENLACE
+          },
+          {
+            title: 'Paso 6: Proyección — la esencia de Foresee.',
+            description:
+              'Anticipa lo que viene no solo mires lo que ya pasó.Registra tus ingresos, tus presupuestos y tus gastos diarios. Foresee hace el cálculo al instante. Sabrás cuánto puedes usar y cuánto puedes ahorrar. ¿Un mes corto o ajustado?  La Proyección te guía. Te ayuda a priorizar, a evitar excesos y a mantenerte en control. Cada número es claridad, cada proyección es poder. Con Proyección diriges tu dinero con inteligencia.',
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758514065/Paso_6_Proyeccion_bhrr1a.mp4', // <-- REEMPLAZA ESTE ENLACE
+          },
+          {
+            title: 'Paso 7 Gastos Comunes',
+            description:
+              'Aquí tú actúas como el intermediario inteligente: recibes de cada persona su parte y luego cancelas el total.',
+            url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1759005488/Gastos_comunes_kvozqf.mp4', // <-- REEMPLAZA ESTE ENLACE
           },
         ];
 
@@ -4418,6 +5256,7 @@
         const transactionModal = document.getElementById('transaction-modal');
         const transactionForm = document.getElementById('transaction-form');
         const transactionsTableBody = document.getElementById('transactions-table-body');
+
         const noTransactionsMessage = document.getElementById('no-transactions-message');
         const proyeccionTableBody = document.getElementById('proyeccion-table-body');
         const noProyeccionMessage = document.getElementById('no-proyeccion-message');
@@ -4618,7 +5457,27 @@
           console.log('[initApp] Aplicación inicializada.'); // Debugging
         }
         function setupEventListeners() {
+          document.body.addEventListener('click', function (event) {
+            // Revisa si el elemento en el que se hizo clic (o su padre) es el botón de logout del header
+            if (event.target.closest('#logout-btn')) {
+              // Previene cualquier otro comportamiento por defecto si fuera necesario
+              event.preventDefault();
+              handleLogout();
+            }
+
+            // Revisa si el elemento en el que se hizo clic (o su padre) es el botón de salir de las pestañas
+            if (event.target.closest('#logout-tab-btn')) {
+              // Previene cualquier otro comportamiento por defecto
+              event.preventDefault();
+              handleLogout();
+            }
+          });
           if (listenersAttached) return; // Si ya están asignados, no hagas nada.
+          if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            document.body.addEventListener('touchstart', handleTouchStart, { passive: true });
+            document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
+            document.body.addEventListener('touchend', handleTouchEnd);
+          }
           setupDashboardListeners();
           // --- Conectar el nuevo botón de cerrar vista (flecha) ---
           const closeContentViewBtn = document.getElementById('close-content-view-btn');
@@ -4641,19 +5500,11 @@
             categorySelectModal.classList.remove('active'); // <-- ¡LÍNEA AÑADIDA! Cierra el modal actual
             openAddCategoryModal(); // Abrimos el modal de creación
           });
-          const logoutTabBtn = document.getElementById('logout-tab-btn');
-          if (logoutTabBtn) {
-            // MODIFICADO: Añadimos 'e' y 'e.stopImmediatePropagation()'
-            logoutTabBtn.addEventListener('click', (e) => {
-              e.stopImmediatePropagation(); // ¡Esta es la línea clave!
-              handleLogout();
-            });
-          }
 
           // Eventos de Autenticación
           authForm.addEventListener('submit', handleLogin);
           registerBtn.addEventListener('click', handleRegister);
-          logoutBtn.addEventListener('click', handleLogout);
+
           // Eventos para los nuevos botones de Ingreso y Gasto
           document.getElementById('add-income-btn').addEventListener('click', () => {
             const activeTab = document
@@ -4680,7 +5531,10 @@
           document
             .getElementById('save-voice-text-btn')
             .addEventListener('click', processAndSaveVoiceText);
+          // pegar aqui el nuevo código
           document.getElementById('cancel-voice-text-btn').addEventListener('click', () => {
+            // CORRECCIÓN: Se remueve la clase 'visible' para permitir que el panel se oculte.
+            document.getElementById('voice-input-panel').classList.remove('visible');
             document.getElementById('voice-input-panel').classList.add('hidden');
           });
 
@@ -4701,10 +5555,10 @@
             currentMonthFilterValue = filterMonth.value;
             renderAll();
           });
-          filterDescription.addEventListener('input', renderAll);
+          document.getElementById('filter-bank').addEventListener('change', renderAll);
           filterCategory.addEventListener('change', renderAll);
 
-          document.querySelectorAll('.tab-button').forEach((button) => {
+          document.querySelectorAll('.tab-button:not(#logout-tab-btn)').forEach((button) => {
             button.addEventListener('click', (e) => switchTab(e.currentTarget.dataset.tab));
           });
 
@@ -4822,6 +5676,11 @@
             .addEventListener('click', migrateAllRecurringToTransactions);
 
           saveAliasBtn.addEventListener('click', handleSaveAlias);
+
+          document
+            .getElementById('save-whatsapp-settings-btn')
+            .addEventListener('click', handleSaveWhatsappSettings);
+
           changePasswordForm.addEventListener('submit', handleChangePassword);
 
           const brandStoryModal = document.getElementById('brand-story-modal');
@@ -4961,7 +5820,7 @@
           );
 
           const mostrarBtn = document.getElementById('mostrar');
-          const tabButtons = document.querySelectorAll('#tabs .tab-button');
+          const tabButtons = document.querySelectorAll('#tabs .tab-button:not(#logout-tab-btn)');
 
           tabButtons.forEach((btn) => {
             btn.addEventListener('click', showContentView);
@@ -4999,6 +5858,254 @@
             updateDeleteButtonVisibility(); // Oculta el panel
           });
 
+          // =====================================================================
+          // =========== INICIO DEL CÓDIGO A PEGAR (EVENTOS GASTOS COMUNES) ===========
+          // =====================================================================
+          // --- LÓGICA DE GASTOS COMUNES ---
+          // Botones para añadir ítems y personas (sin cambios)
+          document.getElementById('add-shared-item-btn').addEventListener('click', () => {
+            if (!appState.gastosComunes.items) appState.gastosComunes.items = [];
+            appState.gastosComunes.items.push({
+              id: `item_${Date.now()}`,
+              name: '',
+              totalAmount: 0,
+              distribution: {},
+            });
+            saveGastosComunesState();
+          });
+
+          document.getElementById('add-person-btn').addEventListener('click', () => {
+            if (!appState.gastosComunes.people) appState.gastosComunes.people = [];
+            const newIndex = appState.gastosComunes.people.length;
+            appState.gastosComunes.people.push({ name: `Persona ${newIndex + 1}` });
+            saveGastosComunesState();
+          });
+
+          const gastosComunesTable = document.getElementById('gastos-comunes-table');
+
+          gastosComunesTable.addEventListener('input', (e) => {
+            const row = e.target.closest('tr');
+            // Ahora también manejamos el input del div editable del nombre de la persona
+            if (e.target.matches('.person-name-editable')) {
+              const personIndex = e.target.dataset.personIndex;
+              appState.gastosComunes.people[personIndex].name = e.target.textContent.trim();
+              // No guardamos aquí, solo actualizamos el estado en memoria
+              return;
+            }
+            if (!row) return;
+            const itemId = row.dataset.itemId;
+            const item = appState.gastosComunes.items.find((i) => i.id === itemId);
+            if (!item) return;
+
+            if (e.target.matches('.item-name-input')) {
+              item.name = e.target.value;
+            } else if (e.target.matches('.item-total-input')) {
+              item.totalAmount = parseFloat(e.target.value) || 0;
+            } else if (e.target.matches('th[contenteditable="true"]')) {
+              const personIndex = e.target.dataset.personIndex;
+              appState.gastosComunes.people[personIndex].name = e.target.textContent
+                .replace('✖', '')
+                .trim();
+            }
+          });
+
+          gastosComunesTable.addEventListener(
+            'blur',
+            (e) => {
+              if (
+                e.target.matches('th[contenteditable="true"], .item-name-input, .item-total-input')
+              ) {
+                saveGastosComunesState();
+              }
+            },
+            true,
+          );
+
+          gastosComunesTable.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === 'Escape') {
+              e.preventDefault();
+              e.target.blur();
+            }
+          });
+
+          // REEMPLAZA EL BLOQUE ANTERIOR CON ESTE CÓDIGO CORREGIDO
+          gastosComunesTable.addEventListener('click', (e) => {
+            // === CORRECCIÓN INICIA AQUÍ ===
+            // 1. PRIMERO revisamos si se hizo clic en el botón 'OK'
+            const registerBtn = e.target.closest('.register-shared-expense-btn');
+            if (registerBtn) {
+              // 2. Detenemos la propagación para que no se active el modal de distribución
+              e.stopPropagation();
+
+              const dayInput = registerBtn.previousElementSibling;
+              const day = parseInt(dayInput.value, 10);
+
+              if (isNaN(day) || day < 1 || day > 31) {
+                showToast('Por favor, ingresa un día válido (1-31).', 'error');
+                dayInput.focus();
+                return;
+              }
+
+              const itemId = registerBtn.dataset.itemId;
+              const personIndex = parseInt(registerBtn.dataset.personIndex, 10);
+              const item = appState.gastosComunes.items.find((i) => i.id === itemId);
+              const person = appState.gastosComunes.people[personIndex];
+
+              if (!item || !person) {
+                showToast('Error: No se encontró el ítem o la persona.', 'error');
+                return;
+              }
+
+              const amount = calculateCellAmount(item, personIndex);
+              const description = `${person.name} - ${item.name}`;
+              const now = new Date();
+              const transactionDate = new Date(now.getFullYear(), now.getMonth(), day);
+              const formattedDate = transactionDate.toISOString().split('T')[0];
+
+              const dataForModal = {
+                amount,
+                description,
+                date: formattedDate,
+                category: 'Gasto Común', // <--- ¡MEJORADO!
+                originalItemId: itemId,
+                originalPersonIndex: personIndex,
+              };
+
+              openSharedExpenseBankModal(dataForModal);
+              return; // Salimos de la función una vez ejecutada la acción
+            }
+            // === CORRECCIÓN TERMINA AQUÍ ===
+
+            const cell = e.target.closest('.distribution-cell');
+            // === LÍNEA MODIFICADA ===
+            // Ahora solo se abre el popover si se hizo clic en la celda PERO NO en el input de la fecha.
+            if (cell && !e.target.matches('.shared-expense-day-input')) {
+              showDistributionPopover(cell);
+              return;
+            }
+
+            const deleteItemBtn = e.target.closest('.delete-item-btn');
+            if (deleteItemBtn) {
+              const itemId = deleteItemBtn.closest('tr').dataset.itemId;
+              appState.gastosComunes.items = appState.gastosComunes.items.filter(
+                (i) => i.id !== itemId,
+              );
+              saveGastosComunesState();
+              return;
+            }
+
+            const deletePersonBtn = e.target.closest('.delete-person-btn');
+            if (deletePersonBtn) {
+              const personIndexToDelete = parseInt(deletePersonBtn.dataset.personIndex, 10);
+              const personName =
+                appState.gastosComunes.people[personIndexToDelete]?.name ||
+                `Persona ${personIndexToDelete + 1}`;
+
+              openConfirmModal(
+                `Eliminar a ${personName}`,
+                `¿Estás seguro de que quieres eliminar a "${personName}" y todos sus datos de la tabla? Esta acción no se puede deshacer.`,
+                () => {
+                  appState.gastosComunes.people.splice(personIndexToDelete, 1);
+                  if (appState.gastosComunes.items) {
+                    appState.gastosComunes.items.forEach((item) => {
+                      if (!item.distribution) return;
+                      const newDistribution = {};
+                      Object.keys(item.distribution).forEach((keyStr) => {
+                        const oldIndex = parseInt(keyStr, 10);
+                        const value = item.distribution[keyStr];
+                        if (oldIndex < personIndexToDelete) {
+                          newDistribution[oldIndex] = value;
+                        } else if (oldIndex > personIndexToDelete) {
+                          newDistribution[oldIndex - 1] = value;
+                        }
+                      });
+                      item.distribution = newDistribution;
+                    });
+                  }
+                  saveGastosComunesState();
+                },
+              );
+              return;
+            }
+          });
+
+          // --- LÓGICA DEL POPOVER ACTUALIZADA ---
+          document.getElementById('distribution-popover').addEventListener('click', (e) => {
+            if (e.target.matches('[data-method]') && activePopoverCell) {
+              const method = e.target.dataset.method;
+              const row = activePopoverCell.closest('tr');
+              const itemId = row.dataset.itemId;
+              const personIndex = activePopoverCell.dataset.personIndex;
+              const item = appState.gastosComunes.items.find((i) => i.id === itemId);
+
+              if (!item) return;
+              if (!item.distribution) item.distribution = {};
+              if (!item.distribution[personIndex]) item.distribution[personIndex] = {};
+
+              const currentValue = item.distribution[personIndex].value;
+
+              const applyChange = (newValue) => {
+                item.distribution[personIndex] = {
+                  method: method,
+                  value: parseFloat(newValue) || 0,
+                };
+                hideDistributionPopover();
+                saveGastosComunesState();
+              };
+
+              if (method === 'percentage' || method === 'manual') {
+                // Abre el nuevo modal en lugar del prompt
+                openDistributionInputModal({ method, currentValue, callback: applyChange });
+              } else {
+                // Para 'partes iguales', no se necesita input
+                applyChange(0);
+              }
+            }
+          });
+
+          document.addEventListener('click', (e) => {
+            const popover = document.getElementById('distribution-popover');
+            if (
+              popover &&
+              !popover.classList.contains('hidden') &&
+              !e.target.closest('.distribution-cell') &&
+              !e.target.closest('#distribution-popover')
+            ) {
+              hideDistributionPopover();
+            }
+          });
+
+          // --- LISTENERS PARA EL NUEVO MODAL DE DISTRIBUCIÓN ---
+          document.getElementById('distribution-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('distribution-modal-input');
+            if (typeof distributionModalCallback === 'function') {
+              distributionModalCallback(input.value);
+            }
+            closeDistributionInputModal();
+          });
+
+          document
+            .getElementById('cancel-distribution-btn')
+            .addEventListener('click', closeDistributionInputModal);
+          document.getElementById('distribution-input-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'distribution-input-modal') {
+              closeDistributionInputModal();
+            }
+          });
+
+          document
+            .getElementById('confirm-shared-expense-bank-btn')
+            .addEventListener('click', handleConfirmSharedExpense);
+          document
+            .getElementById('cancel-shared-expense-bank-btn')
+            .addEventListener('click', closeSharedExpenseBankModal);
+          document.getElementById('shared-expense-bank-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'shared-expense-bank-modal') {
+              closeSharedExpenseBankModal();
+            }
+          });
+
           // --- Event Listeners para el Modal de Tutoriales ---
           const openTutorialsBtn = document.getElementById('open-tutorials-btn');
           const closeTutorialsBtn = document.getElementById('close-tutorials-modal-btn');
@@ -5026,7 +6133,6 @@
           listenersAttached = true;
         }
 
-        // PEGA EL SIGUIENTE BLOQUE DE CÓDIGO AQUÍ
         // --- LÓGICA PARA EL TOOLTIP DE INFORMACIÓN DE TRANSACCIÓN ---
         document.body.addEventListener('click', (e) => {
           // Primero, si hay un tooltip visible, lo eliminamos.
@@ -5167,6 +6273,7 @@
           if (unsubscribeProjections) unsubscribeProjections();
           if (unsubscribeRecurring) unsubscribeRecurring();
           if (unsubscribeCreditCards) unsubscribeCreditCards();
+          if (unsubscribeGastosComunes) unsubscribeGastosComunes();
           console.log('[Firestore] Todos los oyentes han sido desvinculados.');
         }
 
@@ -5258,18 +6365,24 @@
          * @param {string} categoryName - El nombre de la categoría a mostrar.
          * @returns {string} El HTML para inyectar en la celda de la tabla.
          */
+        // pegar aqui el nuevo código
         function getCategoryDisplay(categoryName) {
-          // Busca el objeto de categoría completo en el estado de la aplicación.
-          const categoryObj = appState.categories.find((c) => c.name === categoryName);
-
-          // Si se encuentra la categoría y tiene un icono asignado...
-          if (categoryObj && categoryObj.icon) {
-            // Retorna un <img> para el icono junto con el texto.
-            return `<img src="${categoryObj.icon}" class="category-icon" alt="${categoryName}"> <span>${categoryName}</span>`;
+          // 1. Caso especial: Asignamos un ícono específico para las transferencias.
+          if (categoryName === 'Transferencia Interna') {
+            const transferIconUrl =
+              'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514669/dinero_hgnyz4.png';
+            return `<img src="${transferIconUrl}" class="category-icon" alt="${categoryName}"> <span>${categoryName}</span>`;
           }
 
-          // Si no, o si es una categoría especial como 'Transferencia Interna', retorna solo el texto.
-          return `<span>${categoryName}</span>`;
+          // 2. Buscamos la categoría en la configuración del usuario.
+          const categoryObj = appState.categories.find((c) => c.name === categoryName);
+
+          // 3. Determinamos el ícono a usar:
+          // Si la categoría existe Y tiene un ícono, lo usamos. Si no, usamos el ÍCONO POR DEFECTO.
+          const iconUrl = categoryObj && categoryObj.icon ? categoryObj.icon : DEFAULT_ICON;
+
+          // 4. Siempre devolvemos el HTML con un ícono, asegurando que nunca falte.
+          return `<img src="${iconUrl}" class="category-icon" alt="${categoryName}"> <span>${categoryName}</span>`;
         }
 
         async function loadUserDataAndListen() {
@@ -5329,6 +6442,14 @@
                 appState.openingBalance = data.openingBalance || 0;
                 appState.userAlias = data.userAlias || null;
                 appState.categoryBudgets = data.categoryBudgets || {};
+
+                //BLOQUE PARA CARGAR LOS DATOS DE WHATSAPP ▼▼▼
+                if (data.whatsappNumber) {
+                  document.getElementById('whatsapp-number').value = data.whatsappNumber;
+                }
+                if (data.whatsappNotificationsEnabled) {
+                  document.getElementById('whatsapp-notifications-enabled').checked = true;
+                }
               }
               if (isAuthReady) {
                 populateFilterDropdowns();
@@ -5428,46 +6549,83 @@
               );
             },
           );
+          // NUEVO OYENTE PARA GASTOS COMUNES
+          const gastosComunesDocRef = doc(
+            db,
+            `artifacts/${appId}/users/${userId}/user_data/gastosComunes`,
+          );
+          unsubscribeGastosComunes = onSnapshot(
+            gastosComunesDocRef,
+            (docSnap) => {
+              console.log('[Firestore] onSnapshot gastosComunes fired.');
+              if (docSnap.exists()) {
+                appState.gastosComunes = docSnap.data();
+              } else {
+                // Si no existe el documento, lo inicializamos en Firebase
+                setDoc(gastosComunesDocRef, { people: [], items: [] });
+              }
+              if (isAuthReady) renderAll();
+            },
+            (error) => {
+              console.error('[Firestore] Error al escuchar gastos comunes:', error);
+              showMessageModal(
+                'Error de Carga',
+                'Hubo un problema al cargar los datos de gastos comunes.',
+                'error',
+              );
+            },
+          );
         }
 
-        function getFilteredTransactions() {
-          const selectedMonth = filterMonth.value;
-          const descriptionFilter = filterDescription.value.toLowerCase();
-          const categoryFilter = filterCategory.value;
+        // CÓDIGO NUEVO (DESPUÉS) - PEGA TODO ESTE BLOQUE
+        /**
+         * NUEVA FUNCIÓN GENÉRICA: Obtiene transacciones con filtros específicos.
+         * Esta es la nueva "herramienta" principal para buscar datos.
+         * @param {object} filters - Un objeto con los criterios de filtrado.
+         */
+        function getTransactions(filters = {}) {
+          const { month, category, bank, description, source = appState.transactions } = filters;
 
-          return appState.transactions
+          return source
             .filter((t) => {
-              // Se añade una comprobación para asegurar que la transacción 't' y 't.date' existen antes de usarlos.
-              if (!t || typeof t.date !== 'string') {
-                console.warn('Se encontró una transacción sin fecha válida:', t);
-                return false; // Se ignora esta transacción para evitar el error.
-              }
+              if (!t || typeof t.date !== 'string') return false;
 
               const transactionMonth = t.date.substring(0, 7);
-              const matchesMonth = !selectedMonth || transactionMonth === selectedMonth;
-              // Se asegura que t.description exista antes de llamar a toLowerCase()
-              const matchesDescription = (t.description || '')
-                .toLowerCase()
-                .includes(descriptionFilter);
-              const matchesCategory = !categoryFilter || t.category === categoryFilter;
-              return matchesMonth && matchesDescription && matchesCategory;
+
+              const matchesMonth = !month || transactionMonth === month;
+              const matchesCategory = !category || t.category === category;
+              const matchesBank = !bank || t.bank === bank;
+              const matchesDescription =
+                !description ||
+                (t.description || '').toLowerCase().includes(description.toLowerCase());
+
+              return matchesMonth && matchesCategory && matchesBank && matchesDescription;
             })
             .sort((a, b) => {
-              // Orden principal: por fecha
               const dateComparison = new Date(a.date) - new Date(b.date);
-              if (dateComparison !== 0) {
-                return dateComparison;
-              }
-
-              // Orden secundario: dentro de la misma fecha, los ingresos van primero
-              if (a.type === 'income' && b.type !== 'income') {
-                return -1; // 'a' (ingreso) va antes que 'b'
-              }
-              if (a.type !== 'income' && b.type === 'income') {
-                return 1; // 'b' (ingreso) va antes que 'a'
-              }
-              return 0; // Mantener el orden relativo si son del mismo tipo
+              if (dateComparison !== 0) return dateComparison;
+              if (a.type === 'income' && b.type !== 'income') return -1;
+              if (a.type !== 'income' && b.type === 'income') return 1;
+              return 0;
             });
+        }
+
+        /**
+         * FUNCIÓN ACTUALIZADA: Usada SOLO por la tabla de Registros.
+         * Lee los filtros de la interfaz y llama a la nueva función genérica.
+         */
+        function getFilteredTransactions() {
+          const month = filterMonth.value;
+          const category = filterCategory.value;
+          const bank = document.getElementById('filter-bank').value; // Leemos el nuevo filtro de banco
+
+          // Llama a la función genérica pasando TODOS los filtros de la UI
+          return getTransactions({
+            month: month,
+            category: category,
+            bank: bank,
+            // No pasamos 'description' porque ya no existe el filtro
+          });
         }
 
         function getFilteredTransactionsForProyeccion() {
@@ -5580,6 +6738,7 @@
             if (activeTab === 'tarjetas-content') renderCreditCardsTable();
             if (activeTab === 'recurrentes-content') renderRecurringExpensesTable();
             if (activeTab === 'saldos-content') renderBankBalances(); // MODIFICACIÓN
+            if (activeTab === 'gastos-comunes-content') renderGastosComunesTable();
           }
         }
 
@@ -5596,7 +6755,7 @@
         }
 
         function renderDashboard() {
-          const transactionsForMonth = getFilteredTransactions(); // Usa transacciones activas del mes
+          const transactionsForMonth = getTransactions({ month: filterMonth.value }); // Usa transacciones activas del mes
           const income = transactionsForMonth
             .filter((t) => t.type === 'income')
             .reduce((sum, t) => sum + t.amount, 0);
@@ -5675,10 +6834,10 @@
               cellDesc.className = 'px-6 py-4 whitespace-nowrap text-sm';
               cellDesc.textContent = t.description;
               const cellCat = row.insertCell();
-              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm flex items-center';
-              cellCat.innerHTML = `${getCategoryDisplay(
+              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm';
+              cellCat.innerHTML = `<div class="category-cell-content">${getCategoryDisplay(
                 t.category,
-              )}<button class="info-btn" data-description="${t.description}">i</button>`;
+              )}<button class="info-btn" data-description="${t.description}">i</button></div>`;
               const cellBank = row.insertCell();
               cellBank.className = 'px-6 py-4 whitespace-nowrap text-sm';
               cellBank.textContent = t.bank;
@@ -5709,11 +6868,16 @@
               .reduce((sum, t) => sum + t.amount, 0);
 
             // ===== ¡AJUSTE DEL FOOTER! =====
-            tableElement.querySelector('tfoot tr td:first-child').colSpan = 4; // Ajustado a 4 para alinear
+            //tableElement.querySelector('tfoot tr td:first-child').colSpan = 4; // Ajustado a 4 para alinear
             // =================================
             document.getElementById('registros-total-income').textContent =
               formatCurrency(totalIncome);
             document.getElementById('registros-total-expenses').textContent =
+              formatCurrency(totalExpenses);
+            // AÑADE ESTAS DOS LÍNEAS
+            document.getElementById('mobile-registros-total-income').textContent =
+              formatCurrency(totalIncome);
+            document.getElementById('mobile-registros-total-expenses').textContent =
               formatCurrency(totalExpenses);
           }
 
@@ -5797,10 +6961,10 @@
               cellDesc.textContent = p.description;
 
               const cellCat = row.insertCell();
-              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm flex items-center';
-              cellCat.innerHTML = `${getCategoryDisplay(
+              cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm';
+              cellCat.innerHTML = `<div class="category-cell-content">${getCategoryDisplay(
                 p.category,
-              )}<button class="info-btn" data-description="${p.description}">i</button>`;
+              )}<button class="info-btn" data-description="${p.description}">i</button></div>`;
 
               const cellAmount = row.insertCell();
               cellAmount.className = 'px-6 py-4 whitespace-nowrap text-sm text-right';
@@ -5839,10 +7003,17 @@
             const totalExpenses = projections
               .filter((p) => p.type === 'expense')
               .reduce((sum, p) => sum + p.amount, 0);
-            tableElement.querySelector('tfoot tr td:first-child').colSpan = 3;
+
+            // Actualiza los totales de escritorio
             document.getElementById('proyeccion-total-income').textContent =
               formatCurrency(totalIncome);
             document.getElementById('proyeccion-total-expenses').textContent =
+              formatCurrency(totalExpenses);
+
+            // Actualiza los nuevos totales de móvil
+            document.getElementById('mobile-proyeccion-total-income').textContent =
+              formatCurrency(totalIncome);
+            document.getElementById('mobile-proyeccion-total-expenses').textContent =
               formatCurrency(totalExpenses);
           }
 
@@ -5931,7 +7102,7 @@
           budgetTableBody.classList.remove('hidden');
           noCategoriesMessage.classList.add('hidden');
 
-          const transactionsForMonth = getFilteredTransactions();
+          const transactionsForMonth = getTransactions({ month: filterMonth.value });
           const expensesByCategory = transactionsForMonth
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
@@ -5964,7 +7135,7 @@
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 flex items-center">${getCategoryDisplay(
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">${getCategoryDisplay(
                             categoryName,
                           )}</td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
@@ -5995,7 +7166,7 @@
         }
 
         function renderReports() {
-          const transactionsForMonth = getFilteredTransactions();
+          const transactionsForMonth = getTransactions({ month: filterMonth.value });
           const expensesByCategory = transactionsForMonth
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
@@ -6019,9 +7190,7 @@
                 'flex justify-between items-center text-sm p-2 bg-gray-50 rounded-md';
               // --- LÍNEA MODIFICADA ---
               item.innerHTML = `
-                              <span class="text-gray-700 flex items-center">${getCategoryDisplay(
-                                category,
-                              )}</span>
+                              <span class="text-gray-700">${getCategoryDisplay(category)}</span>
                               <span class="font-medium text-red-500">${formatCurrency(
                                 amount,
                               )}</span>
@@ -6350,59 +7519,68 @@
          */
 
         function openTransactionModal(options = {}) {
-          const { id = null, type = 'expense' } = options; // lockType ya no es necesario
+          const { id = null, type = 'expense' } = options;
 
           transactionForm.reset();
           clearValidationErrors();
           populateModalDropdowns();
           populateDescriptionDatalist();
-          document.getElementById('transaction-type-hidden').value = type;
+
+          const modalTitle = document.getElementById('modal-title');
+          let effectiveType = type; // El tipo por defecto es el que se pasa en 'options'
+          let actionText = modalContext === 'proyeccion' ? 'Registrar Proyección de' : 'Registrar';
 
           if (id) {
+            // --- Lógica para EDITAR un registro existente ---
             let item = appState.transactions.find((t) => t.id === id);
             let sourceCollection = 'transactions';
-
             if (!item) {
               item = appState.projections.find((p) => p.id === id);
-              sourceCollection = 'projections';
+              sourceCollection = 'proyections';
             }
 
             if (item) {
-              const title =
-                sourceCollection === 'projections' ? 'Editar Proyección' : 'Editar Transacción';
-              document.getElementById('modal-title').textContent = title;
+              effectiveType = item.type; // Sobrescribimos con el tipo real del item
+              actionText = sourceCollection === 'proyections' ? 'Editar Proyección de' : 'Editar';
+
+              // Llenar el formulario con los datos del item (esto no cambia)
               document.getElementById('transaction-id').value = item.id;
               document.getElementById('transaction-date').value = item.date;
               document.getElementById('transaction-description').value = item.description;
-
               const categoryObject = appState.categories.find((c) => c.name === item.category);
               if (categoryObject) {
                 categorySelectButton.innerHTML = `
-                                  <img src="${categoryObject.icon || DEFAULT_ICON}" alt="${
+                            <img src="${categoryObject.icon || DEFAULT_ICON}" alt="${
                   categoryObject.name
                 }">
-                                  <span>${categoryObject.name}</span>
-                              `;
+                            <span>${categoryObject.name}</span>`;
                 transactionCategoryHiddenInput.value = categoryObject.name;
               }
-
               document.getElementById('transaction-bank').value = item.bank;
               document.getElementById('transaction-amount').value = item.amount;
-              document.getElementById('transaction-type-hidden').value = item.type;
             } else {
               showMessageModal('Error', 'Elemento no encontrado.', 'error');
               return;
             }
           } else {
-            const title =
-              modalContext === 'proyeccion' ? 'Registrar Proyección' : 'Registrar Transacción';
-            document.getElementById('modal-title').textContent = title;
+            // --- Lógica para un NUEVO registro (esto no cambia) ---
             document.getElementById('transaction-id').value = '';
             document.getElementById('transaction-date').valueAsDate = new Date();
             categorySelectButton.innerHTML = `<span>Seleccionar Categoría...</span>`;
             transactionCategoryHiddenInput.value = '';
           }
 
+          // --- LÓGICA UNIFICADA PARA CAMBIAR EL TÍTULO Y COLOR ---
+          if (effectiveType === 'income') {
+            modalTitle.textContent = `${actionText} Ingreso`;
+            modalTitle.style.color = 'var(--electric-green)'; // Verde
+          } else {
+            // Por defecto, es un gasto
+            modalTitle.textContent = `${actionText} Gasto`;
+            modalTitle.style.color = 'var(--electric-red)'; // Rojo
+          }
+
+          document.getElementById('transaction-type-hidden').value = effectiveType;
           transactionModal.classList.add('active');
           document.getElementById('transaction-date').focus();
         }
@@ -6410,6 +7588,7 @@
         function closeTransactionModal() {
           transactionModal.classList.remove('active');
           clearValidationErrors(); // Limpiar errores al cerrar el modal
+          document.getElementById('modal-title').style.color = ''; // Resetear color del título
         }
 
         /**
@@ -7089,6 +8268,46 @@
           }
         }
 
+        // WHATSAPP SETTINGS
+        async function handleSaveWhatsappSettings() {
+          const numberInput = document.getElementById('whatsapp-number');
+          const enabledCheckbox = document.getElementById('whatsapp-notifications-enabled');
+          const numberError = document.getElementById('whatsapp-number-error');
+
+          const whatsappNumber = numberInput.value.trim();
+          const whatsappNotificationsEnabled = enabledCheckbox.checked;
+
+          // Validación básica del formato del número
+          const phoneRegex = /^\+[1-9]\d{1,14}$/; // Formato E.164
+          if (whatsappNumber && !phoneRegex.test(whatsappNumber)) {
+            showError(
+              numberError,
+              'Formato inválido. Debe ser +CódigoPaísNúmero (ej: +1234567890).',
+            );
+            return;
+          } else {
+            hideError(numberError);
+          }
+
+          const saveBtn = document.getElementById('save-whatsapp-settings-btn');
+          showButtonLoading(saveBtn);
+          const appId = firebaseProjectId;
+          const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/user_data/preferences`);
+
+          try {
+            await updateDoc(userDocRef, {
+              whatsappNumber,
+              whatsappNotificationsEnabled,
+            });
+            showToast('Configuración de WhatsApp guardada.', 'success');
+          } catch (error) {
+            console.error('[Firestore] Error al guardar configuración de WhatsApp:', error);
+            showMessageModal('Error', 'No se pudo guardar la configuración de WhatsApp.', 'error');
+          } finally {
+            hideButtonLoading(saveBtn);
+          }
+        }
+
         async function handleChangePassword(e) {
           e.preventDefault();
           clearValidationErrors();
@@ -7360,7 +8579,6 @@
                 // Reconstruimos el estado local de la aplicación.
                 appState = {
                   transactions: [], // Reiniciado
-
                   categories: categoriesToKeep, // Conservado
                   banks: banksToKeep, // Conservado
                   descriptions: descriptionsToKeep, // MODIFICADO: Se usan las descripciones conservadas.
@@ -7430,8 +8648,7 @@
             cellDesc.textContent = re.description;
 
             const cellCat = row.insertCell();
-            cellCat.className =
-              'px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center';
+            cellCat.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
             cellCat.innerHTML = getCategoryDisplay(re.category);
 
             const cellAmount = row.insertCell();
@@ -7454,8 +8671,11 @@
             (sum, expense) => sum + expense.amount,
             0,
           );
-          table.querySelector('tfoot tr td:first-child').colSpan = 6;
+
+          // Actualiza los totales de escritorio y móvil
           document.getElementById('recurring-total').textContent = formatCurrency(totalRecurring);
+          document.getElementById('mobile-recurring-total').textContent =
+            formatCurrency(totalRecurring);
 
           // ¡PARTE CRÍTICA! Aquí se vuelven a activar los botones después de crear la tabla.
           document
@@ -7748,14 +8968,24 @@
           if (appState.creditCards.length === 0) {
             creditCardsTableBody.classList.add('hidden');
             noCreditCardsMessage.classList.remove('hidden');
+            // Limpiamos los totales si no hay tarjetas
+            document.getElementById('cc-total-amount').textContent = formatCurrency(0);
+            document.getElementById('cc-total-limit').textContent = formatCurrency(0);
+            document.getElementById('cc-total-available').textContent = formatCurrency(0);
+            document.getElementById('cc-total-monthly').textContent = formatCurrency(0);
             return;
           }
 
           creditCardsTableBody.classList.remove('hidden');
           noCreditCardsMessage.classList.add('hidden');
 
-          // ORDENAR POR FECHA DE PAGO (dueDate) DE MENOR A MAYOR
           const sortedCards = [...appState.creditCards].sort((a, b) => a.dueDate - b.dueDate);
+
+          // Variables para calcular los totales
+          let totalAdeudado = 0;
+          let totalLimite = 0;
+          // La variable totalDisponible ya no se calcula aquí dentro del bucle
+          let totalPagoMensual = 0;
 
           sortedCards.forEach((card) => {
             const row = document.createElement('tr');
@@ -7777,47 +9007,80 @@
             row.className = bgColor;
 
             const monthlyPayment = calculateMonthlyPayment(card.amount, card.rate, card.months);
+            const creditLimit = parseFloat(card.limit) || 0;
+            const debtAmount = parseFloat(card.amount) || 0;
+            const availableBalance = creditLimit - debtAmount;
+
+            // Lógica de sumatoria de totales
+            if (!card.exclude) {
+              // Solo suma si la tarjeta NO está excluida
+              totalAdeudado += debtAmount;
+            }
+            totalLimite += creditLimit;
+            // totalDisponible += availableBalance; // <-- ERROR LÓGICO ELIMINADO DE AQUÍ
+            totalPagoMensual += monthlyPayment;
 
             row.innerHTML = `
-                    <td class="px-4 py-4 whitespace-nowrap text-sm font-weight: 400 text-gray-900">${
-                      card.bank
-                    }</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Día ${
-                      card.dueDate
-                    } de cada mes</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="amount" value="${Number(
-                      card.amount,
-                    ).toFixed(2)}" step="0.01"></td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="rate" value="${Number(
-                      card.rate,
-                    ).toFixed(2)}" step="0.01"></td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm"><input type="number" class="table-input card-data-input" data-field="months" value="${
-                      card.months
-                    }" min="1"></td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-blue-600 monthly-payment-cell">${formatCurrency(
-                      monthlyPayment,
-                    )}</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-center text-sm font-weight: 400">
-                      <button class="delete-card-btn text-red-600 hover:text-red-900" data-id="${
-                        card.id
-                      }">Eliminar</button>
-                    </td>
-                  `;
+              <td class="px-2 py-4 whitespace-nowrap text-center">
+                  <input type="checkbox" class="exclude-checkbox card-data-input" data-field="exclude" ${
+                    card.exclude ? 'checked' : ''
+                  }>
+              </td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm font-weight: 400 text-gray-900">${
+                card.bank
+              }</td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-center">${
+                card.dueDate
+              }</td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm">
+                  <input type="number" class="table-input card-data-input" data-field="amount" value="${debtAmount.toFixed(
+                    2,
+                  )}" step="0.01">
+              </td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm">
+                  <input type="number" class="table-input card-data-input" data-field="limit" value="${creditLimit.toFixed(
+                    2,
+                  )}" placeholder="0.00" step="0.01">
+              </td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-green-600 text-right">${formatCurrency(
+                availableBalance,
+              )}</td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm">
+                  <input type="number" class="table-input card-data-input" data-field="rate" value="${Number(
+                    card.rate,
+                  ).toFixed(2)}" step="0.01">
+              </td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm">
+                  <input type="number" class="table-input card-data-input" data-field="months" value="${
+                    card.months
+                  }" min="1">
+              </td>
+              <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-blue-600 monthly-payment-cell text-right">${formatCurrency(
+                monthlyPayment,
+              )}</td>
+              <td class="px-4 py-4 whitespace-nowrap text-center text-sm font-weight: 400">
+                <button class="delete-card-btn text-red-600 hover:text-red-900" data-id="${
+                  card.id
+                }">Eliminar</button>
+              </td>
+            `;
             creditCardsTableBody.appendChild(row);
-            // Totales
-            const totalAdeudado = sortedCards.reduce((s, c) => s + (parseFloat(c.amount) || 0), 0);
-            const totalPago = sortedCards.reduce(
-              (s, c) => s + calculateMonthlyPayment(c.amount, c.rate, c.months),
-              0,
-            );
-
-            // Pinta los totales
-            const totalAmountEl = document.getElementById('cc-total-amount');
-            const totalMonthlyEl = document.getElementById('cc-total-monthly');
-            if (totalAmountEl) totalAmountEl.textContent = formatCurrency(totalAdeudado);
-            if (totalMonthlyEl) totalMonthlyEl.textContent = formatCurrency(totalPago);
           });
 
+          // --- INICIO DE LA CORRECCIÓN LÓGICA ---
+          // Se calcula el total disponible DESPUÉS del bucle para asegurar consistencia
+          const totalDisponible = totalLimite - totalAdeudado;
+          // --- FIN DE LA CORRECCIÓN LÓGICA ---
+
+          // Pinta los totales en el footer
+          document.getElementById('cc-total-amount').textContent = formatCurrency(totalAdeudado);
+          document.getElementById('cc-total-limit').textContent = formatCurrency(totalLimite);
+          document.getElementById('cc-total-available').textContent =
+            formatCurrency(totalDisponible); // Ahora usa el valor corregido
+          document.getElementById('cc-total-monthly').textContent =
+            formatCurrency(totalPagoMensual);
+
+          // Vuelve a añadir los listeners a los botones de eliminar
           document
             .querySelectorAll('.delete-card-btn')
             .forEach((btn) =>
@@ -7830,11 +9093,18 @@
 
           const inputElement = e.target;
           const field = inputElement.dataset.field;
-          let value = parseFloat(inputElement.value);
+          let value;
 
-          // Validación en línea para los campos de la tabla
-          let isValid = true;
-          if (field === 'amount' || field === 'rate' || field === 'months') {
+          // Determina el tipo de valor a guardar (booleano para el checkbox, número para los inputs)
+          if (inputElement.type === 'checkbox') {
+            value = inputElement.checked;
+          } else {
+            value = parseFloat(inputElement.value);
+          }
+
+          // Validación en línea para los campos numéricos de la tabla
+          if (inputElement.type === 'number') {
+            let isValid = true;
             if (isNaN(value) || value < 0) {
               showToast(`El valor para "${field}" debe ser un número positivo.`, 'error');
               inputElement.value = inputElement.defaultValue; // Revertir al valor original
@@ -7845,36 +9115,27 @@
               inputElement.value = inputElement.defaultValue;
               isValid = false;
             }
+            if (!isValid) return; // Detener si la validación falla
           }
 
-          if (!isValid) return; // Detener si la validación falla
-
-          showButtonLoading(inputElement); // Mostrar spinner en el input (simulado)
+          showButtonLoading(inputElement); // Simula carga en el input
           const appId = firebaseProjectId;
+          const cardId = e.target.closest('tr').dataset.cardId;
           const creditCardDocRef = doc(
             db,
             `artifacts/${appId}/users/${userId}/creditCards`,
-            e.target.closest('tr').dataset.cardId,
+            cardId,
           );
 
           try {
-            console.log(
-              `[Firestore] Actualizando tarjeta ${
-                e.target.closest('tr').dataset.cardId
-              }, campo ${field}: ${value}`,
-            ); // Debugging
+            console.log(`[Firestore] Actualizando tarjeta ${cardId}, campo ${field}: ${value}`);
             await updateDoc(creditCardDocRef, { [field]: value });
             showToast('Datos de tarjeta actualizados.', 'success');
-            // El onSnapshot se encargará de re-renderizar la tabla y actualizar los cálculos
           } catch (error) {
-            console.error('[Firestore] Error al actualizar datos de la tarjeta:', error); // Debugging
-            showMessageModal(
-              'Error al Actualizar Tarjeta',
-              'No se pudieron actualizar los datos de la tarjeta. Verifica tu conexión a internet y tus reglas de seguridad de Firestore.',
-              'error',
-            );
+            console.error('[Firestore] Error al actualizar datos de la tarjeta:', error);
+            showMessageModal('Error al Actualizar Tarjeta', 'No se pudieron actualizar los datos.');
           } finally {
-            hideButtonLoading(inputElement); // Ocultar spinner
+            hideButtonLoading(inputElement);
           }
         }
 
@@ -8006,6 +9267,8 @@
             amount: amount,
             rate: rate,
             months: months,
+            limit: 0,
+            exclude: false,
           };
           try {
             console.log('[Firestore] Añadiendo nueva tarjeta de crédito.'); // Debugging
@@ -8258,6 +9521,43 @@
           );
         }
 
+        /**
+         * Obtiene el ID y la pestaña del único elemento seleccionado en la tabla activa.
+         * @returns {{id: string, tab: string}|null} El objeto con el ID y la pestaña, o null si no hay una selección única.
+         */
+        function getSingleSelectedItem() {
+          const activeTabElement = document.querySelector('.tab-pane.active');
+          if (!activeTabElement) return null;
+
+          const activeTab = activeTabElement.id.replace('-content', '');
+          let checkboxClass = '';
+
+          // Lógica para encontrar la clase correcta del checkbox
+          switch (activeTab) {
+            case 'registros':
+              checkboxClass = 'transaction-checkbox';
+              break;
+            case 'proyeccion':
+              checkboxClass = 'projection-checkbox';
+              break;
+            case 'recurrentes':
+              checkboxClass = 'recurring-checkbox';
+              break;
+            default:
+              return null;
+          }
+
+          const checkedCheckbox = document.querySelector(
+            `#${activeTab}-content .${checkboxClass}:checked`,
+          );
+
+          if (checkedCheckbox) {
+            return { id: checkedCheckbox.dataset.id, tab: activeTab };
+          }
+
+          return null;
+        }
+
         // --- UTILIDADES Y VALIDACIÓN ---
 
         /**
@@ -8276,31 +9576,25 @@
          * que aún no han sido registrados en ese mes.
          * @returns {Array<Object>} Una lista unificada y ordenada de transacciones para la proyección.
          */
+
         function getDynamicProjections() {
-          const realTransactions = getFilteredTransactions();
+          const realTransactions = getTransactions({ month: filterMonth.value });
           const recurringExpenses = appState.recurringExpenses;
-
-          // --- NUEVO: Obtener proyecciones manuales filtradas ---
           const selectedMonthFilter = filterMonth.value;
-          const descriptionFilter = filterDescription.value.toLowerCase();
-          const categoryFilter = filterCategory.value;
-          const manualProjections = appState.projections
-            .filter((p) => {
-              if (!p || typeof p.date !== 'string') return false;
-              const matchesMonth =
-                !selectedMonthFilter || p.date.substring(0, 7) === selectedMonthFilter;
-              const matchesDescription = (p.description || '')
-                .toLowerCase()
-                .includes(descriptionFilter);
-              const matchesCategory = !categoryFilter || p.category === categoryFilter;
-              return matchesMonth && matchesDescription && matchesCategory;
-            })
-            .map((p) => ({ ...p, isPureProjection: true })); // Añadimos una bandera para identificarlas
 
-          if (!selectedMonthFilter)
+          // Se eliminan las variables 'descriptionFilter' y 'categoryFilter' que no se usan o causan error
+
+          // Ahora, las proyecciones manuales se obtienen sin filtros extra, solo por mes
+          const manualProjections = getTransactions({
+            month: selectedMonthFilter,
+            source: appState.projections,
+          }).map((p) => ({ ...p, isPureProjection: true }));
+
+          if (!selectedMonthFilter) {
             return [...realTransactions, ...manualProjections].sort(
               (a, b) => new Date(a.date) - new Date(b.date),
             );
+          }
 
           const [year, month] = selectedMonthFilter.split('-').map(Number);
 
@@ -8312,10 +9606,9 @@
             bank: re.bank,
             amount: re.amount,
             type: 'expense',
-            isVirtual: true, // Bandera para proyecciones de recurrentes
+            isVirtual: true,
           }));
 
-          // Filtra las proyecciones recurrentes que ya existen como transacciones REALES
           const futureProjections = projectedFromRecurring.filter((proj) => {
             return !realTransactions.some(
               (realTx) =>
@@ -8325,7 +9618,6 @@
             );
           });
 
-          // --- NUEVO: Combinar las TRES listas y ordenar por fecha ---
           const combinedList = [...realTransactions, ...manualProjections, ...futureProjections];
           combinedList.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -8657,6 +9949,7 @@
             'name',
             'Todas las categorías',
           );
+          populateSelectWithOptions('filter-bank', appState.banks, null, null, 'Todos los bancos');
         }
 
         function populateModalDropdowns() {
@@ -8709,10 +10002,10 @@
           currentMonthFilterValue = filterMonth.value;
         }
 
+        // REEMPLAZA LA FUNCIÓN "switchTab" EXISTENTE CON ESTA:
         function switchTab(tabName) {
           if (!tabName) return;
 
-          // 1. Oculta todos los paneles y desactiva todos los botones de pestañas
           document.querySelectorAll('.tab-pane').forEach((pane) => {
             pane.classList.add('hidden');
             pane.classList.remove('active');
@@ -8721,7 +10014,6 @@
             button.classList.remove('active');
           });
 
-          // 2. Muestra el panel y activa el botón de la pestaña correcta
           const activePane = document.getElementById(`${tabName}-content`);
           const activeButton = document.querySelector(`button[data-tab="${tabName}"]`);
           if (activePane) {
@@ -8732,24 +10024,21 @@
             activeButton.classList.add('active');
           }
 
-          // 3. Lógica centralizada para gestionar los botones de acción
           const actionButtons = {
             main: document.getElementById('main-action-btn'),
             saveBudget: document.getElementById('save-budgets-btn'),
             migrateRecurring: document.getElementById('migrate-all-recurring-btn'),
             deleteSelected: document.getElementById('delete-selected-btn'),
-            addIncome: document.getElementById('add-income-btn'), // Nuevo botón
-            addExpense: document.getElementById('add-expense-btn'), // Nuevo botón
+            addIncome: document.getElementById('add-income-btn'),
+            addExpense: document.getElementById('add-expense-btn'),
           };
 
-          // Oculta todos los botones de acción primero para empezar de cero
           Object.values(actionButtons).forEach((btn) => btn && btn.classList.add('hidden'));
 
-          // Muestra los botones específicos para la pestaña activa
+          // La lógica de los botones se mantiene, ya que la nueva pestaña tiene sus propios botones
           switch (tabName) {
             case 'registros':
             case 'proyeccion':
-              // Muestra los botones de Ingreso y Gasto
               actionButtons.addIncome.classList.remove('hidden');
               actionButtons.addExpense.classList.remove('hidden');
               break;
@@ -8766,6 +10055,7 @@
             case 'presupuesto':
               actionButtons.saveBudget.classList.remove('hidden');
               break;
+            // No se añade caso para 'gastos-comunes' porque tiene sus propios botones
           }
 
           const filtersContainer = document.getElementById('filters-container');
@@ -8848,6 +10138,9 @@
             const voicePanel = document.getElementById('voice-input-panel');
             voicePanel.classList.add('hidden');
             voicePanel.classList.remove('visible');
+            if (recognition) {
+              recognition.stop();
+            }
           } catch (error) {
             console.error('[Firestore] Error al guardar transacción por voz:', error);
             showMessageModal(
@@ -9577,6 +10870,396 @@
           }
           if (clickedItem) {
             clickedItem.classList.add('active');
+          }
+        }
+
+        /**
+         * Abre el modal personalizado para ingresar un valor de distribución.
+         * @param {object} options - Opciones de configuración.
+         * @param {'percentage'|'manual'} options.method - El método para el cual se pide el valor.
+         * @param {number} options.currentValue - El valor actual para pre-llenar el input.
+         * @param {function} options.callback - La función a ejecutar al guardar, recibe el nuevo valor.
+         */
+        function openDistributionInputModal({ method, currentValue, callback }) {
+          const modal = document.getElementById('distribution-input-modal');
+          const title = document.getElementById('distribution-modal-title');
+          const label = document.getElementById('distribution-modal-label');
+          const input = document.getElementById('distribution-modal-input');
+
+          if (method === 'percentage') {
+            title.textContent = 'Ingresar Porcentaje';
+            label.textContent = 'Porcentaje (%)';
+            input.placeholder = '50';
+          } else {
+            title.textContent = 'Ingresar Monto Manual';
+            label.textContent = 'Monto Fijo ($)';
+            input.placeholder = '100.00';
+          }
+
+          input.value = currentValue || '';
+          distributionModalCallback = callback; // Guardamos la función callback
+
+          modal.classList.add('active');
+          input.focus();
+        }
+
+        function closeDistributionInputModal() {
+          const modal = document.getElementById('distribution-input-modal');
+          document.getElementById('distribution-form').reset();
+          clearValidationErrors();
+          distributionModalCallback = null; // Limpiamos el callback
+          modal.classList.remove('active');
+        }
+
+        /**
+         * Abre el modal de selección de banco para un pago de gasto común.
+         * @param {object} data - La información pre-calculada de la transacción.
+         */
+        function openSharedExpenseBankModal(data) {
+          tempSharedExpenseData = data; // Guardar datos temporalmente
+          const modal = document.getElementById('shared-expense-bank-modal');
+          const summaryEl = document.getElementById('shared-expense-summary');
+
+          // Poblar el resumen en el modal para que el usuario sepa qué está registrando
+          summaryEl.innerHTML = `
+                Registrando un gasto de <strong>${formatCurrency(data.amount)}</strong> por 
+                <strong>"${data.description}"</strong> con fecha 
+                <strong>${formatDate(data.date)}</strong>.
+            `;
+
+          // Poblar el select con los bancos del usuario
+          populateSelectWithOptions(
+            'shared-expense-bank-select',
+            appState.banks,
+            null,
+            null,
+            'Selecciona un banco...',
+          );
+
+          modal.classList.add('active');
+        }
+
+        /**
+         * Cierra el modal de selección de banco.
+         */
+        function closeSharedExpenseBankModal() {
+          const modal = document.getElementById('shared-expense-bank-modal');
+          modal.classList.remove('active');
+          tempSharedExpenseData = null; // Limpiar datos temporales para evitar errores
+          clearValidationErrors();
+        }
+
+        /**
+         * Maneja la confirmación final: añade el banco y guarda la transacción en Firebase.
+         */
+        async function handleConfirmSharedExpense() {
+          if (!tempSharedExpenseData) return;
+
+          const bankSelect = document.getElementById('shared-expense-bank-select');
+          const bankError = document.getElementById('shared-expense-bank-error');
+          const selectedBank = bankSelect.value;
+
+          if (!validateRequired(bankSelect, bankError, 'Debes seleccionar un banco.')) {
+            return;
+          }
+
+          const transactionData = {
+            ...tempSharedExpenseData,
+            bank: selectedBank,
+          };
+
+          const confirmBtn = document.getElementById('confirm-shared-expense-bank-btn');
+          showButtonLoading(confirmBtn);
+
+          const appId = firebaseProjectId;
+          const transactionsColRef = collection(
+            db,
+            `artifacts/${appId}/users/${userId}/transactions`,
+          );
+
+          try {
+            const newDocRef = doc(transactionsColRef);
+            const newId = newDocRef.id;
+
+            const dataToSave = {
+              id: newId,
+              date: transactionData.date,
+              description: transactionData.description,
+              category: transactionData.category,
+              bank: transactionData.bank,
+              amount: transactionData.amount,
+              type: 'income',
+            };
+
+            await setDoc(newDocRef, dataToSave);
+            showToast('Pago de gasto común registrado con éxito.', 'success');
+
+            // === INICIO DE LA NUEVA LÓGICA DE PERSISTENCIA ===
+            // 1. Encontrar el ítem en el estado local.
+            const itemToUpdate = appState.gastosComunes.items.find(
+              (item) => item.id === transactionData.originalItemId,
+            );
+
+            if (itemToUpdate) {
+              const personIndex = transactionData.originalPersonIndex;
+              // Extraemos solo el día del string de fecha 'YYYY-MM-DD'
+              const dayOfPayment = new Date(transactionData.date + 'T00:00:00').getDate();
+
+              // 2. Asegurarse de que la estructura de distribución exista.
+              if (!itemToUpdate.distribution) itemToUpdate.distribution = {};
+              if (!itemToUpdate.distribution[personIndex])
+                itemToUpdate.distribution[personIndex] = { method: 'equal' };
+
+              // 3. Añadir la marca de que fue pagado en ese día.
+              itemToUpdate.distribution[personIndex].paidDay = dayOfPayment;
+
+              // 4. Guardar el estado completo de gastosComunes en Firebase.
+              // Esto disparará el 'onSnapshot' y la tabla se volverá a dibujar correctamente.
+              await saveGastosComunesState();
+            }
+            // === FIN DE LA NUEVA LÓGICA ===
+
+            closeSharedExpenseBankModal();
+          } catch (error) {
+            console.error('[Firestore] Error al registrar pago de gasto común:', error);
+            showMessageModal(
+              'Error al Registrar',
+              'No se pudo guardar el pago en la tabla de registros.',
+              'error',
+            );
+          } finally {
+            hideButtonLoading(confirmBtn);
+          }
+        }
+
+        /**
+         * Guarda el estado actual de la sección de gastos comunes en Firebase.
+         */
+        async function saveGastosComunesState() {
+          if (!userId) return;
+          const appId = firebaseProjectId;
+          const gastosComunesDocRef = doc(
+            db,
+            `artifacts/${appId}/users/${userId}/user_data/gastosComunes`,
+          );
+          try {
+            // Se clona el objeto para evitar problemas de referencia circular de Firebase
+            const stateToSave = JSON.parse(JSON.stringify(appState.gastosComunes));
+            await setDoc(gastosComunesDocRef, stateToSave);
+            console.log('[Firestore] Estado de Gastos Comunes guardado.');
+          } catch (error) {
+            console.error('[Firestore] Error al guardar estado de Gastos Comunes:', error);
+            showToast('No se pudo guardar el cambio en Gastos Comunes.', 'error');
+          }
+        }
+
+        /**
+         * Renderiza la tabla completa de gastos comunes basándose en el appState.
+         */
+        function renderGastosComunesTable() {
+          const table = document.getElementById('gastos-comunes-table');
+          const thead = table.querySelector('thead') || table.createTHead();
+          const tbody = table.querySelector('tbody') || table.createTBody();
+          const tfoot = table.querySelector('tfoot') || table.createTFoot();
+          const noDataMessage = document.getElementById('no-shared-expenses-message');
+
+          thead.innerHTML = '';
+          tbody.innerHTML = '';
+          tfoot.innerHTML = '';
+
+          const { people, items } = appState.gastosComunes;
+
+          if (!people || !items || (people.length === 0 && items.length === 0)) {
+            table.classList.add('hidden');
+            noDataMessage.classList.remove('hidden');
+            return;
+          }
+          table.classList.remove('hidden');
+          noDataMessage.classList.add('hidden');
+
+          const headerRow = thead.insertRow();
+          headerRow.innerHTML = `
+            <th>Ítem a Pagar</th>
+            <th>Monto Total</th>
+          `;
+          people.forEach((person, index) => {
+            const th = document.createElement('th');
+            th.innerHTML = `
+            <div class="person-header-container">
+              <div contenteditable="true" class="person-name-editable" data-person-index="${index}">${
+              person.name || `Persona ${index + 1}`
+            }</div>
+              <span class="delete-person-btn" data-person-index="${index}" title="Eliminar Persona">&#x2716;</span>
+            </div>
+          `;
+            headerRow.appendChild(th);
+          });
+          headerRow.insertAdjacentHTML('beforeend', '<th class="actions-column"></th>');
+
+          items.forEach((item) => {
+            const itemRow = tbody.insertRow();
+            itemRow.dataset.itemId = item.id;
+            itemRow.insertCell().innerHTML = `<input type="text" class="table-input item-name-input" value="${
+              item.name || ''
+            }" placeholder="Ej: Alquiler">`;
+            itemRow.insertCell().innerHTML = `<input type="number" class="table-input item-total-input" value="${
+              item.totalAmount || ''
+            }" placeholder="0.00" step="0.01">`;
+
+            people.forEach((_, personIndex) => {
+              const distCell = itemRow.insertCell();
+              distCell.className = 'distribution-cell';
+              distCell.dataset.personIndex = personIndex;
+
+              // === INICIO DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
+              const distData = item.distribution?.[personIndex] || { method: 'equal', value: 0 };
+              const paidDay = distData.paidDay; // Obtenemos el día de pago si existe.
+              const isPaid = !!paidDay;
+
+              let indicatorText = '';
+              switch (distData.method) {
+                case 'percentage':
+                  indicatorText = `${distData.value || 0}%`;
+                  break;
+                case 'manual':
+                  indicatorText = 'Manual';
+                  break;
+                default:
+                  indicatorText = 'Igual';
+                  break;
+              }
+
+              const calculatedAmount = calculateCellAmount(item, personIndex);
+
+              // Aplicamos la clase de color verde si está pagado.
+              let amountClass = 'font-semibold text-lg';
+              if (isPaid) {
+                amountClass += ' text-green-500';
+              }
+
+              let inputAndButtonHtml = '';
+              if (isPaid) {
+                // Si está pagado, mostramos el input deshabilitado con el día y un check.
+                inputAndButtonHtml = `
+                  <input
+                    type="number"
+                    class="table-input w-14 text-center shared-expense-day-input"
+                    value="${paidDay}"
+                    disabled
+                    style="background-color: #2E3A4B; cursor: not-allowed;"
+                  >
+                  <button
+                    class="register-shared-expense-btn bg-green-800 text-white rounded px-2 py-1 text-xs"
+                    title="Pago ya registrado"
+                    disabled
+                  >
+                    ✔
+                  </button>
+                `;
+              } else {
+                // Si no está pagado, mostramos el input vacío y el botón 'OK'.
+                inputAndButtonHtml = `
+                  <input
+                    type="number"
+                    min="1" max="31"
+                    class="table-input w-14 text-center shared-expense-day-input"
+                    placeholder="Día"
+                    title="Día del pago (1-31)"
+                  >
+                  <button
+                    class="register-shared-expense-btn bg-green-600 text-white rounded px-2 py-1 text-xs hover:bg-green-700 transition"
+                    data-item-id="${item.id}"
+                    data-person-index="${personIndex}"
+                    title="Registrar este pago"
+                  >
+                    OK
+                  </button>
+                `;
+              }
+
+              distCell.innerHTML = `
+                <div class="flex flex-col items-center gap-1">
+                    <span class="${amountClass}">${formatCurrency(calculatedAmount)}</span>
+                    <span class="method-indicator -mt-1">${indicatorText}</span>
+                    <div class="flex items-center gap-1 mt-1">
+                        ${inputAndButtonHtml}
+                    </div>
+                </div>
+              `;
+              // === FIN DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
+            });
+            itemRow.insertCell(
+              people.length + 2,
+            ).innerHTML = `<button class="delete-item-btn" title="Eliminar Ítem">&#x1F5D1;</button>`;
+          });
+
+          const footerRow = tfoot.insertRow();
+          footerRow.insertCell().textContent = 'TOTAL POR PERSONA';
+          const totalGeneral = items.reduce(
+            (sum, item) => sum + (parseFloat(item.totalAmount) || 0),
+            0,
+          );
+          footerRow.insertCell().innerHTML = `<span class="total-general">${formatCurrency(
+            totalGeneral,
+          )}</span>`;
+          people.forEach((_, personIndex) => {
+            const totalPerPerson = items.reduce(
+              (sum, item) => sum + calculateCellAmount(item, personIndex),
+              0,
+            );
+            footerRow.insertCell().textContent = formatCurrency(totalPerPerson);
+          });
+          footerRow.insertCell();
+        }
+
+        /**
+         * Calcula el monto para una celda específica basado en el método de distribución.
+         */
+        function calculateCellAmount(item, personIndex) {
+          const distData = item.distribution?.[personIndex] || { method: 'equal' };
+          const totalAmount = parseFloat(item.totalAmount) || 0;
+
+          if (totalAmount === 0) return 0;
+
+          switch (distData.method) {
+            case 'percentage':
+              return totalAmount * ((parseFloat(distData.value) || 0) / 100);
+            case 'manual':
+              return parseFloat(distData.value) || 0;
+            case 'equal':
+            default:
+              const equalParticipants =
+                Object.values(item.distribution || {}).filter((d) => d.method === 'equal').length ||
+                appState.gastosComunes.people.length;
+              return totalAmount / equalParticipants;
+          }
+        }
+
+        /**
+         * Muestra el popover para seleccionar el método de distribución.
+         */
+        function showDistributionPopover(cell) {
+          hideDistributionPopover(); // Oculta cualquier otro popover abierto
+          const popover = document.getElementById('distribution-popover');
+          activePopoverCell = cell;
+
+          const rect = cell.getBoundingClientRect();
+          popover.style.top = `${rect.bottom + window.scrollY}px`;
+          popover.style.left = `${rect.left + window.scrollX}px`;
+
+          popover.classList.remove('hidden');
+          cell.classList.add('active');
+        }
+
+        /**
+         * Oculta el popover de distribución.
+         */
+        function hideDistributionPopover() {
+          const popover = document.getElementById('distribution-popover');
+          if (popover) popover.classList.add('hidden');
+          if (activePopoverCell) {
+            activePopoverCell.classList.remove('active');
+            activePopoverCell = null;
           }
         }
       });
