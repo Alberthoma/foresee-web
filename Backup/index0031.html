@@ -4935,7 +4935,7 @@
         <p class="text-sm">
           © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
         </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.3.2</p>
+        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.3.1</p>
         <div class="text-xs mt-2 space-x-4">
           <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
             >Política de Privacidad</a
@@ -5416,26 +5416,28 @@
                 async function saveSubscriptionToken(getMessaging, getToken) {
                   const messaging = getMessaging(window.firebaseApp);
                   try {
-                    // PASO 1: Registrar el Service Worker.
+                    // PASO 1: Registrar el Service Worker manualmente, especificando la ruta correcta.
+                    // './' se asegura de que busque el archivo en la misma carpeta que tu index.html.
                     const registration = await navigator.serviceWorker.register(
                       './firebase-messaging-sw.js',
                       { scope: './' },
                     );
+                    console.log(
+                      'Service Worker de mensajería registrado manualmente:',
+                      registration,
+                    );
 
-                    // PASO 2 (NUEVO Y CRUCIAL): Esperar a que la registración del service worker esté activa.
-                    await navigator.serviceWorker.ready;
-                    console.log('Service Worker de mensajería está activo y listo.');
-
-                    // PASO 3: Ahora que está listo, obtener el token.
+                    // PASO 2: Ahora sí, obtener el token usando la registración que acabamos de crear.
                     const currentToken = await getToken(messaging, {
                       vapidKey:
                         'BGw0CDJqc5DyU4V6-n9PiJMa_EmBhd5rQU6yDpMtHPjVGx9MnrB0MvbjWab79fEzLSiE2hiPDWPeC1_XGTNfQO0',
-                      serviceWorkerRegistration: registration,
+                      serviceWorkerRegistration: registration, // <-- ¡Esta línea es la clave!
                     });
 
                     if (currentToken) {
                       console.log('Token de FCM obtenido:', currentToken);
 
+                      // El resto del código para guardar en Firestore no cambia.
                       const appId = window.firebaseProjectId;
                       const userTokenDocRef = doc(
                         db,
