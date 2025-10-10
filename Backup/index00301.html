@@ -5416,34 +5416,23 @@
                 async function saveSubscriptionToken(getMessaging, getToken) {
                   const messaging = getMessaging(window.firebaseApp);
                   try {
-                    // PASO 1: Registrar el Service Worker manualmente, especificando la ruta correcta.
-                    // './' se asegura de que busque el archivo en la misma carpeta que tu index.html.
-                    const registration = await navigator.serviceWorker.register(
-                      './firebase-messaging-sw.js',
-                      { scope: './' },
-                    );
-                    console.log(
-                      'Service Worker de mensajería registrado manualmente:',
-                      registration,
-                    );
-
-                    // PASO 2: Ahora sí, obtener el token usando la registración que acabamos de crear.
+                    // ¡IMPORTANTE! Reemplaza 'TU_CLAVE_VAPID_AQUÍ' con la clave que generaste en la consola de Firebase.
                     const currentToken = await getToken(messaging, {
                       vapidKey:
                         'BGw0CDJqc5DyU4V6-n9PiJMa_EmBhd5rQU6yDpMtHPjVGx9MnrB0MvbjWab79fEzLSiE2hiPDWPeC1_XGTNfQO0',
-                      serviceWorkerRegistration: registration, // <-- ¡Esta línea es la clave!
                     });
 
                     if (currentToken) {
                       console.log('Token de FCM obtenido:', currentToken);
 
-                      // El resto del código para guardar en Firestore no cambia.
+                      // Guardar el token en Firestore asociado al usuario actual
                       const appId = window.firebaseProjectId;
                       const userTokenDocRef = doc(
                         db,
                         `artifacts/${appId}/users/${userId}/fcm_tokens/${currentToken}`,
                       );
 
+                      // Usamos setDoc para crear o sobrescribir el token, asegurando que no haya duplicados.
                       await setDoc(userTokenDocRef, {
                         userId: userId,
                         createdAt: new Date(),
