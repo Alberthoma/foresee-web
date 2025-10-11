@@ -244,16 +244,32 @@
 
       /* --- Encabezado --- */
       #main-header-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8rem; /* h-32 */
+        margin-top: 0;
         transition: height 0.3s ease-in-out;
+        background-color: var(--bg-dark-secondary);
+        border-bottom: 1px solid var(--border-dark);
       }
 
       #barr {
+        width: 100%;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-right: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         background-color: var(--bg-dark-tertiary);
         transition: all 0.3s ease-in-out;
       }
 
       #barr h1 {
-        font-size: 1.5rem;
+        font-size: 1.5rem; /* text-3xl */
+        font-weight: 700; /* font-bold */
         color: var(--text-light-primary);
       }
 
@@ -265,6 +281,43 @@
       .logotipo {
         width: 180px;
         height: 100px;
+        padding-left: 1rem;
+      }
+
+      /* Contenido central del header (título y bienvenida) */
+      .header-center-content {
+        flex: 1 1 0%; /* flex-1 */
+        text-align: center;
+      }
+
+      .header-center-content #user-alias-display {
+        font-weight: 600; /* font-semibold */
+      }
+
+      /* Contenedor de botones a la derecha del header */
+      .header-right-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      /* Márgenes para los botones del header */
+      #IdbtOpenScreen {
+        margin-bottom: 0.25rem;
+        margin-right: 0.25rem;
+      }
+      #IdbtCloseScreen {
+        margin-bottom: 0.25rem;
+      }
+      /* Modificamos tu #logout-btn existente para añadir el margen */
+      #logout-btn {
+        margin-right: 1.5rem;
+      }
+
+      /* Contenedor principal de los botones de pestañas */
+      .contenedor-botones {
+        display: flex;
+        flex-direction: column;
       }
 
       /* --- Pestañas de Navegación --- */
@@ -319,6 +372,45 @@
         margin-top: 7rem;
       }
 
+      /* Tamaño base para los íconos de las pestañas */
+      .tab-button img {
+        width: 3.5rem; /* w-14 */
+        margin-bottom: 0.25rem; /* mb-1 */
+        height: auto; /* Permitir que la altura se ajuste */
+      }
+
+      /* Tamaños específicos para cada ícono (sobrescribe la regla anterior) */
+      button[data-tab='proyeccion'] img {
+        height: 3rem; /* h-12 */
+        width: 3.5rem; /* w-14 */
+      }
+      button[data-tab='recurrentes'] img,
+      button[data-tab='gastos-comunes'] img,
+      button[data-tab='configuración'] img {
+        height: 2.75rem; /* h-11 */
+        width: 2.75rem; /* w-11 */
+      }
+      button[data-tab='tarjetas'] img {
+        height: 3rem; /* h-12 */
+        width: 3rem; /* w-12 */
+      }
+      button[data-tab='saldos'] img {
+        height: 2.25rem; /* h-9 */
+        width: 3rem; /* w-12 */
+      }
+      button[data-tab='calculadora'] img {
+        height: 2.25rem; /* h-9 */
+        width: 2.5rem; /* w-10 */
+      }
+      button[data-tab='reportes'] img {
+        height: 2.25rem; /* h-9 */
+        width: 2.75rem; /* w-11 */
+      }
+      button[data-tab='presupuesto'] img {
+        height: 2.5rem; /* h-10 */
+        width: 2.75rem; /* w-11 */
+      }
+
       /* ====================================================================== */
       /* 3. LÓGICA DE CONTROL DE VISTAS (Dashboard vs Contenido)
               /* ====================================================================== */
@@ -353,6 +445,9 @@
               /* ====================================================================== */
 
       /* --- Botones --- */
+      .hidden {
+        display: none !important;
+      }
       #logout-btn {
         background: var(--bg-dark-tertiary);
         color: var(--text-light-primary);
@@ -472,6 +567,119 @@
         background-color: #0ea4e9d5;
       }
 
+      /* --- Estilos para Botones de Acción y Filtros --- */
+      .action-buttons-left {
+        display: flex;
+        align-items: center;
+      }
+
+      /* Espaciado entre botones de acción */
+      .action-buttons-left > * + * {
+        margin-left: 0.5rem; /* space-x-2 */
+      }
+
+      /* Estilo base para todos los botones de acción */
+      #migrate-all-recurring-btn,
+      #save-budgets-btn,
+      #delete-selected-btn,
+      #main-action-btn,
+      #add-income-btn,
+      #add-expense-btn,
+      #toggle-filters-btn {
+        color: #ffffff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.5rem;
+        transition: background-color 0.15s ease-in-out;
+        display: flex; /* Mantiene el comportamiento flex por defecto */
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* Espaciado interno de los botones con íconos */
+      #migrate-all-recurring-btn > * + *,
+      #save-budgets-btn > * + *,
+      #delete-selected-btn > * + * {
+        margin-left: 0.5rem; /* space-x-2 */
+      }
+
+      /* Padding específico para botones sin íconos */
+      #add-income-btn,
+      #add-expense-btn,
+      #toggle-filters-btn {
+        padding-left: 0.75rem; /* px-3 */
+        padding-right: 0.75rem;
+      }
+
+      /* Colores de fondo */
+      #migrate-all-recurring-btn,
+      #save-budgets-btn,
+      #add-income-btn {
+        background-color: var(--electric-green);
+      }
+
+      #delete-selected-btn,
+      #add-expense-btn {
+        background-color: var(--electric-red);
+      }
+
+      #main-action-btn {
+        background-color: var(--electric-blue);
+      }
+
+      #toggle-filters-btn {
+        background-color: var(--bg-dark-tertiary);
+        font-size: 0.75rem; /* text-xs */
+      }
+
+      /* Efectos Hover */
+      #migrate-all-recurring-btn:hover,
+      #save-budgets-btn:hover,
+      #add-income-btn:hover {
+        background-color: #15803d; /* hover:bg-green-700 */
+      }
+
+      #delete-selected-btn:hover,
+      #add-expense-btn:hover {
+        background-color: #b91c1c; /* hover:bg-red-700 */
+      }
+
+      #main-action-btn:hover {
+        background-color: #0c87bf; /* hover:bg-blue-700 */
+      }
+
+      #toggle-filters-btn:hover {
+        background-color: var(--bg-dark-primary); /* hover:bg-gray-800 */
+      }
+
+      /* Tamaño de los íconos SVG */
+      #migrate-all-recurring-btn svg,
+      #save-budgets-btn svg,
+      #delete-selected-btn svg {
+        height: 1.25rem; /* h-5 */
+        width: 1.25rem; /* w-5 */
+      }
+
+      /* Contenedor de filtros y botones derechos */
+      #filters-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem; /* gap-4 */
+        flex-grow: 1;
+      }
+
+      .action-buttons-right {
+        display: flex;
+        align-items: center;
+      }
+
+      #mostrar {
+        margin-left: 0.5rem; /* ml-2 */
+      }
+
       /* --- Modales (Estilos Generales) --- */
       .modal {
         display: none;
@@ -480,6 +688,8 @@
 
       .modal.active {
         display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .modal > div {
@@ -577,6 +787,10 @@
       }
 
       /* --- Tablas (Estilos Generales) --- */
+      /* --- Contenedor de Tabla --- */
+      .table-container {
+        overflow-x: auto;
+      }
       table {
         border-collapse: separate;
         border-spacing: 0;
@@ -772,20 +986,6 @@
         display: block;
       }
 
-      .loading-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(17, 24, 39, 0.8);
-        backdrop-filter: blur(4px);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
-
       .loading-overlay.active {
         display: flex;
       }
@@ -832,15 +1032,14 @@
 
       /* ====================================================================== */
       /* 5. ESTILOS ESPECÍFICOS POR PESTAÑA Y VISTA
-              /* ====================================================================== */
+      /* ====================================================================== */
 
       /* --- Contenido de la celda de Categoría --- */
       .category-cell-content {
         display: flex;
-        align-items: center; /* Centra verticalmente el ícono, texto y botón */
-        justify-content: flex-start; /* Alinea todo al inicio de la celda */
-        gap: 4px; /* Añade un pequeño espacio entre elementos */
-        white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+        align-items: center;
+        justify-content: flex-start;
+        gap: 4px;
       }
 
       /* --- Dashboard y Alertas --- */
@@ -963,6 +1162,9 @@
       #no-balances-message,
       #no-categories-for-budget-message {
         color: var(--text-light-secondary);
+        text-align: center;
+        padding-top: 2rem; /* py-8 */
+        padding-bottom: 2rem;
       }
 
       .edit-recurring-btn,
@@ -991,14 +1193,88 @@
         color: #f472b6;
       }
 
+      #registros-content td:nth-child(4) {
+        padding-right: 1.5rem; /* Crea un "cojín" de espacio a la derecha del texto */
+      }
+      /* --- Estilos específicos para la tabla de Registros --- */
+      #registros-content th:first-child {
+        padding-left: 0.5rem; /* px-2 */
+        padding-right: 0.5rem;
+        text-align: center;
+      }
+      #registros-content th:nth-child(6),
+      #registros-content th:nth-child(7) {
+        text-align: right;
+      }
+
+      #registros-content th:nth-child(8) {
+        text-align: center;
+      }
+
+      /* Estilos del Footer */
+      #registros-content tfoot td {
+        font-size: 0.875rem; /* text-sm */
+        text-transform: uppercase;
+        text-align: right;
+        color: var(--text-light-secondary); /* text-gray-700 */
+      }
+
+      /* Footer de Escritorio */
+      #registros-content tfoot .desktop-footer-row td {
+        padding: 1rem 1.5rem; /* py-4 px-6 */
+      }
+
+      /* Footer de Móvil */
+      #registros-content tfoot .mobile-footer-row td {
+        padding: 0.75rem 1rem; /* py-3 px-4 */
+      }
+
+      #registros-content tfoot #registros-total-income,
+      #registros-content tfoot #mobile-registros-total-income {
+        color: var(--income-color); /* text-green-600 */
+        text-transform: none;
+      }
+      #registros-content tfoot #registros-total-expenses,
+      #registros-content tfoot #mobile-registros-total-expenses {
+        color: var(--expense-color); /* text-red-600 */
+        text-transform: none;
+      }
+
+      /* --- Lógica Responsiva del Footer --- */
+      .desktop-footer-row {
+        display: none;
+      }
+      .mobile-footer-row {
+        display: table-row;
+      }
+      @media (min-width: 768px) {
+        /* md: en Tailwind */
+        .desktop-footer-row {
+          display: table-row;
+        }
+        .mobile-footer-row {
+          display: none;
+        }
+      }
+
       /* --- Filtros --- */
       #filter-category,
-      #filter-bank, /* <-- Se añade el nuevo filtro de banco */
+      #filter-bank,
       #filter-month {
         background-color: var(--bg-dark-tertiary);
         border: 1px solid var(--border-dark);
         color: var(--text-light-primary);
-        border-radius: 0.5rem; /* Pequeña mejora para consistencia visual */
+        border-radius: 0.5rem;
+        padding: 0.25rem; /* p-1 */
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #filter-category:focus,
+      #filter-bank:focus,
+      #filter-month:focus {
+        outline: none;
+        border-color: var(--electric-blue);
+        box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.4); /* focus:ring-2 focus:ring-blue-500 */
       }
 
       /* --- Panel de Entrada por Voz --- */
@@ -1017,6 +1293,81 @@
           opacity: 1;
           transform: translateY(0);
         }
+      }
+
+      /* --- Estilos completos del Panel de Voz --- */
+      #voice-input-panel {
+        display: none; /* Reemplaza a la clase 'hidden' */
+        margin-bottom: 1rem; /* mb-4 */
+        padding: 1rem; /* p-4 */
+        border: 1px solid var(--border-dark); /* border, border-gray-700 */
+        border-radius: 0.5rem; /* rounded-lg */
+        background-color: var(--bg-dark-secondary); /* bg-gray-800 */
+      }
+
+      /* El .visible que ya tenías se encarga de mostrarlo */
+      #voice-input-panel.visible {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      #voice-input-panel label {
+        display: block;
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 500; /* font-medium */
+        color: var(--text-light-secondary); /* text-gray-400 */
+        margin-bottom: 0.5rem; /* mb-2 */
+      }
+
+      #voice-text-input {
+        width: 100%;
+        padding: 0.625rem; /* p-2.5 */
+        background-color: var(--bg-dark-primary); /* bg-gray-900 */
+        border: 1px solid var(--border-dark); /* border, border-gray-600 */
+        border-radius: 0.5rem; /* rounded-lg */
+        color: #e5e7eb; /* text-gray-200 */
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #voice-text-input::placeholder {
+        color: var(--text-light-secondary);
+      }
+
+      #voice-text-input:focus {
+        outline: none;
+        border-color: var(--electric-blue);
+        box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.4); /* focus:ring-2 focus:ring-blue-500 */
+      }
+
+      .voice-panel-buttons {
+        display: flex;
+        justify-content: flex-end; /* justify-end */
+        margin-top: 0.5rem; /* mt-2 */
+      }
+
+      #save-voice-text-btn,
+      #cancel-voice-text-btn {
+        color: #ffffff;
+        padding: 0.5rem 1rem; /* px-4 py-2 */
+        border-radius: 0.5rem; /* rounded-lg */
+        transition: background-color 0.15s ease-in-out;
+        border: none;
+        cursor: pointer;
+      }
+
+      #save-voice-text-btn {
+        background-color: var(--electric-green); /* bg-green-600 */
+      }
+      #save-voice-text-btn:hover {
+        background-color: #15803d; /* hover:bg-green-700 */
+      }
+
+      #cancel-voice-text-btn {
+        background-color: var(--border-dark); /* bg-gray-600 */
+        margin-left: 0.5rem; /* ml-2 */
+      }
+      #cancel-voice-text-btn:hover {
+        background-color: var(--bg-dark-tertiary); /* hover:bg-gray-700 */
       }
 
       /* --- Pestaña Gastos Recurrentes --- */
@@ -2008,6 +2359,11 @@
       }
 
       @media (min-width: 768px) {
+        .contenedor-botones {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
         .recurring-grid-container {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -2394,9 +2750,170 @@
         color: var(--text-light-secondary);
         word-break: break-word;
       }
+
+      .bodymargin {
+        margin-top: 14rem;
+      }
+
+      /* --- Estilos para la Pantalla de Carga --- */
+      /* Ya tenías .loading-overlay en tu CSS, aquí añado el estilo del texto */
+      .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(17, 24, 39, 0.8);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      #loading-overlay .loading-text {
+        margin-left: 1rem; /* ml-4 */
+        font-size: 1.125rem; /* text-lg */
+        color: white; /* text-gray-700 */
+      }
+
+      /* --- Contenedor del Modal de Autenticación --- */
+      /* La clase .modal y .modal.active ya la tienes, esto añade el posicionamiento y fondo */
+      /* --- Contenedor del Modal de Autenticación (Corregido) --- */
+      #auth-modal {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 1rem;
+        /* -- Líneas añadidas para centrar el contenido -- */
+      }
+
+      /* --- Contenido de la tarjeta del Modal --- */
+      .auth-modal-content {
+        background-color: #ffffff; /* bg-white */
+        border-radius: 0.5rem; /* rounded-lg */
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
+        width: 100%; /* w-full */
+        max-width: 28rem; /* max-w-md */
+        display: flex;
+        flex-direction: column; /* flex flex-col */
+      }
+
+      /* --- Título y Subtítulo --- */
+      .auth-modal-title {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700; /* font-bold */
+        padding: 0; /* p-0 */
+        border-bottom: 1px solid #e5e7eb; /* border-b */
+        flex-shrink: 0; /* flex-shrink-0 */
+        text-align: center; /* text-center */
+      }
+
+      .auth-modal-subtitle {
+        font-weight: 100; /* font-thin */
+        font-size: 1rem; /* xx-small (interpretado) */
+      }
+
+      /* --- Cuerpo y Formulario del Modal --- */
+      .auth-modal-body {
+        padding: 0.25rem; /* p-1 */
+      }
+
+      .auth-modal-intro {
+        margin-bottom: 0.25rem; /* mb-1 */
+        text-align: center; /* text-center */
+      }
+
+      .auth-modal-intro p {
+        color: #ebeff4; /* text-gray-600 */
+        padding-left: 0.5rem; /* px-1 */
+      }
+
+      /* --- Espaciado entre elementos del formulario --- */
+      #auth-form > * + * {
+        margin-top: 1rem; /* space-y-4 */
+      }
+
+      /* --- Etiquetas (Labels) --- */
+      #auth-form label {
+        display: block; /* block */
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 500; /* font-medium */
+        color: white; /* text-gray-700 */
+        margin-bottom: 0.25rem; /* mb-1 */
+        padding-left: 0.5rem; /* px-1 */
+      }
+
+      /* --- Cajas de Texto (Inputs) --- */
+      #auth-form input {
+        width: 95%; /* w-full */
+        padding: 0.25rem; /* p-1 */
+        border: 1px solid #d1d5db; /* border */
+        border-radius: 0.5rem; /* rounded-lg */
+        margin-left: 0.5rem; /* ml-2 */
+        margin-right: 0.5rem; /* mr-2 */
+      }
+
+      #auth-form input:focus {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px #60a5fa; /* focus:ring-2 focus:ring-blue-500 */
+        border-color: #3b82f6;
+      }
+
+      /* --- Contenedor de Botones --- */
+      .auth-buttons-container {
+        display: flex;
+        flex-direction: column; /* flex flex-col */
+        justify-content: space-between; /* justify-between */
+        gap: 0.75rem; /* gap-3 */
+        padding-top: 0.5rem;
+        padding-bottom: 1rem; /* pt-4 */
+        padding-right: 0.5rem; /* pr-4 */
+        padding-left: 0.5rem; /* px-4 */
+      }
+
+      /* --- Diseño responsivo para botones (uno al lado del otro en pantallas grandes) --- */
+      @media (min-width: 640px) {
+        .auth-buttons-container {
+          flex-direction: row; /* sm:flex-row */
+        }
+      }
+
+      /* --- Estilo de los Botones --- */
+      #login-btn,
+      #register-btn {
+        flex: 1 1 0%; /* flex-1 */
+        color: #ffffff; /* text-white */
+        margin-bottom: 0; /* mb-2 */
+        padding: 0.25rem; /* px-1 py-1 */
+        border-radius: 0.5rem; /* rounded-lg */
+        transition: background-color 0.15s ease-in-out; /* transition */
+        display: flex;
+        align-items: center;
+        justify-content: center; /* flex items-center justify-center */
+        border: none;
+        cursor: pointer;
+      }
+
+      #login-btn {
+        background-color: #2563eb; /* bg-blue-600 */
+      }
+      #login-btn:hover {
+        background-color: #1d4ed8; /* hover:bg-blue-700 */
+      }
+
+      #register-btn {
+        background-color: #16a34a; /* bg-green-600 */
+      }
+      #register-btn:hover {
+        background-color: #15803d; /* hover:bg-green-700 */
+      }
     </style>
   </head>
-  <body class="mt-56 view-dashboard">
+  <body class="bodymargin view-dashboard">
     <div id="ptr-container">
       <div class="ptr-arrow"></div>
       <div class="ptr-spinner"></div>
@@ -2425,62 +2942,43 @@
 
     <div class="loading-overlay active" id="loading-overlay">
       <div class="spinner"></div>
-      <p class="ml-4 text-lg text-gray-700">Cargando datos...</p>
+      <p class="loading-text">Cargando datos...</p>
     </div>
+
     <div id="toast-container"></div>
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="auth-modal"
-    >
-      <div class="bg-white rounded-lg shadow-xl w-full max-w-md flex flex-col">
-        <h2 class="text-2xl font-bold p-0 border-b flex-shrink-0 text-center">
-          Foresee Finances, <br /><span class="font-thin xx-small">Bienvenido</span>
+
+    <div class="modal" id="auth-modal">
+      <div class="auth-modal-content">
+        <h2 class="auth-modal-title">
+          Foresee Finances, <br /><span class="auth-modal-subtitle">Bienvenido</span>
         </h2>
-        <div class="p-1 flex-grow">
-          <div class="mb-1 text-center">
-            <p class="text-gray-600">Inicia sesión o regístrate para acceder a tus datos.</p>
+
+        <div class="auth-modal-body">
+          <div class="auth-modal-intro">
+            <p>Inicia sesión o regístrate para acceder a tus datos.</p>
           </div>
-          <form class="space-y-4" id="auth-form">
+
+          <form id="auth-form">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="auth-email">
-                Correo Electrónico
-              </label>
-              <input
-                class="w-full p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                id="auth-email"
-                required=""
-                type="email"
-              />
+              <label for="auth-email"> Correo Electrónico </label>
+              <input id="auth-email" required="" type="email" />
               <span class="input-error-message" id="auth-email-error"> </span>
             </div>
+
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="auth-password">
-                Contraseña
-              </label>
-              <input
-                class="w-full p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                id="auth-password"
-                required=""
-                type="password"
-              />
+              <label for="auth-password"> Contraseña </label>
+              <input id="auth-password" required="" type="password" />
               <span class="input-error-message" id="auth-password-error"> </span>
             </div>
-            <div class="flex flex-col sm:flex-row justify-between gap-3 pt-4">
-              <button
-                class="flex-1 bg-blue-600 text-white mb-2 px-1 py-1 rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
-                id="login-btn"
-                type="submit"
-              >
+
+            <div class="auth-buttons-container">
+              <button id="login-btn" type="submit">
                 Iniciar Sesión
-                <span class="btn-spinner hidden"> </span>
+                <span class="btn-spinner hidden"></span>
               </button>
-              <button
-                class="flex-1 bg-green-600 text-white mb-2 px-1 py-1 rounded-lg hover:bg-green-700 transition flex items-center justify-center"
-                id="register-btn"
-                type="button"
-              >
+              <button id="register-btn" type="button">
                 Registrarse
-                <span class="btn-spinner hidden"> </span>
+                <span class="btn-spinner hidden"></span>
               </button>
             </div>
           </form>
@@ -2489,43 +2987,42 @@
     </div>
 
     <header>
-      <div id="main-header-bar" class="mt-0 fixed top-0 left-0 w-full h-32">
-        <div class="w-full pt-2 pb-2 flex items-center justify-between pr-4" id="barr">
+      <div id="main-header-bar">
+        <div id="barr">
           <img
             src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
             alt="Logo"
-            class="logotipo pl-4"
+            class="logotipo"
           />
 
-          <div class="flex-1 text-center">
-            <h1 class="text-3xl font-bold">GESTOR FINANCIERO Y DE PRESUPUESTO WEB</h1>
-            <p id="ptitul" class="text-lg">
+          <div class="header-center-content">
+            <h1>GESTOR FINANCIERO Y DE PRESUPUESTO WEB</h1>
+            <p id="ptitul">
               Bienvenido,
-              <strong class="font-semibold" id="user-alias-display">Cargando...</strong>: Tu panel
-              de control financiero, moderno y eficiente.
+              <strong id="user-alias-display">Cargando...</strong>: Tu panel de control financiero,
+              moderno y eficiente.
             </p>
             <button id="open-brand-story-btn" class="btn-philosophy">
               Conoce nuestra filosofía
             </button>
           </div>
 
-          <div class="flex flex-col items-end">
-            <button id="IdbtOpenScreen" class="btOpenScreen mb-1 mr-1">Pantalla Completa</button>
-            <button id="IdbtCloseScreen" class="btcloseScreen mb-1">Mostrar Navegador</button>
-            <button class="bttclose mr-6" id="logout-btn">
+          <div class="header-right-buttons">
+            <button id="IdbtOpenScreen" class="btOpenScreen">Pantalla Completa</button>
+            <button id="IdbtCloseScreen" class="btcloseScreen">Mostrar Navegador</button>
+            <button class="bttclose" id="logout-btn">
               Cerrar Sesión
               <span class="btn-spinner hidden"></span>
             </button>
           </div>
         </div>
 
-        <div class="contenedor-botones flex-col md:flex-row md:items-center md:justify-between">
+        <div class="contenedor-botones">
           <div class="btn" id="tabs">
             <button class="tab-button" data-tab="registros">
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514689/registro_mc8ed8.png"
                 alt="Icono Registros"
-                class="w-14 mb-1"
               />
               <span>Registros</span>
             </button>
@@ -2533,7 +3030,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/v1757199087/voz_w5ctvq.png"
                 alt="Icono Grabar Gasto"
-                class="w-14 mb-1"
               />
               <span>Voz</span>
             </button>
@@ -2541,7 +3037,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514685/proyeccion_hh3xyt.png"
                 alt="Icono Proyección"
-                class="h-12 w-14 mb-1"
               />
               <span>Proyección</span>
             </button>
@@ -2549,7 +3044,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514673/gastos-recurrentes2_udrbey.png"
                 alt="Icono recurrentes"
-                class="h-11 w-11 mb-1"
               />
               <span>Gastos<br />Recurrentes</span>
             </button>
@@ -2557,7 +3051,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756767509/comunes_xjuxxt.png"
                 alt="Icono Gastos Comunes"
-                class="h-11 w-11 mb-1"
               />
               <span>Gastos<br />Comunes</span>
             </button>
@@ -2565,7 +3058,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514697/tarjetas2_z3jokx.png"
                 alt="Icono tarjetas"
-                class="h-12 w-12 mb-1"
               />
               <span>Tarjetas<br />de Crédito</span>
             </button>
@@ -2573,7 +3065,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514692/saldos_lntcfz.png"
                 alt="Icono saldos"
-                class="h-9 w-12 mb-1"
               />
               <span>Saldos<br />de Cuentas</span>
             </button>
@@ -2581,7 +3072,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514686/proyeccion2_iqtpug.png"
                 alt="Icono calculadora"
-                class="h-9 w-10 mb-1"
               />
               <span>Calculadora</span>
             </button>
@@ -2589,7 +3079,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514690/reportes_qisw3e.png"
                 alt="Icono reportes"
-                class="h-9 w-11 mb-1"
               />
               <span>Reportes</span>
             </button>
@@ -2597,7 +3086,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514684/presupuesto_r7qkr9.png"
                 alt="Icono Presupuesto"
-                class="h-10 w-11 mb-1"
               />
               <span>Presupuesto</span>
             </button>
@@ -2605,7 +3093,6 @@
               <img
                 src="https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514668/configuracion_puo2ap.png"
                 alt="Icono configuración"
-                class="h-11 w-11 mb-1"
               />
               <span>Configuración</span>
             </button>
@@ -2634,7 +3121,7 @@
             <img
               src="https://res.cloudinary.com/datwdagbf/image/upload/v1756889458/AA7C0FC4-9F29-48D3-BA63-CDF884DA716B_uwkqfp.png"
               alt="Icono Saldo Actual"
-              class="p-0"
+              class=""
             />
           </div>
         </div>
@@ -2666,22 +3153,14 @@
         </div>
       </div>
 
-      <div class="mr-8 ml-8 mt-2 text-sm text-yellow-700" id="credit-card-alerts"></div>
-      <div class="mr-8 ml-8 mt-2 text-sm text-blue-700" id="recurring-alerts"></div>
+      <div id="credit-card-alerts"></div>
+      <div id="recurring-alerts"></div>
 
       <main id="main-container" class="container mx-auto bg-gray-200 rounded-xl shadow-md mt-24">
         <div class="button-container">
-          <div class="flex items-center space-x-2">
-            <button
-              id="migrate-all-recurring-btn"
-              class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition flex items-center space-x-2 hidden"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
+          <div class="action-buttons-left">
+            <button id="migrate-all-recurring-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fill-rule="evenodd"
                   d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
@@ -2691,16 +3170,8 @@
               <span>Registrar Todos</span>
               <span class="btn-spinner hidden"></span>
             </button>
-            <button
-              class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-2 hidden"
-              id="save-budgets-btn"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
+            <button id="save-budgets-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fill-rule="evenodd"
                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -2710,16 +3181,8 @@
               <span>Guardar</span>
               <span class="btn-spinner hidden"></span>
             </button>
-            <button
-              id="delete-selected-btn"
-              class="bg-red-600 text-white px-2 py-1 rounded-lg hover:bg-red-700 transition flex items-center space-x-2 hidden"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
+            <button id="delete-selected-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fill-rule="evenodd"
                   d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
@@ -2729,186 +3192,87 @@
               <span>Eliminar Seleccionados</span>
               <span class="btn-spinner hidden"></span>
             </button>
-            <button
-              class="bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 hidden"
-              id="main-action-btn"
-            >
+            <button id="main-action-btn">
               <span id="main-action-btn-text"></span>
             </button>
-            <button
-              class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition flex items-center space-x-2 hidden"
-              id="add-income-btn"
-            >
+            <button id="add-income-btn">
               <span>+ Ingreso</span>
             </button>
-            <button
-              class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition flex items-center space-x-2 hidden"
-              id="add-expense-btn"
-            >
+            <button id="add-expense-btn">
               <span>+ Gasto</span>
             </button>
           </div>
 
-          <div
-            class="flex flex-row items-center justify-center gap-4 flex-grow"
-            id="filters-container"
-          >
-            <select
-              class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              id="filter-category"
-            >
+          <div id="filters-container">
+            <select id="filter-category">
               <option value="">Todas las categorías</option>
             </select>
-
-            <select class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500" id="filter-bank">
+            <select id="filter-bank">
               <option value="">Todos los bancos</option>
             </select>
-
-            <input
-              class="p-1 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              id="filter-month"
-              type="month"
-            />
+            <input id="filter-month" type="month" />
           </div>
-          <div class="flex items-center">
-            <button
-              id="toggle-filters-btn"
-              class="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-800 text-xs"
-            >
-              Filtros
-            </button>
-            <button class="aparecer ml-2" id="mostrar">
+
+          <div class="action-buttons-right">
+            <button id="toggle-filters-btn">Filtros</button>
+            <button class="aparecer" id="mostrar">
               <span>X</span>
             </button>
           </div>
         </div>
 
-        <div
-          id="voice-input-panel"
-          class="hidden mb-4 p-4 border rounded-lg bg-gray-800 border-gray-700"
-        >
-          <label for="voice-text-input" class="block text-sm font-medium text-gray-400 mb-2"
-            >Dicta tu transacción aquí. Di "guardar" al final para registrarla
-            automáticamente.</label
-          >
+        <div id="voice-input-panel">
+          <label for="voice-text-input">
+            Dicta tu transacción aquí. Di "guardar" al final para registrarla automáticamente.
+          </label>
           <textarea
             id="voice-text-input"
             rows="3"
-            class="w-full p-2.5 bg-gray-900 border border-gray-600 rounded-lg text-gray-200 focus:ring-2 focus:ring-blue-500"
             placeholder="Ej: Gasto 50 dólares en gasolina en wells fargo ayer guardar..."
           ></textarea>
-          <div class="flex justify-end mt-2">
-            <button
-              id="save-voice-text-btn"
-              class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              Guardar Voz
-            </button>
-            <button
-              id="cancel-voice-text-btn"
-              class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition ml-2"
-            >
-              Cancelar
-            </button>
+          <div class="voice-panel-buttons">
+            <button id="save-voice-text-btn">Guardar Voz</button>
+            <button id="cancel-voice-text-btn">Cancelar</button>
           </div>
         </div>
 
         <div id="registros-content" class="tab-pane active">
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+          <div class="table-container">
+            <table>
+              <thead>
                 <tr>
-                  <th class="px-2 py-3 text-center">
+                  <th>
                     <input type="checkbox" id="select-all-registros" title="Seleccionar Todo" />
                   </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Fecha
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Descripción
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Categoría
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Banco
-                  </th>
-                  <th
-                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Monto
-                  </th>
-                  <th
-                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Saldo
-                  </th>
-                  <th
-                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Acciones
-                  </th>
+                  <th>Fecha</th>
+                  <th>Descripción</th>
+                  <th>Categoría</th>
+                  <th>Banco</th>
+                  <th>Monto</th>
+                  <th>Saldo</th>
+                  <th>Acciones</th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200" id="transactions-table-body"></tbody>
-              <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr class="hidden md:table-row">
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Ingresos:
-                  </td>
-                  <td
-                    class="px-6 py-4 text-right text-green-600 text-sm"
-                    id="registros-total-income"
-                  >
-                    $0.00
-                  </td>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase">
-                    Total Gastos:
-                  </td>
-                  <td
-                    class="px-6 py-4 text-right text-red-600 text-sm"
-                    id="registros-total-expenses"
-                  >
-                    $0.00
-                  </td>
+              <tbody id="transactions-table-body"></tbody>
+              <tfoot>
+                <tr class="desktop-footer-row">
+                  <td colspan="4">Total Ingresos:</td>
+                  <td id="registros-total-income">$0.00</td>
+                  <td>Total Gastos:</td>
+                  <td id="registros-total-expenses">$0.00</td>
                   <td></td>
                 </tr>
-
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Gastos:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-red-600 text-sm"
-                    id="mobile-registros-total-expenses"
-                  >
-                    $0.00
-                  </td>
+                <tr class="mobile-footer-row">
+                  <td colspan="4">Total Gastos:</td>
+                  <td id="mobile-registros-total-expenses">$0.00</td>
                 </tr>
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Ingresos:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-green-600 text-sm"
-                    id="mobile-registros-total-income"
-                  >
-                    $0.00
-                  </td>
+                <tr class="mobile-footer-row">
+                  <td colspan="4">Total Ingresos:</td>
+                  <td id="mobile-registros-total-income">$0.00</td>
                 </tr>
               </tfoot>
             </table>
-            <p class="text-center text-gray-500 py-8" id="no-transactions-message">
-              No hay transacciones para el período seleccionado.
-            </p>
+            <p id="no-transactions-message">No hay transacciones para el período seleccionado.</p>
           </div>
         </div>
 
@@ -2954,49 +3318,21 @@
               </thead>
               <tbody class="bg-white divide-y divide-gray-200" id="proyeccion-table-body"></tbody>
 
-              <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr class="hidden md:table-row">
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="3">
-                    Total Ingresos:
-                  </td>
-                  <td
-                    class="px-6 py-4 text-right text-green-600 text-sm"
-                    id="proyeccion-total-income"
-                  >
-                    $0.00
-                  </td>
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase">
-                    Total Gastos:
-                  </td>
-                  <td
-                    class="px-6 py-4 text-right text-red-600 text-sm"
-                    id="proyeccion-total-expenses"
-                  >
-                    $0.00
-                  </td>
+              <tfoot id="proyeccion-footer">
+                <tr class="desktop-footer-row">
+                  <td colspan="3">Total Ingresos:</td>
+                  <td id="proyeccion-total-income">$0.00</td>
+                  <td>Total Gastos:</td>
+                  <td id="proyeccion-total-expenses">$0.00</td>
                   <td></td>
                 </tr>
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Gastos Proyectados:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-red-600 text-sm"
-                    id="mobile-proyeccion-total-expenses"
-                  >
-                    $0.00
-                  </td>
+                <tr class="mobile-footer-row">
+                  <td colspan="4">Total Gastos Proyectados:</td>
+                  <td id="mobile-proyeccion-total-expenses">$0.00</td>
                 </tr>
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Ingresos Proyectados:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-right text-green-600 text-sm"
-                    id="mobile-proyeccion-total-income"
-                  >
-                    $0.00
-                  </td>
+                <tr class="mobile-footer-row">
+                  <td colspan="4">Total Ingresos Proyectados:</td>
+                  <td id="mobile-proyeccion-total-income">$0.00</td>
                 </tr>
               </tfoot>
             </table>
@@ -3050,26 +3386,14 @@
                 class="bg-white divide-y divide-gray-200"
                 id="recurring-expenses-table-body"
               ></tbody>
-              <tfoot class="bg-gray-50 border-t-2 border-gray-300">
-                <tr class="hidden md:table-row">
-                  <td class="px-6 py-4 text-right text-gray-700 text-sm uppercase" colspan="6">
-                    Total Mensual Proyectado
-                  </td>
-                  <td class="px-6 py-4 text-center text-red-700 text-sm" id="recurring-total">
-                    $0.00
-                  </td>
+              <tfoot id="recurrentes-footer">
+                <tr class="desktop-footer-row">
+                  <td colspan="6">Total Mensual Proyectado</td>
+                  <td id="recurring-total">$0.00</td>
                 </tr>
-
-                <tr class="table-row md:hidden">
-                  <td class="px-4 py-3 text-right text-gray-700 text-sm uppercase" colspan="4">
-                    Total Mensual:
-                  </td>
-                  <td
-                    class="px-4 py-3 text-center text-red-700 text-sm"
-                    id="mobile-recurring-total"
-                  >
-                    $0.00
-                  </td>
+                <tr class="mobile-footer-row">
+                  <td colspan="4">Total Mensual:</td>
+                  <td id="mobile-recurring-total">$0.00</td>
                 </tr>
               </tfoot>
             </table>
