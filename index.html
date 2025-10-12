@@ -231,7 +231,7 @@
 
       /* ====================================================================== */
       /* 2. ESTRUCTURA Y LAYOUT PRINCIPAL
-              /* ====================================================================== */
+      /* ====================================================================== */
       #main-content-wrapper {
         flex-grow: 1;
       }
@@ -413,7 +413,7 @@
 
       /* ====================================================================== */
       /* 3. LÓGICA DE CONTROL DE VISTAS (Dashboard vs Contenido)
-              /* ====================================================================== */
+      /* ====================================================================== */
       body.view-dashboard #main-container,
       body.view-dashboard #mostrar {
         display: none;
@@ -440,9 +440,120 @@
         margin-top: 1rem;
       }
 
+      /* --- Estilos del Pie de Página (Footer) --- */
+      footer {
+        background-color: var(--bg-dark-primary); /* bg-gray-800 */
+        color: var(--text-light-primary); /* text-white */
+        padding-top: 1rem; /* py-4 */
+        padding-bottom: 1rem; /* py-4 */
+        flex-shrink: 0; /* Evita que el footer se encoja */
+        border-top: 1px solid var(--border-dark);
+      }
+
+      .footer-container {
+        max-width: 1280px; /* Ancho estándar de un contenedor */
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        text-align: center;
+      }
+
+      .footer-container p {
+        font-size: 0.875rem; /* text-sm */
+        margin: 0;
+      }
+
+      #app-version {
+        font-size: 0.75rem; /* text-xs */
+        color: var(--text-light-secondary); /* text-gray-400 */
+        margin-top: 0.25rem; /* mt-1 */
+      }
+
+      .footer-links {
+        font-size: 0.75rem; /* text-xs */
+        margin-top: 0.5rem; /* mt-2 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem; /* Reemplaza space-x-4 */
+      }
+
+      .footer-links a {
+        color: var(--electric-blue); /* text-blue-400 adaptado */
+        text-decoration: none; /* Quitamos el subrayado por defecto */
+        transition: text-decoration 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        text-decoration: underline; /* hover:underline */
+      }
+
+      .footer-links span {
+        color: var(--border-dark); /* Color más sutil para el separador */
+      }
+
+      /* --- Prompt de Pantalla Completa para Móviles --- */
+      #mobile-fullscreen-prompt {
+        display: none; /* Inicia oculto, controlado por JS con la clase .active */
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(17, 24, 39, 0.95); /* bg-gray-900 bg-opacity-95 */
+        z-index: 9999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem; /* p-8 */
+      }
+
+      /* El JS añade esta clase para mostrar el prompt */
+      #mobile-fullscreen-prompt.active {
+        display: flex;
+      }
+
+      #mobile-fullscreen-prompt img {
+        width: 6rem; /* w-24 */
+        height: auto;
+        margin-bottom: 1.5rem; /* mb-6 */
+      }
+
+      #mobile-fullscreen-prompt h2 {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700; /* font-bold */
+        color: var(--text-light-primary); /* text-white */
+        margin-bottom: 1rem; /* mb-4 */
+      }
+
+      #mobile-fullscreen-prompt p {
+        color: #d1d5db; /* text-gray-300 */
+        margin-bottom: 2rem; /* mb-8 */
+      }
+
+      #enter-fullscreen-btn {
+        background-color: var(--electric-blue);
+        color: white;
+        font-weight: 700;
+        padding: 1rem 2rem; /* py-4 px-8 */
+        border-radius: 9999px; /* rounded-full */
+        font-size: 1.125rem; /* text-lg */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      #enter-fullscreen-btn:hover {
+        background-color: #0c87bf; /* hover:bg-blue-700 */
+        transform: scale(1.05); /* hover:scale-105 */
+      }
+
       /* ====================================================================== */
       /* 4. COMPONENTES REUTILIZABLES
-              /* ====================================================================== */
+      /* ====================================================================== */
 
       /* --- Botones --- */
       .hidden {
@@ -683,6 +794,13 @@
       /* --- Modales (Estilos Generales) --- */
       .modal {
         display: none;
+        position: fixed; /* <-- AÑADIDO: Despega el modal del flujo de la página */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(17, 24, 39, 0.8); /* Fondo oscuro semitransparente */
+        padding: 1rem; /* Espaciado interno para que el contenido no pegue a los bordes */
         z-index: 100;
       }
 
@@ -2577,7 +2695,7 @@
       #transaction-modal-header,
       #recurring-modal-header {
         background-color: var(--bg-dark-primary);
-        padding: 0.5rem;
+        padding: 1rem 1.5rem; /* Aumentado para más espacio */
         border-bottom: 1px solid var(--border-dark);
         display: flex;
         justify-content: space-between;
@@ -2594,77 +2712,93 @@
         color: var(--text-light-primary);
       }
 
+      #transaction-modal-header > div {
+        display: flex;
+        align-items: center;
+      }
+
+      #voice-recognition-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+        margin-right: 1rem;
+        padding: 0;
+      }
+
+      #voice-recognition-btn:hover {
+        color: var(--electric-blue);
+      }
+
+      #close-transaction-modal-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+      }
+      #close-transaction-modal-btn:hover {
+        color: var(--text-light-primary);
+      }
+
+      #close-transaction-modal-btn svg {
+        height: 1.25rem; /* Aumentado para mejor tacto */
+        width: 1.25rem;
+      }
+
       #transaction-modal-body {
         flex-grow: 1;
         overflow-y: auto;
-        padding: 4px 1.5rem 1.5rem 1.5rem;
-      }
-
-      #transaction-modal-body > * + * {
-        margin-top: 0.75rem;
-      }
-
-      #transaction-modal label {
-        display: block;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: var(--text-light-secondary);
-        margin-bottom: 0.25rem;
-      }
-
-      #transaction-modal input[type='date'],
-      #transaction-modal input[type='text'],
-      #transaction-modal input[type='number'],
-      #transaction-modal select {
-        width: 100%;
-        padding: 0.25rem;
-        border: 1px solid var(--border-dark);
-        border-radius: 0.5rem;
-        background-color: var(--bg-dark-tertiary);
-        color: var(--text-light-primary);
-        transition: all 0.2s ease;
-      }
-
-      #transaction-modal input:focus,
-      #transaction-modal select:focus {
-        outline: none;
-        border-color: var(--electric-blue);
-        box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.4);
-      }
-
-      #transaction-modal-type-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        padding: 1rem; /* Padding unificado */
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem; /* Espacio entre campos del formulario */
       }
 
       #transaction-modal-footer,
       #recurring-modal-footer {
-        padding: 0.75rem;
+        padding: 1rem 1.5rem;
         border-top: 1px solid var(--border-dark);
         flex-shrink: 0;
         background-color: var(--bg-dark-primary);
         border-bottom-left-radius: 1rem;
         border-bottom-right-radius: 1rem;
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap; /* Permite que los botones se reordenen en pantallas pequeñas */
         gap: 1rem;
       }
 
-      #transaction-modal-footer {
-        flex-direction: column-reverse;
-        justify-content: space-between;
-        align-items: center;
+      #transaction-modal-footer > div {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        width: 100%;
       }
 
-      #recurring-modal-footer {
-        justify-content: flex-end;
+      #open-transfer-modal-btn {
+        width: 100%;
+        background-color: rgba(34, 197, 94, 0.1);
+        color: var(--income-color);
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+        border: 1px solid var(--income-color);
+      }
+      #open-transfer-modal-btn:hover {
+        background-color: rgba(34, 197, 94, 0.2);
       }
 
       #save-transaction-btn,
       #save-recurring-btn {
         background-color: var(--electric-blue);
         color: white;
-        padding: 0.25rem 0.75rem;
+        padding: 0.5rem 1rem;
         border-radius: 0.5rem;
         display: flex;
         align-items: center;
@@ -2672,45 +2806,260 @@
         font-weight: 700;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         width: 100%;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
       }
-
       #save-transaction-btn:hover,
       #save-recurring-btn:hover {
-        background-color: #0ea4e9d5;
+        background-color: #0c87bf;
+      }
+
+      /* --- Media Queries para el Footer del Modal --- */
+      @media (min-width: 640px) {
+        #transaction-modal-footer {
+          flex-wrap: nowrap;
+        }
+        #open-transfer-modal-btn,
+        #save-transaction-btn,
+        #save-recurring-btn,
+        #transaction-modal-footer > div {
+          width: auto;
+        }
+      }
+
+      /* --- Modal de Transferencia --- */
+      /* Las clases .modal y .modal.active ya se encargan del centrado y el fondo. */
+      /* Este CSS se enfoca en el contenido del modal. */
+      #transfer-modal > div {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 28rem; /* max-w-md */
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+      }
+
+      #transfer-modal h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        color: var(--text-light-primary);
+        text-align: center;
+      }
+
+      #transfer-modal form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+
+      #transfer-modal form > div:first-of-type {
+        /* Body */
+        padding: 1.5rem;
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      #transfer-modal .form-field {
+        margin-bottom: 1rem;
+      }
+      #transfer-modal .form-field:last-child {
+        margin-bottom: 0.5rem;
+      }
+
+      /* Asegura que los campos usen todo el ancho */
+      #transfer-modal input,
+      #transfer-modal select {
+        width: 100%;
+        box-sizing: border-box; /* Crucial para que el padding no desborde el ancho */
+      }
+
+      #transfer-modal form > div:last-of-type {
+        /* Footer */
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-between; /* Justifica los botones */
+        gap: 1rem;
+      }
+
+      #transfer-cancel-btn {
+        background-color: var(--electric-red); /* Color rojo */
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      #transfer-cancel-btn:hover {
+        background-color: #b91c1c; /* Rojo más oscuro al pasar el cursor */
+      }
+
+      #confirm-transfer-btn {
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+      #confirm-transfer-btn:hover {
+        background-color: #0c87bf;
+      }
+
+      /* --- Modal de Gasto Recurrente --- */
+      /* Se reutilizan #recurring-modal-content, #recurring-modal-header, etc. del modal anterior */
+      #close-recurring-modal-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+      }
+      #close-recurring-modal-btn:hover {
+        color: var(--text-light-primary);
+      }
+      #close-recurring-modal-btn svg {
+        height: 1.5rem; /* h-6 */
+        width: 1.5rem; /* w-6 */
       }
 
       #recurring-modal-body {
         flex-grow: 1;
         overflow-y: auto;
-        padding: 1rem 1.5rem 1.5rem 1.5rem;
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
         gap: 1rem;
       }
 
-      #recurring-expense-modal input[type='text'],
-      #recurring-expense-modal input[type='number'],
+      #recurring-expense-modal input,
       #recurring-expense-modal select {
         width: 100%;
-        padding: 0.25rem;
-        border: 1px solid var(--border-dark);
-        border-radius: 0.5rem;
-        background-color: var(--bg-dark-tertiary);
-        color: var(--text-light-primary);
-        transition: all 0.2s ease;
-      }
-
-      #recurring-expense-modal input:focus,
-      #recurring-expense-modal select:focus {
-        outline: none;
-        border-color: var(--electric-blue);
-        box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.4);
+        box-sizing: border-box; /* Asegura que el padding no desborde el ancho */
       }
 
       .recurring-grid-container {
         display: grid;
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: 1fr; /* Una columna por defecto para móviles */
         gap: 1rem;
+      }
+
+      #recurring-modal-footer {
+        justify-content: flex-end; /* Alinea el botón a la derecha */
+      }
+
+      /* --- Modal Tarjeta de Crédito (Diseño en Cuadrícula) --- */
+      #credit-card-modal > div {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 32rem; /* Aumentado ligeramente para acomodar la cuadrícula */
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+      }
+
+      #credit-card-modal h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        color: var(--text-light-primary);
+        text-align: left;
+      }
+
+      #credit-card-modal form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+
+      /* ===== INICIO DE LOS CAMBIOS DE CUADRÍCULA ===== */
+      #credit-card-modal form > div:first-of-type {
+        /* Body */
+        padding: 1.5rem;
+        flex-grow: 1;
+        overflow-y: auto;
+        display: grid; /* 1. Activamos el layout de cuadrícula */
+        grid-template-columns: 1fr 1fr; /* 2. Creamos dos columnas de igual tamaño */
+        gap: 1rem; /* 3. Añadimos espacio entre los campos */
+      }
+
+      /* 4. Hacemos que este campo ocupe las dos columnas */
+      #credit-card-modal .full-width-field {
+        grid-column: 1 / -1; /* Ocupa desde la primera hasta la última columna */
+      }
+
+      /* Ya no necesitamos el margen inferior en cada campo, el 'gap' lo maneja */
+      #credit-card-modal .form-field {
+        margin-bottom: 0;
+      }
+
+      /* ===== FIN DE LOS CAMBIOS DE CUADRÍCULA ===== */
+      #credit-card-modal label {
+        text-align: left;
+        color: var(--text-light-primary);
+        display: block;
+        margin-bottom: 0.25rem;
+        font-weight: 500;
+      }
+
+      #credit-card-modal form > div:last-of-type {
+        /* Footer */
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      #credit-card-cancel-btn {
+        background-color: var(--electric-red);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      #credit-card-cancel-btn:hover {
+        background-color: #b91c1c;
+      }
+
+      #save-credit-card-btn {
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+      #save-credit-card-btn:hover {
+        background-color: #0c87bf;
       }
 
       /* --- Estilos para Formulario Guiado (Modal de Transacción) --- */
@@ -2759,6 +3108,876 @@
         outline: none;
         border-color: var(--electric-blue);
         box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.4);
+      }
+
+      /* --- Modal de Confirmación (Estilo Corregido y Mejorado) --- */
+      #confirm-modal > div {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem; /* Bordes más redondeados */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        width: 100%;
+        max-width: 28rem; /* max-w-md */
+        text-align: center;
+        display: flex; /* Usamos flexbox para mejor control */
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* Contenedor del ícono de advertencia */
+      #confirm-modal > div > div:first-of-type {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 3.5rem; /* Ajustado para un tamaño adecuado */
+        width: 3.5rem;
+        border-radius: 50%; /* Círculo perfecto */
+        background-color: rgba(239, 68, 68, 0.1); /* Fondo rojo translúcido */
+        margin-bottom: 1rem;
+      }
+
+      /* Ícono SVG de advertencia */
+      #confirm-modal svg {
+        height: 2rem; /* Tamaño del ícono corregido */
+        width: 2rem;
+        color: var(--electric-red); /* Color rojo de tu tema */
+      }
+
+      #confirm-modal-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem; /* Espaciado ajustado */
+        color: var(--text-light-primary);
+      }
+
+      #confirm-modal-message {
+        color: var(--text-light-secondary);
+        margin-bottom: 1.5rem;
+      }
+
+      /* Contenedor de los botones */
+      #confirm-modal > div > div:last-of-type {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%; /* Asegura que los botones usen el ancho completo si es necesario */
+      }
+
+      /* Botones con estilo base */
+      #confirm-modal-cancel-btn,
+      #confirm-modal-confirm-btn {
+        padding: 0.6rem 1.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600; /* Texto en negrita */
+        transition: all 0.2s ease;
+        flex-grow: 1; /* Permite que los botones crezcan para llenar el espacio */
+        max-width: 150px;
+      }
+
+      /* Botón de Cancelar (estilo neutro) */
+      #confirm-modal-cancel-btn {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+      }
+      #confirm-modal-cancel-btn:hover {
+        background-color: var(--border-dark);
+        transform: translateY(-2px);
+      }
+
+      /* Botón de Confirmar (estilo de peligro) */
+      #confirm-modal-confirm-btn {
+        background-color: var(--electric-red);
+        color: white;
+      }
+      #confirm-modal-confirm-btn:hover {
+        background-color: #b91c1c; /* Rojo más oscuro */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+      }
+
+      /* --- Modal de Mensaje (Estilo Mejorado) --- */
+      #message-modal > div {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        width: 100%;
+        max-width: 28rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #message-modal-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-light-primary);
+      }
+
+      #message-modal-content {
+        color: var(--text-light-secondary);
+        margin-bottom: 1.5rem;
+      }
+
+      #message-modal-close-btn {
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      #message-modal-close-btn:hover {
+        background-color: #0c87bf;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+      }
+
+      /* --- Modal Historia de la Marca --- */
+      #brand-story-content {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 42rem; /* max-w-2xl */
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+      }
+
+      #brand-story-header {
+        background-color: var(--bg-dark-primary);
+        padding: 1.25rem; /* p-5 */
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+      }
+
+      #brand-story-header h2 {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700;
+        color: var(--text-light-primary);
+      }
+
+      #close-brand-story-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+      }
+      #close-brand-story-btn:hover {
+        color: var(--text-light-primary);
+      }
+      #close-brand-story-btn svg {
+        width: 1.5rem; /* w-6 */
+        height: 1.5rem; /* h-6 */
+      }
+
+      #brand-story-body {
+        padding: 2rem; /* p-8 */
+        flex-grow: 1;
+        overflow-y: auto;
+        line-height: 1.6; /* leading-relaxed */
+      }
+
+      #brand-story-body > div {
+        margin-bottom: 2rem; /* mb-8 */
+      }
+
+      #brand-story-body h3 {
+        font-size: 1.25rem; /* text-xl */
+        font-weight: 600; /* font-semibold */
+        color: var(--electric-blue);
+        margin-bottom: 0.5rem; /* mb-2 */
+      }
+
+      #brand-story-body p {
+        color: var(--text-light-secondary);
+        margin-bottom: 1rem; /* Simula el espaciado entre párrafos */
+      }
+
+      #brand-story-body .italic {
+        font-style: italic;
+      }
+
+      .story-separator {
+        border-top: 1px solid var(--border-dark);
+        padding-top: 2rem; /* pt-8 */
+      }
+
+      /* --- Modales Legales (Privacidad, Términos, Cookies) --- */
+      .legal-modal-content {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 42rem; /* max-w-2xl */
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+      }
+
+      .legal-modal-header {
+        background-color: var(--bg-dark-primary);
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+      }
+
+      .legal-modal-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-light-primary);
+      }
+
+      .close-legal-modal {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+      }
+      .close-legal-modal:hover {
+        color: var(--text-light-primary);
+      }
+      .close-legal-modal svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .legal-modal-body {
+        padding: 2rem;
+        flex-grow: 1;
+        overflow-y: auto;
+        line-height: 1.7; /* Aumentado para mejor legibilidad */
+      }
+
+      .legal-modal-body h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--electric-blue);
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-dark);
+      }
+
+      .legal-modal-body p,
+      .legal-modal-body li {
+        color: var(--text-light-secondary);
+        margin-bottom: 1rem;
+      }
+
+      .legal-modal-body strong {
+        color: var(--text-light-primary);
+        font-weight: 600;
+      }
+
+      .legal-modal-body ul {
+        list-style-position: inside;
+        padding-left: 0.5rem;
+      }
+
+      /* --- Modal de Selección de Íconos de Categoría --- */
+      #new-category-name-modal {
+        padding-left: 0.5rem;
+        width: 100%;
+        margin-bottom: 0.25rem;
+      }
+      #category-icon-modal-content {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 32rem; /* max-w-lg */
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+      }
+
+      #category-icon-modal-header {
+        background-color: var(--bg-dark-primary);
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+      }
+
+      #category-icon-modal-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-light-primary);
+      }
+
+      #close-icon-modal-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+      }
+      #close-icon-modal-btn:hover {
+        color: var(--text-light-primary);
+      }
+      #close-icon-modal-btn svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      #category-icon-modal-body {
+        padding: 0.25rem;
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      #category-icon-modal-body > div:first-of-type {
+        margin-bottom: 1rem; /* Espacio debajo del input de nombre */
+      }
+
+      #category-icon-modal-body label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-light-primary);
+        margin-bottom: 0.25rem;
+        margin-top: 0.25rem; /* mt-4 */
+      }
+
+      #category-icon-modal-body input {
+        margin-bottom: 0.5rem; /* mb-2 */
+      }
+
+      #category-icon-modal-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+
+      #save-new-category-btn {
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+      #save-new-category-btn:hover {
+        background-color: #0c87bf;
+      }
+
+      /* --- Modal de Acción Única (Panel Inferior) --- */
+      #single-action-modal {
+        align-items: flex-end; /* Alinea el contenido en la parte inferior */
+        background-color: rgba(17, 24, 39, 0.6); /* Fondo oscuro semitransparente */
+      }
+
+      #single-action-modal-content {
+        background-color: var(--bg-dark-secondary);
+        width: 100%;
+        max-width: 640px; /* Limita el ancho en pantallas grandes */
+        margin: 0 auto;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.5);
+        padding: 1rem 1rem 1.5rem 1rem;
+        transform: translateY(100%); /* Comienza oculto abajo */
+        transition: transform 0.3s ease-in-out;
+      }
+
+      /* El JS añade .active al #single-action-modal para mostrarlo */
+      #single-action-modal.active #single-action-modal-content {
+        transform: translateY(0); /* Lo desliza a su posición visible */
+      }
+
+      #single-action-modal-title {
+        font-size: 0.875rem;
+        text-align: center;
+        color: var(--text-light-secondary);
+        margin-bottom: 1rem;
+      }
+
+      #single-action-modal-content > div:last-of-type {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem; /* Espacio entre botones */
+      }
+
+      /* Estilo base para los botones de acción */
+      #single-action-edit-btn,
+      #single-action-delete-btn,
+      #single-action-cancel-btn {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      #single-action-edit-btn {
+        background-color: var(--electric-blue);
+        color: white;
+      }
+      #single-action-edit-btn:hover {
+        background-color: #0c87bf;
+      }
+
+      #single-action-delete-btn {
+        background-color: var(--electric-red);
+        color: white;
+      }
+      #single-action-delete-btn:hover {
+        background-color: #b91c1c;
+      }
+
+      #single-action-cancel-btn {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+        padding-top: 0.6rem;
+        padding-bottom: 0.6rem;
+      }
+      #single-action-cancel-btn:hover {
+        background-color: var(--border-dark);
+      }
+
+      /* --- Modal Opciones de Importación --- */
+      #import-options-modal-content {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 32rem; /* max-w-lg */
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+      }
+
+      #import-options-modal-header {
+        background-color: var(--bg-dark-primary);
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+      }
+
+      #import-options-modal-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-light-primary);
+      }
+
+      #close-import-options-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+      }
+      #close-import-options-btn:hover {
+        color: var(--text-light-primary);
+      }
+      #close-import-options-btn svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      #import-options-modal-body {
+        padding: 2rem;
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* space-y-6 */
+      }
+
+      #import-options-modal-body p {
+        color: var(--text-light-secondary);
+        margin-bottom: 1rem;
+      }
+
+      #select-import-file-btn {
+        width: 100%;
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 0.5rem;
+        transition: background-color 0.2s ease;
+      }
+      #select-import-file-btn:hover {
+        background-color: #0c87bf;
+      }
+
+      #selected-file-name {
+        font-size: 0.875rem;
+        text-align: center;
+        color: var(--text-light-secondary);
+        font-style: italic;
+      }
+
+      #import-checkboxes-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem; /* space-y-3 */
+      }
+
+      #import-checkboxes-container h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        border-bottom: 1px solid var(--border-dark);
+        padding-bottom: 0.5rem;
+        color: var(--text-light-primary);
+      }
+
+      #import-checkboxes-container hr {
+        border-color: var(--border-dark);
+      }
+
+      #import-checkboxes-container label {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.2s ease;
+        cursor: pointer;
+      }
+      #import-checkboxes-container label:hover {
+        background-color: var(--bg-dark-tertiary);
+      }
+
+      #import-checkboxes-container input[type='checkbox'] {
+        height: 1.25rem;
+        width: 1.25rem;
+        accent-color: var(--electric-blue);
+        margin-right: 0.75rem;
+      }
+
+      #import-checkboxes-container .import-label-bold {
+        font-weight: 700;
+        color: var(--text-light-primary);
+      }
+
+      #import-options-modal-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+
+      #cancel-import-btn {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      #cancel-import-btn:hover {
+        background-color: var(--border-dark);
+      }
+
+      #confirm-import-btn {
+        background-color: var(--electric-green);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+      #confirm-import-btn:hover {
+        background-color: #15803d;
+      }
+      #confirm-import-btn:disabled {
+        background-color: var(--border-dark);
+        cursor: not-allowed;
+      }
+
+      /* --- Modal de Selección de Categoría --- */
+      #category-select-modal-content {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 32rem; /* max-w-lg */
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+      }
+
+      #category-select-modal-header {
+        background-color: var(--bg-dark-primary);
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+      }
+
+      #category-select-modal-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-light-primary);
+      }
+
+      #close-category-select-modal-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--text-light-secondary);
+        transition: color 0.2s ease-in-out;
+      }
+      #close-category-select-modal-btn:hover {
+        color: var(--text-light-primary);
+      }
+      #close-category-select-modal-btn svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      #category-select-modal-body {
+        padding: 2rem;
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      #category-select-modal-body > div:first-of-type {
+        margin-bottom: 1.5rem; /* mb-6 */
+      }
+
+      #open-add-category-from-select-btn {
+        width: 100%;
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+        font-weight: 600;
+      }
+      #open-add-category-from-select-btn:hover {
+        background-color: #0c87bf; /* hover:bg-blue-600 */
+      }
+
+      /* --- Modal de Input para Distribución (Gastos Comunes) --- */
+      #distribution-modal-content {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 24rem; /* max-w-sm */
+        display: flex;
+        flex-direction: column;
+      }
+
+      #distribution-modal-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        color: var(--text-light-primary);
+      }
+
+      #distribution-modal-body {
+        padding: 1.5rem;
+        flex-grow: 1;
+      }
+
+      #distribution-modal-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-light-primary);
+        margin-bottom: 0.5rem;
+      }
+
+      #distribution-modal-input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      #distribution-modal-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+
+      #cancel-distribution-btn {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      #cancel-distribution-btn:hover {
+        background-color: var(--border-dark);
+      }
+
+      #save-distribution-btn {
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+      #save-distribution-btn:hover {
+        background-color: #0c87bf;
+      }
+
+      /* --- Modal Selección de Banco (Gastos Comunes) --- */
+      #shared-expense-bank-content {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 24rem; /* max-w-sm */
+        display: flex;
+        flex-direction: column;
+      }
+
+      #shared-expense-bank-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        color: var(--text-light-primary);
+      }
+
+      #shared-expense-bank-body {
+        padding: 1.5rem;
+        flex-grow: 1;
+      }
+
+      #shared-expense-summary {
+        color: var(--text-light-secondary);
+        margin-bottom: 1.5rem;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      #shared-expense-bank-body label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-light-primary);
+        margin-bottom: 0.5rem;
+      }
+
+      #shared-expense-bank-select {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      #shared-expense-bank-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-dark);
+        flex-shrink: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+
+      #cancel-shared-expense-bank-btn {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      #cancel-shared-expense-bank-btn:hover {
+        background-color: var(--border-dark);
+      }
+
+      #confirm-shared-expense-bank-btn {
+        background-color: var(--electric-blue);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+      #confirm-shared-expense-bank-btn:hover {
+        background-color: #0c87bf;
       }
 
       /* --- Modal Tutoriales --- */
@@ -2902,7 +4121,7 @@
 
       /* ====================================================================== */
       /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)
-              /* ====================================================================== */
+      /* ====================================================================== */
       /* --- Vistas de Escritorio y Tablets (min-width) --- */
       @media (min-width: 640px) {
         #transaction-modal-footer {
@@ -3509,26 +4728,17 @@
       <div class="ptr-arrow"></div>
       <div class="ptr-spinner"></div>
     </div>
-    <div
-      id="mobile-fullscreen-prompt"
-      class="fixed inset-0 bg-gray-900 bg-opacity-95 z-[9999] flex-col items-center justify-center text-center p-8 hidden"
-    >
+    <div id="mobile-fullscreen-prompt">
       <img
         src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
         alt="Logo"
-        class="w-24 h-auto mb-6"
       />
-      <h2 class="text-2xl font-bold text-white mb-4">Bienvenido a tu Gestor Financiero</h2>
-      <p class="text-gray-300 mb-8">
+      <h2>Bienvenido a tu Gestor Financiero</h2>
+      <p>
         Toca el botón para iniciar en modo de pantalla completa y disfrutar de una mejor
         experiencia.
       </p>
-      <button
-        id="enter-fullscreen-btn"
-        class="bg-blue-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105"
-      >
-        Iniciar Aplicación
-      </button>
+      <button id="enter-fullscreen-btn">Iniciar Aplicación</button>
     </div>
 
     <div class="loading-overlay active" id="loading-overlay">
@@ -4310,13 +5520,8 @@
       <div id="transaction-modal-content">
         <div id="transaction-modal-header">
           <h2 id="modal-title">Registrar Transacción</h2>
-          <div class="flex items-center">
-            <button
-              id="voice-recognition-btn"
-              type="button"
-              class="text-gray-400 hover:text-blue-500 transition-colors duration-200 mr-4"
-              title="Registrar por Voz"
-            >
+          <div>
+            <button id="voice-recognition-btn" type="button" title="Registrar por Voz">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -4331,14 +5536,9 @@
                 />
               </svg>
             </button>
-            <button
-              class="text-gray-400 hover:text-gray-600"
-              id="close-transaction-modal-btn"
-              type="button"
-            >
+            <button id="close-transaction-modal-btn" type="button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -4409,14 +5609,8 @@
           </div>
 
           <div id="transaction-modal-footer">
-            <button
-              class="w-full sm:w-auto bg-green-100 text-green-800 px-4 py-2 rounded-lg hover:bg-green-200 text-sm font-semibold"
-              id="open-transfer-modal-btn"
-              type="button"
-            >
-              Transferencia Interna
-            </button>
-            <div class="w-full sm:w-auto flex justify-end gap-4">
+            <button id="open-transfer-modal-btn" type="button">Transferencia Interna</button>
+            <div>
               <button id="save-transaction-btn" type="submit">
                 Guardar y Registrar Otro
                 <span class="btn-spinner hidden"></span>
@@ -4427,84 +5621,37 @@
       </div>
     </div>
 
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="transfer-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-md flex flex-col"
-        style="max-height: 90vh"
-      >
-        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0">
-          Registrar Transferencia Interna
-        </h2>
-        <form class="flex flex-col flex-grow overflow-hidden" id="transfer-form">
-          <div class="p-6 flex-grow overflow-y-auto">
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="transfer-date">
-                Fecha
-              </label>
-              <input
-                class="w-full p-2 border rounded-lg"
-                id="transfer-date"
-                required=""
-                type="date"
-              />
-              <span class="input-error-message" id="transfer-date-error"> </span>
+    <div class="modal" id="transfer-modal">
+      <div>
+        <h2>Registrar Transferencia Interna</h2>
+        <form id="transfer-form">
+          <div>
+            <div class="form-field">
+              <label for="transfer-date">Fecha</label>
+              <input id="transfer-date" required="" type="date" />
+              <span class="input-error-message" id="transfer-date-error"></span>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="transfer-from-bank">
-                Desde la cuenta
-              </label>
-              <select
-                class="w-full p-2 border rounded-lg"
-                id="transfer-from-bank"
-                required=""
-                type="text"
-              ></select>
-              <span class="input-error-message" id="transfer-from-bank-error"> </span>
+            <div class="form-field">
+              <label for="transfer-from-bank">Desde la cuenta</label>
+              <select id="transfer-from-bank" required=""></select>
+              <span class="input-error-message" id="transfer-from-bank-error"></span>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="transfer-to-bank">
-                Hacia la cuenta
-              </label>
-              <select
-                class="w-full p-2 border rounded-lg"
-                id="transfer-to-bank"
-                required=""
-                type="text"
-              ></select>
-              <span class="input-error-message" id="transfer-to-bank-error"> </span>
+            <div class="form-field">
+              <label for="transfer-to-bank">Hacia la cuenta</label>
+              <select id="transfer-to-bank" required=""></select>
+              <span class="input-error-message" id="transfer-to-bank-error"></span>
             </div>
-            <div class="mb-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="transfer-amount">
-                Monto a Transferir
-              </label>
-              <input
-                class="w-full p-2 border rounded-lg"
-                id="transfer-amount"
-                required=""
-                step="0.01"
-                type="number"
-              />
-              <span class="input-error-message" id="transfer-amount-error"> </span>
+            <div class="form-field">
+              <label for="transfer-amount">Monto a Transferir</label>
+              <input id="transfer-amount" required="" step="0.01" type="number" />
+              <span class="input-error-message" id="transfer-amount-error"></span>
             </div>
           </div>
-          <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-            <button
-              class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-              id="transfer-cancel-btn"
-              type="button"
-            >
-              Cancelar
-            </button>
-            <button
-              class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
-              id="confirm-transfer-btn"
-              type="submit"
-            >
+          <div>
+            <button id="transfer-cancel-btn" type="button">Cancelar</button>
+            <button id="confirm-transfer-btn" type="submit">
               Confirmar Transferencia
-              <span class="btn-spinner hidden"> </span>
+              <span class="btn-spinner hidden"></span>
             </button>
           </div>
         </form>
@@ -4515,14 +5662,9 @@
       <div id="recurring-modal-content">
         <div id="recurring-modal-header">
           <h2 id="recurring-modal-title">Añadir Gasto Recurrente</h2>
-          <button
-            class="text-gray-400 hover:text-gray-600"
-            id="close-recurring-modal-btn"
-            type="button"
-          >
+          <button id="close-recurring-modal-btn" type="button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -4603,121 +5745,58 @@
       </div>
     </div>
 
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="credit-card-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-md flex flex-col"
-        style="max-height: 90vh"
-      >
-        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0">Añadir Tarjeta</h2>
-        <form class="flex flex-col flex-grow overflow-hidden" id="credit-card-form">
-          <div class="p-6 flex-grow overflow-y-auto">
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="credit-card-bank">
-                Banco
-              </label>
+    <div class="modal" id="credit-card-modal">
+      <div>
+        <h2>Añadir Tarjeta</h2>
+        <form id="credit-card-form">
+          <div>
+            <div class="form-field full-width-field">
+              <label for="credit-card-bank">Banco</label>
               <input
-                class="w-full p-2 border rounded-lg"
                 id="credit-card-bank"
                 placeholder="Ej: Banco Mercantil"
                 required=""
                 type="text"
               />
-              <span class="input-error-message" id="credit-card-bank-error"> </span>
+              <span class="input-error-message" id="credit-card-bank-error"></span>
             </div>
-            <div class="mb-4">
-              <label
-                class="block text-sm font-medium text-gray-700 mb-1"
-                for="credit-card-due-date"
-              >
-                Día de Pago (1-31)
-              </label>
-              <input
-                class="w-full p-2 border rounded-lg"
-                id="credit-card-due-date"
-                max="31"
-                min="1"
-                required=""
-                type="number"
-              />
-              <span class="input-error-message" id="credit-card-due-date-error"> </span>
+
+            <div class="form-field">
+              <label for="credit-card-due-date">Día de Pago (1-31)</label>
+              <input id="credit-card-due-date" max="31" min="1" required="" type="number" />
+              <span class="input-error-message" id="credit-card-due-date-error"></span>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="credit-card-amount">
-                Monto Adeudado
-              </label>
-              <input
-                class="w-full p-2 border rounded-lg"
-                id="credit-card-amount"
-                required=""
-                step="0.01"
-                type="number"
-              />
-              <span class="input-error-message" id="credit-card-amount-error"> </span>
+            <div class="form-field">
+              <label for="credit-card-amount">Monto Adeudado</label>
+              <input id="credit-card-amount" required="" step="0.01" type="number" />
+              <span class="input-error-message" id="credit-card-amount-error"></span>
             </div>
-            <div class="mb-4">
-              <label
-                class="block text-sm font-medium text-gray-700 mb-1 text-center"
-                for="credit-card-rate"
-              >
-                Interés (Anual %)
-              </label>
-              <input
-                class="w-full p-2 border rounded-lg"
-                id="credit-card-rate"
-                required=""
-                step="0.01"
-                type="number"
-              />
-              <span class="input-error-message" id="credit-card-rate-error"> </span>
+            <div class="form-field">
+              <label for="credit-card-rate">Interés (Anual %)</label>
+              <input id="credit-card-rate" required="" step="0.01" type="number" />
+              <span class="input-error-message" id="credit-card-rate-error"></span>
             </div>
-            <div class="mb-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="credit-card-months">
-                Meses para Saldar
-              </label>
-              <input
-                class="w-full p-2 border rounded-lg"
-                id="credit-card-months"
-                min="1"
-                required=""
-                type="number"
-              />
-              <span class="input-error-message" id="credit-card-months-error"> </span>
+            <div class="form-field">
+              <label for="credit-card-months">Meses para Saldar</label>
+              <input id="credit-card-months" min="1" required="" type="number" />
+              <span class="input-error-message" id="credit-card-months-error"></span>
             </div>
           </div>
-          <div class="p-2 border-t flex-shrink-0 flex justify-end gap-4">
-            <button
-              class="bg-gray-200 text-gray-800 px-2 py-2 rounded-lg hover:bg-gray-300"
-              id="credit-card-cancel-btn"
-              type="button"
-            >
-              Cancelar
-            </button>
-            <button
-              class="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
-              id="save-credit-card-btn"
-              type="submit"
-            >
+          <div>
+            <button id="credit-card-cancel-btn" type="button">Cancelar</button>
+            <button id="save-credit-card-btn" type="submit">
               Añadir Tarjeta
-              <span class="btn-spinner hidden"> </span>
+              <span class="btn-spinner hidden"></span>
             </button>
           </div>
         </form>
       </div>
     </div>
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="confirm-modal"
-    >
-      <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md text-center">
-        <div
-          class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4"
-        >
+    <div class="modal" id="confirm-modal">
+      <div>
+        <div>
           <svg
             aria-hidden="true"
-            class="h-6 w-6 text-red-600"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
@@ -4731,57 +5810,27 @@
             ></path>
           </svg>
         </div>
-        <h2 class="text-2xl font-bold mb-4" id="confirm-modal-title">Confirmar Acción</h2>
-        <p class="text-gray-600 mb-6" id="confirm-modal-message">
-          ¿Estás seguro? Esta acción no se puede deshacer.
-        </p>
-        <div class="flex justify-center gap-4">
-          <button
-            class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300"
-            id="confirm-modal-cancel-btn"
-            type="button"
-          >
-            Cancelar
-          </button>
-          <button
-            class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700"
-            id="confirm-modal-confirm-btn"
-            type="button"
-          >
-            Confirmar
-          </button>
+        <h2 id="confirm-modal-title">Confirmar Acción</h2>
+        <p id="confirm-modal-message">¿Estás seguro? Esta acción no se puede deshacer.</p>
+        <div>
+          <button id="confirm-modal-cancel-btn" type="button">Cancelar</button>
+          <button id="confirm-modal-confirm-btn" type="button">Confirmar</button>
         </div>
       </div>
     </div>
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="message-modal"
-    >
-      <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md text-center">
-        <h2 class="text-2xl font-bold mb-4" id="message-modal-title">Mensaje</h2>
-        <p class="text-gray-600 mb-6" id="message-modal-content"></p>
-        <button
-          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          id="message-modal-close-btn"
-          type="button"
-        >
-          Cerrar
-        </button>
+    <div class="modal" id="message-modal">
+      <div>
+        <h2 id="message-modal-title">Mensaje</h2>
+        <p id="message-modal-content"></p>
+        <button id="message-modal-close-btn" type="button">Cerrar</button>
       </div>
     </div>
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4"
-      id="brand-story-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-2xl flex flex-col"
-        style="max-height: 90vh"
-      >
-        <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
-          <h2 class="text-2xl font-bold text-gray-700">El Corazón de Foresee Finances</h2>
-          <button class="text-gray-400 hover:text-gray-600" id="close-brand-story-btn">
+    <div class="modal" id="brand-story-modal">
+      <div id="brand-story-content">
+        <div id="brand-story-header">
+          <h2>El Corazón de Foresee Finances</h2>
+          <button id="close-brand-story-btn">
             <svg
-              class="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -4796,35 +5845,17 @@
             </svg>
           </button>
         </div>
-        <div class="p-8 flex-grow overflow-y-auto text-gray-600 leading-relaxed">
-          <div class="mb-8">
-            <h3 class="text-xl font-semibold text-blue-600 mb-2">Nuestra Misión</h3>
-            <p class="italic">
-              Empoderar a cada persona para que tome decisiones financieras con claridad y
-              confianza, transformando la ansiedad económica en paz mental y la incertidumbre en un
-              plan de acción para alcanzar sus sueños.
-            </p>
-          </div>
-          <div class="mb-8">
-            <h3 class="text-xl font-semibold text-blue-600 mb-2">Nuestra Visión</h3>
-            <p class="italic">
-              Ser el aliado digital más intuitivo y confiable en el camino hacia el bienestar
-              financiero, demostrando que con las herramientas adecuadas, cualquiera puede dominar
-              sus finanzas personales y construir un futuro próspero.
-            </p>
-          </div>
-          <div class="border-t pt-8">
-            <h3 class="text-xl font-semibold text-blue-600 mb-2">
-              El Origen de Foresee Finances: Una Historia Personal
-            </h3>
-            <p class="mb-4">
+        <div id="brand-story-body">
+          <div class="story-separator">
+            <h3>El Origen de Foresee Finances: Una Historia Personal</h3>
+            <p>
               Mi nombre es Melecio Matos, el creador de Foresee Finances. Esta aplicación no nació
               en una sala de juntas, sino a partir de conversaciones reales con amigos y familiares.
               Vi a personas trabajadoras, inteligentes y llenas de metas, sentirse atrapadas por el
               estrés financiero. Veía cómo la falta de un sistema simple para entender su propio
               dinero les robaba la tranquilidad y les impedía avanzar.
             </p>
-            <p class="mb-4">
+            <p>
               Frustrado con las aplicaciones existentes, que eran o demasiado complejas o demasiado
               invasivas (exigiendo acceso a sus cuentas bancarias), decidí crear la solución que yo
               mismo querría usar. Una herramienta que respetara la privacidad del usuario y que se
@@ -4837,260 +5868,341 @@
               que <strong>tú</strong>, y solo tú, seas el capitán de tu destino económico.
             </p>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4"
-      id="privacy-policy-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-2xl flex flex-col"
-        style="max-height: 90vh"
-      >
-        <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
-          <h2 class="text-2xl font-bold text-gray-700">Política de Privacidad</h2>
-          <button class="text-gray-400 hover:text-gray-600 close-legal-modal">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div class="p-8 flex-grow overflow-y-auto text-gray-600 leading-relaxed">
-          Política de Privacidad de Foresee Última actualización: 12 de agosto de 2025 Bienvenido a
-          Foresee. Tu privacidad es de suma importancia para nosotros. Esta Política de Privacidad
-          explica qué datos personales recopilamos, cómo los utilizamos, con quién los compartimos y
-          los derechos que tienes sobre tu información.Al registrarte y utilizar Foresee, aceptas
-          las prácticas descritas en esta política.1. Responsable del TratamientoEl responsable del
-          tratamiento de tus datos es:Nombre: [Tu Nombre o el Nombre de tu Empresa]Correo
-          electrónico de contacto: [Tu Correo Electrónico de Contacto]2. Datos que
-          RecopilamosRecopilamos la siguiente información para poder ofrecerte nuestros
-          servicios:Datos de Identificación y Contacto:Dirección de correo electrónico.Contraseña
-          (almacenada de forma segura y encriptada por nuestro proveedor de autenticación).Alias o
-          nombre de usuario que elijas en la aplicación.Datos Financieros:Toda la información que
-          introduces voluntariamente en la aplicación, incluyendo, pero no limitándose a:
-          transacciones, ingresos, gastos, presupuestos, categorías de gastos, información de
-          cuentas bancarias (alias y saldos), detalles de tarjetas de crédito (alias, saldos, fechas
-          de corte) y deudas.3. Finalidad del Uso de DatosUtilizamos tus datos con las siguientes
-          finalidades:Para proveer y mantener el servicio: Autenticar tu acceso, gestionar tu
-          presupuesto, calcular saldos, generar reportes personalizados y permitirte organizar tus
-          finanzas.Para mejorar la aplicación: Podemos analizar datos de uso de forma anónima para
-          identificar errores y mejorar la experiencia de usuario.Para comunicarnos contigo:
-          Enviarte notificaciones importantes sobre tu cuenta o cambios en nuestros servicios y
-          políticas.La base legal para el tratamiento de tus datos es el consentimiento explícito
-          que nos otorgas al registrarte y aceptar nuestros Términos y Condiciones y esta Política
-          de Privacidad.4. Terceros con los que Compartimos DatosPara poder operar, Foresee se apoya
-          en servicios de terceros. No vendemos tus datos personales. El principal proveedor con el
-          que compartimos datos es:Google (Firebase y Firestore): Utilizamos los servicios de Google
-          Cloud Platform para la autenticación de usuarios y como base de datos para almacenar toda
-          la información que registras en la aplicación. Tus datos se almacenan en los servidores
-          seguros de Google. Te recomendamos revisar también la Política de Privacidad de Google.5.
-          Derechos del Usuario (Derechos ARCO)Como usuario, tienes derecho a ejercer tus derechos de
-          Acceso, Rectificación, Cancelación y Oposición (ARCO) sobre tus datos personales.Acceso y
-          Rectificación: Puedes acceder y editar casi toda tu información directamente desde la
-          aplicación (editar transacciones, cambiar nombres de categorías, actualizar saldos,
-          etc.).Cancelación: Puedes eliminar datos específicos (como transacciones o categorías) en
-          cualquier momento. Además, hemos incluido una función de "Reiniciar Todos los Datos" que
-          te permite eliminar toda tu información financiera de nuestra base de datos de forma
-          permanente. Para eliminar tu cuenta por completo, por favor, contáctanos.Oposición: Puedes
-          oponerte al tratamiento de tus datos retirando tu consentimiento, lo que implicaría la
-          eliminación de tu cuenta.Para ejercer cualquiera de estos derechos, puedes utilizar las
-          herramientas de la aplicación o contactarnos a través de [Tu Correo Electrónico de
-          Contacto].6. Seguridad de los DatosNos tomamos la seguridad muy en serio. Implementamos
-          medidas técnicas y organizativas para proteger tu información, principalmente confiando en
-          la infraestructura segura y robusta de Google Firebase para la autenticación, el
-          almacenamiento y la encriptación de datos.7. Cambios en esta PolíticaPodemos actualizar
-          esta Política de Privacidad ocasionalmente. Te notificaremos de cualquier cambio
-          importante a través de la aplicación o por correo electrónico. Te recomendamos revisar
-          esta página periódicamente para estar informado sobre cómo protegemos tu información.8.
-          ContactoSi tienes preguntas o inquietudes sobre esta Política de Privacidad o nuestras
-          prácticas de datos, por favor contáctanos en: [albertomatosgil@gmail.com]
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4"
-      id="terms-conditions-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-2xl flex flex-col"
-        style="max-height: 90vh"
-      >
-        <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
-          <h2 class="text-2xl font-bold text-gray-700">Términos y Condiciones</h2>
-          <button class="text-gray-400 hover:text-gray-600 close-legal-modal">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div class="p-8 flex-grow overflow-y-auto text-gray-600 leading-relaxed">
-          Términos y Condiciones de Uso de Foresee Última actualización: 12 de agosto de 2025Estos
-          Términos y Condiciones ("Términos") rigen tu acceso y uso de la aplicación de finanzas
-          personales Foresee ("la Aplicación", "el Servicio"). Al registrarte o utilizar la
-          Aplicación, aceptas estar legalmente vinculado por estos Términos.1. Descripción del
-          ServicioForesee es una herramienta digital diseñada para ayudarte a registrar, categorizar
-          y visualizar tus finanzas personales. La Aplicación es una herramienta de estimación y
-          organización y no debe ser considerada como asesoramiento financiero, legal o fiscal.2.
-          Cuentas de UsuarioCreación de Cuenta: Para usar Foresee, debes registrarte con una
-          dirección de correo electrónico válida y crear una contraseña.Responsabilidad del Usuario:
-          Eres el único responsable de mantener la confidencialidad de tu contraseña y de toda la
-          actividad que ocurra en tu cuenta. Notifícanos inmediatamente si sospechas de cualquier
-          uso no autorizado.Exactitud de la Información: Eres responsable de la exactitud de la
-          información financiera que introduces en la Aplicación.3. Uso AceptableTe comprometes a no
-          utilizar la Aplicación para ningún propósito ilegal o no autorizado. Aceptas no:Intentar
-          acceder sin autorización a nuestros sistemas o redes.Utilizar la Aplicación para cualquier
-          actividad fraudulenta o ilícita.Realizar ingeniería inversa, descompilar o intentar
-          extraer el código fuente de la Aplicación.4. Propiedad IntelectualEl Servicio y todo su
-          contenido original, características y funcionalidades son y seguirán siendo propiedad
-          exclusiva de [Tu Nombre o el Nombre de tu Empresa]. La Aplicación está protegida por
-          derechos de autor y otras leyes. Esta aplicación no es de código abierto y todos los
-          derechos están reservados.5. Limitación de Responsabilidad y Descargo de GarantíasEsta es
-          la sección más importante. Por favor, léela con atención.La Aplicación se proporciona "tal
-          cual". No ofrecemos ninguna garantía, expresa o implícita, de que el Servicio será
-          ininterrumpido, seguro, libre de errores o que cumplirá con tus expectativas.Foresee es
-          una herramienta informativa. Las proyecciones, cálculos y reportes generados por la
-          Aplicación se basan únicamente en los datos que tú proporcionas. No garantizamos su
-          exactitud o aplicabilidad a tu situación financiera particular.No somos asesores
-          financieros. Las decisiones financieras que tomes basándote en la información de la
-          Aplicación son de tu exclusiva responsabilidad. En ningún caso [Tu Nombre o el Nombre de
-          tu Empresa] será responsable por pérdidas económicas, daños directos o indirectos, o
-          cualquier consecuencia derivada del uso o la incapacidad de usar la Aplicación.6.
-          Terminación del ServicioPor parte del usuario: Puedes dejar de usar el servicio y
-          solicitar la eliminación de tu cuenta en cualquier momento.Por nuestra parte: Nos
-          reservamos el derecho de suspender o cancelar tu cuenta si violas estos Términos.7.
-          Cambios en los TérminosNos reservamos el derecho de modificar estos Términos en cualquier
-          momento. Te notificaremos de los cambios importantes. El uso continuado de la Aplicación
-          después de dichos cambios constituirá tu aceptación de los nuevos Términos.8. ContactoSi
-          tienes alguna pregunta sobre estos Términos, contáctanos en [albertomatosgil@gmail.com].
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4"
-      id="cookie-policy-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-2xl flex flex-col"
-        style="max-height: 90vh"
-      >
-        <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
-          <h2 class="text-2xl font-bold text-gray-700">Política de Cookies</h2>
-          <button class="text-gray-400 hover:text-gray-600 close-legal-modal">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div class="p-8 flex-grow overflow-y-auto text-gray-600 leading-relaxed">
-          Política de Cookies de ForeseeÚltima actualización: 12 de agosto de 2025Esta Política de
-          Cookies explica cómo Foresee ("nosotros", "nuestro") utiliza cookies y tecnologías
-          similares para reconocerte cuando visitas nuestra aplicación web.1. ¿Qué son las
-          cookies?Las cookies son pequeños archivos de datos que se colocan en tu dispositivo
-          (ordenador o móvil) cuando visitas un sitio web. Se utilizan ampliamente para que los
-          sitios web funcionen, o funcionen de manera más eficiente, así como para proporcionar
-          información de informes.2. ¿Por qué usamos cookies?No creamos cookies personalizadas con
-          fines de seguimiento o publicidad. Sin embargo, nuestro proveedor de infraestructura,
-          Firebase (de Google), las utiliza por razones técnicas esenciales para el funcionamiento
-          de Foresee.Utilizamos cookies para las siguientes finalidades:Cookies Técnicas o
-          Esenciales: Son estrictamente necesarias para proporcionarte los servicios disponibles a
-          través de nuestra Aplicación.Autenticación y Sesión: Firebase Authentication utiliza
-          cookies o almacenamiento local (como localStorage) para gestionar tu sesión. Esto permite
-          que te mantengas conectado mientras navegas por la aplicación sin tener que iniciar sesión
-          en cada página.Seguridad: Ayudan a proteger tu cuenta y prevenir riesgos de seguridad.3.
-          Tipos de Cookies que UtilizamosCookies de Sesión: Son temporales y se eliminan de tu
-          dispositivo cuando cierras el navegador. Las usamos para mantener tu sesión de usuario
-          activa.Cookies Persistentes: Permanecen en tu dispositivo durante un período determinado o
-          hasta que las elimines. Firebase puede usarlas para recordar que has iniciado sesión
-          previamente.4. Cómo puedes gestionar las cookiesTienes derecho a decidir si aceptas o
-          rechazas las cookies.Configuración del Navegador: La mayoría de los navegadores web te
-          permiten controlar las cookies a través de la configuración. Puedes configurar tu
-          navegador para que te notifique cuando se envían cookies, o para que las rechace por
-          completo.Impacto de deshabilitar las cookies: Si decides deshabilitar las cookies
-          esenciales utilizadas por Firebase, no podrás iniciar sesión ni utilizar la aplicación
-          Foresee, ya que son fundamentales para su funcionamiento.Al utilizar Foresee, aceptas el
-          uso de estas cookies esenciales.5. Cambios en esta Política de CookiesPodemos actualizar
-          esta Política de Cookies ocasionalmente para reflejar cambios en nuestras prácticas o por
-          otras razones operativas, legales o regulatorias. Te notificaremos de cualquier cambio
-          importante a través de la aplicación o por correo electrónico.6. ContactoSi tienes
-          preguntas sobre nuestra Política de Cookies, contáctanos en [albertomatosgil@gmail.com].
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4"
-      id="category-icon-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col"
-        style="max-height: 90vh"
-      >
-        <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
-          <h2 class="text-2xl font-bold text-gray-700">Selecciona un Ícono para la Categoría</h2>
-          <button class="text-gray-400 hover:text-gray-600" id="close-icon-modal-btn">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div class="p-8 flex-grow overflow-y-auto">
           <div>
-            <label
-              class="block text-sm font-medium text-gray-700 mb-1"
-              for="new-category-name-modal"
+            <h3>Nuestra Misión</h3>
+            <p class="italic">
+              Empoderar a cada persona para que tome decisiones financieras con claridad y
+              confianza, transformando la ansiedad económica en paz mental y la incertidumbre en un
+              plan de acción para alcanzar sus sueños.
+            </p>
+          </div>
+          <div>
+            <h3>Nuestra Visión</h3>
+            <p class="italic">
+              Ser el aliado digital más intuitivo y confiable en el camino hacia el bienestar
+              financiero, demostrando que con las herramientas adecuadas, cualquiera puede dominar
+              sus finanzas personales y construir un futuro próspero.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="privacy-policy-modal">
+      <div class="legal-modal-content">
+        <div class="legal-modal-header">
+          <h2>Política de Privacidad</h2>
+          <button class="close-legal-modal">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Nombre de la Nueva Categoría
-            </label>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div class="legal-modal-body">
+          <p><strong>Última actualización: 12 de agosto de 2025</strong></p>
+          <p>
+            Bienvenido a Foresee. Tu privacidad es de suma importancia para nosotros. Esta Política
+            de Privacidad explica qué datos personales recopilamos, cómo los utilizamos, con quién
+            los compartimos y los derechos que tienes sobre tu información. Al registrarte y
+            utilizar Foresee, aceptas las prácticas descritas en esta política.
+          </p>
+
+          <h3>1. Responsable del Tratamiento</h3>
+          <p>
+            El responsable del tratamiento de tus datos es:<br />
+            <strong>Nombre:</strong> Melecio Matos<br />
+            <strong>Correo electrónico de contacto:</strong> albertomatosgil@gmail.com
+          </p>
+
+          <h3>2. Datos que Recopilamos</h3>
+          <p>Recopilamos la siguiente información para poder ofrecerte nuestros servicios:</p>
+          <ul>
+            <li>
+              <strong>Datos de Identificación y Contacto:</strong> Dirección de correo electrónico,
+              contraseña (almacenada de forma segura) y el alias que elijas.
+            </li>
+            <li>
+              <strong>Datos Financieros:</strong> Toda la información que introduces voluntariamente
+              en la aplicación, como transacciones, presupuestos, categorías, bancos, etc.
+            </li>
+          </ul>
+
+          <h3>3. Finalidad del Uso de Datos</h3>
+          <p>Utilizamos tus datos para:</p>
+          <ul>
+            <li>
+              <strong>Proveer y mantener el servicio:</strong> Autenticar tu acceso, gestionar tu
+              presupuesto y organizar tus finanzas.
+            </li>
+            <li>
+              <strong>Mejorar la aplicación:</strong> Analizar datos de uso de forma anónima para
+              identificar errores y mejorar la experiencia.
+            </li>
+            <li>
+              <strong>Comunicarnos contigo:</strong> Enviarte notificaciones importantes sobre tu
+              cuenta o cambios en nuestros servicios.
+            </li>
+          </ul>
+
+          <h3>4. Terceros con los que Compartimos Datos</h3>
+          <p>
+            No vendemos tus datos personales. Utilizamos los servicios de
+            <strong>Google (Firebase y Firestore)</strong> para la autenticación y el almacenamiento
+            seguro de toda tu información en la nube.
+          </p>
+
+          <h3>5. Derechos del Usuario (Derechos ARCO)</h3>
+          <p>
+            Tienes derecho a ejercer tus derechos de Acceso, Rectificación, Cancelación y Oposición:
+          </p>
+          <ul>
+            <li>
+              <strong>Acceso y Rectificación:</strong> Puedes editar casi toda tu información
+              directamente desde la aplicación.
+            </li>
+            <li>
+              <strong>Cancelación:</strong> Puedes eliminar datos específicos o usar la función
+              "Reiniciar Todos los Datos" para borrar toda tu información financiera.
+            </li>
+            <li>
+              <strong>Oposición:</strong> Puedes retirar tu consentimiento eliminando tu cuenta.
+            </li>
+          </ul>
+
+          <h3>6. Seguridad de los Datos</h3>
+          <p>
+            Confiamos en la infraestructura segura y robusta de Google Firebase para la
+            autenticación, el almacenamiento y la encriptación de tus datos, aplicando las mejores
+            prácticas de seguridad.
+          </p>
+
+          <h3>7. Cambios en esta Política</h3>
+          <p>
+            Te notificaremos de cualquier cambio importante a través de la aplicación o por correo
+            electrónico.
+          </p>
+
+          <h3>8. Contacto</h3>
+          <p>
+            Si tienes preguntas, contáctanos en:
+            <strong>albertomatosgil@gmail.com</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="terms-conditions-modal">
+      <div class="legal-modal-content">
+        <div class="legal-modal-header">
+          <h2>Términos y Condiciones</h2>
+          <button class="close-legal-modal">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div class="legal-modal-body">
+          <p><strong>Última actualización: 12 de agosto de 2025</strong></p>
+          <p>
+            Estos Términos y Condiciones ("Términos") rigen tu acceso y uso de la aplicación de
+            finanzas personales Foresee ("la Aplicación", "el Servicio"). Al registrarte o utilizar
+            la Aplicación, aceptas estar legalmente vinculado por estos Términos.
+          </p>
+
+          <h3>1. Descripción del Servicio</h3>
+          <p>
+            Foresee es una herramienta digital diseñada para ayudarte a registrar, categorizar y
+            visualizar tus finanzas personales. La Aplicación es una herramienta de estimación y
+            organización y no debe ser considerada como asesoramiento financiero, legal o fiscal.
+          </p>
+
+          <h3>2. Cuentas de Usuario</h3>
+          <ul>
+            <li>
+              <strong>Creación de Cuenta:</strong> Para usar Foresee, debes registrarte con una
+              dirección de correo electrónico válida y crear una contraseña.
+            </li>
+            <li>
+              <strong>Responsabilidad del Usuario:</strong> Eres el único responsable de mantener la
+              confidencialidad de tu contraseña y de toda la actividad que ocurra en tu cuenta.
+            </li>
+            <li>
+              <strong>Exactitud de la Información:</strong> Eres responsable de la exactitud de la
+              información financiera que introduces en la Aplicación.
+            </li>
+          </ul>
+
+          <h3>3. Uso Aceptable</h3>
+          <p>
+            Te comprometes a no utilizar la Aplicación para ningún propósito ilegal o no autorizado.
+          </p>
+
+          <h3>4. Propiedad Intelectual</h3>
+          <p>
+            El Servicio y todo su contenido son propiedad exclusiva de Melecio Matos. La Aplicación
+            está protegida por derechos de autor. No es de código abierto y todos los derechos están
+            reservados.
+          </p>
+
+          <h3>5. Limitación de Responsabilidad y Descargo de Garantías</h3>
+          <p>
+            <strong>Por favor, lee esta sección con atención.</strong> La Aplicación se proporciona
+            "tal cual", sin garantías. Las decisiones financieras que tomes basándote en la
+            información de la Aplicación son de tu exclusiva responsabilidad. No seremos
+            responsables por pérdidas económicas o daños derivados del uso de la Aplicación.
+          </p>
+
+          <h3>6. Terminación del Servicio</h3>
+          <p>
+            Puedes dejar de usar el servicio en cualquier momento. Nos reservamos el derecho de
+            suspender tu cuenta si violas estos Términos.
+          </p>
+
+          <h3>7. Cambios en los Términos</h3>
+          <p>
+            Nos reservamos el derecho de modificar estos Términos. Te notificaremos de los cambios
+            importantes.
+          </p>
+
+          <h3>8. Contacto</h3>
+          <p>
+            Si tienes alguna pregunta sobre estos Términos, contáctanos en:
+            <strong>albertomatosgil@gmail.com</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="cookie-policy-modal">
+      <div class="legal-modal-content">
+        <div class="legal-modal-header">
+          <h2>Política de Cookies</h2>
+          <button class="close-legal-modal">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div class="legal-modal-body">
+          <p><strong>Última actualización: 12 de agosto de 2025</strong></p>
+          <p>
+            Esta Política de Cookies explica cómo Foresee ("nosotros", "nuestro") utiliza cookies y
+            tecnologías similares para reconocerte cuando visitas nuestra aplicación web.
+          </p>
+
+          <h3>1. ¿Qué son las cookies?</h3>
+          <p>
+            Las cookies son pequeños archivos de datos que se colocan en tu dispositivo para que los
+            sitios web funcionen de manera más eficiente y proporcionen información de informes.
+          </p>
+
+          <h3>2. ¿Por qué usamos cookies?</h3>
+          <p>
+            No creamos cookies personalizadas con fines de seguimiento o publicidad. Sin embargo,
+            nuestro proveedor de infraestructura, <strong>Firebase (de Google)</strong>, las utiliza
+            por razones técnicas esenciales para el funcionamiento de Foresee, tales como:
+          </p>
+          <ul>
+            <li>
+              <strong>Cookies Técnicas o Esenciales:</strong> Son estrictamente necesarias para
+              proporcionarte los servicios de la Aplicación.
+            </li>
+            <li>
+              <strong>Autenticación y Sesión:</strong> Permiten que te mantengas conectado mientras
+              navegas por la aplicación.
+            </li>
+            <li><strong>Seguridad:</strong> Ayudan a proteger tu cuenta y prevenir riesgos.</li>
+          </ul>
+
+          <h3>3. Tipos de Cookies que Utilizamos</h3>
+          <ul>
+            <li>
+              <strong>Cookies de Sesión:</strong> Son temporales y se eliminan al cerrar el
+              navegador.
+            </li>
+            <li>
+              <strong>Cookies Persistentes:</strong> Permanecen en tu dispositivo y pueden usarse
+              para recordar que has iniciado sesión previamente.
+            </li>
+          </ul>
+
+          <h3>4. Cómo puedes gestionar las cookies</h3>
+          <p>
+            Puedes controlar las cookies a través de la configuración de tu navegador. Sin embargo,
+            si decides deshabilitar las cookies esenciales utilizadas por Firebase,
+            <strong>no podrás iniciar sesión ni utilizar la aplicación Foresee</strong>, ya que son
+            fundamentales para su funcionamiento.
+          </p>
+
+          <h3>5. Cambios en esta Política de Cookies</h3>
+          <p>
+            Podemos actualizar esta Política ocasionalmente. Te notificaremos de cualquier cambio
+            importante a través de la aplicación o por correo electrónico.
+          </p>
+
+          <h3>6. Contacto</h3>
+          <p>
+            Si tienes preguntas sobre nuestra Política de Cookies, contáctanos en:
+            <strong>albertomatosgil@gmail.com</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="category-icon-modal">
+      <div id="category-icon-modal-content">
+        <div id="category-icon-modal-header">
+          <h2>Selecciona un Ícono para la Categoría</h2>
+          <button id="close-icon-modal-btn">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div id="category-icon-modal-body">
+          <div>
+            <label for="new-category-name-modal"> Nombre de la Nueva Categoría </label>
             <input
-              class="w-full p-2 border rounded-lg mb-2"
               id="new-category-name-modal"
               placeholder="Ej: Vivienda, Comida, Ocio"
               type="text"
@@ -5098,66 +6210,35 @@
             <span class="input-error-message" id="new-category-name-modal-error"></span>
           </div>
 
-          <label class="block text-sm font-medium text-gray-700 mt-4">
-            Elige un ícono (o déjalo en "Por Defecto")
-          </label>
+          <label> Elige un ícono (o déjalo en "Por Defecto") </label>
           <div id="category-icon-grid"></div>
         </div>
-        <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-          <button
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
-            id="save-new-category-btn"
-            type="button"
-          >
+        <div id="category-icon-modal-footer">
+          <button id="save-new-category-btn" type="button">
             Guardar Categoría
             <span class="btn-spinner hidden"></span>
           </button>
         </div>
       </div>
     </div>
-    <div class="modal fixed inset-0 bg-transparent items-end" id="single-action-modal">
-      <div
-        id="single-action-modal-content"
-        class="bg-white w-full rounded-t-2xl shadow-2xl p-4 transform transition-transform duration-300 translate-y-full"
-      >
-        <p class="text-sm text-center text-gray-500 mb-3" id="single-action-modal-title">
-          Acción para el elemento seleccionado:
-        </p>
-        <div class="space-y-2">
-          <button
-            class="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 font-semibold"
-            id="single-action-edit-btn"
-          >
-            Editar Selección
-          </button>
-          <button
-            class="w-full bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 font-semibold"
-            id="single-action-delete-btn"
-          >
-            Eliminar Selección
-          </button>
-          <button
-            class="w-full bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 mt-2"
-            id="single-action-cancel-btn"
-          >
-            Cancelar
-          </button>
+
+    <div class="modal" id="single-action-modal">
+      <div id="single-action-modal-content">
+        <p id="single-action-modal-title">Acción para el elemento seleccionado:</p>
+        <div>
+          <button id="single-action-edit-btn">Editar Selección</button>
+          <button id="single-action-delete-btn">Eliminar Selección</button>
+          <button id="single-action-cancel-btn">Cancelar</button>
         </div>
       </div>
     </div>
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4"
-      id="import-options-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col"
-        style="max-height: 90vh"
-      >
-        <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
-          <h2 class="text-2xl font-bold text-gray-700">Opciones de Importación</h2>
-          <button class="text-gray-400 hover:text-gray-600" id="close-import-options-btn">
+
+    <div class="modal" id="import-options-modal">
+      <div id="import-options-modal-content">
+        <div id="import-options-modal-header">
+          <h2>Opciones de Importación</h2>
+          <button id="close-import-options-btn">
             <svg
-              class="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -5172,105 +6253,59 @@
             </svg>
           </button>
         </div>
-        <div class="p-8 flex-grow overflow-y-auto space-y-6">
+        <div id="import-options-modal-body">
           <div>
-            <p class="text-gray-600 mb-4">
+            <p>
               Selecciona las secciones que deseas importar desde el archivo JSON. Las secciones que
               selecciones reemplazarán los datos actuales.
             </p>
-            <button
-              id="select-import-file-btn"
-              class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mb-2"
-            >
-              Seleccionar Archivo JSON
-            </button>
-            <p id="selected-file-name" class="text-sm text-center text-gray-500 italic">
-              Ningún archivo seleccionado.
-            </p>
+            <button id="select-import-file-btn">Seleccionar Archivo JSON</button>
+            <p id="selected-file-name">Ningún archivo seleccionado.</p>
           </div>
-          <div id="import-checkboxes-container" class="space-y-3 hidden">
-            <h3 class="text-lg font-semibold border-b pb-2">Secciones a Importar:</h3>
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-              <input
-                type="checkbox"
-                id="import-all-checkbox"
-                class="h-5 w-5 accent-blue-600 mr-3"
-              />
-              <span class="font-bold text-gray-800">Importar Todo</span>
+          <div id="import-checkboxes-container" class="hidden">
+            <h3>Secciones a Importar:</h3>
+            <label>
+              <input type="checkbox" id="import-all-checkbox" />
+              <span class="import-label-bold">Importar Todo</span>
             </label>
             <hr />
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-              <input
-                type="checkbox"
-                data-section="transactions"
-                class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3"
-              />
+            <label>
+              <input type="checkbox" data-section="transactions" class="import-section-checkbox" />
               <span>Registros (Transacciones)</span>
             </label>
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-              <input
-                type="checkbox"
-                data-section="projections"
-                class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3"
-              />
+            <label>
+              <input type="checkbox" data-section="projections" class="import-section-checkbox" />
               <span>Proyección</span>
             </label>
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
+            <label>
               <input
                 type="checkbox"
                 data-section="recurringExpenses"
-                class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3"
+                class="import-section-checkbox"
               />
               <span>Gastos Recurrentes</span>
             </label>
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-              <input
-                type="checkbox"
-                data-section="creditCards"
-                class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3"
-              />
+            <label>
+              <input type="checkbox" data-section="creditCards" class="import-section-checkbox" />
               <span>Tarjetas de Crédito</span>
             </label>
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-              <input
-                type="checkbox"
-                data-section="budgets"
-                class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3"
-              />
+            <label>
+              <input type="checkbox" data-section="budgets" class="import-section-checkbox" />
               <span>Presupuestos</span>
             </label>
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-              <input
-                type="checkbox"
-                data-section="config"
-                class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3"
-              />
+            <label>
+              <input type="checkbox" data-section="config" class="import-section-checkbox" />
               <span>Configuración (Categorías, Bancos, Descripciones)</span>
             </label>
-            <label class="flex items-center p-2 rounded-md hover:bg-gray-100 transition">
-              <input
-                type="checkbox"
-                data-section="general"
-                class="import-section-checkbox h-5 w-5 accent-blue-600 mr-3"
-              />
+            <label>
+              <input type="checkbox" data-section="general" class="import-section-checkbox" />
               <span>General (Saldo Inicial y Alias)</span>
             </label>
           </div>
         </div>
-        <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-          <button
-            class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-            id="cancel-import-btn"
-            type="button"
-          >
-            Cancelar
-          </button>
-          <button
-            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center disabled:bg-gray-400"
-            id="confirm-import-btn"
-            type="button"
-            disabled
-          >
+        <div id="import-options-modal-footer">
+          <button id="cancel-import-btn" type="button">Cancelar</button>
+          <button id="confirm-import-btn" type="button" disabled>
             Confirmar Importación
             <span class="btn-spinner hidden"></span>
           </button>
@@ -5278,21 +6313,12 @@
       </div>
     </div>
 
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4"
-      id="category-select-modal"
-    >
-      <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col"
-        style="max-height: 90vh"
-      >
-        <div
-          class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-lg flex-shrink-0"
-        >
-          <h2 class="text-2xl font-bold text-gray-700">Selecciona una Categoría</h2>
-          <button class="text-gray-400 hover:text-gray-600" id="close-category-select-modal-btn">
+    <div class="modal" id="category-select-modal">
+      <div id="category-select-modal-content">
+        <div id="category-select-modal-header">
+          <h2>Selecciona una Categoría</h2>
+          <button id="close-category-select-modal-btn">
             <svg
-              class="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -5308,108 +6334,48 @@
           </button>
         </div>
 
-        <div class="p-8 flex-grow overflow-y-auto">
-          <div class="mb-6">
-            <button
-              id="open-add-category-from-select-btn"
-              class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center"
-            >
-              + Añadir Nueva Categoría
-            </button>
+        <div id="category-select-modal-body">
+          <div>
+            <button id="open-add-category-from-select-btn">+ Añadir Nueva Categoría</button>
           </div>
-
           <div id="category-select-grid"></div>
         </div>
       </div>
     </div>
 
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="distribution-input-modal"
-    >
-      <div class="bg-white rounded-lg shadow-xl w-full max-w-sm flex flex-col">
-        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0" id="distribution-modal-title">
-          Ingresar Valor
-        </h2>
-        <div class="p-6 flex-grow">
+    <div class="modal" id="distribution-input-modal">
+      <div id="distribution-modal-content">
+        <h2 id="distribution-modal-title">Ingresar Valor</h2>
+        <div id="distribution-modal-body">
           <form id="distribution-form">
             <div>
-              <label
-                class="block text-sm font-medium text-gray-700 mb-1"
-                id="distribution-modal-label"
-                for="distribution-modal-input"
-              >
-                Valor
-              </label>
-              <input
-                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                id="distribution-modal-input"
-                required=""
-                step="0.01"
-                type="number"
-              />
-              <span class="input-error-message" id="distribution-modal-error"> </span>
+              <label id="distribution-modal-label" for="distribution-modal-input"> Valor </label>
+              <input id="distribution-modal-input" required="" step="0.01" type="number" />
+              <span class="input-error-message" id="distribution-modal-error"></span>
             </div>
           </form>
         </div>
-        <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-          <button
-            class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-            id="cancel-distribution-btn"
-            type="button"
-          >
-            Cancelar
-          </button>
-          <button
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
-            id="save-distribution-btn"
-            type="submit"
-            form="distribution-form"
-          >
-            Guardar
-          </button>
+        <div id="distribution-modal-footer">
+          <button id="cancel-distribution-btn" type="button">Cancelar</button>
+          <button id="save-distribution-btn" type="submit" form="distribution-form">Guardar</button>
         </div>
       </div>
     </div>
 
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4"
-      id="shared-expense-bank-modal"
-    >
-      <div class="bg-white rounded-lg shadow-xl w-full max-w-sm flex flex-col">
-        <h2 class="text-2xl font-bold p-6 border-b flex-shrink-0">
-          Seleccionar Banco para el Pago
-        </h2>
-        <div class="p-6 flex-grow">
-          <p id="shared-expense-summary" class="text-gray-600 mb-4 text-center"></p>
+    <div class="modal" id="shared-expense-bank-modal">
+      <div id="shared-expense-bank-content">
+        <h2 id="shared-expense-bank-title">Seleccionar Banco para el Pago</h2>
+        <div id="shared-expense-bank-body">
+          <p id="shared-expense-summary"></p>
           <div>
-            <label
-              class="block text-sm font-medium text-gray-700 mb-1"
-              for="shared-expense-bank-select"
-            >
-              Banco/Cuenta de Origen
-            </label>
-            <select
-              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              id="shared-expense-bank-select"
-              required=""
-            ></select>
+            <label for="shared-expense-bank-select"> Banco/Cuenta de Origen </label>
+            <select id="shared-expense-bank-select" required=""></select>
             <span class="input-error-message" id="shared-expense-bank-error"></span>
           </div>
         </div>
-        <div class="p-6 border-t flex-shrink-0 flex justify-end gap-4">
-          <button
-            class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-            id="cancel-shared-expense-bank-btn"
-            type="button"
-          >
-            Cancelar
-          </button>
-          <button
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center"
-            id="confirm-shared-expense-bank-btn"
-            type="submit"
-          >
+        <div id="shared-expense-bank-footer">
+          <button id="cancel-shared-expense-bank-btn" type="button">Cancelar</button>
+          <button id="confirm-shared-expense-bank-btn" type="submit">
             Registrar Pago
             <span class="btn-spinner hidden"></span>
           </button>
@@ -5475,27 +6441,20 @@
       </div>
     </div>
 
-    <footer class="bg-gray-800 text-white py-4">
-      <div class="container mx-auto text-center">
-        <p class="text-sm">
-          © 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos
-        </p>
-        <p id="app-version" class="text-xs text-gray-400 mt-1">Versión 0.0.3.3</p>
-        <div class="text-xs mt-2 space-x-4">
-          <a href="#" id="open-privacy-policy" class="text-blue-400 hover:underline"
-            >Política de Privacidad</a
-          >
+    <footer>
+      <div class="footer-container">
+        <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
+        <p id="app-version">Versión 0.0.3.7</p>
+        <div class="footer-links">
+          <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
-          <a href="#" id="open-terms-conditions" class="text-blue-400 hover:underline"
-            >Términos de Uso</a
-          >
+          <a href="#" id="open-terms-conditions">Términos de Uso</a>
           <span>|</span>
-          <a href="#" id="open-cookie-policy" class="text-blue-400 hover:underline"
-            >Política de Cookies</a
-          >
+          <a href="#" id="open-cookie-policy">Política de Cookies</a>
         </div>
       </div>
     </footer>
+
     <script src="numberParser.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
