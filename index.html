@@ -251,8 +251,7 @@
         height: 8rem; /* h-32 */
         margin-top: 0;
         transition: height 0.3s ease-in-out;
-        background-color: var(--bg-dark-secondary);
-        border-bottom: 1px solid var(--border-dark);
+        background-color: transparent;
       }
 
       #barr {
@@ -318,12 +317,14 @@
       .contenedor-botones {
         display: flex;
         flex-direction: column;
+        background: transparent;
       }
 
       /* --- Pestañas de Navegación --- */
       .btn {
         display: flex;
         overflow-x: auto;
+        background: #00000000;
       }
 
       .tab-button {
@@ -337,6 +338,8 @@
         padding-top: 4px;
         border-radius: 10px;
         margin-bottom: 2px;
+        /* background: var(--bg-dark-secondary); */
+        background: #1f2937ba;
       }
 
       .tab-button img {
@@ -355,7 +358,8 @@
 
       .tab-button:hover {
         color: var(--electric-blue);
-        background-color: transparent;
+        /* background-color: transparent; */
+        background: #1f2937ba;
         border-bottom-color: var(--electric-blue);
         box-shadow: 0 0 8px var(--electric-blue), 0 0 15px var(--electric-blue),
           0 0 25px var(--electric-blue);
@@ -4138,6 +4142,7 @@
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
+          background: transparent;
         }
         .recurring-grid-container {
           grid-template-columns: repeat(2, 1fr);
@@ -4175,7 +4180,7 @@
         #tabs {
           justify-content: space-between;
           width: 100%;
-          background: #111827d3;
+          background: transparent;
           padding: 0.25rem;
           margin-bottom: 0.5rem;
         }
@@ -4207,7 +4212,7 @@
         #tabs {
           padding: 0.25rem;
           margin-bottom: 0.5rem;
-          background: #111827d3;
+          background: transparent;
         }
 
         #dashboard {
