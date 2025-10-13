@@ -7484,7 +7484,6 @@
             // === CORRECCIÓN TERMINA AQUÍ ===
 
             const cell = e.target.closest('.distribution-cell');
-            // === LÍNEA MODIFICADA ===
             // Ahora solo se abre el popover si se hizo clic en la celda PERO NO en el input de la fecha.
             if (cell && !e.target.matches('.shared-expense-day-input')) {
               showDistributionPopover(cell);
@@ -7877,7 +7876,7 @@
           // 1. Caso especial: Asignamos un ícono específico para las transferencias.
           if (categoryName === 'Transferencia Interna') {
             const transferIconUrl =
-              'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514669/dinero_hgnyz4.png';
+              'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514700/transferencia-interna_wjuhnq.png';
             return `<img src="${transferIconUrl}" class="category-icon" alt="${categoryName}"> <span>${categoryName}</span>`;
           }
 
