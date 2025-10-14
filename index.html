@@ -1345,10 +1345,16 @@
       }
       #registros-content th:nth-child(6),
       #registros-content th:nth-child(7) {
+        text-align: center;
+      }
+
+      #registros-content td:nth-child(6),
+      #registros-content td:nth-child(7) {
         text-align: right;
       }
 
-      #registros-content th:nth-child(8) {
+      #registros-content th:nth-child(8),
+      #registros-content td:nth-child(1) {
         text-align: center;
       }
 
@@ -1520,44 +1526,6 @@
         color: var(--expense-color);
       }
 
-      #recurrentes-content tbody td {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.875rem;
-        white-space: nowrap;
-        vertical-align: middle;
-      }
-
-      /* Alineación de celdas específicas */
-      #recurrentes-content td:nth-child(1), /* Checkbox */
-      #recurrentes-content td:nth-child(2), /* Día */
-      #recurrentes-content td:nth-child(7) {
-        /* Acciones */
-        text-align: center;
-      }
-
-      #recurrentes-content td:nth-child(5) {
-        /* Monto */
-        text-align: right;
-      }
-
-      /* Colores de texto */
-      #recurrentes-content td:nth-child(2),
-      #recurrentes-content td:nth-child(4),
-      #recurrentes-content td:nth-child(6) {
-        color: var(--text-light-secondary);
-      }
-
-      #recurrentes-content td:nth-child(3) {
-        /* Descripción */
-        color: var(--text-light-primary);
-        font-weight: 500;
-      }
-
-      #recurrentes-content .amount-cell {
-        /* Monto */
-        color: var(--expense-color);
-      }
-
       #migrate-all-recurring-btn {
         display: none !important;
       }
@@ -1602,8 +1570,10 @@
         color: var(--text-light-secondary); /* text-gray-500 */
       }
 
-      #recurrentes-content th:nth-child(1), /* Checkbox */
+      #recurrentes-content th:nth-child(1),
+      #recurrentes-content td:nth-child(1),/* Checkbox */
       #recurrentes-content th:nth-child(2), /* Día */
+      #recurrentes-content td:nth-child(2),
       #recurrentes-content th:nth-child(7) {
         /* Acciones */
         text-align: center;
@@ -1690,6 +1660,16 @@
       #tarjetas-content th:first-child {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+      }
+
+      #tarjetas-content td:nth-child(6),
+      #tarjetas-content td:nth-child(9) {
+        text-align: right;
+      }
+
+      #tarjetas-content td:nth-child(3),
+      #tarjetas-content td:nth-child(10) {
+        text-align: center;
       }
 
       #tarjetas-content tfoot td {
@@ -6638,7 +6618,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.1</p>
+        <p id="app-version">Versión 0.0.4.3</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
