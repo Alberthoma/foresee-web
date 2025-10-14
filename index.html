@@ -1343,15 +1343,13 @@
         padding-right: 0.5rem;
         text-align: center;
       }
-      #registros-content th:nth-child(5),
       #registros-content th:nth-child(6),
       #registros-content th:nth-child(7) {
-        text-align: center;
+        text-align: right;
       }
 
-      #registros-content td:nth-child(6),
-      #registros-content td:nth-child(7) {
-        text-align: right;
+      #registros-content th:nth-child(8) {
+        text-align: center;
       }
 
       /* Estilos del Footer */
@@ -1530,16 +1528,11 @@
       }
 
       /* Alineación de celdas específicas */
-
-      #recurrentes-content th:nth-child(1), /* Checkbox */
-      #recurrentes-content th:nth-child(2), /* Día */
-      #recurrentes-content th:nth-child(7),
       #recurrentes-content td:nth-child(1), /* Checkbox */
       #recurrentes-content td:nth-child(2), /* Día */
       #recurrentes-content td:nth-child(7) {
         /* Acciones */
         text-align: center;
-        width: 1%;
       }
 
       #recurrentes-content td:nth-child(5) {
@@ -1552,12 +1545,6 @@
       #recurrentes-content td:nth-child(4),
       #recurrentes-content td:nth-child(6) {
         color: var(--text-light-secondary);
-      }
-
-      #recurrentes-content td:nth-child(4) {
-        /* Categoría */
-        color: var(--text-light-secondary);
-        font-weight: 500;
       }
 
       #recurrentes-content td:nth-child(3) {
@@ -1609,11 +1596,10 @@
       }
 
       #recurrentes-content th {
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
+        padding: 0.75rem 1.5rem; /* px-6 py-3 */
+        letter-spacing: 0.05em; /* tracking-wider */
         font-weight: 500; /* font-medium */
         color: var(--text-light-secondary); /* text-gray-500 */
-        text-align: left;
       }
 
       #recurrentes-content th:nth-child(1), /* Checkbox */
@@ -1622,11 +1608,17 @@
         /* Acciones */
         text-align: center;
       }
-      #recurrentes-content th:nth-child(5),
+
       #recurrentes-content th:nth-child(3), /* Descripción */
       #recurrentes-content th:nth-child(4), /* Categoría */
       #recurrentes-content th:nth-child(6) {
+        /* Banco/Cuenta */
         text-align: left;
+      }
+
+      #recurrentes-content th:nth-child(5) {
+        /* Monto */
+        text-align: right;
       }
 
       /* Estilos para el pie de la tabla */
@@ -1692,16 +1684,6 @@
         padding-left: 1rem;
         padding-right: 1rem;
         letter-spacing: 0.05em;
-        text-align: center;
-      }
-
-      #tarjetas-content td:nth-child(6),
-      #tarjetas-content td:nth-child(9) {
-        text-align: right;
-      }
-
-      #tarjetas-content td:nth-child(3),
-      #tarjetas-content td:nth-child(10) {
         text-align: center;
       }
 
@@ -4512,6 +4494,13 @@
           display: none;
         }
 
+        /* Corrección de anchos para la tabla de Recurrentes en Móvil */
+        #recurrentes-content th,
+        #recurrentes-content td {
+          white-space: normal; /* Permite que el texto largo (como en Descripción) se divida */
+          word-break: break-word;
+        }
+
         /* FORZAR LA COMPRESIÓN DE LA COLUMNA "CATEGORÍA" (la 4ta columna) */
         #recurrentes-content th:nth-child(4),
         #recurrentes-content td:nth-child(4) {
@@ -4527,10 +4516,10 @@
         }
 
         /* Mejora para la columna "Monto" (la 5ta columna), para que no se parta el número */
-
+        #recurrentes-content th:nth-child(5),
         #recurrentes-content td:nth-child(5) {
           padding-left: 0px;
-          padding-right: 5px;
+          padding-right: 10px;
           text-align: right;
           white-space: nowrap; /* Evita que el monto se divida en varias líneas */
         }
@@ -6649,7 +6638,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.2</p>
+        <p id="app-version">Versión 0.0.4.1</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
