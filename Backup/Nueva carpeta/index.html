@@ -971,13 +971,6 @@
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
-        /*display: none;*/
-      }
-
-      #registros-content th,
-      #proyeccion-content th,
-      #recurrentes-content th {
-        display: none;
       }
 
       tbody {
@@ -1030,6 +1023,8 @@
         padding-top: 6px;
         padding-bottom: 6px;
         line-height: 1.2;
+        padding-right: 4px;
+        padding-left: 4px;
         font: 400;
       }
 
@@ -1339,16 +1334,9 @@
         color: #f472b6;
       }
 
-      #registros-content td:nth-child(4),
-      #proyeccion-content td:nth-child(4) {
-        padding-right: 1rem; /* Crea un "cojín" de espacio a la derecha del texto */
+      #registros-content td:nth-child(4) {
+        padding-right: 1.5rem; /* Crea un "cojín" de espacio a la derecha del texto */
       }
-
-      #registros-content td:nth-child(5),
-      #proyeccion-content td:nth-child(5) {
-        padding-left: 2rem; /* Crea un "cojín" de espacio a la derecha del texto */
-      }
-
       /* --- Estilos específicos para la tabla de Registros --- */
       #registros-content th:first-child {
         padding-left: 0.5rem; /* px-2 */
@@ -1360,20 +1348,14 @@
         text-align: center;
       }
 
-      #proyeccion-content td:nth-child(6),
       #registros-content td:nth-child(6),
       #registros-content td:nth-child(7) {
         text-align: right;
-        padding-right: 0.5rem;
       }
 
       #registros-content th:nth-child(8),
       #registros-content td:nth-child(1) {
         text-align: center;
-      }
-
-      #registros-content td:nth-child(8) {
-        padding-left: 0.5rem;
       }
 
       /* Estilos del Footer */
@@ -1579,10 +1561,10 @@
       #proyeccion-content td:nth-child(5),
       #proyeccion-content td:nth-child(6) {
         text-align: right;
-        padding-right: 0.5rem;
       }
 
       #recurrentes-content th {
+        padding: 0.75rem 1.5rem; /* px-6 py-3 */
         letter-spacing: 0.05em; /* tracking-wider */
         font-weight: 500; /* font-medium */
         color: var(--text-light-secondary); /* text-gray-500 */
@@ -1602,7 +1584,6 @@
       #recurrentes-content th:nth-child(6) {
         /* Banco/Cuenta */
         text-align: left;
-        white-space: nowrap;
       }
 
       #recurrentes-content th:nth-child(5) {
@@ -1855,27 +1836,6 @@
       }
 
       /* --- Pestaña Presupuesto --- */
-
-      #presupuesto-content th:nth-child(1) {
-        /* Categoría */
-        text-align: left;
-      }
-
-      #presupuesto-content td:nth-child(1) {
-        /* Categoría */
-        text-align: left;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        white-space: nowrap;
-      }
-
-      #presupuesto-content td:nth-child(2),
-      #presupuesto-content td:nth-child(3),
-      #presupuesto-content td:nth-child(4) {
-        text-align: right;
-        padding-right: 2rem;
-      }
-
       #presupuesto-content tbody td:nth-child(1) {
         color: var(--text-light-primary);
       }
@@ -1943,6 +1903,14 @@
         letter-spacing: 0.05em;
       }
 
+      #presupuesto-content thead th:first-child {
+        text-align: left;
+      }
+
+      #presupuesto-content thead th:not(:first-child) {
+        text-align: right;
+      }
+
       #presupuesto-content tfoot {
         border-top: 2px solid var(--border-dark);
       }
@@ -1953,7 +1921,7 @@
       }
 
       #presupuesto-content tfoot td:first-child {
-        text-align: right;
+        text-align: left;
         color: var(--text-light-primary);
         text-transform: uppercase;
       }
@@ -2677,8 +2645,8 @@
 
       /* --- Íconos de Categoría y Modal de Selección --- */
       .category-icon {
-        width: 36px;
-        height: auto;
+        width: 24px;
+        height: 24px;
         margin-right: 8px;
         vertical-align: middle;
         display: inline-block;
@@ -4323,14 +4291,6 @@
         white-space: nowrap;
       }
 
-      #recurrentes-content td:nth-child(4) > .category-icon,
-      #proyeccion-content td:nth-child(4) > .category-icon,
-      #registros-content td:nth-child(4) > .category-icon,
-      #presupuesto-content td:nth-child(1) > .category-icon {
-        width: 36px;
-        height: auto;
-      }
-
       /* ====================================================================== */
       /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)
       /* ====================================================================== */
@@ -4503,8 +4463,6 @@
         #registros-content td:nth-child(5),
         #registros-content th:nth-child(8),
         #registros-content td:nth-child(8),
-        /* #registros-content th:nth-child(7),
-        #registros-content td:nth-child(7),*/
         #proyeccion-content th:nth-child(3),
         #proyeccion-content td:nth-child(3),
         #proyeccion-content th:nth-child(7),
@@ -4520,6 +4478,7 @@
         #recurrentes-content th,
         #recurrentes-content td {
           white-space: normal; /* Permite que el texto largo (como en Descripción) se divida */
+          word-break: break-word;
         }
 
         /* FORZAR LA COMPRESIÓN DE LA COLUMNA "CATEGORÍA" (la 4ta columna) */
@@ -6659,7 +6618,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.5</p>
+        <p id="app-version">Versión 0.0.4.3</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>

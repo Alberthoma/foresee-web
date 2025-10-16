@@ -971,7 +971,15 @@
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
+        display: none;
       }
+
+      /*#registros-content th:nth-child(1),
+      #registros-content td:nth-child(1),
+      #proyeccion-content th:nth-child(1),
+      #proyeccion-content td:nth-child(1) {
+        display: block;
+      }*/
 
       tbody {
         background-color: var(--bg-dark-secondary);
@@ -1023,8 +1031,6 @@
         padding-top: 6px;
         padding-bottom: 6px;
         line-height: 1.2;
-        padding-right: 4px;
-        padding-left: 4px;
         font: 400;
       }
 
@@ -1348,14 +1354,20 @@
         text-align: center;
       }
 
+      #proyeccion-content td:nth-child(6),
       #registros-content td:nth-child(6),
       #registros-content td:nth-child(7) {
         text-align: right;
+        padding-right: 0.5rem;
       }
 
       #registros-content th:nth-child(8),
       #registros-content td:nth-child(1) {
         text-align: center;
+      }
+
+      #registros-content td:nth-child(8) {
+        padding-left: 0.5rem;
       }
 
       /* Estilos del Footer */
@@ -1561,6 +1573,7 @@
       #proyeccion-content td:nth-child(5),
       #proyeccion-content td:nth-child(6) {
         text-align: right;
+        padding-right: 0.5rem;
       }
 
       #recurrentes-content th {
@@ -1584,6 +1597,7 @@
       #recurrentes-content th:nth-child(6) {
         /* Banco/Cuenta */
         text-align: left;
+        white-space: nowrap;
       }
 
       #recurrentes-content th:nth-child(5) {
@@ -1836,6 +1850,27 @@
       }
 
       /* --- Pestaña Presupuesto --- */
+
+      #presupuesto-content th:nth-child(1) {
+        /* Categoría */
+        text-align: left;
+      }
+
+      #presupuesto-content td:nth-child(1) {
+        /* Categoría */
+        text-align: left;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        white-space: nowrap;
+      }
+
+      #presupuesto-content td:nth-child(2),
+      #presupuesto-content td:nth-child(3),
+      #presupuesto-content td:nth-child(4) {
+        text-align: right;
+        padding-right: 2rem;
+      }
+
       #presupuesto-content tbody td:nth-child(1) {
         color: var(--text-light-primary);
       }
@@ -1903,14 +1938,6 @@
         letter-spacing: 0.05em;
       }
 
-      #presupuesto-content thead th:first-child {
-        text-align: left;
-      }
-
-      #presupuesto-content thead th:not(:first-child) {
-        text-align: right;
-      }
-
       #presupuesto-content tfoot {
         border-top: 2px solid var(--border-dark);
       }
@@ -1921,7 +1948,7 @@
       }
 
       #presupuesto-content tfoot td:first-child {
-        text-align: left;
+        text-align: right;
         color: var(--text-light-primary);
         text-transform: uppercase;
       }
@@ -4463,6 +4490,8 @@
         #registros-content td:nth-child(5),
         #registros-content th:nth-child(8),
         #registros-content td:nth-child(8),
+        /* #registros-content th:nth-child(7),
+        #registros-content td:nth-child(7),*/
         #proyeccion-content th:nth-child(3),
         #proyeccion-content td:nth-child(3),
         #proyeccion-content th:nth-child(7),
@@ -6618,7 +6647,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.3</p>
+        <p id="app-version">Versión 0.0.4.4</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
