@@ -24,7 +24,7 @@
     />
 
     <link rel="manifest" href="manifest.json" />
-
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -133,11 +133,6 @@
       }
     </script>
     <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
       /* ====================================================================== */
       /* 1. CONFIGURACIÓN GLOBAL Y VARIABLES DE TEMA
               /* ====================================================================== */
@@ -229,6 +224,10 @@
         display: block;
       }
 
+      .container {
+        padding: 1px 1rem;
+      }
+
       /* ====================================================================== */
       /* 2. ESTRUCTURA Y LAYOUT PRINCIPAL
       /* ====================================================================== */
@@ -240,7 +239,6 @@
         padding-left: 1rem; /* 16px */
         padding-right: 1rem; /* 16px */
         border-radius: 0.75rem; /* 12px - Añadido para redondear los bordes */
-        box-sizing: border-box; /* <-- AÑADE ESTA LÍNEA */
       }
 
       /* Puntos de quiebre (breakpoints) para centrar el contenido en pantallas más grandes */
@@ -289,7 +287,7 @@
         margin-top: 0;
         transition: height 0.3s ease-in-out;
         background-color: transparent;
-        z-index: 99;
+        z-index: 999;
       }
 
       #barr {
@@ -666,8 +664,6 @@
         background-color: var(--bg-dark-secondary);
         border: 1px solid var(--border-dark);
         padding: 1rem;
-        border-radius: 0.75rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
       }
 
       #main-action-btn {
@@ -859,8 +855,6 @@
         background-color: var(--bg-dark-secondary);
         border: 1px solid var(--border-dark);
         color: var(--text-light-primary);
-        box-sizing: border-box; /* <-- AÑADIDO: Clave para evitar desbordamiento */
-        width: 100%; /* Asegura que tome el ancho disponible dentro del padding del modal padre */
       }
 
       .modal h2 {
@@ -974,7 +968,6 @@
       #tarjetas-content table,
       #presupuesto-content table {
         width: 100%;
-        /*table-layout: fixed;  <--- AÑADIR ESTA LÍNEA */
         margin: 1px auto 0;
       }
 
@@ -1215,21 +1208,20 @@
       }
 
       #dashboard .dashboard-card {
-        margin-top: 0.25rem;
+        margin-top: 1rem;
       }
 
       /* --- Dashboard y Alertas --- */
       #dashboard {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 0.5rem;
-        margin: 2rem 1rem 1rem 1rem;
+        gap: 1rem;
+        margin: 1rem 1rem 1rem 1rem;
       }
 
       .dashboard-card {
         background-color: var(--bg-dark-secondary);
-        padding: 0.25rem;
-        padding-left: 1rem;
+        padding: 0.5rem;
         border-radius: 0.75rem;
         border: 1px solid var(--border-dark);
         display: flex;
@@ -1238,8 +1230,7 @@
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         cursor: pointer;
-        /* height: 80px; */ /* <-- Comentado o eliminado */
-        /*min-height: 80px;  <-- AÑADIDO: Permite que crezca si es necesario */
+        height: 80px;
       }
 
       .dashboard-card:hover {
@@ -1289,7 +1280,7 @@
 
       #credit-card-alerts,
       #recurring-alerts {
-        margin: 0rem 1rem 0 1rem;
+        margin: 0rem 2rem 0 2rem;
         font-size: 0.875rem;
       }
 
@@ -1352,6 +1343,7 @@
         text-align: center;
         padding-left: 2px;
         padding-right: 2px;
+        width: 1%;
         white-space: nowrap;
       }
 
@@ -1435,42 +1427,14 @@
         transform: scale(1.15);
       }
 
-      #registros-content td:nth-child(5),
-      #proyeccion-content td:nth-child(5) {
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
-      }
-      #registros-content td:nth-child(5) {
-        width: 12px;
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
-      }
       #registros-content td:nth-child(4),
       #proyeccion-content td:nth-child(4) {
-        width: 1%;
-        max-width: 1%;
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
+        padding-right: 1rem; /* Crea un "cojín" de espacio a la derecha del texto */
       }
-      #registros-content td:nth-child(3) {
-        width: 5rem;
-        max-width: 8rem;
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
-      }
-      #registros-content td:nth-child(2),
-      #proyeccion-content td:nth-child(2) {
-        width: 1%;
-        max-width: 1%;
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
-      }
-      #registros-content td:nth-child(1),
-      #proyeccion-content td:nth-child(1) {
-        width: 1%;
-        max-width: 1%;
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
+
+      #registros-content td:nth-child(5),
+      #proyeccion-content td:nth-child(5) {
+        padding-left: 2rem; /* Crea un "cojín" de espacio a la derecha del texto */
       }
 
       /* --- Estilos específicos para la tabla de Registros --- */
@@ -1487,18 +1451,13 @@
       #proyeccion-content td:nth-child(6),
       #registros-content td:nth-child(6),
       #registros-content td:nth-child(7) {
-        width: 1%;
-        max-width: 1%;
         text-align: right;
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
+        padding-right: 0.5rem;
       }
 
       #registros-content th:nth-child(8),
       #registros-content td:nth-child(1) {
         text-align: center;
-        padding-right: 0.25rem;
-        padding-left: 0.25rem;
       }
 
       #registros-content td:nth-child(8) {
@@ -1935,7 +1894,7 @@
       #saldos-content {
         background-color: var(--bg-dark-primary);
         padding: 1rem;
-        margin: 0.5rem;
+        margin: -1rem;
         border-radius: 0.75rem;
       }
 
@@ -1943,26 +1902,6 @@
         font-size: 1.125rem; /* text-lg */
         font-weight: 600; /* font-semibold */
         margin-bottom: 1rem; /* mb-4 */
-      }
-      .balance-card {
-        background-color: var(--bg-dark-secondary); /* bg-white (adaptado a tu tema oscuro) */
-        border: 1px solid var(--border-dark); /* Añadido para consistencia */
-        padding: 1rem; /* p-4 */
-        border-radius: 0.75rem; /* rounded-xl */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-md */
-        display: flex; /* flex */
-        flex-direction: column; /* flex-col */
-        justify-content: space-between; /* justify-between */
-        padding-top: 0.25rem; /* Ajuste del padding superior */
-        padding-bottom: 0.25rem; /* Ajuste del padding inferior */
-      }
-
-      .balance-card-title {
-        font-size: 1.125rem; /* text-lg */
-        font-weight: 600; /* font-semibold */
-        color: var(--text-light-primary); /* text-gray-700 (adaptado a tu tema) */
-        margin-bottom: 0rem; /* mb-3 */
-        padding-top: 0rem;
       }
 
       #saldos-content .bg-white {
@@ -1975,7 +1914,7 @@
       }
 
       .balance-card-label {
-        padding: 0.5rem;
+        padding: 1rem;
         border-radius: 0.5rem;
         text-align: center;
         font-weight: 700;
@@ -2662,50 +2601,7 @@
       /* ====================================================================== */
       /* --- PESTAÑA GASTOS COMUNES --- */
       /* ====================================================================== */
-      /* Estilo base para el monto en la celda de distribución */
-      #gastos-comunes-content .distribution-amount {
-        font-weight: 600; /* font-semibold */
-        font-size: 1.125rem; /* text-lg */
-      }
 
-      /* Modificador de color para cuando el monto ya ha sido pagado */
-      #gastos-comunes-content .is-paid {
-        color: var(--electric-green); /* text-green-500 */
-      }
-      /* Estilo para el input del día en la tabla de Gastos Comunes */
-      #gastos-comunes-content .shared-expense-day-input {
-        width: 3.5rem; /* w-14 */
-        text-align: center; /* text-center */
-      }
-
-      /* Estilo para el input del día cuando está deshabilitado (pagado) */
-      #gastos-comunes-content .shared-expense-day-input:disabled {
-        background-color: #2e3a4b;
-        cursor: not-allowed;
-      }
-
-      /* Estilos base para el botón 'OK' / '✔' */
-      .register-shared-expense-btn {
-        background-color: #16a34a; /* bg-green-600 */
-        color: #ffffff; /* text-white */
-        border-radius: 0.25rem; /* rounded */
-        padding: 0.25rem 0.5rem; /* py-1 px-2 */
-        font-size: 0.75rem; /* text-xs */
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.15s ease-in-out; /* transition */
-      }
-
-      /* Estilo hover para el botón 'OK' cuando está activo */
-      .register-shared-expense-btn:not(:disabled):hover {
-        background-color: #15803d; /* hover:bg-green-700 */
-      }
-
-      /* Estilo para el botón '✔' cuando está deshabilitado (pagado) */
-      .register-shared-expense-btn:disabled {
-        background-color: #166534; /* bg-green-800 */
-        cursor: default;
-      }
       #gastos-comunes-content .table-input {
         width: 100%;
         padding: 6px 10px;
@@ -2768,23 +2664,7 @@
         font-size: 0.65rem;
         color: var(--text-light-secondary);
         display: block;
-        margin-top: -0.25rem; /* -mt-1 */
-      }
-
-      /* Contenido interno de la celda de distribución */
-      .distribution-cell-content {
-        display: flex; /* flex */
-        flex-direction: column; /* flex-col */
-        align-items: center; /* items-center */
-        gap: 0.25rem; /* gap-1 */
-      }
-
-      /* Contenedor para el input y botón de 'OK' */
-      .distribution-cell-actions {
-        display: flex; /* flex */
-        align-items: center; /* items-center */
-        gap: 0.25rem; /* gap-1 */
-        margin-top: 0.25rem; /* mt-1 */
+        margin-top: 2px;
       }
 
       #distribution-popover {
@@ -4560,22 +4440,6 @@
         height: auto;
       }
 
-      #registros-content td:nth-child(3),
-      #proyeccion-content td:nth-child(3) {
-        max-width: 100%;
-        white-space: normal;
-        padding: 0.25rem;
-      }
-
-      #registros-content td:nth-child(8),
-      #proyeccion-content td:nth-child(7) {
-        max-width: 60px;
-        text-align: center;
-      }
-      #registros-content td:nth-child(8) {
-        padding-right: 0.5rem;
-      }
-
       /* ====================================================================== */
       /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)
       /* ====================================================================== */
@@ -4681,8 +4545,7 @@
         }
 
         .dashboard-card {
-          padding: 0.25rem;
-          padding-left: 0.5rem;
+          padding: 1rem;
           gap: 0.5rem;
         }
 
@@ -5074,8 +4937,6 @@
         left: 0;
         background-color: rgba(0, 0, 0, 0.5);
         padding: 1rem;
-        margin-right: 1rem; /* mr-4 */
-        margin-left: 1rem; /* ml-4 */
         /* -- Líneas añadidas para centrar el contenido -- */
       }
 
@@ -5436,7 +5297,7 @@
       <div id="credit-card-alerts"></div>
       <div id="recurring-alerts"></div>
 
-      <main id="main-container" class="container">
+      <main id="main-container" class="container mx-auto bg-gray-200 rounded-xl shadow-md mt-24">
         <div class="button-container">
           <div class="action-buttons-left">
             <button id="migrate-all-recurring-btn">
@@ -6885,6 +6746,7 @@
           <button id="close-tutorials-modal-btn" type="button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -6923,7 +6785,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.8</p>
+        <p id="app-version">Versión 0.0.4.7</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
@@ -8794,37 +8656,46 @@
               else rowTextColorClass = 'expense-text-row';
               row.className = rowTextColorClass;
 
+              // --- Celdas con clases de Tailwind eliminadas ---
               const cellCheckbox = row.insertCell();
+              // La alineación la maneja el CSS
               cellCheckbox.innerHTML = `<input type="checkbox" class="transaction-checkbox" data-id="${t.id}">`;
 
               const cellDate = row.insertCell();
+              cellDate.className = 'whitespace-nowrap';
               cellDate.innerHTML = `<span class="desktop-date">${formatDate(
                 t.date,
               )}</span><span class="mobile-date">${formatDateForMobile(t.date)}</span>`;
 
               const cellDesc = row.insertCell();
+              cellDesc.className = 'whitespace-nowrap';
               cellDesc.textContent = t.description;
 
               const cellCat = row.insertCell();
+              cellCat.className = 'whitespace-nowrap';
               cellCat.innerHTML = `<div class="category-cell-content">${getCategoryDisplay(
                 t.category,
               )}<button class="info-btn" data-description="${t.description}">i</button></div>`;
 
               const cellBank = row.insertCell();
+              cellBank.className = 'whitespace-nowrap';
               cellBank.textContent = t.bank;
 
               const cellAmount = row.insertCell();
+              cellAmount.className = 'whitespace-nowrap';
               cellAmount.style.fontWeight = '400';
               cellAmount.textContent = formatCurrency(t.amount);
 
               const cellBalance = row.insertCell();
-              cellBalance.className = 'balance-cell-bg';
+              cellBalance.className = 'whitespace-nowrap balance-cell-bg';
               cellBalance.innerHTML = `<span style="${balanceStyle}">${formatCurrency(
                 runningBalance,
               )}</span>`;
 
               const cellActions = row.insertCell();
+              cellActions.className = 'whitespace-nowrap';
               cellActions.style.fontWeight = '400';
+              // --- HTML del botón sin clases de Tailwind ---
               cellActions.innerHTML = `<button data-id="${t.id}" class="edit-btn" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button><button data-id="${t.id}" class="delete-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
 
               transactionsTableBody.appendChild(row);
@@ -9029,26 +8900,26 @@
             balancesGrid.classList.remove('hidden');
 
             bankBalances.forEach((bank) => {
+              // Asignamos la nueva clase de la tarjeta (positiva o negativa)
               const balanceClass =
                 bank.balance >= 0 ? 'balance-card-positive' : 'balance-card-negative';
 
-              // 1. Creamos el elemento de la tarjeta
               const card = document.createElement('div');
+              // Eliminamos estilos de la tarjeta principal para que no interfieran
+              card.className = 'bg-white p-4 rounded-xl shadow-md flex flex-col justify-between';
 
-              // 2. Le asignamos la clase CSS principal que creamos
-              card.className = 'balance-card';
-
-              // 3. Definimos su contenido interno con las clases CSS correctas
+              // **ESTRUCTURA HTML MEJORADA**
+              // Aplicamos las nuevas clases directamente a la etiqueta <p> del saldo
               card.innerHTML = `
-                    <div>
-                        <p class="balance-card-title">${bank.name}</p>
-                        <p class="balance-card-label ${balanceClass}">
-                            ${formatCurrency(bank.balance)}
-                        </p>
-                    </div>
-                `;
-
-              // 4. (LA LÍNEA CLAVE) Añadimos la tarjeta creada al contenedor visible
+                              <div>
+                                  <p class="text-lg font-semibold text-gray-700 mb-3">${
+                                    bank.name
+                                  }</p>
+                                  <p class="balance-card-label ${balanceClass}">
+                                      ${formatCurrency(bank.balance)}
+                                  </p>
+                              </div>
+                          `;
               balancesGrid.appendChild(card);
             });
           }
@@ -9351,7 +9222,7 @@
               const p = document.createElement('p');
               // Asigna la clase 'danger' o 'warning' para que coincida con el CSS que creamos.
               p.className = `dashboard-alert alert-${alert.type}`; // Esto asignará 'alert-danger' o 'alert-warning'
-              p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>${alert.text}`;
+              p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>${alert.text}`;
               recurringAlertsDiv.appendChild(p);
             });
           }
@@ -13025,9 +12896,9 @@
               const calculatedAmount = calculateCellAmount(item, personIndex);
 
               // Aplicamos la clase de color verde si está pagado.
-              let amountClass = 'distribution-amount';
+              let amountClass = 'font-semibold text-lg';
               if (isPaid) {
-                amountClass += ' is-paid';
+                amountClass += ' text-green-500';
               }
 
               let inputAndButtonHtml = '';
@@ -13036,12 +12907,13 @@
                 inputAndButtonHtml = `
                   <input
                     type="number"
-                    class="table-input shared-expense-day-input"
+                    class="table-input w-14 text-center shared-expense-day-input"
                     value="${paidDay}"
                     disabled
+                    style="background-color: #2E3A4B; cursor: not-allowed;"
                   >
                   <button
-                    class="register-shared-expense-btn"
+                    class="register-shared-expense-btn bg-green-800 text-white rounded px-2 py-1 text-xs"
                     title="Pago ya registrado"
                     disabled
                   >
@@ -13054,12 +12926,12 @@
                   <input
                     type="number"
                     min="1" max="31"
-                    class="table-input shared-expense-day-input"
+                    class="table-input w-14 text-center shared-expense-day-input"
                     placeholder="Día"
                     title="Día del pago (1-31)"
                   >
                   <button
-                    class="register-shared-expense-btn"
+                    class="register-shared-expense-btn bg-green-600 text-white rounded px-2 py-1 text-xs hover:bg-green-700 transition"
                     data-item-id="${item.id}"
                     data-person-index="${personIndex}"
                     title="Registrar este pago"
@@ -13070,14 +12942,14 @@
               }
 
               distCell.innerHTML = `
-                <div class="distribution-cell-content">
+                <div class="flex flex-col items-center gap-1">
                     <span class="${amountClass}">${formatCurrency(calculatedAmount)}</span>
-                    <span class="method-indicator">${indicatorText}</span>
-                    <div class="distribution-cell-actions">
+                    <span class="method-indicator -mt-1">${indicatorText}</span>
+                    <div class="flex items-center gap-1 mt-1">
                         ${inputAndButtonHtml}
                     </div>
                 </div>
-            `;
+              `;
               // === FIN DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
             });
             itemRow.insertCell(
