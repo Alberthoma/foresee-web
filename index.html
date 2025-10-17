@@ -24,7 +24,7 @@
     />
 
     <link rel="manifest" href="manifest.json" />
-
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -376,6 +376,7 @@
         border-radius: 10px;
         /* background: var(--bg-dark-secondary); */
         background: #1f2937ba;
+        border: none;
       }
 
       .tab-button img {
@@ -4566,6 +4567,24 @@
           background: #1f2937ba;
         }
 
+        .tab-button:hover {
+          color: var(--electric-blue);
+          /* background-color: transparent; */
+          background: #1f2937ba;
+          border-bottom-color: var(--electric-blue);
+          box-shadow: 0 0 8px var(--electric-blue), 0 0 15px var(--electric-blue),
+            0 0 25px var(--electric-blue);
+          inset: 0 0 10px rgba(14, 165, 233, 0.6);
+        }
+
+        .tab-button.active {
+          box-shadow: 0 0 8px var(--bg-dark-tertiary), 0 0 15px var(--bg-dark-tertiary),
+            0 0 25px var(--bg-dark-tertiary);
+          inset: 0 0 5px rgba(112, 114, 115, 0.6);
+          background-color: #1f2937f5;
+          transform: scale(1.05);
+        }
+
         .tab-button img {
           height: 64px;
           width: auto;
@@ -4579,11 +4598,6 @@
           text-align: center;
           word-break: break-word;
           hyphens: auto;
-        }
-
-        .tab-button.active {
-          background-color: #1f2937f5;
-          transform: scale(1.05);
         }
 
         #main-action-btn {
@@ -6771,7 +6785,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.6</p>
+        <p id="app-version">Versión 0.0.4.7</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
