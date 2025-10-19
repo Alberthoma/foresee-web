@@ -234,24 +234,28 @@
       /* ====================================================================== */
 
       .container {
-        width: 100%;
+        width: 98%;
         margin-left: auto;
         margin-right: auto;
         padding-left: 1rem; /* 16px */
         padding-right: 1rem; /* 16px */
         border-radius: 0.75rem; /* 12px - Añadido para redondear los bordes */
-        box-sizing: border-box; /* <-- AÑADE ESTA LÍNEA */
+        /* box-sizing: border-box; <-- AÑADE ESTA LÍNEA */
       }
 
       /* Puntos de quiebre (breakpoints) para centrar el contenido en pantallas más grandes */
       @media (min-width: 640px) {
         .container {
           max-width: 640px;
+          padding-left: 1rem; /* 16px */
+          padding-right: 1rem; /* 16px */
         }
       }
       @media (min-width: 768px) {
         .container {
           max-width: 768px;
+          padding-left: 1rem; /* 16px */
+          padding-right: 1rem; /* 16px */
         }
       }
       @media (min-width: 1024px) {
@@ -413,6 +417,8 @@
 
       #main-container {
         margin-top: 7rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
       }
 
       /* Tamaño base para los íconos de las pestañas */
@@ -954,7 +960,8 @@
       /* --- Tablas (Estilos Generales) --- */
       /* --- Contenedor de Tabla --- */
       .table-container {
-        overflow-x: auto;
+        overflow-x: auto; /* <-- AÑADE ESTA LÍNEA (O DESCOMÉNTALA SI YA EXISTÍA) */
+        box-sizing: border-box; /* <-- CAMBIA 'content-box' a 'border-box' */
       }
       table {
         border-collapse: separate;
@@ -1734,6 +1741,7 @@
         white-space: nowrap;
       }
 
+      #recurrentes-content td:nth-child(7),
       #recurrentes-content th:nth-child(5) {
         /* Monto */
         text-align: right;
@@ -4634,6 +4642,12 @@
           display: none;
         }
 
+        .container {
+          width: 95%;
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
         #tabs {
           justify-content: space-between;
           width: 100%;
@@ -5067,15 +5081,12 @@
       /* La clase .modal y .modal.active ya la tienes, esto añade el posicionamiento y fondo */
       /* --- Contenedor del Modal de Autenticación (Corregido) --- */
       #auth-modal {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
         background-color: rgba(0, 0, 0, 0.5);
-        padding: 1rem;
+        padding-right: 3rem;
         margin-right: 1rem; /* mr-4 */
         margin-left: 1rem; /* ml-4 */
+        align-items: center;
+        justify-content: center;
         /* -- Líneas añadidas para centrar el contenido -- */
       }
 
@@ -5083,9 +5094,9 @@
       .auth-modal-content {
         background-color: #ffffff; /* bg-white */
         border-radius: 0.5rem; /* rounded-lg */
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
+        box-shadow: 0 6px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
         width: 100%; /* w-full */
-        max-width: 28rem; /* max-w-md */
+        max-width: 20rem; /* max-w-md */
         display: flex;
         flex-direction: column; /* flex flex-col */
       }
@@ -5132,7 +5143,7 @@
         font-weight: 500; /* font-medium */
         color: white; /* text-gray-700 */
         margin-bottom: 0.25rem; /* mb-1 */
-        padding-left: 0.5rem; /* px-1 */
+        padding: 0.5rem; /* px-1 */
       }
 
       /* --- Cajas de Texto (Inputs) --- */
@@ -5189,6 +5200,7 @@
 
       #login-btn {
         background-color: #2563eb; /* bg-blue-600 */
+        padding: 0.5rem;
       }
       #login-btn:hover {
         background-color: #1d4ed8; /* hover:bg-blue-700 */
@@ -5196,6 +5208,7 @@
 
       #register-btn {
         background-color: #16a34a; /* bg-green-600 */
+        padding: 0.5rem;
       }
       #register-btn:hover {
         background-color: #15803d; /* hover:bg-green-700 */
@@ -6923,7 +6936,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.8</p>
+        <p id="app-version">Versión 0.0.4.9</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>

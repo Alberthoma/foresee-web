@@ -25,7 +25,6 @@
 
     <link rel="manifest" href="manifest.json" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -134,6 +133,11 @@
       }
     </script>
     <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
       /* ====================================================================== */
       /* 1. CONFIGURACIÓN GLOBAL Y VARIABLES DE TEMA
               /* ====================================================================== */
@@ -225,13 +229,46 @@
         display: block;
       }
 
-      .container {
-        padding: 1px 1rem;
-      }
-
       /* ====================================================================== */
       /* 2. ESTRUCTURA Y LAYOUT PRINCIPAL
       /* ====================================================================== */
+
+      .container {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem; /* 16px */
+        padding-right: 1rem; /* 16px */
+        border-radius: 0.75rem; /* 12px - Añadido para redondear los bordes */
+        box-sizing: border-box; /* <-- AÑADE ESTA LÍNEA */
+      }
+
+      /* Puntos de quiebre (breakpoints) para centrar el contenido en pantallas más grandes */
+      @media (min-width: 640px) {
+        .container {
+          max-width: 640px;
+        }
+      }
+      @media (min-width: 768px) {
+        .container {
+          max-width: 768px;
+        }
+      }
+      @media (min-width: 1024px) {
+        .container {
+          max-width: 1024px;
+        }
+      }
+      @media (min-width: 1280px) {
+        .container {
+          max-width: 1280px;
+        }
+      }
+      @media (min-width: 1536px) {
+        .container {
+          max-width: 1536px;
+        }
+      }
       #main-content-wrapper {
         flex-grow: 1;
       }
@@ -252,6 +289,7 @@
         margin-top: 0;
         transition: height 0.3s ease-in-out;
         background-color: transparent;
+        z-index: 99;
       }
 
       #barr {
@@ -336,10 +374,11 @@
         padding-right: 1px;
         margin-left: 2px;
         padding-top: 4px;
+        padding-bottom: 10px;
         border-radius: 10px;
-        margin-bottom: 2px;
         /* background: var(--bg-dark-secondary); */
         background: #1f2937ba;
+        border: none;
       }
 
       .tab-button img {
@@ -627,6 +666,8 @@
         background-color: var(--bg-dark-secondary);
         border: 1px solid var(--border-dark);
         padding: 1rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
       }
 
       #main-action-btn {
@@ -778,7 +819,7 @@
 
       /* Contenedor de filtros y botones derechos */
       #filters-container {
-        display: flex;
+        display: none;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -818,6 +859,8 @@
         background-color: var(--bg-dark-secondary);
         border: 1px solid var(--border-dark);
         color: var(--text-light-primary);
+        box-sizing: border-box; /* <-- AÑADIDO: Clave para evitar desbordamiento */
+        width: 100%; /* Asegura que tome el ancho disponible dentro del padding del modal padre */
       }
 
       .modal h2 {
@@ -931,6 +974,7 @@
       #tarjetas-content table,
       #presupuesto-content table {
         width: 100%;
+        /*table-layout: fixed;  <--- AÑADIR ESTA LÍNEA */
         margin: 1px auto 0;
       }
 
@@ -971,15 +1015,14 @@
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
-        display: none;
+        /*display: none;*/
       }
 
-      /*#registros-content th:nth-child(1),
-      #registros-content td:nth-child(1),
-      #proyeccion-content th:nth-child(1),
-      #proyeccion-content td:nth-child(1) {
-        display: block;
-      }*/
+      #registros-content th,
+      #proyeccion-content th,
+      #recurrentes-content th {
+        display: none;
+      }
 
       tbody {
         background-color: var(--bg-dark-secondary);
@@ -988,6 +1031,7 @@
 
       td {
         color: var(--text-light-primary);
+        white-space: nowrap;
       }
 
       tbody tr {
@@ -1170,17 +1214,22 @@
         gap: 4px;
       }
 
+      #dashboard .dashboard-card {
+        margin-top: 0.25rem;
+      }
+
       /* --- Dashboard y Alertas --- */
       #dashboard {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        margin: 1.5rem 2rem 1rem 2rem;
+        gap: 0.5rem;
+        margin: 2rem 1rem 1rem 1rem;
       }
 
       .dashboard-card {
         background-color: var(--bg-dark-secondary);
-        padding: 1.5rem;
+        padding: 0.25rem;
+        padding-left: 1rem;
         border-radius: 0.75rem;
         border: 1px solid var(--border-dark);
         display: flex;
@@ -1189,6 +1238,8 @@
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         cursor: pointer;
+        /* height: 80px; */ /* <-- Comentado o eliminado */
+        /*min-height: 80px;  <-- AÑADIDO: Permite que crezca si es necesario */
       }
 
       .dashboard-card:hover {
@@ -1197,24 +1248,27 @@
       }
 
       .dashboard-card p:first-child {
-        font-size: 0.875rem;
+        font-size: 1rem;
         color: var(--text-light-secondary);
+        margin-bottom: 0rem;
+        padding-bottom: 0;
       }
 
       .dashboard-card p:last-child {
-        font-size: 2.25rem;
+        font-size: 1.5rem;
         font-weight: 700;
+        padding-top: 0;
       }
 
       .card-icon-wrapper img {
-        height: 64px;
+        height: 48px;
         width: auto;
       }
 
       .card-icon-wrapper {
         width: 62px;
         height: 62px;
-        padding: 1px;
+        padding: 0.5px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1235,46 +1289,52 @@
 
       #credit-card-alerts,
       #recurring-alerts {
-        margin: 0.5rem 2rem 0 2rem;
+        margin: 0rem 1rem 0 1rem;
         font-size: 0.875rem;
       }
 
-      #credit-card-alerts p,
-      #recurring-alerts p {
-        padding: 0.5rem;
-        margin-bottom: 0.25rem;
-        border-radius: 0.375rem;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Estilo base para todas las alertas del dashboard */
+      /* ESTILOS MEJORADOS PARA ALERTAS DEL DASHBOARD*/
+      /* --- Estilo Base para cualquier alerta en el dashboard --- */
       .dashboard-alert {
-        padding: 0.5rem;
-        margin-bottom: 0.25rem;
-        border-radius: 0.375rem;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.5rem;
+        border-left-width: 5px;
+        font-size: 0.85rem;
+        font-weight: 400; /* <-- CAMBIO: Cambiado de 500 (semi-bold) a 400 (normal) */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       }
 
-      .alert-icon {
-        display: inline-block;
-        width: 1.25rem;
-        height: 1.25rem;
-        margin-right: 0.5rem;
-        vertical-align: text-bottom;
+      .dashboard-alert svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
       }
 
-      #recurring-alerts p.danger {
-        background-color: rgba(239, 68, 68, 0.1);
-        border-left: 4px solid var(--electric-red);
-        color: var(--electric-red);
+      /* --- Estilo para Alerta de ADVERTENCIA (amarillo) --- */
+      .dashboard-alert.alert-warning {
+        background-color: rgba(255, 235, 59, 0.1); /* Fondo amarillo más claro */
+        border-left-color: #ffff00; /* Amarillo eléctrico puro */
+        color: #ffff00; /* <-- CAMBIO: Amarillo eléctrico para el texto */
       }
 
-      #recurring-alerts p.warning {
-        background-color: rgba(250, 204, 21, 0.15);
-        border-left: 4px solid var(--electric-yellow);
-        color: var(--electric-yellow);
+      .dashboard-alert.alert-warning svg {
+        color: #ffff00; /* <-- CAMBIO: Amarillo eléctrico para el icono */
       }
 
+      /* --- Estilo para Alerta de PELIGRO (rojo) --- */
+      .dashboard-alert.alert-danger {
+        background-color: rgba(255, 0, 0, 0.1); /* Fondo rojo más claro */
+        border-left-color: #ff0000; /* Rojo eléctrico puro */
+        color: #ff4d4d; /* <-- CAMBIO: Rojo eléctrico más brillante para el texto */
+      }
+
+      .dashboard-alert.alert-danger svg {
+        color: #ff0000; /* <-- CAMBIO: Rojo eléctrico para el icono */
+      }
       /* --- Pestaña Registros y Proyección (Estilos compartidos) --- */
       #registros-content .income-text-row td:is(:nth-child(1), :nth-child(2), :nth-child(3)),
       #registros-content .expense-text-row td:is(:nth-child(1), :nth-child(2), :nth-child(3)),
@@ -1292,7 +1352,6 @@
         text-align: center;
         padding-left: 2px;
         padding-right: 2px;
-        width: 1%;
         white-space: nowrap;
       }
 
@@ -1313,17 +1372,52 @@
         padding-bottom: 2rem;
       }
 
+      /* ESTILOS MEJORADOS PARA BOTONES DE ACCIÓN CON ICONOS EN TABLAS */
+      /* --- Estilo Base para TODOS los botones de acción --- */
+      .edit-btn,
       .edit-recurring-btn,
-      .edit-btn {
+      .delete-btn,
+      .delete-card-btn,
+      .delete-category-btn,
+      .delete-bank-btn,
+      .delete-description-btn {
+        background-color: transparent;
+        border: none;
+        padding: 6px; /* Ajustamos el padding para que sea uniforme alrededor del icono */
+        border-radius: 50%; /* Hacemos los botones completamente redondos */
+        cursor: pointer;
+        margin: 0 4px;
+        transition: all 0.2s ease-in-out;
+        display: inline-flex; /* Asegura que el icono SVG se centre bien */
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* --- Estilo para el icono SVG dentro del botón --- */
+      .edit-btn svg,
+      .edit-recurring-btn svg,
+      .delete-btn svg,
+      .delete-card-btn svg,
+      .delete-category-btn svg,
+      .delete-bank-btn svg,
+      .delete-description-btn svg {
+        width: 18px; /* Tamaño del icono */
+        height: 18px;
+      }
+
+      /* --- Estilos específicos para el botón EDITAR (Lápiz) ✏️ --- */
+      .edit-btn,
+      .edit-recurring-btn {
         color: var(--electric-blue);
-        /*margin-right: 0.75rem;  Añadido para el espaciado */
       }
 
-      .edit-recurring-btn:hover,
-      .edit-btn:hover {
-        color: #cbdae1;
+      .edit-btn:hover,
+      .edit-recurring-btn:hover {
+        background-color: rgba(14, 165, 233, 0.15); /* Fondo azul semitransparente */
+        transform: scale(1.15);
       }
 
+      /* --- Estilos específicos para el botón ELIMINAR (Papelera) 🗑️ --- */
       .delete-btn,
       .delete-card-btn,
       .delete-category-btn,
@@ -1337,12 +1431,48 @@
       .delete-category-btn:hover,
       .delete-bank-btn:hover,
       .delete-description-btn:hover {
-        color: #f472b6;
+        background-color: rgba(239, 68, 68, 0.15); /* Fondo rojo semitransparente */
+        transform: scale(1.15);
       }
 
-      #registros-content td:nth-child(4) {
-        padding-right: 1.5rem; /* Crea un "cojín" de espacio a la derecha del texto */
+      #registros-content td:nth-child(5),
+      #proyeccion-content td:nth-child(5) {
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
       }
+      #registros-content td:nth-child(5) {
+        width: 12px;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
+      }
+      #registros-content td:nth-child(4),
+      #proyeccion-content td:nth-child(4) {
+        width: 1%;
+        max-width: 1%;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
+      }
+      #registros-content td:nth-child(3) {
+        width: 5rem;
+        max-width: 8rem;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
+      }
+      #registros-content td:nth-child(2),
+      #proyeccion-content td:nth-child(2) {
+        width: 1%;
+        max-width: 1%;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
+      }
+      #registros-content td:nth-child(1),
+      #proyeccion-content td:nth-child(1) {
+        width: 1%;
+        max-width: 1%;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
+      }
+
       /* --- Estilos específicos para la tabla de Registros --- */
       #registros-content th:first-child {
         padding-left: 0.5rem; /* px-2 */
@@ -1357,13 +1487,18 @@
       #proyeccion-content td:nth-child(6),
       #registros-content td:nth-child(6),
       #registros-content td:nth-child(7) {
+        width: 1%;
+        max-width: 1%;
         text-align: right;
-        padding-right: 0.5rem;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
       }
 
       #registros-content th:nth-child(8),
       #registros-content td:nth-child(1) {
         text-align: center;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
       }
 
       #registros-content td:nth-child(8) {
@@ -1577,7 +1712,6 @@
       }
 
       #recurrentes-content th {
-        padding: 0.75rem 1.5rem; /* px-6 py-3 */
         letter-spacing: 0.05em; /* tracking-wider */
         font-weight: 500; /* font-medium */
         color: var(--text-light-secondary); /* text-gray-500 */
@@ -1662,6 +1796,28 @@
       }
 
       /* --- Pestaña Tarjetas de Crédito --- */
+      /* ESTILOS MEJORADOS PARA INPUTS EN TABLA DE TARJETAS DE CRÉDITO */
+      #tarjetas-content .table-input {
+        width: 100%; /* El input ocupará todo el espacio de la celda */
+        max-width: 120px; /* Un ancho máximo para que no se vea demasiado grande */
+        padding: 6px 10px; /* Más espaciado interno para mejor legibilidad */
+        background-color: var(--bg-dark-primary); /* Fondo oscuro primario */
+        border: 1px solid var(--border-dark); /* Borde sutil */
+        border-radius: 6px; /* Bordes redondeados */
+        color: var(--text-light-primary);
+        text-align: right;
+        font-size: 0.9rem; /* Tamaño de fuente consistente */
+        box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+        transition: all 0.2s ease-in-out;
+      }
+
+      /* Efecto visual cuando el usuario selecciona el input */
+      #tarjetas-content .table-input:focus {
+        outline: none; /* Quitamos el borde por defecto del navegador */
+        border-color: var(--electric-blue); /* Borde azul para indicar selección */
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.4); /* Resplandor exterior */
+      }
+
       #tarjetas-content th {
         padding-top: 0.75rem;
         padding-bottom: 0.75rem;
@@ -1710,12 +1866,6 @@
       /* Estilo específico para el total del pago mensual sugerido */
       #tarjetas-content tfoot #cc-total-monthly {
         color: var(--electric-blue);
-      }
-
-      /* Reglas para inputs y fondos dinámicos dentro de esta tabla específica */
-      #tarjetas-content .table-input {
-        background-color: var(--bg-dark-primary);
-        border: 1px solid var(--border-dark);
       }
 
       #tarjetas-content .bg-red-100,
@@ -1785,7 +1935,7 @@
       #saldos-content {
         background-color: var(--bg-dark-primary);
         padding: 1rem;
-        margin: -1rem;
+        margin: 0.5rem;
         border-radius: 0.75rem;
       }
 
@@ -1793,6 +1943,26 @@
         font-size: 1.125rem; /* text-lg */
         font-weight: 600; /* font-semibold */
         margin-bottom: 1rem; /* mb-4 */
+      }
+      .balance-card {
+        background-color: var(--bg-dark-secondary); /* bg-white (adaptado a tu tema oscuro) */
+        border: 1px solid var(--border-dark); /* Añadido para consistencia */
+        padding: 1rem; /* p-4 */
+        border-radius: 0.75rem; /* rounded-xl */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-md */
+        display: flex; /* flex */
+        flex-direction: column; /* flex-col */
+        justify-content: space-between; /* justify-between */
+        padding-top: 0.25rem; /* Ajuste del padding superior */
+        padding-bottom: 0.25rem; /* Ajuste del padding inferior */
+      }
+
+      .balance-card-title {
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 600; /* font-semibold */
+        color: var(--text-light-primary); /* text-gray-700 (adaptado a tu tema) */
+        margin-bottom: 0rem; /* mb-3 */
+        padding-top: 0rem;
       }
 
       #saldos-content .bg-white {
@@ -1805,7 +1975,7 @@
       }
 
       .balance-card-label {
-        padding: 1rem;
+        padding: 0.5rem;
         border-radius: 0.5rem;
         text-align: center;
         font-weight: 700;
@@ -1883,11 +2053,6 @@
         color: var(--text-light-primary);
         text-align: right;
         transition: all 0.2s ease;
-      }
-
-      .table-input {
-        width: 100%;
-        padding: 4px 8px;
       }
 
       .budget-table-input {
@@ -2104,8 +2269,18 @@
         max-height: 18rem; /* Altura unificada para todos los contenedores */
       }
 
-      .config-list-container ul > * + * {
-        margin-top: 0.5rem;
+      /* AÑADE ESTE NUEVO BLOQUE */
+      .config-list-container ul {
+        /* Reseteos básicos para una lista */
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+
+        /* La Magia: Convertimos la lista en un contenedor flex */
+        display: flex;
+        flex-direction: column; /* Apilamos los elementos verticalmente */
+        gap: 0.5rem; /* Espacio uniforme entre los elementos (reemplaza el margin-top) */
+        align-items: stretch; /* <-- ESTA ES LA CLAVE: Fuerza a los <li> a estirarse de lado a lado */
       }
 
       #configuración-content li {
@@ -2487,7 +2662,50 @@
       /* ====================================================================== */
       /* --- PESTAÑA GASTOS COMUNES --- */
       /* ====================================================================== */
+      /* Estilo base para el monto en la celda de distribución */
+      #gastos-comunes-content .distribution-amount {
+        font-weight: 600; /* font-semibold */
+        font-size: 1.125rem; /* text-lg */
+      }
 
+      /* Modificador de color para cuando el monto ya ha sido pagado */
+      #gastos-comunes-content .is-paid {
+        color: var(--electric-green); /* text-green-500 */
+      }
+      /* Estilo para el input del día en la tabla de Gastos Comunes */
+      #gastos-comunes-content .shared-expense-day-input {
+        width: 3.5rem; /* w-14 */
+        text-align: center; /* text-center */
+      }
+
+      /* Estilo para el input del día cuando está deshabilitado (pagado) */
+      #gastos-comunes-content .shared-expense-day-input:disabled {
+        background-color: #2e3a4b;
+        cursor: not-allowed;
+      }
+
+      /* Estilos base para el botón 'OK' / '✔' */
+      .register-shared-expense-btn {
+        background-color: #16a34a; /* bg-green-600 */
+        color: #ffffff; /* text-white */
+        border-radius: 0.25rem; /* rounded */
+        padding: 0.25rem 0.5rem; /* py-1 px-2 */
+        font-size: 0.75rem; /* text-xs */
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.15s ease-in-out; /* transition */
+      }
+
+      /* Estilo hover para el botón 'OK' cuando está activo */
+      .register-shared-expense-btn:not(:disabled):hover {
+        background-color: #15803d; /* hover:bg-green-700 */
+      }
+
+      /* Estilo para el botón '✔' cuando está deshabilitado (pagado) */
+      .register-shared-expense-btn:disabled {
+        background-color: #166534; /* bg-green-800 */
+        cursor: default;
+      }
       #gastos-comunes-content .table-input {
         width: 100%;
         padding: 6px 10px;
@@ -2550,7 +2768,23 @@
         font-size: 0.65rem;
         color: var(--text-light-secondary);
         display: block;
-        margin-top: 2px;
+        margin-top: -0.25rem; /* -mt-1 */
+      }
+
+      /* Contenido interno de la celda de distribución */
+      .distribution-cell-content {
+        display: flex; /* flex */
+        flex-direction: column; /* flex-col */
+        align-items: center; /* items-center */
+        gap: 0.25rem; /* gap-1 */
+      }
+
+      /* Contenedor para el input y botón de 'OK' */
+      .distribution-cell-actions {
+        display: flex; /* flex */
+        align-items: center; /* items-center */
+        gap: 0.25rem; /* gap-1 */
+        margin-top: 0.25rem; /* mt-1 */
       }
 
       #distribution-popover {
@@ -2672,8 +2906,8 @@
 
       /* --- Íconos de Categoría y Modal de Selección --- */
       .category-icon {
-        width: 24px;
-        height: 24px;
+        width: 36px;
+        height: auto;
         margin-right: 8px;
         vertical-align: middle;
         display: inline-block;
@@ -4318,6 +4552,30 @@
         white-space: nowrap;
       }
 
+      #recurrentes-content td:nth-child(4) > .category-icon,
+      #proyeccion-content td:nth-child(4) > .category-icon,
+      #registros-content td:nth-child(4) > .category-icon,
+      #presupuesto-content td:nth-child(1) > .category-icon {
+        width: 36px;
+        height: auto;
+      }
+
+      #registros-content td:nth-child(3),
+      #proyeccion-content td:nth-child(3) {
+        max-width: 100%;
+        white-space: normal;
+        padding: 0.25rem;
+      }
+
+      #registros-content td:nth-child(8),
+      #proyeccion-content td:nth-child(7) {
+        max-width: 60px;
+        text-align: center;
+      }
+      #registros-content td:nth-child(8) {
+        padding-right: 0.5rem;
+      }
+
       /* ====================================================================== */
       /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)
       /* ====================================================================== */
@@ -4354,6 +4612,10 @@
 
       @media (min-width: 769px) {
         .info-btn {
+          display: none;
+        }
+
+        #filters-container {
           display: none;
         }
 
@@ -4415,11 +4677,12 @@
         }
 
         #dashboard .dashboard-card:first-child {
-          margin-top: 2rem;
+          margin-top: 1rem;
         }
 
         .dashboard-card {
-          padding: 1rem;
+          padding: 0.25rem;
+          padding-left: 0.5rem;
           gap: 0.5rem;
         }
 
@@ -4441,6 +4704,24 @@
           background: #1f2937ba;
         }
 
+        .tab-button:hover {
+          color: var(--electric-blue);
+          /* background-color: transparent; */
+          background: #1f2937ba;
+          border-bottom-color: var(--electric-blue);
+          box-shadow: 0 0 8px var(--electric-blue), 0 0 15px var(--electric-blue),
+            0 0 25px var(--electric-blue);
+          inset: 0 0 10px rgba(14, 165, 233, 0.6);
+        }
+
+        .tab-button.active {
+          box-shadow: 0 0 8px var(--bg-dark-tertiary), 0 0 15px var(--bg-dark-tertiary),
+            0 0 25px var(--bg-dark-tertiary);
+          inset: 0 0 5px rgba(112, 114, 115, 0.6);
+          background-color: #1f2937f5;
+          transform: scale(1.05);
+        }
+
         .tab-button img {
           height: 64px;
           width: auto;
@@ -4454,11 +4735,6 @@
           text-align: center;
           word-break: break-word;
           hyphens: auto;
-        }
-
-        .tab-button.active {
-          background-color: #1f2937f5;
-          transform: scale(1.05);
         }
 
         #main-action-btn {
@@ -4507,7 +4783,6 @@
         #recurrentes-content th,
         #recurrentes-content td {
           white-space: normal; /* Permite que el texto largo (como en Descripción) se divida */
-          word-break: break-word;
         }
 
         /* FORZAR LA COMPRESIÓN DE LA COLUMNA "CATEGORÍA" (la 4ta columna) */
@@ -4799,6 +5074,8 @@
         left: 0;
         background-color: rgba(0, 0, 0, 0.5);
         padding: 1rem;
+        margin-right: 1rem; /* mr-4 */
+        margin-left: 1rem; /* ml-4 */
         /* -- Líneas añadidas para centrar el contenido -- */
       }
 
@@ -5159,7 +5436,7 @@
       <div id="credit-card-alerts"></div>
       <div id="recurring-alerts"></div>
 
-      <main id="main-container" class="container mx-auto bg-gray-200 rounded-xl shadow-md mt-24">
+      <main id="main-container" class="container">
         <div class="button-container">
           <div class="action-buttons-left">
             <button id="migrate-all-recurring-btn">
@@ -6608,7 +6885,6 @@
           <button id="close-tutorials-modal-btn" type="button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -6647,7 +6923,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.4</p>
+        <p id="app-version">Versión 0.0.4.8</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
@@ -8518,47 +8794,38 @@
               else rowTextColorClass = 'expense-text-row';
               row.className = rowTextColorClass;
 
-              // --- Celdas con clases de Tailwind eliminadas ---
               const cellCheckbox = row.insertCell();
-              // La alineación la maneja el CSS
               cellCheckbox.innerHTML = `<input type="checkbox" class="transaction-checkbox" data-id="${t.id}">`;
 
               const cellDate = row.insertCell();
-              cellDate.className = 'whitespace-nowrap';
               cellDate.innerHTML = `<span class="desktop-date">${formatDate(
                 t.date,
               )}</span><span class="mobile-date">${formatDateForMobile(t.date)}</span>`;
 
               const cellDesc = row.insertCell();
-              cellDesc.className = 'whitespace-nowrap';
               cellDesc.textContent = t.description;
 
               const cellCat = row.insertCell();
-              cellCat.className = 'whitespace-nowrap';
               cellCat.innerHTML = `<div class="category-cell-content">${getCategoryDisplay(
                 t.category,
               )}<button class="info-btn" data-description="${t.description}">i</button></div>`;
 
               const cellBank = row.insertCell();
-              cellBank.className = 'whitespace-nowrap';
               cellBank.textContent = t.bank;
 
               const cellAmount = row.insertCell();
-              cellAmount.className = 'whitespace-nowrap';
               cellAmount.style.fontWeight = '400';
               cellAmount.textContent = formatCurrency(t.amount);
 
               const cellBalance = row.insertCell();
-              cellBalance.className = 'whitespace-nowrap balance-cell-bg';
+              cellBalance.className = 'balance-cell-bg';
               cellBalance.innerHTML = `<span style="${balanceStyle}">${formatCurrency(
                 runningBalance,
               )}</span>`;
 
               const cellActions = row.insertCell();
-              cellActions.className = 'whitespace-nowrap';
               cellActions.style.fontWeight = '400';
-              // --- HTML del botón sin clases de Tailwind ---
-              cellActions.innerHTML = `<button data-id="${t.id}" class="edit-btn">Editar</button><button data-id="${t.id}" class="delete-btn">Eliminar</button>`;
+              cellActions.innerHTML = `<button data-id="${t.id}" class="edit-btn" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button><button data-id="${t.id}" class="delete-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
 
               transactionsTableBody.appendChild(row);
             });
@@ -8687,10 +8954,10 @@
                 cellActions.innerHTML = `<span>(Proyectado)</span>`;
               } else if (p.isPureProjection) {
                 // --- HTML del botón sin clases de Tailwind ---
-                cellActions.innerHTML = `<button data-id="${p.id}" class="edit-btn edit-projection-btn">Editar</button><button data-id="${p.id}" class="delete-btn delete-projection-btn">Eliminar</button>`;
+                cellActions.innerHTML = `<button data-id="${p.id}" class="edit-btn edit-projection-btn" title="Editar Proyección"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button><button data-id="${p.id}" class="delete-btn delete-projection-btn" title="Eliminar Proyección"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
               } else {
                 // --- HTML del botón sin clases de Tailwind ---
-                cellActions.innerHTML = `<button data-id="${p.id}" class="edit-btn edit-projection-btn">Editar</button><button data-id="${p.id}" class="delete-btn delete-transaction-btn">Eliminar</button>`;
+                cellActions.innerHTML = `<button data-id="${p.id}" class="edit-btn edit-projection-btn" title="Editar Registro"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button><button data-id="${p.id}" class="delete-btn delete-transaction-btn" title="Eliminar Registro"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
               }
 
               proyeccionTableBody.appendChild(row);
@@ -8762,26 +9029,26 @@
             balancesGrid.classList.remove('hidden');
 
             bankBalances.forEach((bank) => {
-              // Asignamos la nueva clase de la tarjeta (positiva o negativa)
               const balanceClass =
                 bank.balance >= 0 ? 'balance-card-positive' : 'balance-card-negative';
 
+              // 1. Creamos el elemento de la tarjeta
               const card = document.createElement('div');
-              // Eliminamos estilos de la tarjeta principal para que no interfieran
-              card.className = 'bg-white p-4 rounded-xl shadow-md flex flex-col justify-between';
 
-              // **ESTRUCTURA HTML MEJORADA**
-              // Aplicamos las nuevas clases directamente a la etiqueta <p> del saldo
+              // 2. Le asignamos la clase CSS principal que creamos
+              card.className = 'balance-card';
+
+              // 3. Definimos su contenido interno con las clases CSS correctas
               card.innerHTML = `
-                              <div>
-                                  <p class="text-lg font-semibold text-gray-700 mb-3">${
-                                    bank.name
-                                  }</p>
-                                  <p class="balance-card-label ${balanceClass}">
-                                      ${formatCurrency(bank.balance)}
-                                  </p>
-                              </div>
-                          `;
+                    <div>
+                        <p class="balance-card-title">${bank.name}</p>
+                        <p class="balance-card-label ${balanceClass}">
+                            ${formatCurrency(bank.balance)}
+                        </p>
+                    </div>
+                `;
+
+              // 4. (LA LÍNEA CLAVE) Añadimos la tarjeta creada al contenedor visible
               balancesGrid.appendChild(card);
             });
           }
@@ -9036,7 +9303,7 @@
             alerts.forEach((alertText) => {
               const p = document.createElement('p');
               // Usamos una nueva clase CSS que definiremos
-              p.className = 'dashboard-alert warning';
+              p.className = 'dashboard-alert alert-warning';
 
               // Asignamos la clase al SVG
               p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>${alertText}`;
@@ -9083,8 +9350,8 @@
             alerts.forEach((alert) => {
               const p = document.createElement('p');
               // Asigna la clase 'danger' o 'warning' para que coincida con el CSS que creamos.
-              p.className = alert.type;
-              p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>${alert.text}`;
+              p.className = `dashboard-alert alert-${alert.type}`; // Esto asignará 'alert-danger' o 'alert-warning'
+              p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>${alert.text}`;
               recurringAlertsDiv.appendChild(p);
             });
           }
@@ -9632,13 +9899,11 @@
           if (appState.categories.length > 0) {
             appState.categories.forEach((cat) => {
               const li = document.createElement('li'); // Ya no necesita 'className'
-              // --- LIMPIO ---
-              li.innerHTML = `
-                              <span class="config-item-text">${getCategoryDisplay(cat.name)}</span>
-                              <button data-name="${
-                                cat.name
-                              }" class="delete-category-btn">Eliminar</button>
-                          `;
+              li.innerHTML = `<span class="config-item-text">${getCategoryDisplay(
+                cat.name,
+              )}</span><button data-name="${
+                cat.name
+              }" class="delete-category-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
               categoryList.appendChild(li);
             });
           } else {
@@ -9651,7 +9916,7 @@
             appState.banks.forEach((bank) => {
               const li = document.createElement('li'); // Ya no necesita 'className'
               // --- LIMPIO ---
-              li.innerHTML = `<span class="config-item-text">${bank}</span><button data-name="${bank}" class="delete-bank-btn">Eliminar</button>`;
+              li.innerHTML = `<span class="config-item-text">${bank}</span><button data-name="${bank}" class="delete-bank-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
               bankList.appendChild(li);
             });
           } else {
@@ -9668,7 +9933,7 @@
             appState.descriptions.forEach((desc) => {
               const li = document.createElement('li'); // Ya no necesita 'className'
               // --- LIMPIO ---
-              li.innerHTML = `<span class="config-item-text">${desc}</span><button data-name="${desc}" class="delete-description-btn">Eliminar</button>`;
+              li.innerHTML = `<span class="config-item-text">${desc}</span><button data-name="${desc}" class="delete-description-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
               descriptionListConfig.appendChild(li);
             });
           }
@@ -10301,7 +10566,7 @@
 
             const cellActions = row.insertCell();
             // --- Botones sin clases de Tailwind ---
-            cellActions.innerHTML = `<button data-id="${re.id}" class="edit-btn edit-recurring-btn">Editar</button><button data-id="${re.id}" class="delete-btn delete-recurring-btn">Eliminar</button>`;
+            cellActions.innerHTML = `<button data-id="${re.id}" class="edit-btn edit-recurring-btn" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button><button data-id="${re.id}" class="delete-btn delete-recurring-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
 
             recurringExpensesTableBody.appendChild(row);
           });
@@ -10687,7 +10952,9 @@
               </td>
               <td class="monthly-payment-cell">${formatCurrency(monthlyPayment)}</td>
               <td>
-                <button class="delete-btn delete-card-btn" data-id="${card.id}">Eliminar</button>
+                <button class="delete-btn delete-card-btn" data-id="${
+                  card.id
+                }" title="Eliminar Tarjeta"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
               </td>
             `;
             creditCardsTableBody.appendChild(row);
@@ -12758,9 +13025,9 @@
               const calculatedAmount = calculateCellAmount(item, personIndex);
 
               // Aplicamos la clase de color verde si está pagado.
-              let amountClass = 'font-semibold text-lg';
+              let amountClass = 'distribution-amount';
               if (isPaid) {
-                amountClass += ' text-green-500';
+                amountClass += ' is-paid';
               }
 
               let inputAndButtonHtml = '';
@@ -12769,13 +13036,12 @@
                 inputAndButtonHtml = `
                   <input
                     type="number"
-                    class="table-input w-14 text-center shared-expense-day-input"
+                    class="table-input shared-expense-day-input"
                     value="${paidDay}"
                     disabled
-                    style="background-color: #2E3A4B; cursor: not-allowed;"
                   >
                   <button
-                    class="register-shared-expense-btn bg-green-800 text-white rounded px-2 py-1 text-xs"
+                    class="register-shared-expense-btn"
                     title="Pago ya registrado"
                     disabled
                   >
@@ -12788,12 +13054,12 @@
                   <input
                     type="number"
                     min="1" max="31"
-                    class="table-input w-14 text-center shared-expense-day-input"
+                    class="table-input shared-expense-day-input"
                     placeholder="Día"
                     title="Día del pago (1-31)"
                   >
                   <button
-                    class="register-shared-expense-btn bg-green-600 text-white rounded px-2 py-1 text-xs hover:bg-green-700 transition"
+                    class="register-shared-expense-btn"
                     data-item-id="${item.id}"
                     data-person-index="${personIndex}"
                     title="Registrar este pago"
@@ -12804,14 +13070,14 @@
               }
 
               distCell.innerHTML = `
-                <div class="flex flex-col items-center gap-1">
+                <div class="distribution-cell-content">
                     <span class="${amountClass}">${formatCurrency(calculatedAmount)}</span>
-                    <span class="method-indicator -mt-1">${indicatorText}</span>
-                    <div class="flex items-center gap-1 mt-1">
+                    <span class="method-indicator">${indicatorText}</span>
+                    <div class="distribution-cell-actions">
                         ${inputAndButtonHtml}
                     </div>
                 </div>
-              `;
+            `;
               // === FIN DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
             });
             itemRow.insertCell(
