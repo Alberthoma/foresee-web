@@ -5081,9 +5081,7 @@
       /* La clase .modal y .modal.active ya la tienes, esto añade el posicionamiento y fondo */
       /* --- Contenedor del Modal de Autenticación (Corregido) --- */
       #auth-modal {
-        background-color: rgba(0, 0, 0, 0.5);
-        margin-right: 1rem; /* mr-4 */
-        margin-left: 1rem; /* ml-4 */
+        position: fixed;
         align-items: center;
         justify-content: center;
         /* -- Líneas añadidas para centrar el contenido -- */
@@ -5093,9 +5091,8 @@
       .auth-modal-content {
         background-color: #ffffff; /* bg-white */
         border-radius: 0.5rem; /* rounded-lg */
-        box-shadow: 0 6px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
         width: 100%; /* w-full */
-        max-width: 20rem; /* max-w-md */
+        max-width: 25rem; /* max-w-md */
         display: flex;
         flex-direction: column; /* flex flex-col */
       }
@@ -6935,7 +6932,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.4.9</p>
+        <p id="app-version">Versión 0.0.5.0</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
