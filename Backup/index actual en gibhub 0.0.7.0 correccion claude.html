@@ -6982,7 +6982,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.7.0</p>
+        <p id="app-version">Versión 0.0.6.0</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
@@ -9486,9 +9486,7 @@
           setTimeout(() => {
             toast.classList.remove('show');
             toast.addEventListener('transitionend', () => toast.remove(), { once: true });
-            setTimeout(() => {
-              if (toast.parentNode) toast.remove();
-            }, 500);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 500);
           }, duration);
         }
 
@@ -10161,6 +10159,7 @@
                 `artifacts/${appId}/users/${userId}/creditCards`,
               );
 
+
               try {
                 const batch = writeBatch(db);
 
@@ -10386,6 +10385,8 @@
                 `artifacts/${appId}/users/${userId}/projections`,
               );
               const archivesColRef = collection(db, `artifacts/${appId}/users/${userId}/archives`);
+
+
 
               try {
                 const transactionsToArchive = [...appState.transactions];
@@ -13173,121 +13174,120 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        const contributionTypeSelect = document.getElementById('contribution401kType');
-        const contributionValueInput = document.getElementById('contribution401kValue');
-        const contributionLabel = document.getElementById('contribution401kLabel');
-        contributionTypeSelect.addEventListener('change', () => {
-          if (contributionTypeSelect.value === 'percent') {
-            contributionLabel.textContent = 'Valor 401(k) (%)';
-            contributionValueInput.value = '5';
-          } else {
-            contributionLabel.textContent = 'Valor 401(k) ($)';
-            contributionValueInput.value = '100';
+      const contributionTypeSelect = document.getElementById('contribution401kType');
+      const contributionValueInput = document.getElementById('contribution401kValue');
+      const contributionLabel = document.getElementById('contribution401kLabel');
+      contributionTypeSelect.addEventListener('change', () => {
+        if (contributionTypeSelect.value === 'percent') {
+          contributionLabel.textContent = 'Valor 401(k) (%)';
+          contributionValueInput.value = '5';
+        } else {
+          contributionLabel.textContent = 'Valor 401(k) ($)';
+          contributionValueInput.value = '100';
+        }
+      });
+      document.getElementById('calculateBtn').addEventListener('click', () => {
+        // --- 1. OBTENER DATOS DEL USUARIO ---
+        const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+        const totalHours = parseFloat(document.getElementById('hoursWorked').value) || 0;
+        const filingStatus = document.getElementById('filingStatus').value;
+        const contribution401kType = document.getElementById('contribution401kType').value;
+        const contribution401kValue =
+          parseFloat(document.getElementById('contribution401kValue').value) || 0;
+        const medicalDeduction = parseFloat(document.getElementById('medicalDeduction').value) || 0;
+        const dentalDeduction = parseFloat(document.getElementById('dentalDeduction').value) || 0;
+        const visionDeduction = parseFloat(document.getElementById('visionDeduction').value) || 0;
+        const loan401k = parseFloat(document.getElementById('loan401k').value) || 0;
+        const payPeriods = 26; // Quincenal
+        const regularHoursThreshold = 80;
+        // --- 2. CONSTANTES FISCALES 2025 ---
+        const FICA_RATES = {
+          SOCIAL_SECURITY: 0.062,
+          MEDICARE: 0.0145,
+        };
+        const FEDERAL_TAX = {
+          DEDUCTION: { single: 15000, married: 30000 },
+          BRACKETS: {
+            single: [
+              { rate: 0.1, upto: 11925 },
+              { rate: 0.12, upto: 48475 },
+              { rate: 0.22, upto: 103350 },
+              { rate: 0.24, upto: 197300 },
+              { rate: 0.32, upto: 250525 },
+              { rate: 0.35, upto: 626350 },
+              { rate: 0.37, upto: Infinity },
+            ],
+            married: [
+              { rate: 0.1, upto: 23850 },
+              { rate: 0.12, upto: 96950 },
+              { rate: 0.22, upto: 206700 },
+              { rate: 0.24, upto: 394600 },
+              { rate: 0.32, upto: 501050 },
+              { rate: 0.35, upto: 751600 },
+              { rate: 0.37, upto: Infinity },
+            ],
+          },
+        };
+        // --- 3. CÁLCULOS PRINCIPALES ---
+        // Salario Bruto con Overtime
+        let regularHours = Math.min(totalHours, regularHoursThreshold);
+        let overtimeHours = Math.max(0, totalHours - regularHoursThreshold);
+        let overtimeRate = hourlyRate * 1.5;
+        let grossPay = regularHours * hourlyRate + overtimeHours * overtimeRate;
+        // Deducciones Pre-Impuestos (401k Contribution)
+        let contribution401kAmount = 0;
+        if (contribution401kType === 'percent') {
+          contribution401kAmount = grossPay * (contribution401kValue / 100);
+        } else {
+          contribution401kAmount = contribution401kValue;
+        }
+        const preTaxDeductions =
+          contribution401kAmount + medicalDeduction + dentalDeduction + visionDeduction;
+        // Ingreso Imponible para Impuesto Federal
+        const annualTaxableIncome = (grossPay - preTaxDeductions) * payPeriods;
+        // Calcular Impuesto Federal Anual
+        const standardDeduction = FEDERAL_TAX.DEDUCTION[filingStatus];
+        const finalTaxableIncome = Math.max(0, annualTaxableIncome - standardDeduction);
+        const brackets = FEDERAL_TAX.BRACKETS[filingStatus];
+        let federalTaxAnnual = 0;
+        let incomeLeft = finalTaxableIncome;
+        let previousLimit = 0;
+        for (const bracket of brackets) {
+          if (incomeLeft > 0) {
+            const taxableInBracket = Math.min(incomeLeft, bracket.upto - previousLimit);
+            federalTaxAnnual += taxableInBracket * bracket.rate;
+            incomeLeft -= taxableInBracket;
+            previousLimit = bracket.upto;
           }
-        });
-        document.getElementById('calculateBtn').addEventListener('click', () => {
-          // --- 1. OBTENER DATOS DEL USUARIO ---
-          const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
-          const totalHours = parseFloat(document.getElementById('hoursWorked').value) || 0;
-          const filingStatus = document.getElementById('filingStatus').value;
-          const contribution401kType = document.getElementById('contribution401kType').value;
-          const contribution401kValue =
-            parseFloat(document.getElementById('contribution401kValue').value) || 0;
-          const medicalDeduction =
-            parseFloat(document.getElementById('medicalDeduction').value) || 0;
-          const dentalDeduction = parseFloat(document.getElementById('dentalDeduction').value) || 0;
-          const visionDeduction = parseFloat(document.getElementById('visionDeduction').value) || 0;
-          const loan401k = parseFloat(document.getElementById('loan401k').value) || 0;
-          const payPeriods = 26; // Quincenal
-          const regularHoursThreshold = 80;
-          // --- 2. CONSTANTES FISCALES 2025 ---
-          const FICA_RATES = {
-            SOCIAL_SECURITY: 0.062,
-            MEDICARE: 0.0145,
-          };
-          const FEDERAL_TAX = {
-            DEDUCTION: { single: 15000, married: 30000 },
-            BRACKETS: {
-              single: [
-                { rate: 0.1, upto: 11925 },
-                { rate: 0.12, upto: 48475 },
-                { rate: 0.22, upto: 103350 },
-                { rate: 0.24, upto: 197300 },
-                { rate: 0.32, upto: 250525 },
-                { rate: 0.35, upto: 626350 },
-                { rate: 0.37, upto: Infinity },
-              ],
-              married: [
-                { rate: 0.1, upto: 23850 },
-                { rate: 0.12, upto: 96950 },
-                { rate: 0.22, upto: 206700 },
-                { rate: 0.24, upto: 394600 },
-                { rate: 0.32, upto: 501050 },
-                { rate: 0.35, upto: 751600 },
-                { rate: 0.37, upto: Infinity },
-              ],
-            },
-          };
-          // --- 3. CÁLCULOS PRINCIPALES ---
-          // Salario Bruto con Overtime
-          let regularHours = Math.min(totalHours, regularHoursThreshold);
-          let overtimeHours = Math.max(0, totalHours - regularHoursThreshold);
-          let overtimeRate = hourlyRate * 1.5;
-          let grossPay = regularHours * hourlyRate + overtimeHours * overtimeRate;
-          // Deducciones Pre-Impuestos (401k Contribution)
-          let contribution401kAmount = 0;
-          if (contribution401kType === 'percent') {
-            contribution401kAmount = grossPay * (contribution401kValue / 100);
-          } else {
-            contribution401kAmount = contribution401kValue;
-          }
-          const preTaxDeductions =
-            contribution401kAmount + medicalDeduction + dentalDeduction + visionDeduction;
-          // Ingreso Imponible para Impuesto Federal
-          const annualTaxableIncome = (grossPay - preTaxDeductions) * payPeriods;
-          // Calcular Impuesto Federal Anual
-          const standardDeduction = FEDERAL_TAX.DEDUCTION[filingStatus];
-          const finalTaxableIncome = Math.max(0, annualTaxableIncome - standardDeduction);
-          const brackets = FEDERAL_TAX.BRACKETS[filingStatus];
-          let federalTaxAnnual = 0;
-          let incomeLeft = finalTaxableIncome;
-          let previousLimit = 0;
-          for (const bracket of brackets) {
-            if (incomeLeft > 0) {
-              const taxableInBracket = Math.min(incomeLeft, bracket.upto - previousLimit);
-              federalTaxAnnual += taxableInBracket * bracket.rate;
-              incomeLeft -= taxableInBracket;
-              previousLimit = bracket.upto;
-            }
-          }
-          const federalTaxPerPeriod = federalTaxAnnual / payPeriods;
-          // Calcular Impuestos FICA (Social Security & Medicare)
-          // Se basa en el Salario Bruto total
-          const socialSecurityTax = grossPay * FICA_RATES.SOCIAL_SECURITY;
-          const medicareTax = grossPay * FICA_RATES.MEDICARE;
-          const ficaTaxes = socialSecurityTax + medicareTax;
-          // Deducciones Post-Impuestos
-          const postTaxDeductions = loan401k;
-          // Calcular Salario Neto
-          const totalDeductions =
-            preTaxDeductions + federalTaxPerPeriod + ficaTaxes + postTaxDeductions;
-          const netPay = grossPay - totalDeductions;
-          // --- 4. MOSTRAR RESULTADOS ---
-          document.getElementById('results').classList.remove('hidden');
-          const formatCurrency = (value) =>
-            `$${Math.max(0, value)
-              .toFixed(2)
-              .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-          document.getElementById('grossPayResult').textContent = formatCurrency(grossPay);
-          document.getElementById('preTaxDeductionsResult').textContent =
-            formatCurrency(preTaxDeductions);
-          document.getElementById('federalTaxResult').textContent =
-            formatCurrency(federalTaxPerPeriod);
-          document.getElementById('ficaTaxResult').textContent = formatCurrency(ficaTaxes);
-          document.getElementById('postTaxDeductionsResult').textContent =
-            formatCurrency(postTaxDeductions);
-          document.getElementById('netPayResult').textContent = formatCurrency(netPay);
-        });
+        }
+        const federalTaxPerPeriod = federalTaxAnnual / payPeriods;
+        // Calcular Impuestos FICA (Social Security & Medicare)
+        // Se basa en el Salario Bruto total
+        const socialSecurityTax = grossPay * FICA_RATES.SOCIAL_SECURITY;
+        const medicareTax = grossPay * FICA_RATES.MEDICARE;
+        const ficaTaxes = socialSecurityTax + medicareTax;
+        // Deducciones Post-Impuestos
+        const postTaxDeductions = loan401k;
+        // Calcular Salario Neto
+        const totalDeductions =
+          preTaxDeductions + federalTaxPerPeriod + ficaTaxes + postTaxDeductions;
+        const netPay = grossPay - totalDeductions;
+        // --- 4. MOSTRAR RESULTADOS ---
+        document.getElementById('results').classList.remove('hidden');
+        const formatCurrency = (value) =>
+          `$${Math.max(0, value)
+            .toFixed(2)
+            .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+        document.getElementById('grossPayResult').textContent = formatCurrency(grossPay);
+        document.getElementById('preTaxDeductionsResult').textContent =
+          formatCurrency(preTaxDeductions);
+        document.getElementById('federalTaxResult').textContent =
+          formatCurrency(federalTaxPerPeriod);
+        document.getElementById('ficaTaxResult').textContent = formatCurrency(ficaTaxes);
+        document.getElementById('postTaxDeductionsResult').textContent =
+          formatCurrency(postTaxDeductions);
+        document.getElementById('netPayResult').textContent = formatCurrency(netPay);
+      });
       });
     </script>
   </body>
