@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
@@ -404,13 +404,17 @@
         /* background-color: transparent; */
         background: #1f2937ba;
         border-bottom-color: var(--electric-blue);
-        box-shadow: 0 0 8px var(--electric-blue), 0 0 15px var(--electric-blue),
+        box-shadow:
+          0 0 8px var(--electric-blue),
+          0 0 15px var(--electric-blue),
           0 0 25px var(--electric-blue);
         inset: 0 0 10px rgba(14, 165, 233, 0.6);
       }
 
       .tab-button.active {
-        box-shadow: 0 0 8px var(--bg-dark-tertiary), 0 0 15px var(--bg-dark-tertiary),
+        box-shadow:
+          0 0 8px var(--bg-dark-tertiary),
+          0 0 15px var(--bg-dark-tertiary),
           0 0 25px var(--bg-dark-tertiary);
         inset: 0 0 5px rgba(112, 114, 115, 0.6);
       }
@@ -589,10 +593,14 @@
         padding: 1rem 2rem; /* py-4 px-8 */
         border-radius: 9999px; /* rounded-full */
         font-size: 1.125rem; /* text-lg */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
         border: none;
         cursor: pointer;
-        transition: transform 0.2s ease, background-color 0.2s ease;
+        transition:
+          transform 0.2s ease,
+          background-color 0.2s ease;
       }
 
       #enter-fullscreen-btn:hover {
@@ -673,7 +681,9 @@
         border: 1px solid var(--border-dark);
         padding: 1rem;
         border-radius: 0.75rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.1);
       }
 
       #main-action-btn {
@@ -721,7 +731,9 @@
         align-items: center;
         justify-content: center;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-        transition: transform 0.2s ease-in-out, background-color 0.2s ease;
+        transition:
+          transform 0.2s ease-in-out,
+          background-color 0.2s ease;
       }
 
       #open-tutorials-btn:hover {
@@ -1044,7 +1056,9 @@
       tbody tr {
         background-color: var(--bg-dark-tertiary);
         border-bottom: 1px solid var(--border-dark);
-        transition: background-color 0.2s ease, color 0.2s ease;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease;
       }
 
       tbody tr:last-child {
@@ -1242,8 +1256,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         /* height: 80px; */ /* <-- Comentado o eliminado */
         /*min-height: 80px;  <-- AÑADIDO: Permite que crezca si es necesario */
@@ -1251,7 +1269,9 @@
 
       .dashboard-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
       }
 
       .dashboard-card p:first-child {
@@ -1567,7 +1587,9 @@
         color: var(--text-light-primary);
         border-radius: 0.5rem;
         padding: 0.25rem; /* p-1 */
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
       }
 
       #filter-category:focus,
@@ -1627,7 +1649,9 @@
         border: 1px solid var(--border-dark); /* border, border-gray-600 */
         border-radius: 0.5rem; /* rounded-lg */
         color: #e5e7eb; /* text-gray-200 */
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
       }
 
       #voice-text-input::placeholder {
@@ -1957,7 +1981,9 @@
         border: 1px solid var(--border-dark); /* Añadido para consistencia */
         padding: 1rem; /* p-4 */
         border-radius: 0.75rem; /* rounded-xl */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-md */
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-md */
         display: flex; /* flex */
         flex-direction: column; /* flex-col */
         justify-content: space-between; /* justify-between */
@@ -1988,7 +2014,9 @@
         text-align: center;
         font-weight: 700;
         font-size: 2rem;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        transition:
+          transform 0.2s ease-in-out,
+          box-shadow 0.2s ease-in-out;
       }
 
       .balance-card-label:hover {
@@ -1998,14 +2026,18 @@
       .balance-card-positive {
         background-color: rgba(34, 197, 94, 0.15);
         color: var(--income-color);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        box-shadow:
+          0 8px 15px rgba(0, 0, 0, 0.3),
+          inset 0 1px 1px rgba(255, 255, 255, 0.2),
           inset 0 0 8px rgba(34, 197, 94, 0.4);
       }
 
       .balance-card-negative {
         background-color: rgba(239, 68, 68, 0.15);
         color: var(--expense-color);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        box-shadow:
+          0 8px 15px rgba(0, 0, 0, 0.3),
+          inset 0 1px 1px rgba(255, 255, 255, 0.2),
           inset 0 0 8px rgba(239, 68, 68, 0.4);
       }
 
@@ -2366,7 +2398,9 @@
         justify-content: center;
         border: none;
         cursor: pointer;
-        transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+        transition:
+          background-color 0.15s ease-in-out,
+          color 0.15s ease-in-out;
       }
 
       /* Estilo específico para los botones de eliminar en las listas */
@@ -2462,7 +2496,9 @@
       .calculator-card {
         background-color: var(--bg-dark-secondary);
         border-radius: 1rem; /* rounded-2xl */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
         padding: 1.5rem;
       }
 
@@ -2559,7 +2595,9 @@
         padding: 0.75rem 2rem;
         border-radius: 0.5rem;
         font-size: 1.125rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
         transition: background-color 0.3s ease;
       }
       #calculateBtn:hover {
@@ -2593,7 +2631,9 @@
         padding: 1rem;
         background-color: var(--bg-dark-secondary);
         border-radius: 0.5rem;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
       }
 
       .result-item p:first-child {
@@ -3447,7 +3487,9 @@
         border-radius: 0.5rem;
         padding: 0.75rem;
         font-size: 1rem;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
         box-sizing: border-box;
       }
 
@@ -4530,7 +4572,9 @@
         border-radius: 0.5rem;
         cursor: pointer;
         border: 1px solid transparent;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
+        transition:
+          background-color 0.2s ease,
+          border-color 0.2s ease;
         margin-bottom: 0.5rem;
         background-color: var(--bg-dark-tertiary);
       }
@@ -4723,13 +4767,17 @@
           /* background-color: transparent; */
           background: #1f2937ba;
           border-bottom-color: var(--electric-blue);
-          box-shadow: 0 0 8px var(--electric-blue), 0 0 15px var(--electric-blue),
+          box-shadow:
+            0 0 8px var(--electric-blue),
+            0 0 15px var(--electric-blue),
             0 0 25px var(--electric-blue);
           inset: 0 0 10px rgba(14, 165, 233, 0.6);
         }
 
         .tab-button.active {
-          box-shadow: 0 0 8px var(--bg-dark-tertiary), 0 0 15px var(--bg-dark-tertiary),
+          box-shadow:
+            0 0 8px var(--bg-dark-tertiary),
+            0 0 15px var(--bg-dark-tertiary),
             0 0 25px var(--bg-dark-tertiary);
           inset: 0 0 5px rgba(112, 114, 115, 0.6);
           background-color: #1f2937f5;
@@ -4846,7 +4894,9 @@
           font-size: 0.65rem;
           font-weight: bold;
           cursor: pointer;
-          transition: background-color 0.2s ease, transform 0.2s ease;
+          transition:
+            background-color 0.2s ease,
+            transform 0.2s ease;
           flex-shrink: 0;
         }
 
@@ -6916,7 +6966,14 @@
                 src=""
                 title="Reproductor de Video Tutorial"
                 frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                "
                 allowfullscreen
               ></iframe>
             </div>
@@ -6932,7 +6989,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.5.0</p>
+        <p id="app-version">Versión 0.0.6.0</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
@@ -8865,13 +8922,16 @@
             .querySelectorAll('#registros-content .edit-btn')
             .forEach((btn) =>
               btn.addEventListener('click', (e) =>
-                openTransactionModal({ id: e.target.dataset.id }),
+                openTransactionModal({ id: e.target.closest('button').dataset.id }),
               ),
             );
+
           document
             .querySelectorAll('#registros-content .delete-btn')
             .forEach((btn) =>
-              btn.addEventListener('click', (e) => deleteTransaction(e.target.dataset.id)),
+              btn.addEventListener('click', (e) =>
+                deleteTransaction(e.target.closest('button').dataset.id),
+              ),
             );
           updateDeleteButtonVisibility();
         }
@@ -8996,19 +9056,24 @@
           document
             .querySelectorAll('#proyeccion-content .delete-transaction-btn')
             .forEach((btn) =>
-              btn.addEventListener('click', (e) => deleteTransaction(e.target.dataset.id)),
+              btn.addEventListener('click', (e) =>
+                deleteTransaction(e.target.closest('button').dataset.id),
+              ),
             );
+
           document
             .querySelectorAll('#proyeccion-content .delete-projection-btn')
             .forEach((btn) =>
-              btn.addEventListener('click', (e) => deleteProjection(e.target.dataset.id)),
+              btn.addEventListener('click', (e) =>
+                deleteProjection(e.target.closest('button').dataset.id),
+              ),
             );
 
           // Nuevo listener para el botón de editar proyección
           document.querySelectorAll('#proyeccion-content .edit-projection-btn').forEach((btn) =>
             btn.addEventListener('click', (e) => {
               modalContext = 'proyeccion'; // Asegura el contexto correcto
-              openTransactionModal(e.target.dataset.id);
+              openTransactionModal({ id: e.target.closest('button').dataset.id });
             }),
           );
         }
@@ -9511,8 +9576,8 @@
               if (categoryObject) {
                 categorySelectButton.innerHTML = `
                             <img src="${categoryObject.icon || DEFAULT_ICON}" alt="${
-                  categoryObject.name
-                }">
+                              categoryObject.name
+                            }">
                             <span>${categoryObject.name}</span>`;
                 transactionCategoryHiddenInput.value = categoryObject.name;
               }
@@ -10012,8 +10077,8 @@
               // 1. Actualizamos el botón del formulario de transacción con la nueva categoría
               categorySelectButton.innerHTML = `
                               <img src="${newCategory.icon || DEFAULT_ICON}" alt="${
-                newCategory.name
-              }">
+                                newCategory.name
+                              }">
                               <span>${newCategory.name}</span>
                           `;
               // 2. Guardamos el valor en el campo oculto
@@ -10592,14 +10657,19 @@
 
           // ¡PARTE CRÍTICA! Aquí se vuelven a activar los botones después de crear la tabla.
           document
-            .querySelectorAll('.edit-recurring-btn')
+            .querySelectorAll('#recurrentes-content .edit-recurring-btn')
             .forEach((btn) =>
-              btn.addEventListener('click', (e) => openRecurringExpenseModal(e.target.dataset.id)),
+              btn.addEventListener('click', (e) =>
+                openRecurringModal({ id: e.target.closest('button').dataset.id }),
+              ),
             );
+
           document
-            .querySelectorAll('.delete-recurring-btn')
+            .querySelectorAll('#recurrentes-content .delete-btn')
             .forEach((btn) =>
-              btn.addEventListener('click', (e) => deleteRecurringExpense(e.target.dataset.id)),
+              btn.addEventListener('click', (e) =>
+                deleteRecurringExpense(e.target.closest('button').dataset.id),
+              ),
             );
           updateDeleteButtonVisibility();
         }
@@ -10984,9 +11054,11 @@
 
           // Vuelve a añadir los listeners a los botones de eliminar
           document
-            .querySelectorAll('.delete-card-btn')
+            .querySelectorAll('#tarjetas-content .delete-card-btn')
             .forEach((btn) =>
-              btn.addEventListener('click', (e) => deleteCreditCard(e.target.dataset.id)),
+              btn.addEventListener('click', (e) =>
+                deleteCreditCard(e.target.closest('button').dataset.id),
+              ),
             );
         }
 
@@ -12989,8 +13061,8 @@
             th.innerHTML = `
             <div class="person-header-container">
               <div contenteditable="true" class="person-name-editable" data-person-index="${index}">${
-              person.name || `Persona ${index + 1}`
-            }</div>
+                person.name || `Persona ${index + 1}`
+              }</div>
               <span class="delete-person-btn" data-person-index="${index}" title="Eliminar Persona">&#x2716;</span>
             </div>
           `;
@@ -13089,9 +13161,8 @@
             `;
               // === FIN DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
             });
-            itemRow.insertCell(
-              people.length + 2,
-            ).innerHTML = `<button class="delete-item-btn" title="Eliminar Ítem">&#x1F5D1;</button>`;
+            itemRow.insertCell(people.length + 2).innerHTML =
+              `<button class="delete-item-btn" title="Eliminar Ítem">&#x1F5D1;</button>`;
           });
 
           const footerRow = tfoot.insertRow();
