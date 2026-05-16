@@ -795,6 +795,30 @@
         background-color: var(--electric-blue);
       }
 
+      #add-transaction-btn {
+        background-color: var(--electric-blue);
+        font-weight: 400;
+        border-radius: 30px;
+        padding: 0.5rem 1rem; /* Ajusta el padding según tus necesidades */
+        color: #ffffff;
+        font-size: 1rem; /* text-sm */
+      }
+      #add-transaction-btn:hover {
+        background-color: #0c87bf;
+      }
+
+      #transfer-panel-btn {
+        background-color: var(--electric-purple);
+        color: #ffffff;
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 0.5rem 1rem; /* Ajusta el padding según tus necesidades */
+        font-size: 1rem; /* text-sm */
+      }
+      #transfer-panel-btn:hover {
+        background-color: #6d28d9;
+      }
+
       #toggle-filters-btn {
         background-color: var(--bg-dark-tertiary);
         font-size: 0.75rem; /* text-xs */
@@ -3223,6 +3247,367 @@
         }
       }
 
+      /* ============================================================ */
+      /* MODAL CALCULADORA — Nuevo Registro                           */
+      /* ============================================================ */
+
+      #add-registro-calculator-modal .modal-content {
+        max-width: 380px;
+        padding: 0;
+        border-radius: 10px;
+        overflow: auto;
+      }
+      #add-registro-calculator-modal .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.25rem 0.5rem 0.25rem 1rem;
+        border-bottom: 1px solid var(--border-dark);
+      }
+      #add-registro-calculator-modal .modal-header h2 {
+        margin: 0;
+        padding: 0;
+        border: none;
+        font-size: 1.25rem;
+      }
+
+      /* Selector Ingreso / Gasto */
+      .tipo-registro-selector {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .tipo-registro-btn {
+        background-color: var(--bg-dark-primary);
+        color: var(--text-light-secondary);
+        border: none;
+        padding: 0.4rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background-color 0.2s,
+          color 0.2s;
+        border-bottom: 3px solid transparent;
+      }
+      .tipo-registro-btn.active.gasto {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: var(--electric-red);
+        border-bottom-color: var(--electric-red);
+      }
+      .tipo-registro-btn.active.ingreso {
+        background-color: rgba(34, 197, 94, 0.15);
+        color: var(--electric-green);
+        border-bottom-color: var(--electric-green);
+      }
+
+      /* Cuerpo: fecha, comentario, banco */
+      .registro-calculator-body {
+        padding: 0.5rem 1rem;
+        background-color: var(--bg-dark-secondary);
+      }
+      .registro-controles-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      #registro-fecha {
+        border: none;
+        background-color: var(--bg-dark-tertiary);
+        padding: 0.5rem 0.75rem;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-light-primary);
+        color-scheme: dark;
+      }
+      #registro-comentario-toggle {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-secondary);
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+      }
+      #registro-comentario-toggle.active {
+        background-color: rgba(14, 165, 233, 0.2);
+        color: var(--electric-blue);
+      }
+      #registro-comentario-toggle svg {
+        width: 20px;
+        height: 20px;
+      }
+      #registro-comentario-input {
+        margin-top: 0.5rem;
+        background-color: var(--bg-dark-tertiary);
+        color: var(--text-light-primary);
+        border: 1px solid var(--border-dark);
+        border-radius: 5px;
+        padding: 0.4rem 0.6rem;
+        width: 100%;
+        box-sizing: border-box;
+        resize: none;
+      }
+
+      /* Display calculadora */
+      #registro-display-wrapper {
+        padding: 0.5rem;
+        background-color: var(--bg-dark-primary);
+        border-bottom: 1px solid var(--border-dark);
+        transition: background-color 0.2s;
+      }
+      #registro-display {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 5px;
+        padding: 0.1rem 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-align: right;
+        color: var(--text-light-primary);
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      /* Teclado */
+      #calculadora-keypad {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background-color: var(--bg-dark-primary);
+      }
+      .calc-btn {
+        background-color: var(--bg-dark-secondary);
+        border: none;
+        border-right: 1px solid var(--bg-dark-primary);
+        border-top: 1px solid var(--bg-dark-primary);
+        padding: 7px 5px;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--text-light-primary);
+        cursor: pointer;
+        transition: background-color 0.1s;
+        border-radius: 4px;
+      }
+      .calc-btn:hover {
+        background-color: var(--bg-dark-tertiary);
+      }
+      .calc-btn.operator {
+        background-color: var(--bg-dark-tertiary);
+        color: var(--electric-blue);
+        font-weight: 600;
+      }
+      #btn-total {
+        grid-column: span 4;
+        background-color: var(--electric-blue);
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 4px;
+      }
+      #btn-total:hover {
+        background-color: #0284c7;
+      }
+
+      /* Temas dinámicos */
+      .modal-gasto #registro-display-wrapper {
+        background-color: rgba(239, 68, 68, 0.12);
+      }
+      .modal-gasto #registro-display {
+        border-color: rgba(239, 68, 68, 0.3);
+      }
+      .modal-gasto #btn-total {
+        background-color: var(--electric-red);
+      }
+      .modal-gasto #btn-total:hover {
+        background-color: #dc2626;
+      }
+
+      .modal-ingreso #registro-display-wrapper {
+        background-color: rgba(34, 197, 94, 0.12);
+      }
+      .modal-ingreso #registro-display {
+        border-color: rgba(34, 197, 94, 0.3);
+      }
+      .modal-ingreso #btn-total {
+        background-color: var(--electric-green);
+      }
+      .modal-ingreso #btn-total:hover {
+        background-color: #16a34a;
+      }
+
+      /* ============================================================ */
+      /* MODAL CATEGORÍA (calculadora)                                */
+      /* ============================================================ */
+
+      #calc-category-select-modal .modal-content {
+        max-width: 420px;
+        padding: 0;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      #calc-category-select-modal .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.3rem 0.75rem;
+        border-bottom: 1px solid var(--border-dark);
+      }
+      #calc-category-modal-title {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-light-secondary);
+        margin: 0;
+        padding: 0;
+        border: none;
+      }
+      #close-calc-category-modal-btn {
+        border-radius: 6px;
+        transition:
+          background-color 0.15s ease,
+          color 0.15s ease;
+      }
+      #close-calc-category-modal-btn:hover {
+        background-color: var(--electric-red);
+        color: #fff;
+      }
+      #calc-category-select-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 1rem;
+        max-height: 50vh;
+        overflow-y: auto;
+        padding: 0.75rem;
+      }
+      .category-select-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 1px solid var(--border-dark);
+        background-color: var(--bg-dark-tertiary);
+        transition: all 0.2s ease-in-out;
+        text-align: center;
+      }
+      .category-select-option:hover {
+        transform: scale(1.05);
+        border-color: var(--electric-blue);
+        box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25);
+      }
+      .category-select-option img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 4px;
+      }
+      .category-select-option span {
+        font-size: 0.75rem;
+        line-height: 1.3;
+        color: var(--text-light-primary);
+        font-weight: 500;
+        word-break: break-word;
+      }
+
+      /* ============================================================ */
+      /* PROMPT DESCRIPCIÓN                                           */
+      /* ============================================================ */
+
+      #calc-desc-prompt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        padding: 2rem 1.5rem 1.75rem;
+        text-align: center;
+        border-top: 1px solid var(--border-dark);
+      }
+      .desc-prompt-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: rgba(14, 165, 233, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--electric-blue);
+        flex-shrink: 0;
+      }
+      .calc-desc-prompt-btns {
+        display: flex;
+        gap: 0.75rem;
+        width: 100%;
+      }
+      .calc-desc-prompt-btns button {
+        flex: 1;
+        padding: 0.7rem 1rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      #calc-desc-no {
+        background-color: transparent;
+        color: var(--text-light-primary);
+        border: 1.5px solid var(--border-dark);
+      }
+      #calc-desc-no:hover {
+        background-color: var(--bg-dark-tertiary);
+        border-color: var(--text-light-secondary);
+      }
+      #calc-desc-si {
+        background-color: var(--electric-blue);
+        color: #fff;
+        border: 1.5px solid var(--electric-blue);
+      }
+      #calc-desc-si:hover {
+        background-color: #0c87bf;
+        border-color: #0c87bf;
+      }
+      #calc-desc-input-row {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+        align-items: center;
+      }
+      #calc-desc-input {
+        flex: 1;
+        min-width: 0;
+        background-color: var(--bg-dark-secondary);
+        color: var(--text-light-primary);
+        border: 1.5px solid var(--border-dark);
+        border-radius: 8px;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        transition: border-color 0.15s ease;
+      }
+      #calc-desc-input:focus {
+        outline: none;
+        border-color: var(--electric-blue);
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+      }
+      #calc-desc-save-btn {
+        flex-shrink: 0;
+        padding: 0.6rem 0.75rem;
+        background-color: var(--electric-blue);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.15s ease;
+      }
+      #calc-desc-save-btn:hover {
+        background-color: #0c87bf;
+      }
+
       /* --- Modal de Transferencia --- */
       /* Las clases .modal y .modal.active ya se encargan del centrado y el fondo. */
       /* Este CSS se enfoca en el contenido del modal. */
@@ -4963,6 +5348,8 @@
 
         #mostrar,
         #main-action-btn,
+        #add-transaction-btn,
+        #transfer-panel-btn,
         #delete-selected-btn,
         #save-budgets-btn,
         #migrate-all-recurring-btn {
@@ -5527,11 +5914,11 @@
             <button id="main-action-btn">
               <span id="main-action-btn-text"></span>
             </button>
-            <button id="add-income-btn">
-              <span>+ Ingreso</span>
+            <button id="add-transaction-btn">
+              <span>+ Registrar</span>
             </button>
-            <button id="add-expense-btn">
-              <span>+ Gasto</span>
+            <button id="transfer-panel-btn">
+              <span>⇄ Transferir</span>
             </button>
           </div>
 
@@ -6149,6 +6536,145 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL CALCULADORA — Nuevo Registro                           -->
+    <!-- ============================================================ -->
+    <div id="add-registro-calculator-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Nuevo Registro</h2>
+          <button class="close-btn" id="close-calculator-modal-btn">&times;</button>
+        </div>
+        <div class="tipo-registro-selector">
+          <button class="tipo-registro-btn ingreso" id="calc-btn-ingreso" data-tipo="income">
+            Ingreso
+          </button>
+          <button class="tipo-registro-btn gasto active" id="calc-btn-gasto" data-tipo="expense">
+            Gasto
+          </button>
+        </div>
+        <div class="registro-calculator-body">
+          <div class="registro-controles-top">
+            <input type="date" id="registro-fecha" />
+            <button
+              class="btn-icon"
+              id="registro-comentario-toggle"
+              title="Añadir comentario opcional"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="24"
+                height="24"
+              >
+                <path
+                  d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"
+                />
+              </svg>
+            </button>
+          </div>
+          <textarea
+            id="registro-comentario-input"
+            class="hidden"
+            rows="2"
+            placeholder="Comentario opcional..."
+          ></textarea>
+          <div class="form-group" style="margin-top: 0.5rem">
+            <label for="registro-banco">Banco / Cuenta</label>
+            <select id="registro-banco" required>
+              <option value="" disabled selected>Selecciona un banco...</option>
+            </select>
+            <span class="input-error-message" id="registro-banco-error"></span>
+          </div>
+        </div>
+        <div id="registro-display-wrapper">
+          <div id="registro-display" role="textbox" aria-label="Monto">0</div>
+        </div>
+        <div id="calculadora-keypad">
+          <button class="calc-btn" data-key="7">7</button>
+          <button class="calc-btn" data-key="8">8</button>
+          <button class="calc-btn" data-key="9">9</button>
+          <button class="calc-btn operator" data-key="+">+</button>
+
+          <button class="calc-btn" data-key="4">4</button>
+          <button class="calc-btn" data-key="5">5</button>
+          <button class="calc-btn" data-key="6">6</button>
+          <button class="calc-btn operator" data-key="-">−</button>
+
+          <button class="calc-btn" data-key="1">1</button>
+          <button class="calc-btn" data-key="2">2</button>
+          <button class="calc-btn" data-key="3">3</button>
+          <button class="calc-btn operator" data-key="*">×</button>
+
+          <button class="calc-btn" data-key=".">.</button>
+          <button class="calc-btn" data-key="0">0</button>
+          <button class="calc-btn operator" data-key="C">C</button>
+          <button class="calc-btn operator" data-key="/">÷</button>
+
+          <button class="calc-btn" id="btn-total">Total</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL CATEGORÍA + PROMPT DESCRIPCIÓN                         -->
+    <!-- ============================================================ -->
+    <div id="calc-category-select-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="calc-category-modal-title">Selecciona una Categoría</h2>
+          <button class="close-btn" id="close-calc-category-modal-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="calc-category-select-grid"></div>
+          <div id="calc-desc-prompt" class="hidden">
+            <div class="desc-prompt-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="22"
+                height="22"
+              >
+                <path
+                  d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z"
+                />
+              </svg>
+            </div>
+            <div class="calc-desc-prompt-btns">
+              <button id="calc-desc-no">No</button>
+              <button id="calc-desc-si">Sí</button>
+            </div>
+            <div id="calc-desc-input-row" class="hidden">
+              <input
+                type="text"
+                id="calc-desc-input"
+                list="description-list"
+                placeholder="Descripción..."
+                autocomplete="off"
+              />
+              <button type="button" id="calc-desc-save-btn" title="Guardar">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  width="18"
+                  height="18"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -6982,7 +7508,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.7.0</p>
+        <p id="app-version">Versión 0.0.8.0</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
@@ -7298,6 +7824,28 @@
 
         const mainActionBtn = document.getElementById('main-action-btn');
         const mainActionBtnText = document.getElementById('main-action-btn-text');
+
+        // --- CALCULADORA: variables de estado ---
+        let tempTransactionData = {};
+        let currentCalculatorExpression = '0';
+
+        // --- CALCULADORA: selectores DOM ---
+        const calculatorModal = document.getElementById('add-registro-calculator-modal');
+        const calcBtnGasto = document.getElementById('calc-btn-gasto');
+        const calcBtnIngreso = document.getElementById('calc-btn-ingreso');
+        const registroFecha = document.getElementById('registro-fecha');
+        const comentarioToggleBtn = document.getElementById('registro-comentario-toggle');
+        const comentarioInput = document.getElementById('registro-comentario-input');
+        const registroDisplay = document.getElementById('registro-display');
+        const keypad = document.getElementById('calculadora-keypad');
+        const totalBtn = document.getElementById('btn-total');
+        const calcCategoryModal = document.getElementById('calc-category-select-modal');
+        const calcCategoryGrid = document.getElementById('calc-category-select-grid');
+        const calcDescPrompt = document.getElementById('calc-desc-prompt');
+        const calcDescNo = document.getElementById('calc-desc-no');
+        const calcDescSi = document.getElementById('calc-desc-si');
+        const calcDescInput = document.getElementById('calc-desc-input');
+
         const transactionModal = document.getElementById('transaction-modal');
         const transactionForm = document.getElementById('transaction-form');
         const transactionsTableBody = document.getElementById('transactions-table-body');
@@ -7511,6 +8059,10 @@
             document.body.addEventListener('touchend', handleTouchEnd);
           }
           setupDashboardListeners();
+          const mostrarBtn = document.getElementById('mostrar');
+          if (mostrarBtn) {
+            mostrarBtn.addEventListener('click', showDashboardView);
+          }
           // --- Conectar el nuevo botón de cerrar vista (flecha) ---
           const closeContentViewBtn = document.getElementById('close-content-view-btn');
           if (closeContentViewBtn) {
@@ -7537,20 +8089,87 @@
           authForm.addEventListener('submit', handleLogin);
           registerBtn.addEventListener('click', handleRegister);
 
-          // Eventos para los nuevos botones de Ingreso y Gasto
-          document.getElementById('add-income-btn').addEventListener('click', () => {
-            const activeTab = document
-              .querySelector('.tab-pane.active')
-              ?.id.replace('-content', '');
-            modalContext = activeTab === 'proyeccion' ? 'proyeccion' : 'registros';
-            openTransactionModal({ type: 'income' });
+          // Botón unificado de registro (calculadora)
+          document
+            .getElementById('add-transaction-btn')
+            .addEventListener('click', openCalculatorModal);
+
+          // Botón de transferencia entre cuentas
+          document
+            .getElementById('transfer-panel-btn')
+            .addEventListener('click', openTransferModal);
+
+          // Calculadora: tipo ingreso/gasto
+          calcBtnGasto.addEventListener('click', () => setTipoRegistro('expense'));
+          calcBtnIngreso.addEventListener('click', () => setTipoRegistro('income'));
+
+          // Calculadora: comentario toggle
+          comentarioToggleBtn.addEventListener('click', toggleComentario);
+
+          // Calculadora: teclado numérico
+          keypad.addEventListener('click', handleKeypadClick);
+          totalBtn.addEventListener('click', handleTotalClick);
+
+          // Calculadora: cierre del modal
+          document
+            .getElementById('close-calculator-modal-btn')
+            .addEventListener('click', closeCalculatorModal);
+          calculatorModal.addEventListener('click', (e) => {
+            if (e.target === calculatorModal) closeCalculatorModal();
           });
-          document.getElementById('add-expense-btn').addEventListener('click', () => {
-            const activeTab = document
-              .querySelector('.tab-pane.active')
-              ?.id.replace('-content', '');
-            modalContext = activeTab === 'proyeccion' ? 'proyeccion' : 'registros';
-            openTransactionModal({ type: 'expense' });
+
+          // Categoría (calculadora): selección y cierre
+          calcCategoryGrid.addEventListener('click', handleCategorySelection);
+          document.getElementById('close-calc-category-modal-btn').addEventListener('click', () => {
+            hideDescriptionPrompt();
+            calcCategoryModal.classList.remove('active');
+            tempTransactionData = {};
+          });
+          calcCategoryModal.addEventListener('click', (e) => {
+            if (e.target === calcCategoryModal) {
+              hideDescriptionPrompt();
+              calcCategoryModal.classList.remove('active');
+              tempTransactionData = {};
+            }
+          });
+
+          // Prompt descripción: botón "No"
+          calcDescNo.addEventListener('click', async () => {
+            const data = { ...tempTransactionData };
+            calcCategoryModal.classList.remove('active'); // cerrar PRIMERO — evita re-clicks en el grid
+            hideDescriptionPrompt();
+            tempTransactionData = {};
+            await saveTransactionFromCalculator(data);
+          });
+
+          // Prompt descripción: botón "Sí" — muestra input con datalist
+          calcDescSi.addEventListener('click', () => {
+            document.getElementById('calc-desc-input-row').classList.remove('hidden');
+            calcDescInput.focus();
+          });
+
+          // Función compartida: guardar transacción con la descripción escrita
+          async function commitDescriptionAndSave() {
+            const raw = calcDescInput.value.trim();
+            if (!raw) return;
+            const desc = toTitleCase(raw);
+            const data = { ...tempTransactionData, description: desc };
+            calcCategoryModal.classList.remove('active');
+            hideDescriptionPrompt();
+            tempTransactionData = {};
+            await saveTransactionFromCalculator(data);
+          }
+
+          // Prompt descripción: Enter guarda con descripción
+          calcDescInput.addEventListener('keydown', async (e) => {
+            if (e.key !== 'Enter') return;
+            e.preventDefault();
+            await commitDescriptionAndSave();
+          });
+
+          // Prompt descripción: botón ✓ guarda con descripción
+          document.getElementById('calc-desc-save-btn').addEventListener('click', async () => {
+            await commitDescriptionAndSave();
           });
 
           document
@@ -7599,7 +8218,10 @@
           filterCategory.addEventListener('change', renderAll);
 
           document.querySelectorAll('.tab-button:not(#logout-tab-btn)').forEach((button) => {
-            button.addEventListener('click', (e) => switchTab(e.currentTarget.dataset.tab));
+            button.addEventListener('click', (e) => {
+              switchTab(e.currentTarget.dataset.tab);
+              showContentView();
+            });
           });
 
           document
@@ -7857,17 +8479,6 @@
               .querySelectorAll('#recurrentes-content .recurring-checkbox')
               .forEach((cb) => (cb.checked = e.target.checked)),
           );
-
-          const mostrarBtn = document.getElementById('mostrar');
-          const tabButtons = document.querySelectorAll('#tabs .tab-button:not(#logout-tab-btn)');
-
-          tabButtons.forEach((btn) => {
-            btn.addEventListener('click', showContentView);
-          });
-
-          if (mostrarBtn) {
-            mostrarBtn.addEventListener('click', showDashboardView);
-          }
 
           const toggleFiltersBtn = document.getElementById('toggle-filters-btn');
           const filtersContainer = document.getElementById('filters-container');
@@ -9782,6 +10393,225 @@
           );
         }
 
+        // ============================================================
+        // FUNCIONES DEL MODAL CALCULADORA
+        // ============================================================
+
+        function openCalculatorModal(tipo) {
+          tempTransactionData = {};
+          currentCalculatorExpression = '0';
+          registroDisplay.textContent = '0';
+          registroFecha.valueAsDate = new Date();
+          comentarioInput.value = '';
+          comentarioInput.classList.add('hidden');
+          comentarioToggleBtn.classList.remove('active');
+          populateSelectWithOptions(
+            'registro-banco',
+            appState.banks,
+            null,
+            null,
+            'Selecciona un banco...',
+          );
+          hideError(document.getElementById('registro-banco-error'));
+          setTipoRegistro(tipo === 'income' ? 'income' : 'expense');
+          calculatorModal.classList.add('active');
+          document.addEventListener('keydown', handleKeyboardInput);
+        }
+
+        function closeCalculatorModal() {
+          calculatorModal.classList.remove('active');
+          document.removeEventListener('keydown', handleKeyboardInput);
+        }
+
+        function setTipoRegistro(tipo) {
+          const modalContent = calculatorModal.querySelector('.modal-content');
+          tempTransactionData.type = tipo;
+          if (tipo === 'income') {
+            calcBtnIngreso.classList.add('active');
+            calcBtnGasto.classList.remove('active');
+            modalContent.classList.add('modal-ingreso');
+            modalContent.classList.remove('modal-gasto');
+          } else {
+            calcBtnGasto.classList.add('active');
+            calcBtnIngreso.classList.remove('active');
+            modalContent.classList.add('modal-gasto');
+            modalContent.classList.remove('modal-ingreso');
+          }
+        }
+
+        function toggleComentario() {
+          comentarioInput.classList.toggle('hidden');
+          comentarioToggleBtn.classList.toggle('active');
+        }
+
+        function handleKeyboardInput(event) {
+          if (event.target === comentarioInput || event.target === calcDescInput) return;
+          const key = event.key;
+          if (/[0-9.]/.test(key)) {
+            event.preventDefault();
+            handleKeypadClick({ target: { dataset: { key } } });
+          } else if (/[+\-*/]/.test(key)) {
+            event.preventDefault();
+            handleKeypadClick({ target: { dataset: { key } } });
+          } else if (key === 'Enter' || key === '=') {
+            event.preventDefault();
+            handleTotalClick();
+          } else if (key === 'Backspace' || key === 'Delete' || key === 'c' || key === 'C') {
+            event.preventDefault();
+            handleKeypadClick({ target: { dataset: { key: 'C' } } });
+          }
+        }
+
+        function handleKeypadClick(event) {
+          const key = event.target.dataset.key;
+          if (!key) return;
+          if (key === 'C') {
+            currentCalculatorExpression = '0';
+          } else if (currentCalculatorExpression === '0' && key !== '.') {
+            currentCalculatorExpression = key;
+          } else {
+            currentCalculatorExpression += key;
+          }
+          registroDisplay.textContent = currentCalculatorExpression;
+        }
+
+        function safeEval(expression) {
+          try {
+            if (!/^[0-9+\-*/. ]+$/.test(expression)) {
+              console.error('Expresión inválida detectada:', expression);
+              return 0;
+            }
+            return new Function('return ' + expression)();
+          } catch (e) {
+            console.error('Error al evaluar la expresión:', e);
+            return 0;
+          }
+        }
+
+        function handleTotalClick() {
+          const bancoSelect = document.getElementById('registro-banco');
+          const bancoError = document.getElementById('registro-banco-error');
+          if (!validateRequired(bancoSelect, bancoError, 'Debes seleccionar un banco.')) return;
+          const totalAmount = safeEval(currentCalculatorExpression);
+          if (totalAmount <= 0) {
+            showMessageModal('Monto Inválido', 'El monto debe ser mayor que cero.', 'error');
+            return;
+          }
+          tempTransactionData.amount = totalAmount;
+          tempTransactionData.date = registroFecha.value;
+          tempTransactionData.bank = bancoSelect.value;
+          tempTransactionData.description = comentarioInput.value.trim() || '';
+          closeCalculatorModal();
+          currentCalculatorExpression = '0';
+          registroDisplay.textContent = '0';
+          openCalcCategoryModal();
+        }
+
+        function openCalcCategoryModal() {
+          calcCategoryGrid.textContent = '';
+          const categoriesToShow = appState.categories.filter((c) => c.name !== 'Transferencia');
+          if (categoriesToShow.length === 0) {
+            showMessageModal(
+              'Sin Categorías',
+              'No tienes categorías configuradas. Añade algunas en la pestaña Configuración.',
+              'error',
+            );
+            return;
+          }
+          categoriesToShow.forEach((cat) => {
+            const btn = document.createElement('button');
+            btn.className = 'category-select-option';
+            btn.dataset.categoryName = cat.name;
+            const img = document.createElement('img');
+            img.src =
+              cat.icon ||
+              'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514665/categoria-default_mmpfg4.png';
+            img.alt = cat.name;
+            const span = document.createElement('span');
+            span.textContent = cat.name;
+            btn.appendChild(img);
+            btn.appendChild(span);
+            calcCategoryGrid.appendChild(btn);
+          });
+          calcCategoryModal.classList.add('active');
+        }
+
+        async function saveTransactionFromCalculator(data) {
+          const finalData = { ...data };
+          if (finalData.description) {
+            finalData.description = toTitleCase(finalData.description);
+          }
+          showLoading();
+          try {
+            const appId = firebaseProjectId;
+            const colRef = collection(db, `artifacts/${appId}/users/${userId}/transactions`);
+            const newDocRef = doc(colRef);
+            await setDoc(newDocRef, { ...finalData, id: newDocRef.id });
+            showToast('Transacción guardada', 'success');
+            const desc = finalData.description;
+            if (desc) {
+              const isNew = !appState.descriptions.some(
+                (d) => d.toLowerCase() === desc.toLowerCase(),
+              );
+              if (isNew) {
+                openConfirmModal(
+                  'Guardar descripción',
+                  `"${desc}" es nueva. ¿Deseas guardarla para usarla en el futuro?`,
+                  async () => {
+                    const appId2 = firebaseProjectId;
+                    const userDocRef = doc(
+                      db,
+                      `artifacts/${appId2}/users/${userId}/user_data/preferences`,
+                    );
+                    const updated = [...appState.descriptions, desc].sort((a, b) =>
+                      a.localeCompare(b),
+                    );
+                    await updateDoc(userDocRef, { descriptions: updated });
+                    appState.descriptions = updated;
+                    populateDescriptionDatalist();
+                    showToast('Descripción guardada.', 'info');
+                  },
+                );
+              }
+            }
+          } catch (error) {
+            console.error('Error guardando transacción desde calculadora:', error);
+            showMessageModal('Error', 'No se pudo guardar la transacción.', 'error');
+          } finally {
+            hideLoading();
+          }
+        }
+
+        // ============================================================
+        // PROMPT DESCRIPCIÓN — lógica
+        // ============================================================
+
+        function showDescriptionPrompt() {
+          calcCategoryGrid.classList.add('hidden');
+          calcDescPrompt.classList.remove('hidden');
+          document.getElementById('calc-category-modal-title').textContent =
+            '¿Desea agregar una descripción?';
+          calcDescNo.focus();
+        }
+
+        function hideDescriptionPrompt() {
+          calcDescPrompt.classList.add('hidden');
+          document.getElementById('calc-desc-input-row').classList.add('hidden');
+          calcDescInput.value = '';
+          calcCategoryGrid.classList.remove('hidden');
+          document.getElementById('calc-category-modal-title').textContent =
+            'Selecciona una Categoría';
+        }
+
+        async function handleCategorySelection(event) {
+          const option = event.target.closest('.category-select-option');
+          if (!option) return;
+          tempTransactionData.category = option.dataset.categoryName;
+          showDescriptionPrompt();
+        }
+
+        // ============================================================
+
         async function deleteProjection(id) {
           openConfirmModal(
             'Eliminar Proyección',
@@ -11634,17 +12464,13 @@
 
           if (incomeCard) {
             incomeCard.addEventListener('click', () => {
-              modalContext = 'registros'; // El contexto es un registro normal
-              // Abre el modal, pre-selecciona 'income' y bloquea el otro botón
-              openTransactionModal({ type: 'income', lockType: true });
+              openCalculatorModal('income');
             });
           }
 
           if (expenseCard) {
             expenseCard.addEventListener('click', () => {
-              modalContext = 'registros'; // El contexto es un registro normal
-              // Abre el modal, pre-selecciona 'expense' y bloquea el otro botón
-              openTransactionModal({ type: 'expense', lockType: true });
+              openCalculatorModal('expense');
             });
           }
         }
@@ -11952,18 +12778,18 @@
             saveBudget: document.getElementById('save-budgets-btn'),
             migrateRecurring: document.getElementById('migrate-all-recurring-btn'),
             deleteSelected: document.getElementById('delete-selected-btn'),
-            addIncome: document.getElementById('add-income-btn'),
-            addExpense: document.getElementById('add-expense-btn'),
+            addTransaction: document.getElementById('add-transaction-btn'),
+            transfer: document.getElementById('transfer-panel-btn'),
           };
 
           Object.values(actionButtons).forEach((btn) => btn && btn.classList.add('hidden'));
 
-          // La lógica de los botones se mantiene, ya que la nueva pestaña tiene sus propios botones
           switch (tabName) {
             case 'registros':
             case 'proyeccion':
-              actionButtons.addIncome.classList.remove('hidden');
-              actionButtons.addExpense.classList.remove('hidden');
+              if (actionButtons.addTransaction)
+                actionButtons.addTransaction.classList.remove('hidden');
+              if (actionButtons.transfer) actionButtons.transfer.classList.remove('hidden');
               break;
             case 'recurrentes':
               actionButtons.main.classList.remove('hidden');

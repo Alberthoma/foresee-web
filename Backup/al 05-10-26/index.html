@@ -25,7 +25,7 @@
 
     <link rel="manifest" href="manifest.json" />
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <link
@@ -97,12 +97,15 @@
         appId: '1:998192322959:web:e2afcdd7f47da3767853fa',
       };
 
+      console.log('[Firebase Init] Configuración de Firebase recibida:', firebaseConfig); // Debugging
+
       if (firebaseConfig && firebaseConfig.projectId) {
         window.firebaseApp = initializeApp(firebaseConfig);
         window.db = getFirestore(window.firebaseApp);
         window.auth = getAuth(window.firebaseApp);
         // Hacemos el projectId accesible globalmente para construir las rutas de Firestore
         window.firebaseProjectId = firebaseConfig.projectId;
+        console.log('[Firebase Init] Firebase inicializado con éxito.'); // Debugging
       } else {
         console.error(
           "[Firebase Init] ERROR: 'projectId' no proporcionado en la configuración de Firebase.",
@@ -136,8 +139,8 @@
         box-sizing: border-box;
       }
       /* ====================================================================== */
-      /* 1. CONFIGURACIÓN GLOBAL Y VARIABLES DE TEMA                          */
-      /* ====================================================================== */
+      /* 1. CONFIGURACIÓN GLOBAL Y VARIABLES DE TEMA
+              /* ====================================================================== */
       :root {
         --bg-dark-primary: #111827;
         --bg-dark-secondary: #1f2937;
@@ -227,7 +230,7 @@
       }
 
       /* ====================================================================== */
-      /* 2. ESTRUCTURA Y LAYOUT PRINCIPAL                                       */
+      /* 2. ESTRUCTURA Y LAYOUT PRINCIPAL
       /* ====================================================================== */
 
       .container {
@@ -244,11 +247,15 @@
       @media (min-width: 640px) {
         .container {
           max-width: 640px;
+          padding-left: 1rem; /* 16px */
+          padding-right: 1rem; /* 16px */
         }
       }
       @media (min-width: 768px) {
         .container {
           max-width: 768px;
+          padding-left: 1rem; /* 16px */
+          padding-right: 1rem; /* 16px */
         }
       }
       @media (min-width: 1024px) {
@@ -458,7 +465,7 @@
       }
 
       /* ====================================================================== */
-      /* 3. LÓGICA DE CONTROL DE VISTAS (Dashboard vs Contenido)               */
+      /* 3. LÓGICA DE CONTROL DE VISTAS (Dashboard vs Contenido)
       /* ====================================================================== */
       body.view-dashboard #main-container,
       body.view-dashboard #mostrar {
@@ -602,7 +609,7 @@
       }
 
       /* ====================================================================== */
-      /* 4. COMPONENTES REUTILIZABLES                                           */
+      /* 4. COMPONENTES REUTILIZABLES
       /* ====================================================================== */
 
       /* --- Botones --- */
@@ -1217,7 +1224,7 @@
       }
 
       /* ====================================================================== */
-      /* 5. ESTILOS ESPECÍFICOS POR PESTAÑA Y VISTA                            */
+      /* 5. ESTILOS ESPECÍFICOS POR PESTAÑA Y VISTA
       /* ====================================================================== */
 
       /* --- Contenido de la celda de Categoría --- */
@@ -4622,7 +4629,7 @@
       }
 
       /* ====================================================================== */
-      /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)                                  */
+      /* 6. MEDIA QUERIES (DISEÑO RESPONSIVO)
       /* ====================================================================== */
       /* --- Vistas de Escritorio y Tablets (min-width) --- */
       @media (min-width: 640px) {
@@ -6982,7 +6989,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.7.0</p>
+        <p id="app-version">Versión 0.0.6.0</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
@@ -7396,6 +7403,7 @@
         onAuthStateChanged(
           auth,
           async (user) => {
+            console.log('[Auth State Changed] Usuario:', user ? user.uid : 'null'); // Debugging
             try {
               if (user) {
                 enterFullscreen(document.documentElement); // Activa la pantalla completa
@@ -7410,6 +7418,9 @@
                 );
                 const docSnap = await getDoc(userDocRef);
                 if (!docSnap.exists()) {
+                  console.log(
+                    '[Firestore] Documento de preferencias no existe. Creando uno nuevo...',
+                  );
                   await setDoc(userDocRef, {
                     categories: [],
                     banks: [],
@@ -7418,6 +7429,7 @@
                     userAlias: null,
                     categoryBudgets: {},
                   });
+                  console.log('[Firestore] Documento de preferencias inicial creado con éxito.');
                 }
                 await loadUserDataAndListen();
                 const promptElement = document.getElementById('mobile-fullscreen-prompt');
@@ -7437,9 +7449,11 @@
               } else {
                 const initialAuthToken =
                   typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                console.log('[Auth State Changed] initialAuthToken presente:', !!initialAuthToken); // Debugging
                 if (initialAuthToken) {
                   try {
-                    await window.signInWithCustomToken(auth, initialAuthToken);
+                    await window.signInWithCustomToken(auth, initialAuthToken); // Usar window.signInWithCustomToken
+                    console.log('[Auth State Changed] Sesión iniciada con token personalizado.'); // Debugging
                   } catch (error) {
                     console.error(
                       '[Auth State Changed] Error al iniciar sesión con token personalizado:',
@@ -7453,6 +7467,10 @@
                     showAuthModal(); // Mostrar modal para login/registro manual
                   }
                 } else {
+                  // En un entorno real sin token, mostrar el modal de autenticación
+                  console.log(
+                    '[Auth State Changed] No hay token inicial, mostrando modal de autenticación.',
+                  ); // Debugging
                   showAuthModal();
                 }
                 // Asegurarse de que initApp y hideLoading se llamen siempre al final de esta rama
@@ -7483,10 +7501,12 @@
           },
         );
         function initApp() {
+          console.log('[initApp] Inicializando la aplicación...'); // Debugging
           setupEventListeners();
           setCurrentMonthFilter();
           populateFilterDropdowns();
           renderAll();
+          console.log('[initApp] Aplicación inicializada.'); // Debugging
         }
         function setupEventListeners() {
           document.body.addEventListener('click', function (event) {
@@ -7583,14 +7603,6 @@
           });
           transactionForm.addEventListener('submit', handleFormSubmit);
 
-          transactionsTableBody.addEventListener('click', (e) => {
-            const btn = e.target.closest('.edit-btn, .delete-btn');
-            if (!btn) return;
-            const id = btn.dataset.id;
-            if (btn.classList.contains('edit-btn')) openTransactionModal({ id });
-            else if (btn.classList.contains('delete-btn')) deleteTransaction(id);
-          });
-
           filterMonth.addEventListener('change', () => {
             currentMonthFilterValue = filterMonth.value;
             renderAll();
@@ -7626,11 +7638,7 @@
 
           confirmModalConfirmBtn.addEventListener('click', async () => {
             if (typeof confirmCallback === 'function') {
-              try {
-                await confirmCallback();
-              } catch (e) {
-                console.error('[ConfirmModal] Error en callback de confirmación:', e);
-              }
+              await confirmCallback();
             }
             closeConfirmModal();
           });
@@ -8233,6 +8241,8 @@
           }
 
           showButtonLoading(registerBtn);
+          console.log('[Auth] Intentando registrar usuario:', email); // Debugging
+
           try {
             // Acceder a createUserWithEmailAndPassword a través de window
             await window.createUserWithEmailAndPassword(auth, email, password);
@@ -8275,6 +8285,8 @@
           }
 
           showButtonLoading(loginBtn);
+          console.log('[Auth] Intentando iniciar sesión con:', email); // Debugging
+
           try {
             // Acceder a signInWithEmailAndPassword a través de window
             await window.signInWithEmailAndPassword(auth, email, password);
@@ -8308,6 +8320,7 @@
           if (unsubscribeRecurring) unsubscribeRecurring();
           if (unsubscribeCreditCards) unsubscribeCreditCards();
           if (unsubscribeGastosComunes) unsubscribeGastosComunes();
+          console.log('[Firestore] Todos los oyentes han sido desvinculados.');
         }
 
         /** Gestiona el cierre de sesión del usuario de forma limpia. */
@@ -8320,6 +8333,8 @@
               showButtonLoading(logoutBtn);
               // 1. Colgamos las llamadas a la base de datos.
               unsubscribeAllListeners();
+
+              console.log('[Auth] Intentando cerrar sesión...');
               try {
                 // 2. Ahora sí, cerramos la sesión de forma segura.
                 await window.signOut(auth);
@@ -8337,7 +8352,6 @@
                   userAlias: null,
                   categoryBudgets: {},
                   budgetAlertsShown: {},
-                  gastosComunes: { people: [], items: [] },
                 };
 
                 // Vuelve a la pantalla de inicio de sesión
@@ -8423,6 +8437,7 @@
             hideLoading();
             return;
           }
+          console.log(`[Firestore] Cargando datos para el usuario: ${userId}`);
 
           const appId = firebaseProjectId;
           if (!appId) {
@@ -8462,6 +8477,7 @@
           unsubscribePreferences = onSnapshot(
             userDocRef,
             (docSnap) => {
+              console.log('[Firestore] onSnapshot preferences fired.');
               if (docSnap.exists()) {
                 const data = docSnap.data();
                 appState.categories = (data.categories || []).map((cat) =>
@@ -8497,6 +8513,7 @@
           unsubscribeTransactions = onSnapshot(
             transactionsColRef,
             (snapshot) => {
+              console.log('[Firestore] onSnapshot transactions fired.');
               appState.transactions = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
               initialTransactionsLoaded = true;
               tryProcessRecurringExpenses();
@@ -8515,6 +8532,7 @@
           unsubscribeRecurring = onSnapshot(
             recurringExpensesColRef,
             (snapshot) => {
+              console.log('[Firestore] onSnapshot recurringExpenses fired.');
               appState.recurringExpenses = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
@@ -8539,6 +8557,7 @@
           unsubscribeCreditCards = onSnapshot(
             creditCardsColRef,
             (snapshot) => {
+              console.log('[Firestore] onSnapshot creditCards fired.');
               appState.creditCards = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
               if (isAuthReady) renderAll();
             },
@@ -8555,6 +8574,7 @@
           unsubscribeProjections = onSnapshot(
             projectionsColRef,
             (snapshot) => {
+              console.log('[Firestore] onSnapshot projections fired.');
               appState.projections = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
               if (isAuthReady) renderAll();
             },
@@ -8575,6 +8595,7 @@
           unsubscribeGastosComunes = onSnapshot(
             gastosComunesDocRef,
             (docSnap) => {
+              console.log('[Firestore] onSnapshot gastosComunes fired.');
               if (docSnap.exists()) {
                 appState.gastosComunes = docSnap.data();
               } else {
@@ -8772,23 +8793,22 @@
         }
 
         function renderDashboard() {
-          const selectedMonth = filterMonth.value;
-          const { income, expenses, totalIncome, totalExpenses } = appState.transactions.reduce(
-            (acc, t) => {
-              if (!t || typeof t.date !== 'string') return acc;
-              const inMonth = !selectedMonth || t.date.substring(0, 7) === selectedMonth;
-              if (inMonth) {
-                if (t.type === 'income') acc.income += t.amount;
-                else if (t.type === 'expense') acc.expenses += t.amount;
-              }
-              if (!t.isArchived) {
-                if (t.type === 'income') acc.totalIncome += t.amount;
-                else if (t.type === 'expense') acc.totalExpenses += t.amount;
-              }
-              return acc;
-            },
-            { income: 0, expenses: 0, totalIncome: 0, totalExpenses: 0 },
-          );
+          const transactionsForMonth = getTransactions({ month: filterMonth.value }); // Usa transacciones activas del mes
+          const income = transactionsForMonth
+            .filter((t) => t.type === 'income')
+            .reduce((sum, t) => sum + t.amount, 0);
+          const expenses = transactionsForMonth
+            .filter((t) => t.type === 'expense')
+            .reduce((sum, t) => sum + t.amount, 0);
+
+          // Filtrar TODAS las transacciones activas para el Saldo Actual
+          const activeTransactions = appState.transactions.filter((t) => !t.isArchived);
+          const totalIncome = activeTransactions
+            .filter((t) => t.type === 'income')
+            .reduce((sum, t) => sum + t.amount, 0);
+          const totalExpenses = activeTransactions
+            .filter((t) => t.type === 'expense')
+            .reduce((sum, t) => sum + t.amount, 0);
           const currentBalance = appState.openingBalance + totalIncome - totalExpenses;
 
           document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
@@ -8854,7 +8874,7 @@
               const cellCat = row.insertCell();
               cellCat.innerHTML = `<div class="category-cell-content">${getCategoryDisplay(
                 t.category,
-              )}<button class="info-btn" data-description="${t.description.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">i</button></div>`;
+              )}<button class="info-btn" data-description="${t.description}">i</button></div>`;
 
               const cellBank = row.insertCell();
               cellBank.textContent = t.bank;
@@ -8897,6 +8917,22 @@
               formatCurrency(totalExpenses);
           }
 
+          // ¡PARTE CRÍTICA! Aquí se vuelven a activar los botones después de crear la tabla.
+          document
+            .querySelectorAll('#registros-content .edit-btn')
+            .forEach((btn) =>
+              btn.addEventListener('click', (e) =>
+                openTransactionModal({ id: e.target.closest('button').dataset.id }),
+              ),
+            );
+
+          document
+            .querySelectorAll('#registros-content .delete-btn')
+            .forEach((btn) =>
+              btn.addEventListener('click', (e) =>
+                deleteTransaction(e.target.closest('button').dataset.id),
+              ),
+            );
           updateDeleteButtonVisibility();
         }
 
@@ -9063,7 +9099,7 @@
             noBalancesMessage.classList.remove('hidden');
             balancesGrid.classList.add('hidden');
           } else {
-            noBalancesMessage.classList.add('hidden');
+            noBalancesMessage.classList.remove('hidden');
             balancesGrid.classList.remove('hidden');
 
             bankBalances.forEach((bank) => {
@@ -9340,11 +9376,11 @@
           if (alerts.length > 0) {
             alerts.forEach((alertText) => {
               const p = document.createElement('p');
+              // Usamos una nueva clase CSS que definiremos
               p.className = 'dashboard-alert alert-warning';
-              const iconSpan = document.createElement('span');
-              iconSpan.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
-              p.appendChild(iconSpan);
-              p.appendChild(document.createTextNode(alertText));
+
+              // Asignamos la clase al SVG
+              p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>${alertText}`;
               creditCardAlertsDiv.appendChild(p);
             });
           }
@@ -9387,11 +9423,9 @@
           if (alerts.length > 0) {
             alerts.forEach((alert) => {
               const p = document.createElement('p');
-              p.className = `dashboard-alert alert-${alert.type}`;
-              const iconSpan = document.createElement('span');
-              iconSpan.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>`;
-              p.appendChild(iconSpan);
-              p.appendChild(document.createTextNode(alert.text));
+              // Asigna la clase 'danger' o 'warning' para que coincida con el CSS que creamos.
+              p.className = `dashboard-alert alert-${alert.type}`; // Esto asignará 'alert-danger' o 'alert-warning'
+              p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l-2 2"/></svg>${alert.text}`;
               recurringAlertsDiv.appendChild(p);
             });
           }
@@ -9485,10 +9519,7 @@
 
           setTimeout(() => {
             toast.classList.remove('show');
-            toast.addEventListener('transitionend', () => toast.remove(), { once: true });
-            setTimeout(() => {
-              if (toast.parentNode) toast.remove();
-            }, 500);
+            toast.addEventListener('transitionend', () => toast.remove());
           }, duration);
         }
 
@@ -9912,6 +9943,7 @@
 
           batch.set(newExpenseDocRef, expenseTransaction);
           batch.set(newIncomeDocRef, incomeTransaction);
+          console.log('[Firestore] Registrando transferencia interna.'); // Debugging
 
           try {
             await batch.commit();
@@ -10036,6 +10068,7 @@
               a.name.localeCompare(b.name),
             );
 
+            console.log('[Firestore] Añadiendo categoría:', newCategory);
             await updateDoc(userDocRef, { categories: updatedCategories });
 
             showToast(`Categoría "${name}" añadida.`, 'success');
@@ -10084,6 +10117,7 @@
                 db,
                 `artifacts/${appId}/users/${userId}/user_data/preferences`,
               );
+              console.log('[Firestore] Eliminando categoría:', name);
               try {
                 // MODIFICADO: Filtra el array de objetos para eliminar la categoría por su nombre.
                 const updatedCategories = appState.categories.filter((c) => c.name !== name);
@@ -10130,6 +10164,7 @@
 
           try {
             const updatedBanks = [...appState.banks, name].sort((a, b) => a.localeCompare(b));
+            console.log('[Firestore] Añadiendo banco:', name); // Debugging
             await updateDoc(userDocRef, { banks: updatedBanks });
             input.value = '';
             showToast(`Banco/Cuenta "${name}" añadido.`, 'success');
@@ -10160,6 +10195,7 @@
                 db,
                 `artifacts/${appId}/users/${userId}/creditCards`,
               );
+              console.log('[Firestore] Eliminando banco:', name); // Debugging
 
               try {
                 const batch = writeBatch(db);
@@ -10201,6 +10237,7 @@
                 db,
                 `artifacts/${appId}/users/${userId}/user_data/preferences`,
               );
+              console.log('[Firestore] Eliminando descripción:', name); // Debugging
               try {
                 const updatedDescriptions = appState.descriptions.filter((d) => d !== name);
                 await updateDoc(userDocRef, { descriptions: updatedDescriptions });
@@ -10387,6 +10424,8 @@
               );
               const archivesColRef = collection(db, `artifacts/${appId}/users/${userId}/archives`);
 
+              console.log('[Firestore] Iniciando nuevo mes con lógica personalizada...');
+
               try {
                 const transactionsToArchive = [...appState.transactions];
                 // --- NUEVO: Obtener todas las proyecciones actuales para borrarlas ---
@@ -10488,6 +10527,10 @@
               const transactionsColRef = collection(
                 db,
                 `artifacts/${appId}/users/${userId}/transactions`,
+              );
+
+              console.log(
+                '[Firestore] Reiniciando datos del período, conservando toda la configuración...',
               );
 
               try {
@@ -10792,6 +10835,7 @@
                 `artifacts/${appId}/users/${userId}/recurringExpenses`,
                 id,
               );
+              console.log('[Firestore] Eliminando gasto recurrente:', id); // Debugging
               try {
                 await deleteDoc(recurringExpenseDocRef);
                 showToast('Gasto recurrente eliminado exitosamente.', 'success');
@@ -11058,6 +11102,7 @@
           );
 
           try {
+            console.log(`[Firestore] Actualizando tarjeta ${cardId}, campo ${field}: ${value}`);
             await updateDoc(creditCardDocRef, { [field]: value });
             showToast('Datos de tarjeta actualizados.', 'success');
           } catch (error) {
@@ -11089,6 +11134,7 @@
                 `artifacts/${appId}/users/${userId}/creditCards`,
                 cardId,
               );
+              console.log('[Firestore] Eliminando tarjeta de crédito:', cardId); // Debugging
               try {
                 await deleteDoc(creditCardDocRef);
                 showToast('Tarjeta de crédito eliminada exitosamente.', 'success');
@@ -11199,6 +11245,7 @@
             exclude: false,
           };
           try {
+            console.log('[Firestore] Añadiendo nueva tarjeta de crédito.'); // Debugging
             const newDocRef = doc(creditCardsColRef);
             await setDoc(newDocRef, { ...newCardData, id: newDocRef.id });
             closeCreditCardModal();
@@ -11555,6 +11602,7 @@
          * @param {HTMLElement} element El elemento a expandir.
          */
         function enterFullscreen(element) {
+          console.log('Intentando entrar en pantalla completa...'); // Mensaje de depuración
           if (element.requestFullscreen) {
             element
               .requestFullscreen()
@@ -11589,6 +11637,7 @@
 
         function exitFullscreen() {
           try {
+            console.log('Intentando salir de pantalla completa...');
             if (
               document.fullscreenElement ||
               document.webkitFullscreenElement ||
@@ -11607,6 +11656,8 @@
                 /* IE/Edge */
                 document.msExitFullscreen();
               }
+            } else {
+              console.log('No se está en modo de pantalla completa.');
             }
           } catch (error) {
             // Este catch evita que un error aquí detenga otras funciones, como el logout.
@@ -12605,6 +12656,7 @@
         async function processRecurringExpenses() {
           // Si no hay gastos recurrentes configurados, no hace nada.
           if (!appState.recurringExpenses || appState.recurringExpenses.length === 0) {
+            console.log('[Auto-Registro] No hay gastos recurrentes para procesar.');
             return;
           }
 
@@ -12644,6 +12696,9 @@
 
           // 4. Si hay transacciones en la lista, las crea en la base de datos.
           if (transactionsToCreate.length > 0) {
+            console.log(
+              `[Auto-Registro] Se van a registrar ${transactionsToCreate.length} gastos recurrentes.`,
+            );
             showLoading();
             const appId = firebaseProjectId;
             const transactionsColRef = collection(
@@ -12695,6 +12750,10 @@
             } finally {
               hideLoading();
             }
+          } else {
+            console.log(
+              '[Auto-Registro] Todos los gastos recurrentes vencidos ya están registrados.',
+            );
           }
         }
         /**
@@ -12710,6 +12769,10 @@
 
           // Marca que el proceso ya se va a ejecutar para no repetirlo.
           recurringProcessed = true;
+
+          console.log(
+            '[Auto-Registro] Datos listos. Iniciando la verificación de gastos recurrentes.',
+          );
           // Llama a la función principal que hace el trabajo.
           processRecurringExpenses();
         }
@@ -12720,9 +12783,11 @@
           window.addEventListener('load', () => {
             navigator.serviceWorker
               .register('./sw.js')
-              .then(() => {})
+              .then((registration) => {
+                console.log('Service Worker registrado con éxito:', registration);
+              })
               .catch((error) => {
-                console.error('Fallo en el registro del Service Worker:', error);
+                console.log('Fallo en el registro del Service Worker:', error);
               });
           });
         }
@@ -12955,6 +13020,7 @@
             // Se clona el objeto para evitar problemas de referencia circular de Firebase
             const stateToSave = JSON.parse(JSON.stringify(appState.gastosComunes));
             await setDoc(gastosComunesDocRef, stateToSave);
+            console.log('[Firestore] Estado de Gastos Comunes guardado.');
           } catch (error) {
             console.error('[Firestore] Error al guardar estado de Gastos Comunes:', error);
             showToast('No se pudo guardar el cambio en Gastos Comunes.', 'error');
@@ -13172,122 +13238,119 @@
     </script>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const contributionTypeSelect = document.getElementById('contribution401kType');
-        const contributionValueInput = document.getElementById('contribution401kValue');
-        const contributionLabel = document.getElementById('contribution401kLabel');
-        contributionTypeSelect.addEventListener('change', () => {
-          if (contributionTypeSelect.value === 'percent') {
-            contributionLabel.textContent = 'Valor 401(k) (%)';
-            contributionValueInput.value = '5';
-          } else {
-            contributionLabel.textContent = 'Valor 401(k) ($)';
-            contributionValueInput.value = '100';
+      const contributionTypeSelect = document.getElementById('contribution401kType');
+      const contributionValueInput = document.getElementById('contribution401kValue');
+      const contributionLabel = document.getElementById('contribution401kLabel');
+      contributionTypeSelect.addEventListener('change', () => {
+        if (contributionTypeSelect.value === 'percent') {
+          contributionLabel.textContent = 'Valor 401(k) (%)';
+          contributionValueInput.value = '5';
+        } else {
+          contributionLabel.textContent = 'Valor 401(k) ($)';
+          contributionValueInput.value = '100';
+        }
+      });
+      document.getElementById('calculateBtn').addEventListener('click', () => {
+        // --- 1. OBTENER DATOS DEL USUARIO ---
+        const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+        const totalHours = parseFloat(document.getElementById('hoursWorked').value) || 0;
+        const filingStatus = document.getElementById('filingStatus').value;
+        const contribution401kType = document.getElementById('contribution401kType').value;
+        const contribution401kValue =
+          parseFloat(document.getElementById('contribution401kValue').value) || 0;
+        const medicalDeduction = parseFloat(document.getElementById('medicalDeduction').value) || 0;
+        const dentalDeduction = parseFloat(document.getElementById('dentalDeduction').value) || 0;
+        const visionDeduction = parseFloat(document.getElementById('visionDeduction').value) || 0;
+        const loan401k = parseFloat(document.getElementById('loan401k').value) || 0;
+        const payPeriods = 26; // Quincenal
+        const regularHoursThreshold = 80;
+        // --- 2. CONSTANTES FISCALES 2025 ---
+        const FICA_RATES = {
+          SOCIAL_SECURITY: 0.062,
+          MEDICARE: 0.0145,
+        };
+        const FEDERAL_TAX = {
+          DEDUCTION: { single: 15000, married: 30000 },
+          BRACKETS: {
+            single: [
+              { rate: 0.1, upto: 11925 },
+              { rate: 0.12, upto: 48475 },
+              { rate: 0.22, upto: 103350 },
+              { rate: 0.24, upto: 197300 },
+              { rate: 0.32, upto: 250525 },
+              { rate: 0.35, upto: 626350 },
+              { rate: 0.37, upto: Infinity },
+            ],
+            married: [
+              { rate: 0.1, upto: 23850 },
+              { rate: 0.12, upto: 96950 },
+              { rate: 0.22, upto: 206700 },
+              { rate: 0.24, upto: 394600 },
+              { rate: 0.32, upto: 501050 },
+              { rate: 0.35, upto: 751600 },
+              { rate: 0.37, upto: Infinity },
+            ],
+          },
+        };
+        // --- 3. CÁLCULOS PRINCIPALES ---
+        // Salario Bruto con Overtime
+        let regularHours = Math.min(totalHours, regularHoursThreshold);
+        let overtimeHours = Math.max(0, totalHours - regularHoursThreshold);
+        let overtimeRate = hourlyRate * 1.5;
+        let grossPay = regularHours * hourlyRate + overtimeHours * overtimeRate;
+        // Deducciones Pre-Impuestos (401k Contribution)
+        let contribution401kAmount = 0;
+        if (contribution401kType === 'percent') {
+          contribution401kAmount = grossPay * (contribution401kValue / 100);
+        } else {
+          contribution401kAmount = contribution401kValue;
+        }
+        const preTaxDeductions =
+          contribution401kAmount + medicalDeduction + dentalDeduction + visionDeduction;
+        // Ingreso Imponible para Impuesto Federal
+        const annualTaxableIncome = (grossPay - preTaxDeductions) * payPeriods;
+        // Calcular Impuesto Federal Anual
+        const standardDeduction = FEDERAL_TAX.DEDUCTION[filingStatus];
+        const finalTaxableIncome = Math.max(0, annualTaxableIncome - standardDeduction);
+        const brackets = FEDERAL_TAX.BRACKETS[filingStatus];
+        let federalTaxAnnual = 0;
+        let incomeLeft = finalTaxableIncome;
+        let previousLimit = 0;
+        for (const bracket of brackets) {
+          if (incomeLeft > 0) {
+            const taxableInBracket = Math.min(incomeLeft, bracket.upto - previousLimit);
+            federalTaxAnnual += taxableInBracket * bracket.rate;
+            incomeLeft -= taxableInBracket;
+            previousLimit = bracket.upto;
           }
-        });
-        document.getElementById('calculateBtn').addEventListener('click', () => {
-          // --- 1. OBTENER DATOS DEL USUARIO ---
-          const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
-          const totalHours = parseFloat(document.getElementById('hoursWorked').value) || 0;
-          const filingStatus = document.getElementById('filingStatus').value;
-          const contribution401kType = document.getElementById('contribution401kType').value;
-          const contribution401kValue =
-            parseFloat(document.getElementById('contribution401kValue').value) || 0;
-          const medicalDeduction =
-            parseFloat(document.getElementById('medicalDeduction').value) || 0;
-          const dentalDeduction = parseFloat(document.getElementById('dentalDeduction').value) || 0;
-          const visionDeduction = parseFloat(document.getElementById('visionDeduction').value) || 0;
-          const loan401k = parseFloat(document.getElementById('loan401k').value) || 0;
-          const payPeriods = 26; // Quincenal
-          const regularHoursThreshold = 80;
-          // --- 2. CONSTANTES FISCALES 2025 ---
-          const FICA_RATES = {
-            SOCIAL_SECURITY: 0.062,
-            MEDICARE: 0.0145,
-          };
-          const FEDERAL_TAX = {
-            DEDUCTION: { single: 15000, married: 30000 },
-            BRACKETS: {
-              single: [
-                { rate: 0.1, upto: 11925 },
-                { rate: 0.12, upto: 48475 },
-                { rate: 0.22, upto: 103350 },
-                { rate: 0.24, upto: 197300 },
-                { rate: 0.32, upto: 250525 },
-                { rate: 0.35, upto: 626350 },
-                { rate: 0.37, upto: Infinity },
-              ],
-              married: [
-                { rate: 0.1, upto: 23850 },
-                { rate: 0.12, upto: 96950 },
-                { rate: 0.22, upto: 206700 },
-                { rate: 0.24, upto: 394600 },
-                { rate: 0.32, upto: 501050 },
-                { rate: 0.35, upto: 751600 },
-                { rate: 0.37, upto: Infinity },
-              ],
-            },
-          };
-          // --- 3. CÁLCULOS PRINCIPALES ---
-          // Salario Bruto con Overtime
-          let regularHours = Math.min(totalHours, regularHoursThreshold);
-          let overtimeHours = Math.max(0, totalHours - regularHoursThreshold);
-          let overtimeRate = hourlyRate * 1.5;
-          let grossPay = regularHours * hourlyRate + overtimeHours * overtimeRate;
-          // Deducciones Pre-Impuestos (401k Contribution)
-          let contribution401kAmount = 0;
-          if (contribution401kType === 'percent') {
-            contribution401kAmount = grossPay * (contribution401kValue / 100);
-          } else {
-            contribution401kAmount = contribution401kValue;
-          }
-          const preTaxDeductions =
-            contribution401kAmount + medicalDeduction + dentalDeduction + visionDeduction;
-          // Ingreso Imponible para Impuesto Federal
-          const annualTaxableIncome = (grossPay - preTaxDeductions) * payPeriods;
-          // Calcular Impuesto Federal Anual
-          const standardDeduction = FEDERAL_TAX.DEDUCTION[filingStatus];
-          const finalTaxableIncome = Math.max(0, annualTaxableIncome - standardDeduction);
-          const brackets = FEDERAL_TAX.BRACKETS[filingStatus];
-          let federalTaxAnnual = 0;
-          let incomeLeft = finalTaxableIncome;
-          let previousLimit = 0;
-          for (const bracket of brackets) {
-            if (incomeLeft > 0) {
-              const taxableInBracket = Math.min(incomeLeft, bracket.upto - previousLimit);
-              federalTaxAnnual += taxableInBracket * bracket.rate;
-              incomeLeft -= taxableInBracket;
-              previousLimit = bracket.upto;
-            }
-          }
-          const federalTaxPerPeriod = federalTaxAnnual / payPeriods;
-          // Calcular Impuestos FICA (Social Security & Medicare)
-          // Se basa en el Salario Bruto total
-          const socialSecurityTax = grossPay * FICA_RATES.SOCIAL_SECURITY;
-          const medicareTax = grossPay * FICA_RATES.MEDICARE;
-          const ficaTaxes = socialSecurityTax + medicareTax;
-          // Deducciones Post-Impuestos
-          const postTaxDeductions = loan401k;
-          // Calcular Salario Neto
-          const totalDeductions =
-            preTaxDeductions + federalTaxPerPeriod + ficaTaxes + postTaxDeductions;
-          const netPay = grossPay - totalDeductions;
-          // --- 4. MOSTRAR RESULTADOS ---
-          document.getElementById('results').classList.remove('hidden');
-          const formatCurrency = (value) =>
-            `$${Math.max(0, value)
-              .toFixed(2)
-              .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-          document.getElementById('grossPayResult').textContent = formatCurrency(grossPay);
-          document.getElementById('preTaxDeductionsResult').textContent =
-            formatCurrency(preTaxDeductions);
-          document.getElementById('federalTaxResult').textContent =
-            formatCurrency(federalTaxPerPeriod);
-          document.getElementById('ficaTaxResult').textContent = formatCurrency(ficaTaxes);
-          document.getElementById('postTaxDeductionsResult').textContent =
-            formatCurrency(postTaxDeductions);
-          document.getElementById('netPayResult').textContent = formatCurrency(netPay);
-        });
+        }
+        const federalTaxPerPeriod = federalTaxAnnual / payPeriods;
+        // Calcular Impuestos FICA (Social Security & Medicare)
+        // Se basa en el Salario Bruto total
+        const socialSecurityTax = grossPay * FICA_RATES.SOCIAL_SECURITY;
+        const medicareTax = grossPay * FICA_RATES.MEDICARE;
+        const ficaTaxes = socialSecurityTax + medicareTax;
+        // Deducciones Post-Impuestos
+        const postTaxDeductions = loan401k;
+        // Calcular Salario Neto
+        const totalDeductions =
+          preTaxDeductions + federalTaxPerPeriod + ficaTaxes + postTaxDeductions;
+        const netPay = grossPay - totalDeductions;
+        // --- 4. MOSTRAR RESULTADOS ---
+        document.getElementById('results').classList.remove('hidden');
+        const formatCurrency = (value) =>
+          `$${Math.max(0, value)
+            .toFixed(2)
+            .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+        document.getElementById('grossPayResult').textContent = formatCurrency(grossPay);
+        document.getElementById('preTaxDeductionsResult').textContent =
+          formatCurrency(preTaxDeductions);
+        document.getElementById('federalTaxResult').textContent =
+          formatCurrency(federalTaxPerPeriod);
+        document.getElementById('ficaTaxResult').textContent = formatCurrency(ficaTaxes);
+        document.getElementById('postTaxDeductionsResult').textContent =
+          formatCurrency(postTaxDeductions);
+        document.getElementById('netPayResult').textContent = formatCurrency(netPay);
       });
     </script>
   </body>
