@@ -139,6 +139,7 @@
       /* 1. CONFIGURACIÓN GLOBAL Y VARIABLES DE TEMA                          */
       /* ====================================================================== */
       :root {
+        --bg-deep: #0d1117;
         --bg-dark-primary: #111827;
         --bg-dark-secondary: #1f2937;
         --bg-dark-tertiary: #374151;
@@ -241,31 +242,6 @@
       }
 
       /* Puntos de quiebre (breakpoints) para centrar el contenido en pantallas más grandes */
-      @media (min-width: 640px) {
-        .container {
-          max-width: 640px;
-        }
-      }
-      @media (min-width: 768px) {
-        .container {
-          max-width: 768px;
-        }
-      }
-      @media (min-width: 1024px) {
-        .container {
-          max-width: 1024px;
-        }
-      }
-      @media (min-width: 1280px) {
-        .container {
-          max-width: 1280px;
-        }
-      }
-      @media (min-width: 1536px) {
-        .container {
-          max-width: 1536px;
-        }
-      }
       #main-content-wrapper {
         flex-grow: 1;
       }
@@ -374,7 +350,7 @@
         padding-bottom: 10px;
         border-radius: 10px;
         /* background: var(--bg-dark-secondary); */
-        background: #1f2937ba;
+        background: var(--bg-deep);
         border: none;
       }
 
@@ -395,7 +371,7 @@
       .tab-button:hover {
         color: var(--electric-blue);
         /* background-color: transparent; */
-        background: #1f2937ba;
+        background: var(--bg-deep);
         border-bottom-color: var(--electric-blue);
         box-shadow:
           0 0 8px var(--electric-blue),
@@ -420,41 +396,41 @@
 
       /* Tamaño base para los íconos de las pestañas */
       .tab-button img {
-        width: 3.5rem; /* w-14 */
-        margin-bottom: 0.25rem; /* mb-1 */
-        height: auto; /* Permitir que la altura se ajuste */
+        width: 3.5rem;
+        height: auto;
+        object-fit: contain;
+        margin-bottom: 0.25rem;
       }
 
-      /* Tamaños específicos para cada ícono (sobrescribe la regla anterior) */
       button[data-tab='proyeccion'] img {
-        height: 3rem; /* h-12 */
-        width: 3.5rem; /* w-14 */
+        height: 3rem;
+        width: 3.5rem;
       }
       button[data-tab='recurrentes'] img,
       button[data-tab='gastos-comunes'] img,
       button[data-tab='configuración'] img {
-        height: 2.75rem; /* h-11 */
-        width: 2.75rem; /* w-11 */
+        height: 2.75rem;
+        width: 2.75rem;
       }
       button[data-tab='tarjetas'] img {
-        height: 3rem; /* h-12 */
-        width: 3rem; /* w-12 */
+        height: 3rem;
+        width: 3rem;
       }
       button[data-tab='saldos'] img {
-        height: 2.25rem; /* h-9 */
-        width: 3rem; /* w-12 */
+        height: 2.25rem;
+        width: 3rem;
       }
       button[data-tab='calculadora'] img {
-        height: 2.25rem; /* h-9 */
-        width: 2.5rem; /* w-10 */
+        height: 2.25rem;
+        width: 2.5rem;
       }
       button[data-tab='reportes'] img {
-        height: 2.25rem; /* h-9 */
-        width: 2.75rem; /* w-11 */
+        height: 2.25rem;
+        width: 2.75rem;
       }
       button[data-tab='presupuesto'] img {
-        height: 2.5rem; /* h-10 */
-        width: 2.75rem; /* w-11 */
+        height: 2.5rem;
+        width: 2.75rem;
       }
 
       /* ====================================================================== */
@@ -1061,7 +1037,7 @@
       }
 
       tbody {
-        background-color: var(--bg-dark-secondary);
+        background-color: var(--bg-dark-primary);
         border-color: var(--border-dark);
       }
 
@@ -1071,7 +1047,7 @@
       }
 
       tbody tr {
-        background-color: var(--bg-dark-tertiary);
+        background-color: var(--bg-dark-primary);
         border-bottom: 1px solid var(--border-dark);
         transition:
           background-color 0.2s ease,
@@ -1083,7 +1059,7 @@
       }
 
       tbody tr:hover {
-        background-color: var(--border-dark);
+        background-color: var(--bg-dark-secondary);
       }
 
       tfoot {
@@ -1265,58 +1241,80 @@
       }
 
       .dashboard-card {
-        background-color: var(--bg-dark-secondary);
-        padding: 0.25rem;
-        padding-left: 1rem;
-        border-radius: 0.75rem;
+        background-color: var(--bg-deep);
+        padding: 0.9rem 1rem;
+        border-radius: 14px;
         border: 1px solid var(--border-dark);
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 0.75rem;
+        position: relative;
+        overflow: hidden;
         transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease;
-        box-shadow:
-          0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -2px rgba(0, 0, 0, 0.1);
+          border-color 0.2s,
+          transform 0.2s;
         cursor: pointer;
-        /* height: 80px; */ /* <-- Comentado o eliminado */
-        /*min-height: 80px;  <-- AÑADIDO: Permite que crezca si es necesario */
+      }
+
+      .dashboard-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+      }
+      #balance-card::after {
+        background: linear-gradient(90deg, var(--electric-blue), transparent);
+      }
+      #income-card::after {
+        background: linear-gradient(90deg, var(--electric-green), transparent);
+      }
+      #expense-card::after {
+        background: linear-gradient(90deg, var(--electric-red), transparent);
       }
 
       .dashboard-card:hover {
-        transform: translateY(-5px);
-        box-shadow:
-          0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
       }
 
       .dashboard-card p:first-child {
-        font-size: 1rem;
+        font-size: 0.75rem;
+        font-weight: 500;
         color: var(--text-light-secondary);
-        margin-bottom: 0rem;
-        padding-bottom: 0;
+        margin-bottom: 0.2rem;
       }
 
       .dashboard-card p:last-child {
         font-size: 1.5rem;
-        font-weight: 700;
-        padding-top: 0;
-      }
-
-      .card-icon-wrapper img {
-        height: 48px;
-        width: auto;
+        font-weight: 800;
+        line-height: 1;
       }
 
       .card-icon-wrapper {
-        width: 62px;
-        height: 62px;
-        padding: 0.5px;
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+      }
+      #balance-card .card-icon-wrapper {
+        background: rgba(14, 165, 233, 0.12);
+      }
+      #income-card .card-icon-wrapper {
+        background: rgba(34, 197, 94, 0.12);
+      }
+      #expense-card .card-icon-wrapper {
+        background: rgba(239, 68, 68, 0.12);
+      }
+
+      .card-icon-wrapper img {
+        width: 38px;
+        height: 38px;
+        object-fit: contain;
       }
 
       #current-balance {
@@ -1338,46 +1336,40 @@
       }
 
       /* ESTILOS MEJORADOS PARA ALERTAS DEL DASHBOARD*/
-      /* --- Estilo Base para cualquier alerta en el dashboard --- */
       .dashboard-alert {
         display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
+        align-items: flex-start;
+        gap: 0.65rem;
+        padding: 0.7rem 0.9rem;
         margin-bottom: 0.5rem;
-        border-radius: 0.5rem;
-        border-left-width: 5px;
-        font-size: 0.85rem;
-        font-weight: 400; /* <-- CAMBIO: Cambiado de 500 (semi-bold) a 400 (normal) */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        border-left: 3px solid;
+        font-size: 0.78rem;
       }
 
       .dashboard-alert svg {
-        width: 20px;
-        height: 20px;
-        margin-right: 0.75rem;
+        width: 16px;
+        height: 16px;
         flex-shrink: 0;
+        margin-top: 1px;
       }
 
-      /* --- Estilo para Alerta de ADVERTENCIA (amarillo) --- */
       .dashboard-alert.alert-warning {
-        background-color: rgba(255, 235, 59, 0.1); /* Fondo amarillo más claro */
-        border-left-color: #ffff00; /* Amarillo eléctrico puro */
-        color: #ffff00; /* <-- CAMBIO: Amarillo eléctrico para el texto */
+        background: rgba(255, 255, 0, 0.08);
+        border-color: #ffff00;
+        color: #ffff00;
       }
-
       .dashboard-alert.alert-warning svg {
-        color: #ffff00; /* <-- CAMBIO: Amarillo eléctrico para el icono */
+        color: #ffff00;
       }
 
-      /* --- Estilo para Alerta de PELIGRO (rojo) --- */
       .dashboard-alert.alert-danger {
-        background-color: rgba(255, 0, 0, 0.1); /* Fondo rojo más claro */
-        border-left-color: #ff0000; /* Rojo eléctrico puro */
-        color: #ff4d4d; /* <-- CAMBIO: Rojo eléctrico más brillante para el texto */
+        background: rgba(239, 68, 68, 0.12);
+        border-color: var(--electric-red);
+        color: var(--electric-red);
       }
-
       .dashboard-alert.alert-danger svg {
-        color: #ff0000; /* <-- CAMBIO: Rojo eléctrico para el icono */
+        color: var(--electric-red);
       }
       /* --- Pestaña Registros y Proyección (Estilos compartidos) --- */
       #registros-content .income-text-row td:is(:nth-child(1), :nth-child(2), :nth-child(3)),
@@ -1585,16 +1577,6 @@
       .mobile-footer-row {
         display: table-row;
       }
-      @media (min-width: 768px) {
-        /* md: en Tailwind */
-        .desktop-footer-row {
-          display: table-row;
-        }
-        .mobile-footer-row {
-          display: none;
-        }
-      }
-
       /* --- Filtros --- */
       #filter-category,
       #filter-bank,
@@ -2064,18 +2046,6 @@
         gap: 1.5rem; /* gap-6 */
       }
 
-      @media (min-width: 768px) {
-        #bank-balances-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
-        }
-      }
-
-      @media (min-width: 1024px) {
-        #bank-balances-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr)); /* lg:grid-cols-3 */
-        }
-      }
-
       /* --- Pestaña Presupuesto --- */
 
       #presupuesto-content th:nth-child(1) {
@@ -2145,6 +2115,11 @@
 
       .balance-cell-bg {
         background-color: var(--bg-dark-primary);
+        transition: background-color 0.2s ease;
+      }
+
+      tbody tr:hover .balance-cell-bg {
+        background-color: var(--bg-dark-secondary);
       }
 
       #presupuesto-content .spent-amount-cell {
@@ -2269,17 +2244,6 @@
         color: var(--expense-color); /* text-red-500 adaptado */
       }
 
-      /* --- Media Query para Responsividad --- */
-      @media (min-width: 768px) {
-        .reports-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .chart-container {
-          height: 24rem; /* md:h-96 */
-        }
-      }
-
       /* --- Pestaña Configuración --- */
       .config-list-placeholder {
         color: var(--text-light-secondary);
@@ -2291,12 +2255,6 @@
         display: grid;
         grid-template-columns: 1fr;
         gap: 2rem;
-      }
-
-      @media (min-width: 768px) {
-        .config-grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
       }
 
       #configuración-content h3 {
@@ -2708,22 +2666,6 @@
         margin-top: 1.5rem;
       }
 
-      /* Media Queries para responsividad */
-      @media (min-width: 768px) {
-        .calculator-card {
-          padding: 2rem;
-        }
-        #titucalculadora h3 {
-          font-size: 2.25rem;
-        }
-        .calculator-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        #netPayResult {
-          font-size: 3rem;
-        }
-      }
-
       /* ====================================================================== */
       /* --- PESTAÑA GASTOS COMUNES (card-based) --- */
       /* ====================================================================== */
@@ -2769,24 +2711,12 @@
       #add-person-btn:hover {
         background-color: #15803d;
       }
-      @media (min-width: 640px) {
-        .shared-buttons-container {
-          flex-direction: row;
-        }
-      }
-
       /* Grid de cards — mobile: 1 columna, desktop: 2 columnas */
       #gastos-comunes-cards {
         display: grid;
         grid-template-columns: 1fr;
         gap: 0.85rem;
       }
-      @media (min-width: 768px) {
-        #gastos-comunes-cards {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-
       /* Card de ítem */
       .item-card {
         background-color: var(--bg-dark-secondary);
@@ -3373,19 +3303,6 @@
       #save-transaction-btn:hover,
       #save-recurring-btn:hover {
         background-color: #0c87bf;
-      }
-
-      /* --- Media Queries para el Footer del Modal --- */
-      @media (min-width: 640px) {
-        #transaction-modal-footer {
-          flex-wrap: nowrap;
-        }
-        #open-transfer-modal-btn,
-        #save-transaction-btn,
-        #save-recurring-btn,
-        #transaction-modal-footer > div {
-          width: auto;
-        }
       }
 
       /* ============================================================ */
@@ -5152,16 +5069,64 @@
       /* ====================================================================== */
       /* --- Vistas de Escritorio y Tablets (min-width) --- */
       @media (min-width: 640px) {
-        #transaction-modal-footer {
+        .container {
+          max-width: 640px;
+        }
+        .shared-buttons-container {
           flex-direction: row;
         }
-
-        #save-transaction-btn {
+        .auth-buttons-container {
+          flex-direction: row;
+        }
+        #transaction-modal-footer {
+          flex-direction: row;
+          flex-wrap: nowrap;
+        }
+        #open-transfer-modal-btn,
+        #save-transaction-btn,
+        #save-recurring-btn,
+        #transaction-modal-footer > div {
           width: auto;
         }
       }
 
       @media (min-width: 768px) {
+        .container {
+          max-width: 768px;
+        }
+        .desktop-footer-row {
+          display: table-row;
+        }
+        .mobile-footer-row {
+          display: none;
+        }
+        #bank-balances-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .reports-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .chart-container {
+          height: 24rem;
+        }
+        .config-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .calculator-card {
+          padding: 2rem;
+        }
+        #titucalculadora h3 {
+          font-size: 2.25rem;
+        }
+        .calculator-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        #netPayResult {
+          font-size: 3rem;
+        }
+        #gastos-comunes-cards {
+          grid-template-columns: 1fr 1fr;
+        }
         .contenedor-botones {
           flex-direction: row;
           align-items: center;
@@ -5171,13 +5136,32 @@
         .recurring-grid-container {
           grid-template-columns: repeat(2, 1fr);
         }
-
         #save-recurring-btn {
           width: auto;
         }
-
         #tutorials-modal-body {
           flex-direction: row;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .container {
+          max-width: 1024px;
+        }
+        #bank-balances-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1280px) {
+        .container {
+          max-width: 1280px;
+        }
+      }
+
+      @media (min-width: 1536px) {
+        .container {
+          max-width: 1536px;
         }
       }
 
@@ -5278,13 +5262,13 @@
           margin-right: 3px;
           width: 80px;
           flex-shrink: 0;
-          background: #1f2937ba;
+          background: var(--bg-deep);
         }
 
         .tab-button:hover {
           color: var(--electric-blue);
           /* background-color: transparent; */
-          background: #1f2937ba;
+          background: var(--bg-deep);
           border-bottom-color: var(--electric-blue);
           box-shadow:
             0 0 8px var(--electric-blue),
@@ -5299,7 +5283,7 @@
             0 0 15px var(--bg-dark-tertiary),
             0 0 25px var(--bg-dark-tertiary);
           inset: 0 0 5px rgba(112, 114, 115, 0.6);
-          background-color: #1f2937f5;
+          background-color: var(--bg-deep);
           transform: scale(1.05);
         }
 
@@ -5740,13 +5724,6 @@
         padding-bottom: 1rem; /* pt-4 */
         padding-right: 0.5rem; /* pr-4 */
         padding-left: 0.5rem; /* px-4 */
-      }
-
-      /* --- Diseño responsivo para botones (uno al lado del otro en pantallas grandes) --- */
-      @media (min-width: 640px) {
-        .auth-buttons-container {
-          flex-direction: row; /* sm:flex-row */
-        }
       }
 
       /* --- Estilo de los Botones --- */
@@ -9147,22 +9124,15 @@
          */
         // pegar aqui el nuevo código
         function getCategoryDisplay(categoryName) {
-          // 1. Caso especial: Asignamos un ícono específico para las transferencias.
+          const safeName = escapeHtml(categoryName);
           if (categoryName === 'Transferencia Interna') {
             const transferIconUrl =
               'https://res.cloudinary.com/datwdagbf/image/upload/f_auto,q_auto/v1756514700/transferencia-interna_wjuhnq.png';
-            return `<img src="${transferIconUrl}" class="category-icon" alt="${categoryName}"> <span>${categoryName}</span>`;
+            return `<img src="${transferIconUrl}" class="category-icon" alt="${safeName}"> <span>${safeName}</span>`;
           }
-
-          // 2. Buscamos la categoría en la configuración del usuario.
           const categoryObj = appState.categories.find((c) => c.name === categoryName);
-
-          // 3. Determinamos el ícono a usar:
-          // Si la categoría existe Y tiene un ícono, lo usamos. Si no, usamos el ÍCONO POR DEFECTO.
           const iconUrl = categoryObj && categoryObj.icon ? categoryObj.icon : DEFAULT_ICON;
-
-          // 4. Siempre devolvemos el HTML con un ícono, asegurando que nunca falte.
-          return `<img src="${iconUrl}" class="category-icon" alt="${categoryName}"> <span>${categoryName}</span>`;
+          return `<img src="${iconUrl}" class="category-icon" alt="${safeName}"> <span>${safeName}</span>`;
         }
 
         async function loadUserDataAndListen() {
@@ -9834,14 +9804,16 @@
               card.className = 'balance-card';
 
               // 3. Definimos su contenido interno con las clases CSS correctas
-              card.innerHTML = `
-                    <div>
-                        <p class="balance-card-title">${bank.name}</p>
-                        <p class="balance-card-label ${balanceClass}">
-                            ${formatCurrency(bank.balance)}
-                        </p>
-                    </div>
-                `;
+              const cardDiv = document.createElement('div');
+              const cardTitle = document.createElement('p');
+              cardTitle.className = 'balance-card-title';
+              cardTitle.textContent = bank.name;
+              const cardLabel = document.createElement('p');
+              cardLabel.className = `balance-card-label ${balanceClass}`;
+              cardLabel.textContent = formatCurrency(bank.balance);
+              cardDiv.appendChild(cardTitle);
+              cardDiv.appendChild(cardLabel);
+              card.appendChild(cardDiv);
 
               // 4. (LA LÍNEA CLAVE) Añadimos la tarjeta creada al contenedor visible
               balancesGrid.appendChild(card);
@@ -9903,7 +9875,7 @@
                                   type="number" 
                                   min="0" 
                                   step="1" 
-                                  data-category="${categoryName}"
+                                  data-category="${escapeHtml(categoryName)}"
                                   class="budget-table-input category-budget-input" 
                                   placeholder="Asignar" 
                                   value="${budgetAmount > 0 ? budgetAmount : ''}">
@@ -10233,7 +10205,10 @@
                 '<svg class="toast-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
               break;
           }
-          toast.innerHTML = `${iconSvg}<span>${message}</span>`;
+          toast.innerHTML = iconSvg;
+          const toastMsg = document.createElement('span');
+          toastMsg.textContent = message;
+          toast.appendChild(toastMsg);
           toastContainer.appendChild(toast);
 
           // Forzar reflow para la animación
@@ -10917,11 +10892,16 @@
           if (appState.categories.length > 0) {
             appState.categories.forEach((cat) => {
               const li = document.createElement('li'); // Ya no necesita 'className'
-              li.innerHTML = `<span class="config-item-text">${getCategoryDisplay(
-                cat.name,
-              )}</span><button data-name="${
-                cat.name
-              }" class="delete-category-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
+              const catSpan = document.createElement('span');
+              catSpan.className = 'config-item-text';
+              catSpan.innerHTML = getCategoryDisplay(cat.name);
+              const catBtn = document.createElement('button');
+              catBtn.dataset.name = cat.name;
+              catBtn.className = 'delete-category-btn';
+              catBtn.title = 'Eliminar';
+              catBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>`;
+              li.appendChild(catSpan);
+              li.appendChild(catBtn);
               categoryList.appendChild(li);
             });
           } else {
@@ -10932,9 +10912,17 @@
 
           if (appState.banks.length > 0) {
             appState.banks.forEach((bank) => {
-              const li = document.createElement('li'); // Ya no necesita 'className'
-              // --- LIMPIO ---
-              li.innerHTML = `<span class="config-item-text">${bank}</span><button data-name="${bank}" class="delete-bank-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
+              const li = document.createElement('li');
+              const span = document.createElement('span');
+              span.className = 'config-item-text';
+              span.textContent = bank;
+              const btn = document.createElement('button');
+              btn.dataset.name = bank;
+              btn.className = 'delete-bank-btn';
+              btn.title = 'Eliminar';
+              btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>`;
+              li.appendChild(span);
+              li.appendChild(btn);
               bankList.appendChild(li);
             });
           } else {
@@ -10949,9 +10937,17 @@
               '<p class="config-list-placeholder">No hay descripciones guardadas.</p>';
           } else {
             appState.descriptions.forEach((desc) => {
-              const li = document.createElement('li'); // Ya no necesita 'className'
-              // --- LIMPIO ---
-              li.innerHTML = `<span class="config-item-text">${desc}</span><button data-name="${desc}" class="delete-description-btn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>`;
+              const li = document.createElement('li');
+              const span = document.createElement('span');
+              span.className = 'config-item-text';
+              span.textContent = desc;
+              const btn = document.createElement('button');
+              btn.dataset.name = desc;
+              btn.className = 'delete-description-btn';
+              btn.title = 'Eliminar';
+              btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>`;
+              li.appendChild(span);
+              li.appendChild(btn);
               descriptionListConfig.appendChild(li);
             });
           }
@@ -11938,7 +11934,7 @@
                     card.exclude ? 'checked' : ''
                   }>
               </td>
-              <td class="bank-name-cell">${card.bank}</td>
+              <td class="bank-name-cell">${escapeHtml(card.bank)}</td>
               <td class="due-date-cell">${card.dueDate}</td>
               <td>
                   <input type="number" class="table-input card-data-input" data-field="amount" value="${debtAmount.toFixed(
@@ -13048,6 +13044,15 @@
           }
         }
 
+        function escapeHtml(str) {
+          return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
         function formatCurrency(amount) {
           return new Intl.NumberFormat('es-US', { style: 'currency', currency: 'USD' }).format(
             amount,
@@ -13803,8 +13808,8 @@
 
           // Poblar el resumen en el modal para que el usuario sepa qué está registrando
           summaryEl.innerHTML = `
-                Registrando un gasto de <strong>${formatCurrency(data.amount)}</strong> por 
-                <strong>"${data.description}"</strong> con fecha 
+                Registrando un gasto de <strong>${formatCurrency(data.amount)}</strong> por
+                <strong>"${escapeHtml(data.description)}"</strong> con fecha
                 <strong>${formatDate(data.date)}</strong>.
             `;
 
