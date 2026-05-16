@@ -2725,205 +2725,16 @@
       }
 
       /* ====================================================================== */
-      /* --- PESTAÑA GASTOS COMUNES --- */
+      /* --- PESTAÑA GASTOS COMUNES (card-based) --- */
       /* ====================================================================== */
-      /* Estilo base para el monto en la celda de distribución */
-      #gastos-comunes-content .distribution-amount {
-        font-weight: 600; /* font-semibold */
-        font-size: 1.125rem; /* text-lg */
-      }
 
-      /* Modificador de color para cuando el monto ya ha sido pagado */
-      #gastos-comunes-content .is-paid {
-        color: var(--electric-green); /* text-green-500 */
-      }
-      /* Estilo para el input del día en la tabla de Gastos Comunes */
-      #gastos-comunes-content .shared-expense-day-input {
-        width: 3.5rem; /* w-14 */
-        text-align: center; /* text-center */
-      }
-
-      /* Estilo para el input del día cuando está deshabilitado (pagado) */
-      #gastos-comunes-content .shared-expense-day-input:disabled {
-        background-color: #2e3a4b;
-        cursor: not-allowed;
-      }
-
-      /* Estilos base para el botón 'OK' / '✔' */
-      .register-shared-expense-btn {
-        background-color: #16a34a; /* bg-green-600 */
-        color: #ffffff; /* text-white */
-        border-radius: 0.25rem; /* rounded */
-        padding: 0.25rem 0.5rem; /* py-1 px-2 */
-        font-size: 0.75rem; /* text-xs */
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.15s ease-in-out; /* transition */
-      }
-
-      /* Estilo hover para el botón 'OK' cuando está activo */
-      .register-shared-expense-btn:not(:disabled):hover {
-        background-color: #15803d; /* hover:bg-green-700 */
-      }
-
-      /* Estilo para el botón '✔' cuando está deshabilitado (pagado) */
-      .register-shared-expense-btn:disabled {
-        background-color: #166534; /* bg-green-800 */
-        cursor: default;
-      }
-      #gastos-comunes-content .table-input {
-        width: 100%;
-        padding: 6px 10px;
-        box-sizing: border-box;
-      }
-
-      /* Para alinear el texto del Ítem a la izquierda */
-      #gastos-comunes-content .item-name-input {
-        text-align: left;
-      }
-
-      /* REEMPLAZA la regla anterior con esta: */
-      #gastos-comunes-content .item-total-input {
-        padding-right: 10px !important; /* Aumentamos el valor y forzamos la regla */
-        text-align: right;
-      }
-
-      #gastos-comunes-content th,
-      #gastos-comunes-content td {
-        min-width: 150px;
-        white-space: nowrap;
-        padding: 8px;
-      }
-
-      #gastos-comunes-content th.actions-column,
-      #gastos-comunes-content td.actions-column {
-        min-width: 80px;
-        width: 80px;
-      }
-
-      #gastos-comunes-content th[contenteditable='true'] {
-        background-color: var(--bg-dark-primary);
-        cursor: text;
-        transition: all 0.2s ease;
-      }
-
-      #gastos-comunes-content th[contenteditable='true']:hover,
-      #gastos-comunes-content th[contenteditable='true']:focus {
-        outline: 2px solid var(--electric-blue);
-        background-color: var(--border-dark);
-      }
-
-      #gastos-comunes-content .distribution-cell {
-        cursor: pointer;
-        position: relative;
-        font-weight: 500;
-        transition: background-color 0.2s ease;
-      }
-
-      #gastos-comunes-content .distribution-cell:hover {
-        background-color: var(--border-dark);
-      }
-
-      #gastos-comunes-content .distribution-cell.active {
-        background-color: rgba(14, 165, 233, 0.15);
-        outline: 2px solid var(--electric-blue);
-      }
-
-      #gastos-comunes-content .distribution-cell .method-indicator {
-        font-size: 0.65rem;
-        color: var(--text-light-secondary);
-        display: block;
-        margin-top: -0.25rem; /* -mt-1 */
-      }
-
-      /* Contenido interno de la celda de distribución */
-      .distribution-cell-content {
-        display: flex; /* flex */
-        flex-direction: column; /* flex-col */
-        align-items: center; /* items-center */
-        gap: 0.25rem; /* gap-1 */
-      }
-
-      /* Contenedor para el input y botón de 'OK' */
-      .distribution-cell-actions {
-        display: flex; /* flex */
-        align-items: center; /* items-center */
-        gap: 0.25rem; /* gap-1 */
-        margin-top: 0.25rem; /* mt-1 */
-      }
-
-      #distribution-popover {
-        position: absolute;
-        background-color: var(--bg-dark-primary);
-        border: 1px solid var(--border-dark);
-        border-radius: 8px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        overflow: hidden;
-      }
-
-      #distribution-popover div {
-        padding: 10px 15px;
-        cursor: pointer;
-        font-size: 0.8rem;
-        transition: background-color 0.2s ease;
-        color: var(--text-light-primary);
-      }
-
-      #distribution-popover div:hover {
-        background-color: var(--electric-blue);
-        color: white;
-      }
-
-      #gastos-comunes-content tfoot td {
-        font-weight: 700;
-        font-size: 1rem;
-      }
-
-      #gastos-comunes-content tfoot .total-general {
-        color: var(--electric-orange);
-      }
-
-      #gastos-comunes-content .delete-person-btn,
-      #gastos-comunes-content .delete-item-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-light-secondary);
-      }
-      #gastos-comunes-content .delete-person-btn:hover,
-      #gastos-comunes-content .delete-item-btn:hover {
-        color: var(--electric-red);
-        transform: scale(1.1);
-      }
-
-      #gastos-comunes-content .person-header-container {
-        display: flex; /* Activa Flexbox para alinear elementos en una línea */
-        justify-content: space-between; /* Empuja el nombre a la izquierda y el botón a la derecha */
-        align-items: center; /* Centra verticalmente los elementos */
-        gap: 8px; /* Añade un pequeño espacio entre el nombre y el botón */
-      }
-
-      #gastos-comunes-content .person-name-editable {
-        flex-grow: 1; /* Permite que el nombre ocupe el espacio disponible */
-        text-align: left; /* Asegura que el texto del nombre comience a la izquierda */
-      }
-
-      #gastos-comunes-content .delete-person-btn {
-        flex-shrink: 0; /* Evita que el botón 'X' se encoja si el nombre es muy largo */
-      }
-
+      /* Botones de acción superiores */
       .shared-buttons-container {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
       }
-
       #add-shared-item-btn,
       #add-person-btn {
         flex: 1 1 0%;
@@ -2934,39 +2745,369 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.5rem;
         border: none;
         cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
       }
-
-      #add-shared-item-btn > * + *,
-      #add-person-btn > * + * {
-        margin-left: 0.5rem;
-      }
-
       #add-shared-item-btn svg,
       #add-person-btn svg {
-        height: 1.25rem;
-        width: 1.25rem;
+        height: 1.1rem;
+        width: 1.1rem;
+        flex-shrink: 0;
       }
-
       #add-shared-item-btn {
         background-color: var(--electric-blue);
       }
       #add-shared-item-btn:hover {
         background-color: #0c87bf;
       }
-
       #add-person-btn {
         background-color: var(--electric-green);
       }
       #add-person-btn:hover {
         background-color: #15803d;
       }
-
       @media (min-width: 640px) {
         .shared-buttons-container {
           flex-direction: row;
         }
+      }
+
+      /* Grid de cards — mobile: 1 columna, desktop: 2 columnas */
+      #gastos-comunes-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      @media (min-width: 768px) {
+        #gastos-comunes-cards {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* Card de ítem */
+      .item-card {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      /* Header de card: nombre + total + botón eliminar */
+      .item-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 1rem;
+        border-bottom: 1px solid var(--border-dark);
+      }
+      .item-card-name {
+        flex: 1;
+        font-weight: 700;
+        font-size: 0.92rem;
+        color: var(--text-light-primary);
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        min-width: 0;
+        font-family: inherit;
+      }
+      .item-card-name::placeholder {
+        color: var(--text-light-secondary);
+        font-weight: 400;
+      }
+      .item-card-name:focus {
+        border-bottom: 1px solid var(--electric-blue);
+      }
+      .item-card-total {
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--electric-orange);
+        white-space: nowrap;
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        width: 90px;
+        text-align: right;
+        font-family: inherit;
+      }
+      .item-card-total::placeholder {
+        color: var(--text-light-secondary);
+        font-weight: 400;
+      }
+      .item-card-total:focus {
+        border-bottom: 1px solid var(--electric-orange);
+      }
+      .item-delete-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-light-secondary);
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        transition:
+          color 0.15s ease,
+          background-color 0.15s ease;
+        flex-shrink: 0;
+        padding: 0;
+      }
+      .item-delete-btn:hover {
+        color: var(--electric-red);
+        background-color: rgba(239, 68, 68, 0.12);
+      }
+
+      /* Filas de distribución por persona */
+      .item-distributions {
+        padding: 0.35rem 0;
+      }
+      .dist-row {
+        display: flex;
+        align-items: center;
+        padding: 0.45rem 1rem;
+        gap: 0.65rem;
+        transition: background-color 0.15s ease;
+      }
+      .dist-row:hover {
+        background-color: var(--bg-dark-tertiary);
+      }
+      .dist-row.is-paid {
+        background-color: rgba(34, 197, 94, 0.06);
+      }
+      .dist-row.is-paid:hover {
+        background-color: rgba(34, 197, 94, 0.12);
+      }
+
+      /* Avatar circular con inicial */
+      .dist-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6rem;
+        font-weight: 800;
+        color: #0d1117;
+        flex-shrink: 0;
+      }
+
+      /* Info de persona (nombre + método) */
+      .dist-person-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .dist-person-name {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-light-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .dist-method-tag {
+        font-size: 0.62rem;
+        color: var(--text-light-secondary);
+        cursor: pointer;
+        text-decoration: underline dotted;
+        text-underline-offset: 2px;
+        transition: color 0.15s ease;
+      }
+      .dist-method-tag:hover,
+      .dist-method-tag.active {
+        color: var(--electric-blue);
+      }
+
+      /* Monto por persona */
+      .dist-amount-col {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text-light-primary);
+        text-align: right;
+        min-width: 60px;
+        white-space: nowrap;
+      }
+      .dist-row.is-paid .dist-amount-col {
+        color: var(--electric-green);
+      }
+
+      /* Columna de estado: input+OK o paid-tag */
+      .dist-status-col {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        flex-shrink: 0;
+      }
+      .mini-day-input {
+        width: 44px;
+        background-color: var(--bg-dark-primary);
+        border: 1px solid var(--border-dark);
+        border-radius: 6px;
+        color: var(--text-light-primary);
+        font-family: inherit;
+        font-size: 0.72rem;
+        padding: 0.2rem 0.3rem;
+        text-align: center;
+      }
+      .mini-day-input:focus {
+        outline: none;
+        border-color: var(--electric-blue);
+      }
+      .mini-ok-btn {
+        background-color: rgba(34, 197, 94, 0.15);
+        color: var(--electric-green);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: 6px;
+        padding: 0.2rem 0.45rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+      }
+      .mini-ok-btn:hover {
+        background-color: var(--electric-green);
+        color: #fff;
+        border-color: var(--electric-green);
+      }
+      .paid-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+        background-color: rgba(34, 197, 94, 0.12);
+        color: var(--electric-green);
+        border: 1px solid rgba(34, 197, 94, 0.25);
+        padding: 0.18rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      /* Panel de personas (por ítem, dentro de cada card) */
+      .item-people-panel {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid var(--border-dark);
+        background-color: var(--bg-dark-tertiary);
+      }
+      .person-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 999px;
+        padding: 0.25rem 0.5rem 0.25rem 0.3rem;
+        transition: border-color 0.15s ease;
+      }
+      .person-chip:focus-within {
+        border-color: var(--electric-blue);
+      }
+      .person-chip-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.55rem;
+        font-weight: 800;
+        color: #0d1117;
+        flex-shrink: 0;
+      }
+      .person-chip-name {
+        background: transparent;
+        border: none;
+        outline: none;
+        font-family: inherit;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-light-primary);
+        width: 100px;
+        min-width: 60px;
+      }
+      .person-chip-name::placeholder {
+        color: var(--text-light-secondary);
+        font-weight: 400;
+      }
+      .person-chip-delete {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-light-secondary);
+        font-size: 1rem;
+        line-height: 1;
+        padding: 0 0.1rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.15s ease;
+      }
+      .person-chip-delete:hover {
+        color: var(--electric-red);
+      }
+      .person-chip-add {
+        background: none;
+        border: 1px dashed var(--border-dark);
+        border-radius: 999px;
+        color: var(--text-light-secondary);
+        font-size: 1.1rem;
+        line-height: 1;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          color 0.15s ease,
+          border-color 0.15s ease;
+        flex-shrink: 0;
+      }
+      .person-chip-add:hover {
+        color: var(--electric-green);
+        border-color: var(--electric-green);
+      }
+      .no-people-hint {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        color: var(--text-light-secondary);
+        font-style: italic;
+      }
+
+      /* Popover de método de distribución */
+      #distribution-popover {
+        position: absolute;
+        background-color: var(--bg-dark-primary);
+        border: 1px solid var(--border-dark);
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        overflow: hidden;
+      }
+      #distribution-popover div {
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: background-color 0.2s ease;
+        color: var(--text-light-primary);
+      }
+      #distribution-popover div:hover {
+        background-color: var(--electric-blue);
+        color: white;
       }
 
       /* --- Íconos de Categoría y Modal de Selección --- */
@@ -6111,25 +6252,11 @@
               </svg>
               <span>Añadir Ítem a Pagar</span>
             </button>
-            <button id="add-person-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 11a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1v-1z"
-                ></path>
-              </svg>
-              <span>Añadir Persona</span>
-            </button>
           </div>
-          <div class="table-container">
-            <table id="gastos-comunes-table">
-              <thead></thead>
-              <tbody></tbody>
-              <tfoot></tfoot>
-            </table>
-            <p id="no-shared-expenses-message">
-              Aún no hay gastos comunes. ¡Añade un ítem y una persona para empezar!
-            </p>
-          </div>
+          <div id="gastos-comunes-cards"></div>
+          <p id="no-shared-expenses-message" class="hidden">
+            Aún no hay gastos comunes. ¡Añade un ítem y una persona para empezar!
+          </p>
           <div id="distribution-popover" class="hidden">
             <div data-method="equal">Dividir en partes iguales</div>
             <div data-method="percentage">Dividir por Porcentaje (%)</div>
@@ -7508,7 +7635,7 @@
     <footer>
       <div class="footer-container">
         <p>© 2025 Foresee Finances. Todos los derechos reservados. by Melecio Matos</p>
-        <p id="app-version">Versión 0.0.8.0</p>
+        <p id="app-version">Versión 0.0.9.0</p>
         <div class="footer-links">
           <a href="#" id="open-privacy-policy">Política de Privacidad</a>
           <span>|</span>
@@ -7766,6 +7893,8 @@
 
         let unsubscribeGastosComunes = null;
         let activePopoverCell = null;
+        let activePopoverItemId = null;
+        let activePopoverPersonIndex = null;
         let distributionModalCallback = null;
         let isAddingCategoryFromTransaction = false;
         const tutorialVideos = [
@@ -8519,87 +8648,133 @@
               id: `item_${Date.now()}`,
               name: '',
               totalAmount: 0,
+              people: [],
               distribution: {},
             });
             saveGastosComunesState();
           });
 
-          document.getElementById('add-person-btn').addEventListener('click', () => {
-            if (!appState.gastosComunes.people) appState.gastosComunes.people = [];
-            const newIndex = appState.gastosComunes.people.length;
-            appState.gastosComunes.people.push({ name: `Persona ${newIndex + 1}` });
-            saveGastosComunesState();
-          });
+          const gastosComunesContainer = document.getElementById('gastos-comunes-cards');
 
-          const gastosComunesTable = document.getElementById('gastos-comunes-table');
-
-          gastosComunesTable.addEventListener('input', (e) => {
-            const row = e.target.closest('tr');
-            // Ahora también manejamos el input del div editable del nombre de la persona
-            if (e.target.matches('.person-name-editable')) {
-              const personIndex = e.target.dataset.personIndex;
-              appState.gastosComunes.people[personIndex].name = e.target.textContent.trim();
-              // No guardamos aquí, solo actualizamos el estado en memoria
-              return;
-            }
-            if (!row) return;
-            const itemId = row.dataset.itemId;
+          // Actualiza nombre/monto de ítem o nombre de persona al escribir
+          gastosComunesContainer.addEventListener('input', (e) => {
+            const itemId = e.target.dataset.itemId;
             const item = appState.gastosComunes.items.find((i) => i.id === itemId);
             if (!item) return;
 
-            if (e.target.matches('.item-name-input')) {
+            if (e.target.matches('.item-card-name')) {
               item.name = e.target.value;
-            } else if (e.target.matches('.item-total-input')) {
+            } else if (e.target.matches('.item-card-total')) {
               item.totalAmount = parseFloat(e.target.value) || 0;
-            } else if (e.target.matches('th[contenteditable="true"]')) {
-              const personIndex = e.target.dataset.personIndex;
-              appState.gastosComunes.people[personIndex].name = e.target.textContent
-                .replace('✖', '')
-                .trim();
+            } else if (e.target.matches('.person-chip-name')) {
+              const index = parseInt(e.target.dataset.personIndex, 10);
+              if (item.people?.[index]) {
+                item.people[index].name = e.target.value;
+                const chip = e.target.closest('.person-chip');
+                const avatar = chip?.querySelector('.person-chip-avatar');
+                if (avatar)
+                  avatar.textContent = (e.target.value || `P${index + 1}`)
+                    .slice(0, 2)
+                    .toUpperCase();
+              }
             }
           });
 
-          gastosComunesTable.addEventListener(
+          // Guarda en Firestore al salir del campo
+          gastosComunesContainer.addEventListener(
             'blur',
             (e) => {
-              if (
-                e.target.matches('th[contenteditable="true"], .item-name-input, .item-total-input')
-              ) {
+              if (e.target.matches('.item-card-name, .item-card-total, .person-chip-name')) {
                 saveGastosComunesState();
               }
             },
             true,
           );
 
-          gastosComunesTable.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === 'Escape') {
+          // Enter/Escape confirma edición
+          gastosComunesContainer.addEventListener('keydown', (e) => {
+            if (
+              (e.key === 'Enter' || e.key === 'Escape') &&
+              e.target.matches('.item-card-name, .item-card-total, .person-chip-name')
+            ) {
               e.preventDefault();
               e.target.blur();
             }
           });
 
-          // REEMPLAZA EL BLOQUE ANTERIOR CON ESTE CÓDIGO CORREGIDO
-          gastosComunesTable.addEventListener('click', (e) => {
-            // === CORRECCIÓN INICIA AQUÍ ===
-            // 1. PRIMERO revisamos si se hizo clic en el botón 'OK'
-            const registerBtn = e.target.closest('.register-shared-expense-btn');
-            if (registerBtn) {
-              // 2. Detenemos la propagación para que no se active el modal de distribución
-              e.stopPropagation();
+          // Click delegation: personas, método de distribución, botón OK y botón eliminar ítem
+          gastosComunesContainer.addEventListener('click', (e) => {
+            // Añadir persona al ítem
+            const addPersonBtn = e.target.closest('.person-chip-add');
+            if (addPersonBtn) {
+              const itemId = addPersonBtn.dataset.itemId;
+              const item = appState.gastosComunes.items.find((i) => i.id === itemId);
+              if (!item) return;
+              if (!item.people) item.people = [];
+              item.people.push({ name: `Persona ${item.people.length + 1}` });
+              saveGastosComunesState();
+              return;
+            }
 
-              const dayInput = registerBtn.previousElementSibling;
-              const day = parseInt(dayInput.value, 10);
+            // Eliminar persona del ítem
+            const deletePersonBtn = e.target.closest('.person-chip-delete');
+            if (deletePersonBtn) {
+              const itemId = deletePersonBtn.dataset.itemId;
+              const index = parseInt(deletePersonBtn.dataset.personIndex, 10);
+              const item = appState.gastosComunes.items.find((i) => i.id === itemId);
+              if (!item) return;
+              const personName = item.people?.[index]?.name || `Persona ${index + 1}`;
+              openConfirmModal(
+                'Eliminar persona',
+                `¿Eliminar a "${personName}" del ítem "${item.name || 'este gasto'}"?`,
+                () => {
+                  item.people.splice(index, 1);
+                  if (item.distribution) {
+                    const newDist = {};
+                    Object.keys(item.distribution).forEach((key) => {
+                      const k = parseInt(key, 10);
+                      if (k < index) newDist[k] = item.distribution[k];
+                      else if (k > index) newDist[k - 1] = item.distribution[k];
+                    });
+                    item.distribution = newDist;
+                  }
+                  saveGastosComunesState();
+                },
+              );
+              return;
+            }
+
+            // Etiqueta de método — abrir popover de distribución
+            const methodTag = e.target.closest('.dist-method-tag');
+            if (methodTag) {
+              const row = methodTag.closest('.dist-row');
+              if (row) {
+                showDistributionPopover(
+                  methodTag,
+                  row.dataset.itemId,
+                  parseInt(row.dataset.personIndex, 10),
+                );
+              }
+              return;
+            }
+
+            // Botón OK — registrar pago
+            const okBtn = e.target.closest('.mini-ok-btn');
+            if (okBtn) {
+              const statusCol = okBtn.closest('.dist-status-col');
+              const dayInput = statusCol ? statusCol.querySelector('.mini-day-input') : null;
+              const day = dayInput ? parseInt(dayInput.value, 10) : NaN;
 
               if (isNaN(day) || day < 1 || day > 31) {
                 showToast('Por favor, ingresa un día válido (1-31).', 'error');
-                dayInput.focus();
+                if (dayInput) dayInput.focus();
                 return;
               }
 
-              const itemId = registerBtn.dataset.itemId;
-              const personIndex = parseInt(registerBtn.dataset.personIndex, 10);
+              const itemId = okBtn.dataset.itemId;
+              const personIndex = parseInt(okBtn.dataset.personIndex, 10);
               const item = appState.gastosComunes.items.find((i) => i.id === itemId);
-              const person = appState.gastosComunes.people[personIndex];
+              const person = item?.people?.[personIndex];
 
               if (!item || !person) {
                 showToast('Error: No se encontró el ítem o la persona.', 'error');
@@ -8612,65 +8787,30 @@
               const transactionDate = new Date(now.getFullYear(), now.getMonth(), day);
               const formattedDate = transactionDate.toISOString().split('T')[0];
 
-              const dataForModal = {
+              openSharedExpenseBankModal({
                 amount,
                 description,
                 date: formattedDate,
-                category: 'Gasto Común', // <--- ¡MEJORADO!
+                category: 'Gasto Común',
                 originalItemId: itemId,
                 originalPersonIndex: personIndex,
-              };
-
-              openSharedExpenseBankModal(dataForModal);
-              return; // Salimos de la función una vez ejecutada la acción
-            }
-            // === CORRECCIÓN TERMINA AQUÍ ===
-
-            const cell = e.target.closest('.distribution-cell');
-            // Ahora solo se abre el popover si se hizo clic en la celda PERO NO en el input de la fecha.
-            if (cell && !e.target.matches('.shared-expense-day-input')) {
-              showDistributionPopover(cell);
+              });
               return;
             }
 
-            const deleteItemBtn = e.target.closest('.delete-item-btn');
+            // Botón eliminar ítem
+            const deleteItemBtn = e.target.closest('.item-delete-btn');
             if (deleteItemBtn) {
-              const itemId = deleteItemBtn.closest('tr').dataset.itemId;
-              appState.gastosComunes.items = appState.gastosComunes.items.filter(
-                (i) => i.id !== itemId,
-              );
-              saveGastosComunesState();
-              return;
-            }
-
-            const deletePersonBtn = e.target.closest('.delete-person-btn');
-            if (deletePersonBtn) {
-              const personIndexToDelete = parseInt(deletePersonBtn.dataset.personIndex, 10);
-              const personName =
-                appState.gastosComunes.people[personIndexToDelete]?.name ||
-                `Persona ${personIndexToDelete + 1}`;
-
+              const itemId = deleteItemBtn.dataset.itemId;
+              const item = appState.gastosComunes.items.find((i) => i.id === itemId);
+              const itemName = item?.name || 'este ítem';
               openConfirmModal(
-                `Eliminar a ${personName}`,
-                `¿Estás seguro de que quieres eliminar a "${personName}" y todos sus datos de la tabla? Esta acción no se puede deshacer.`,
+                'Eliminar ítem',
+                `¿Eliminar "${itemName}"? Esta acción no se puede deshacer.`,
                 () => {
-                  appState.gastosComunes.people.splice(personIndexToDelete, 1);
-                  if (appState.gastosComunes.items) {
-                    appState.gastosComunes.items.forEach((item) => {
-                      if (!item.distribution) return;
-                      const newDistribution = {};
-                      Object.keys(item.distribution).forEach((keyStr) => {
-                        const oldIndex = parseInt(keyStr, 10);
-                        const value = item.distribution[keyStr];
-                        if (oldIndex < personIndexToDelete) {
-                          newDistribution[oldIndex] = value;
-                        } else if (oldIndex > personIndexToDelete) {
-                          newDistribution[oldIndex - 1] = value;
-                        }
-                      });
-                      item.distribution = newDistribution;
-                    });
-                  }
+                  appState.gastosComunes.items = appState.gastosComunes.items.filter(
+                    (i) => i.id !== itemId,
+                  );
                   saveGastosComunesState();
                 },
               );
@@ -8678,13 +8818,12 @@
             }
           });
 
-          // --- LÓGICA DEL POPOVER ACTUALIZADA ---
+          // --- LÓGICA DEL POPOVER ---
           document.getElementById('distribution-popover').addEventListener('click', (e) => {
-            if (e.target.matches('[data-method]') && activePopoverCell) {
+            if (e.target.matches('[data-method]') && activePopoverItemId !== null) {
               const method = e.target.dataset.method;
-              const row = activePopoverCell.closest('tr');
-              const itemId = row.dataset.itemId;
-              const personIndex = activePopoverCell.dataset.personIndex;
+              const itemId = activePopoverItemId;
+              const personIndex = activePopoverPersonIndex;
               const item = appState.gastosComunes.items.find((i) => i.id === itemId);
 
               if (!item) return;
@@ -8703,10 +8842,8 @@
               };
 
               if (method === 'percentage' || method === 'manual') {
-                // Abre el nuevo modal en lugar del prompt
                 openDistributionInputModal({ method, currentValue, callback: applyChange });
               } else {
-                // Para 'partes iguales', no se necesita input
                 applyChange(0);
               }
             }
@@ -8717,7 +8854,7 @@
             if (
               popover &&
               !popover.classList.contains('hidden') &&
-              !e.target.closest('.distribution-cell') &&
+              !e.target.closest('.dist-method-tag') &&
               !e.target.closest('#distribution-popover')
             ) {
               hideDistributionPopover();
@@ -8948,7 +9085,7 @@
                   userAlias: null,
                   categoryBudgets: {},
                   budgetAlertsShown: {},
-                  gastosComunes: { people: [], items: [] },
+                  gastosComunes: { items: [] },
                 };
 
                 // Vuelve a la pantalla de inicio de sesión
@@ -9187,10 +9324,19 @@
             gastosComunesDocRef,
             (docSnap) => {
               if (docSnap.exists()) {
-                appState.gastosComunes = docSnap.data();
+                const data = docSnap.data();
+                // Migración: si existe un array global "people" (formato antiguo),
+                // lo distribuye a cada ítem que aún no tenga su propio array.
+                if (data.people && data.people.length > 0) {
+                  data.items = (data.items || []).map((item) => ({
+                    ...item,
+                    people: item.people || [...data.people],
+                  }));
+                  delete data.people;
+                }
+                appState.gastosComunes = { items: data.items || [] };
               } else {
-                // Si no existe el documento, lo inicializamos en Firebase
-                setDoc(gastosComunesDocRef, { people: [], items: [] });
+                setDoc(gastosComunesDocRef, { items: [] });
               }
               if (isAuthReady) renderAll();
             },
@@ -13787,200 +13933,266 @@
           }
         }
 
-        /**
-         * Renderiza la tabla completa de gastos comunes basándose en el appState.
-         */
         function renderGastosComunesTable() {
-          const table = document.getElementById('gastos-comunes-table');
-          const thead = table.querySelector('thead') || table.createTHead();
-          const tbody = table.querySelector('tbody') || table.createTBody();
-          const tfoot = table.querySelector('tfoot') || table.createTFoot();
+          const container = document.getElementById('gastos-comunes-cards');
           const noDataMessage = document.getElementById('no-shared-expenses-message');
+          container.innerHTML = '';
 
-          thead.innerHTML = '';
-          tbody.innerHTML = '';
-          tfoot.innerHTML = '';
+          const { items } = appState.gastosComunes;
 
-          const { people, items } = appState.gastosComunes;
-
-          if (!people || !items || (people.length === 0 && items.length === 0)) {
-            table.classList.add('hidden');
+          if (!items || items.length === 0) {
             noDataMessage.classList.remove('hidden');
             return;
           }
-          table.classList.remove('hidden');
           noDataMessage.classList.add('hidden');
 
-          const headerRow = thead.insertRow();
-          headerRow.innerHTML = `
-            <th>Ítem a Pagar</th>
-            <th>Monto Total</th>
-          `;
-          people.forEach((person, index) => {
-            const th = document.createElement('th');
-            th.innerHTML = `
-            <div class="person-header-container">
-              <div contenteditable="true" class="person-name-editable" data-person-index="${index}">${
-                person.name || `Persona ${index + 1}`
-              }</div>
-              <span class="delete-person-btn" data-person-index="${index}" title="Eliminar Persona">&#x2716;</span>
-            </div>
-          `;
-            headerRow.appendChild(th);
-          });
-          headerRow.insertAdjacentHTML('beforeend', '<th class="actions-column"></th>');
+          const AVATAR_COLORS = ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#fb923c'];
+
+          const TRASH_SVG =
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>';
 
           items.forEach((item) => {
-            const itemRow = tbody.insertRow();
-            itemRow.dataset.itemId = item.id;
-            itemRow.insertCell().innerHTML = `<input type="text" class="table-input item-name-input" value="${
-              item.name || ''
-            }" placeholder="Ej: Alquiler">`;
-            itemRow.insertCell().innerHTML = `<input type="number" class="table-input item-total-input" value="${
-              item.totalAmount || ''
-            }" placeholder="0.00" step="0.01">`;
+            const people = item.people || [];
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.dataset.itemId = item.id;
 
-            people.forEach((_, personIndex) => {
-              const distCell = itemRow.insertCell();
-              distCell.className = 'distribution-cell';
-              distCell.dataset.personIndex = personIndex;
+            // — Header —
+            const header = document.createElement('div');
+            header.className = 'item-card-header';
 
-              // === INICIO DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
-              const distData = item.distribution?.[personIndex] || { method: 'equal', value: 0 };
-              const paidDay = distData.paidDay; // Obtenemos el día de pago si existe.
-              const isPaid = !!paidDay;
+            const nameSpan = document.createElement('input');
+            nameSpan.type = 'text';
+            nameSpan.className = 'item-card-name';
+            nameSpan.value = item.name || '';
+            nameSpan.placeholder = 'Nombre del gasto';
+            nameSpan.dataset.itemId = item.id;
 
-              let indicatorText = '';
-              switch (distData.method) {
-                case 'percentage':
-                  indicatorText = `${distData.value || 0}%`;
-                  break;
-                case 'manual':
-                  indicatorText = 'Manual';
-                  break;
-                default:
-                  indicatorText = 'Igual';
-                  break;
-              }
+            const totalSpan = document.createElement('input');
+            totalSpan.type = 'number';
+            totalSpan.className = 'item-card-total';
+            totalSpan.value = item.totalAmount || '';
+            totalSpan.placeholder = '0.00';
+            totalSpan.step = '0.01';
+            totalSpan.dataset.itemId = item.id;
 
-              const calculatedAmount = calculateCellAmount(item, personIndex);
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'item-delete-btn';
+            deleteBtn.dataset.itemId = item.id;
+            deleteBtn.title = 'Eliminar ítem';
+            deleteBtn.innerHTML = TRASH_SVG;
 
-              // Aplicamos la clase de color verde si está pagado.
-              let amountClass = 'distribution-amount';
-              if (isPaid) {
-                amountClass += ' is-paid';
-              }
+            header.appendChild(nameSpan);
+            header.appendChild(totalSpan);
+            header.appendChild(deleteBtn);
 
-              let inputAndButtonHtml = '';
-              if (isPaid) {
-                // Si está pagado, mostramos el input deshabilitado con el día y un check.
-                inputAndButtonHtml = `
-                  <input
-                    type="number"
-                    class="table-input shared-expense-day-input"
-                    value="${paidDay}"
-                    disabled
-                  >
-                  <button
-                    class="register-shared-expense-btn"
-                    title="Pago ya registrado"
-                    disabled
-                  >
-                    ✔
-                  </button>
-                `;
-              } else {
-                // Si no está pagado, mostramos el input vacío y el botón 'OK'.
-                inputAndButtonHtml = `
-                  <input
-                    type="number"
-                    min="1" max="31"
-                    class="table-input shared-expense-day-input"
-                    placeholder="Día"
-                    title="Día del pago (1-31)"
-                  >
-                  <button
-                    class="register-shared-expense-btn"
-                    data-item-id="${item.id}"
-                    data-person-index="${personIndex}"
-                    title="Registrar este pago"
-                  >
-                    OK
-                  </button>
-                `;
-              }
+            // — Panel de personas del ítem —
+            const peoplePanel = document.createElement('div');
+            peoplePanel.className = 'item-people-panel';
 
-              distCell.innerHTML = `
-                <div class="distribution-cell-content">
-                    <span class="${amountClass}">${formatCurrency(calculatedAmount)}</span>
-                    <span class="method-indicator">${indicatorText}</span>
-                    <div class="distribution-cell-actions">
-                        ${inputAndButtonHtml}
-                    </div>
-                </div>
-            `;
-              // === FIN DE LA LÓGICA DE RENDERIZADO CONDICIONAL ===
+            people.forEach((person, index) => {
+              const chip = document.createElement('div');
+              chip.className = 'person-chip';
+
+              const avatar = document.createElement('div');
+              avatar.className = 'person-chip-avatar';
+              avatar.style.backgroundColor = AVATAR_COLORS[index % AVATAR_COLORS.length];
+              const personName = person.name || `P${index + 1}`;
+              avatar.textContent = personName.slice(0, 2).toUpperCase();
+
+              const nameInput = document.createElement('input');
+              nameInput.type = 'text';
+              nameInput.className = 'person-chip-name';
+              nameInput.value = person.name || '';
+              nameInput.placeholder = `Persona ${index + 1}`;
+              nameInput.dataset.itemId = item.id;
+              nameInput.dataset.personIndex = index;
+
+              const deletePersonBtn = document.createElement('button');
+              deletePersonBtn.className = 'person-chip-delete';
+              deletePersonBtn.dataset.itemId = item.id;
+              deletePersonBtn.dataset.personIndex = index;
+              deletePersonBtn.title = 'Eliminar persona';
+              deletePersonBtn.textContent = '×';
+
+              chip.appendChild(avatar);
+              chip.appendChild(nameInput);
+              chip.appendChild(deletePersonBtn);
+              peoplePanel.appendChild(chip);
             });
-            itemRow.insertCell(people.length + 2).innerHTML =
-              `<button class="delete-item-btn" title="Eliminar Ítem">&#x1F5D1;</button>`;
-          });
 
-          const footerRow = tfoot.insertRow();
-          footerRow.insertCell().textContent = 'TOTAL POR PERSONA';
-          const totalGeneral = items.reduce(
-            (sum, item) => sum + (parseFloat(item.totalAmount) || 0),
-            0,
-          );
-          footerRow.insertCell().innerHTML = `<span class="total-general">${formatCurrency(
-            totalGeneral,
-          )}</span>`;
-          people.forEach((_, personIndex) => {
-            const totalPerPerson = items.reduce(
-              (sum, item) => sum + calculateCellAmount(item, personIndex),
-              0,
-            );
-            footerRow.insertCell().textContent = formatCurrency(totalPerPerson);
+            const addPersonBtn = document.createElement('button');
+            addPersonBtn.className = 'person-chip-add';
+            addPersonBtn.dataset.itemId = item.id;
+            addPersonBtn.title = 'Añadir persona';
+            addPersonBtn.textContent = '+';
+            peoplePanel.appendChild(addPersonBtn);
+
+            // — Distribuciones por persona —
+            const distContainer = document.createElement('div');
+            distContainer.className = 'item-distributions';
+
+            if (people.length === 0) {
+              const hint = document.createElement('p');
+              hint.className = 'no-people-hint';
+              hint.textContent = 'Añade personas con el botón + para distribuir este gasto.';
+              distContainer.appendChild(hint);
+            } else {
+              const itemAmounts = computeAllAmounts(item);
+
+              people.forEach((person, personIndex) => {
+                const distData = item.distribution?.[personIndex] || { method: 'equal', value: 0 };
+                const paidDay = distData.paidDay;
+                const isPaid = !!paidDay;
+                const amount = itemAmounts[personIndex] || 0;
+
+                let methodLabel;
+                switch (distData.method) {
+                  case 'percentage':
+                    methodLabel = `${distData.value || 0}% del resto`;
+                    break;
+                  case 'manual':
+                    methodLabel = 'Monto fijo';
+                    break;
+                  default: {
+                    const hasNonEqualAbove = Array.from(
+                      { length: personIndex },
+                      (_, j) => item.distribution?.[j]?.method,
+                    ).some((m) => m && m !== 'equal');
+                    methodLabel = hasNonEqualAbove ? 'Del resto' : 'Igual';
+                  }
+                }
+
+                const row = document.createElement('div');
+                row.className = isPaid ? 'dist-row is-paid' : 'dist-row';
+                row.dataset.itemId = item.id;
+                row.dataset.personIndex = personIndex;
+
+                const avatar = document.createElement('div');
+                avatar.className = 'dist-avatar';
+                avatar.style.backgroundColor = AVATAR_COLORS[personIndex % AVATAR_COLORS.length];
+                const personName = person.name || `P${personIndex + 1}`;
+                avatar.textContent = personName.slice(0, 2).toUpperCase();
+
+                const info = document.createElement('div');
+                info.className = 'dist-person-info';
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'dist-person-name';
+                nameDiv.textContent = personName;
+                const methodDiv = document.createElement('div');
+                methodDiv.className = 'dist-method-tag';
+                methodDiv.textContent = methodLabel;
+                info.appendChild(nameDiv);
+                info.appendChild(methodDiv);
+
+                const amountCol = document.createElement('div');
+                amountCol.className = 'dist-amount-col';
+                amountCol.textContent = formatCurrency(amount);
+
+                const statusCol = document.createElement('div');
+                statusCol.className = 'dist-status-col';
+
+                if (isPaid) {
+                  const tag = document.createElement('span');
+                  tag.className = 'paid-tag';
+                  tag.textContent = `✔ Día ${paidDay}`;
+                  statusCol.appendChild(tag);
+                } else {
+                  const dayInput = document.createElement('input');
+                  dayInput.type = 'number';
+                  dayInput.className = 'mini-day-input';
+                  dayInput.min = '1';
+                  dayInput.max = '31';
+                  dayInput.placeholder = 'Día';
+
+                  const okBtn = document.createElement('button');
+                  okBtn.className = 'mini-ok-btn';
+                  okBtn.dataset.itemId = item.id;
+                  okBtn.dataset.personIndex = personIndex;
+                  okBtn.textContent = 'OK';
+
+                  statusCol.appendChild(dayInput);
+                  statusCol.appendChild(okBtn);
+                }
+
+                row.appendChild(avatar);
+                row.appendChild(info);
+                row.appendChild(amountCol);
+                row.appendChild(statusCol);
+                distContainer.appendChild(row);
+              });
+            }
+
+            card.appendChild(header);
+            card.appendChild(peoplePanel);
+            card.appendChild(distContainer);
+            container.appendChild(card);
           });
-          footerRow.insertCell();
         }
 
         /**
-         * Calcula el monto para una celda específica basado en el método de distribución.
+         * Calcula los montos de TODAS las personas en cascada:
+         * cada persona recibe su monto del remanente después de descontar
+         * lo asignado a las personas anteriores (en orden de índice).
+         * Las personas "igual" se reparten equitativamente el remanente
+         * que queda al llegar a su turno.
          */
-        function calculateCellAmount(item, personIndex) {
-          const distData = item.distribution?.[personIndex] || { method: 'equal' };
+        function computeAllAmounts(item) {
+          const N = (item.people || []).length;
+          const amounts = new Array(N).fill(0);
           const totalAmount = parseFloat(item.totalAmount) || 0;
+          if (totalAmount === 0 || N === 0) return amounts;
 
-          if (totalAmount === 0) return 0;
+          let remaining = totalAmount;
 
-          switch (distData.method) {
-            case 'percentage':
-              return totalAmount * ((parseFloat(distData.value) || 0) / 100);
-            case 'manual':
-              return parseFloat(distData.value) || 0;
-            case 'equal':
-            default:
-              const equalParticipants =
-                Object.values(item.distribution || {}).filter((d) => d.method === 'equal').length ||
-                appState.gastosComunes.people.length;
-              return totalAmount / equalParticipants;
+          for (let i = 0; i < N; i++) {
+            const dist = item.distribution?.[i] || { method: 'equal' };
+
+            if (dist.method === 'percentage') {
+              const amount = remaining * ((parseFloat(dist.value) || 0) / 100);
+              amounts[i] = amount;
+              remaining -= amount;
+            } else if (dist.method === 'manual') {
+              const amount = parseFloat(dist.value) || 0;
+              amounts[i] = amount;
+              remaining -= amount;
+            } else {
+              // equal: divide el remanente en partes iguales entre todas
+              // las personas "equal" que quedan desde esta posición en adelante
+              let equalCount = 0;
+              for (let j = i; j < N; j++) {
+                const d = item.distribution?.[j] || { method: 'equal' };
+                if (!d.method || d.method === 'equal') equalCount++;
+              }
+              const amount = remaining / (equalCount || 1);
+              amounts[i] = amount;
+              remaining -= amount;
+            }
           }
+
+          return amounts;
+        }
+
+        function calculateCellAmount(item, personIndex) {
+          return computeAllAmounts(item)[personIndex] || 0;
         }
 
         /**
          * Muestra el popover para seleccionar el método de distribución.
          */
-        function showDistributionPopover(cell) {
-          hideDistributionPopover(); // Oculta cualquier otro popover abierto
+        function showDistributionPopover(triggerEl, itemId, personIndex) {
+          hideDistributionPopover();
           const popover = document.getElementById('distribution-popover');
-          activePopoverCell = cell;
+          activePopoverCell = triggerEl;
+          activePopoverItemId = itemId;
+          activePopoverPersonIndex = personIndex;
 
-          const rect = cell.getBoundingClientRect();
+          const rect = triggerEl.getBoundingClientRect();
           popover.style.top = `${rect.bottom + window.scrollY}px`;
           popover.style.left = `${rect.left + window.scrollX}px`;
 
           popover.classList.remove('hidden');
-          cell.classList.add('active');
+          triggerEl.classList.add('active');
         }
 
         /**
@@ -13993,6 +14205,8 @@
             activePopoverCell.classList.remove('active');
             activePopoverCell = null;
           }
+          activePopoverItemId = null;
+          activePopoverPersonIndex = null;
         }
       });
     </script>
