@@ -583,6 +583,17 @@
         color: var(--color-text-muted);
         margin-bottom: 0.2rem;
       }
+      #dash-month-label {
+        grid-column: 1 / -1;
+        justify-self: center;
+        font-size: var(--font-sm);
+        font-weight: 500;
+        color: var(--color-text-2);
+        background: var(--color-surface-2);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: 3px 14px;
+      }
       .dash-card__value {
         font-size: 1.5rem;
         font-weight: 800;
@@ -1101,14 +1112,21 @@
         text-decoration: underline;
       }
 
+      /* Elementos visibles solo en mobile — ocultos por defecto en desktop */
+      .btn-filter-toggle { display: none; }
+      .btn-row-info      { display: none; }
+
       /* =====================================================================
        20. RESPONSIVE — MOBILE (≤ 768px)
        ===================================================================== */
       @media (max-width: 768px) {
+        /* Tab-bar tall enough for 3rem icon + label + padding */
+        :root {
+          --tab-bar-mobile-h: 5.5rem;
+        }
+
         body {
-          /* Mobile: only top header-bar height (tab bar is at bottom) */
-          padding-top: var(--header-bar-h);
-          padding-bottom: var(--tab-bar-mobile-h);
+          padding-top: calc(var(--header-bar-h) + var(--tab-bar-mobile-h));
         }
 
         /* Shrink header on mobile */
@@ -1126,56 +1144,45 @@
           display: none;
         }
 
-        /* Hide desktop-only action buttons in header */
         #btn-fullscreen,
         #btn-exit-fullscreen {
           display: none;
         }
 
-        /* Tab bar: fixed bottom on mobile */
+        /* Tab bar: top on mobile, increased height */
         #tab-bar {
-          top: unset;
-          bottom: 0;
           height: var(--tab-bar-mobile-h);
-          border-bottom: none;
-          border-top: 1px solid var(--color-border);
         }
 
-        /* Content view on mobile: full screen (header hidden) */
+        /* Content view: header hidden, padding = tab-bar only */
         body.view-content #app-header {
           display: none;
         }
-        body.view-content #tab-bar {
-          top: unset;
-          bottom: 0;
-        }
         body.view-content {
-          padding-top: 0;
+          padding-top: var(--tab-bar-mobile-h);
         }
 
-        /* Tab button compact */
+        /* Tab button: match reference app icon size */
         .tab-btn {
           flex: none;
           min-width: 52px;
         }
         .tab-btn img {
-          width: 2.25rem;
+          height: 3rem;
+          width: auto;
         }
         .tab-btn span {
           font-size: 0.62rem;
         }
 
-        /* Dashboard: single column */
         #dashboard {
           grid-template-columns: 1fr;
         }
 
-        /* Toast above bottom tab bar */
         #toast-container {
-          bottom: calc(var(--tab-bar-mobile-h) + var(--space-sm));
+          bottom: var(--space-lg);
         }
 
-        /* Auth modal: full width */
         #auth-modal .modal-box {
           max-width: 100%;
           border-radius: var(--radius-lg);
@@ -1184,7 +1191,6 @@
           flex-direction: column;
         }
 
-        /* Action bar wraps */
         #action-bar {
           gap: var(--space-xs);
         }
@@ -1193,38 +1199,138 @@
           padding: 4px var(--space-sm);
         }
 
-        /* Tables scroll horizontally */
         .table-wrapper {
           overflow-x: auto;
-          border-radius: 0;
-          border-left: none;
-          border-right: none;
         }
 
-        /* ── Table cells: tighter padding & font ───────────────────── */
-        #reg-table th,
-        #reg-table td,
-        #rec-table th,
-        #rec-table td,
-        #budget-table th,
-        #budget-table td {
-          font-size: var(--font-sm);
-          padding: 5px 4px;
+        /* iOS zoom prevention on all inputs */
+        input[type='text'],
+        input[type='email'],
+        input[type='password'],
+        input[type='number'],
+        input[type='date'],
+        select,
+        textarea {
+          font-size: 16px;
         }
 
-        /* ── Registros: ocultar Descripción(3), Banco(5), Acciones(8) ──
-           Visible: checkbox fecha cat monto saldo
-           Columnas: 1=checkbox 2=fecha 3=desc 4=cat 5=banco 6=monto 7=saldo 8=acciones */
+        /* Touch tap targets scoped to modals only */
+        .modal-box input[type='text'],
+        .modal-box input[type='email'],
+        .modal-box input[type='password'],
+        .modal-box input[type='number'],
+        .modal-box input[type='date'],
+        .modal-box select,
+        .modal-box textarea {
+          min-height: 44px;
+        }
+
+        /* Hide table headers on mobile (reference app behavior) */
+        #reg-table thead,
+        #rec-table thead,
+        #proj-table thead,
+        #cc-table thead,
+        #budget-table thead {
+          display: none;
+        }
+
+        /* Table cells scoped to tbody (tfoot queda libre) */
+        #reg-table tbody td,
+        #rec-table tbody td,
+        #proj-table tbody td,
+        #budget-table tbody td {
+          font-size: 1rem;
+          font-weight: 400;
+          padding: 4px 2px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 0;
+        }
+
+        /* Filter group: toggle muestra selects en mobile */
+        .btn-filter-toggle {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 6px 12px;
+          font-size: 0.85rem;
+          background: var(--color-surface-2);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-sm);
+          color: var(--color-text-2);
+          cursor: pointer;
+        }
+        .filter-group select {
+          display: none;
+        }
+        .filter-group.filter-open select {
+          display: block;
+          flex: 1;
+          min-width: 110px;
+        }
+
+        /* ── Registros: hide Descripción(3), Acciones(8); col5 = ícono info ──
+           Visible: chk(1) día(2) cat(4) info(5) monto(6) saldo(7) */
         #reg-table th:nth-child(3),
         #reg-table td:nth-child(3),
-        #reg-table th:nth-child(5),
-        #reg-table td:nth-child(5),
         #reg-table th:nth-child(8),
         #reg-table td:nth-child(8) {
           display: none;
         }
+        #reg-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #reg-table tbody td:nth-child(1) {
+          width: 5%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #reg-table tbody td:nth-child(2) {
+          width: 7%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #reg-table tbody td:nth-child(4) {
+          width: 7%;
+          padding: 4px 2px;
+        }
+        #reg-table tbody td:nth-child(5) {
+          width: 7%;
+          text-align: center;
+          padding: 4px 0;
+        }
+        #reg-table tbody td:nth-child(6) {
+          width: 37%;
+          white-space: nowrap;
+        }
+        #reg-table tbody td:nth-child(7) {
+          width: 37%;
+          white-space: nowrap;
+          text-align: right;
+        }
 
-        /* Ocultar texto de categoría, dejar solo ícono */
+        /* Info icon (mobile): sustituye el texto de banco en col5 */
+        .cell-bank-text {
+          display: none;
+        }
+        .btn-row-info {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: var(--color-accent);
+          color: #fff;
+          font-size: 0.7rem;
+          font-weight: 700;
+          font-style: italic;
+          border: none;
+          cursor: pointer;
+        }
+
+        /* Hide category label, keep icon */
         .cat-display span {
           display: none;
         }
@@ -1233,45 +1339,84 @@
           height: 22px;
         }
 
-        /* ── Recurrentes: ocultar Banco(6) y Acciones(7) ────────────
-           Visible: checkbox día desc cat monto
-           Columnas: 1=checkbox 2=día 3=desc 4=cat 5=monto 6=banco 7=acciones */
+        /* ── Recurrentes: hide Banco(6), Acciones(7) ──
+           Visible: chk(1) día(2) desc(3) cat(4) monto(5) */
         #rec-table th:nth-child(6),
         #rec-table td:nth-child(6),
         #rec-table th:nth-child(7),
         #rec-table td:nth-child(7) {
           display: none;
         }
-        #rec-table th:nth-child(4),
-        #rec-table td:nth-child(4) {
-          width: 36px;
-          max-width: 36px;
-          padding: 0;
+        #rec-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #rec-table tbody td:nth-child(1) {
+          width: 6%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #rec-table tbody td:nth-child(2) {
+          width: 8%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #rec-table tbody td:nth-child(3) {
+          width: 48%;
+        }
+        #rec-table tbody td:nth-child(4) {
+          width: 8%;
+          padding: 4px 2px;
           text-align: center;
         }
-        #rec-table th:nth-child(5),
-        #rec-table td:nth-child(5) {
+        #rec-table tbody td:nth-child(5) {
+          width: 30%;
           white-space: nowrap;
           text-align: right;
         }
 
-        /* ── Proyección: ocultar Descripción(3) y Acciones(7) ───────
-           Visible: checkbox fecha cat monto saldo
-           Columnas: 1=checkbox 2=fecha 3=desc 4=cat 5=monto 6=saldo 7=acciones */
+        /* ── Proyección: hide Descripción(3), Acciones(7) ──
+           Visible: chk(1) día(2) cat(4) monto(5) saldo(6) */
         #proj-table th:nth-child(3),
         #proj-table td:nth-child(3),
         #proj-table th:nth-child(7),
         #proj-table td:nth-child(7) {
           display: none;
         }
+        #proj-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #proj-table tbody td:nth-child(1) {
+          width: 6%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #proj-table tbody td:nth-child(2) {
+          width: 8%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #proj-table tbody td:nth-child(4) {
+          width: 8%;
+          padding: 4px 2px;
+        }
+        #proj-table tbody td:nth-child(5) {
+          width: 39%;
+          white-space: nowrap;
+        }
+        #proj-table tbody td:nth-child(6) {
+          width: 39%;
+          white-space: nowrap;
+          text-align: right;
+        }
 
-        /* ── Presupuesto: barra de progreso ocupa full en móvil ───── */
+        /* Presupuesto: hide progreso column */
         #budget-table th:nth-child(4),
         #budget-table td:nth-child(4) {
           display: none;
         }
 
-        /* ── Calculator keypad compact ──────────────────────────────── */
         .btn-key {
           font-size: var(--font-base);
           padding: var(--space-xs);
@@ -1280,23 +1425,19 @@
           font-size: 1.2rem;
         }
 
-        /* ── Category grid 3 cols on small ─────────────────────────── */
         .cat-grid {
           grid-template-columns: repeat(3, 1fr);
         }
 
-        /* ── Icon picker grid compact ───────────────────────────────── */
         .icon-grid {
           grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
           max-height: 260px;
         }
 
-        /* ── Form grid single column ────────────────────────────────── */
         .form-grid {
           grid-template-columns: 1fr;
         }
 
-        /* ── Modals: near-full-width on mobile ──────────────────────── */
         .modal-box {
           width: calc(100vw - var(--space-md) * 2);
           max-width: 100%;
@@ -1304,12 +1445,10 @@
           max-height: 90vh;
         }
 
-        /* ── Config: grid a 1 columna en móvil ──────────────────────── */
         .cfg-grid {
           grid-template-columns: 1fr;
         }
 
-        /* ── Rec modal form: 2 cols for day+amount ───────────────────── */
         #rec-form .form-grid {
           grid-template-columns: 1fr 1fr;
         }
@@ -1318,13 +1457,11 @@
           grid-column: span 2;
         }
 
-        /* ── Gastos comunes: chip names shorter ──────────────────────── */
         .person-chip-name {
           width: 70px;
           min-width: 40px;
         }
 
-        /* ── Distribution row compact ────────────────────────────────── */
         .dist-row {
           padding: 5px var(--space-sm);
           gap: var(--space-xs);
@@ -1334,8 +1471,7 @@
           font-size: 0.78rem;
         }
 
-        /* ── Tarjetas: ocultar columnas secundarias ───────────────────
-           Ocultar: Línea crédito (5), Interés% (7), Meses (8) */
+        /* Tarjetas: hide Línea crédito(5), Interés%(7), Meses(8) */
         #cc-table th:nth-child(5),
         #cc-table td:nth-child(5),
         #cc-table th:nth-child(7),
@@ -1357,17 +1493,16 @@
       }
 
       /* =====================================================================
-       21. REGISTROS — filter bar + row type indicators + checkbox
+       21. REGISTROS — filter group (en action-bar) + row type indicators + checkbox
        ===================================================================== */
-      .filter-bar {
+      .filter-group {
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-sm);
-        padding: var(--space-sm) var(--space-md);
-        background-color: var(--color-surface);
-        border-bottom: 1px solid var(--color-border);
+        flex: 1;
+        align-items: center;
       }
-      .filter-bar select {
+      .filter-group select {
         flex: 1;
         min-width: 110px;
         background-color: var(--color-surface-2);
@@ -1377,9 +1512,24 @@
         padding: var(--space-xs) var(--space-sm);
         font-size: var(--font-sm);
       }
-      .filter-bar select:focus {
+      .filter-group select:focus {
         outline: none;
         border-color: var(--color-accent);
+      }
+      .info-row td {
+        background-color: var(--color-surface-2);
+        padding: 5px var(--space-sm);
+        border-bottom: 1px solid var(--color-border);
+      }
+      .info-row-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+        font-size: var(--font-sm);
+        color: var(--color-text-2);
+      }
+      .info-bank {
+        color: var(--color-text-muted);
       }
 
       .data-table tfoot td {
@@ -1394,14 +1544,21 @@
         color: var(--color-text-muted);
       }
 
-      .row--income td:first-child {
-        border-left: 3px solid var(--color-success);
+      .row--income td {
+        color: var(--color-success);
       }
-      .row--expense td:first-child {
-        border-left: 3px solid var(--color-danger);
+      .row--expense td {
+        color: var(--color-danger);
       }
-      .row--transfer td:first-child {
-        border-left: 3px solid var(--color-warning);
+      .row--transfer td {
+        color: var(--color-warning);
+      }
+
+      /* Columnas no-transaccionales siempre en color neutro */
+      .row--income td:is(:nth-child(1), :nth-child(2), :nth-child(4)),
+      .row--expense td:is(:nth-child(1), :nth-child(2), :nth-child(4)),
+      .row--transfer td:is(:nth-child(1), :nth-child(2), :nth-child(4)) {
+        color: var(--color-text);
       }
 
       .tx-select {
@@ -1960,11 +2117,11 @@
         height: 20px;
         object-fit: contain;
       }
-      .balance--positive {
+      .data-table td.balance--positive {
         color: var(--color-success);
         font-weight: 600;
       }
-      .balance--negative {
+      .data-table td.balance--negative {
         color: var(--color-danger);
         font-weight: 600;
       }
@@ -2728,6 +2885,7 @@
             />
           </div>
         </div>
+        <div id="dash-month-label"></div>
       </section>
 
       <section id="alerts-area">
@@ -2763,12 +2921,9 @@
           <button class="btn-action btn-action--danger hidden" id="btn-delete-selected">
             ✕ Eliminar Selec.
           </button>
-        </div>
-
-        <!-- Tab sections (content added per phase) -->
-        <div id="section-registros" class="tab-pane" data-section="registros">
-          <!-- Filter bar -->
-          <div class="filter-bar">
+          <!-- Grupos de filtros por tab -->
+          <div id="reg-filter-group" class="filter-group hidden">
+            <button class="btn-filter-toggle" aria-label="Mostrar filtros">&#9881; Filtros</button>
             <select id="reg-filter-month" aria-label="Filtrar por mes"></select>
             <select id="reg-filter-bank" aria-label="Filtrar por banco">
               <option value="">Todos los bancos</option>
@@ -2777,6 +2932,18 @@
               <option value="">Todas las categorías</option>
             </select>
           </div>
+          <div id="proj-filter-group" class="filter-group hidden">
+            <button class="btn-filter-toggle" aria-label="Mostrar filtros">&#9881; Filtros</button>
+            <select id="proj-filter-month" aria-label="Filtrar por mes"></select>
+          </div>
+          <div id="rep-filter-group" class="filter-group hidden">
+            <button class="btn-filter-toggle" aria-label="Mostrar filtros">&#9881; Filtros</button>
+            <select id="rep-filter-month" aria-label="Filtrar período"></select>
+          </div>
+        </div>
+
+        <!-- Tab sections (content added per phase) -->
+        <div id="section-registros" class="tab-pane" data-section="registros">
           <!-- Table -->
           <div class="table-wrapper">
             <table class="data-table" id="reg-table">
@@ -2820,9 +2987,6 @@
           <datalist id="description-list"></datalist>
         </div>
         <div id="section-proyeccion" class="tab-pane" data-section="proyeccion">
-          <div class="filter-bar">
-            <select id="proj-filter-month" aria-label="Filtrar por mes"></select>
-          </div>
           <div class="table-wrapper">
             <table class="data-table" id="proj-table">
               <thead>
@@ -2935,9 +3099,6 @@
           </p>
         </div>
         <div id="section-reportes" class="tab-pane" data-section="reportes">
-          <div class="filter-bar">
-            <select id="rep-filter-month" aria-label="Filtrar período"></select>
-          </div>
           <div class="rep-grid">
             <div class="rep-card">
               <p class="rep-card__title">Gastos por Categoría</p>
@@ -3793,7 +3954,8 @@
         EmailAuthProvider,
       } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
       import {
-        getFirestore,
+        initializeFirestore,
+        persistentLocalCache,
         doc,
         collection,
         addDoc,
@@ -3829,7 +3991,7 @@
        =================================================================== */
       const firebaseApp = initializeApp(FIREBASE_CONFIG);
       const auth = getAuth(firebaseApp);
-      const db = getFirestore(firebaseApp);
+      const db = initializeFirestore(firebaseApp, { localCache: persistentLocalCache() });
 
       /* ===================================================================
        STATE
@@ -3849,9 +4011,10 @@
         currentTab: null,
         currentUser: null,
         budgetAlertsShown: {},
-        filterMonth: getCurrentMonthStr(),
+        filterMonth: localStorage.getItem('foresee-filter-month') || getCurrentMonthStr(),
         filterBank: '',
         filterCategory: '',
+        _dashCache: null,
       };
 
       let unsubscribers = [];
@@ -3957,6 +4120,14 @@
         return new Date().toISOString().slice(0, 7); // YYYY-MM
       }
 
+      function formatMonthLabel(yyyyMm) {
+        if (!yyyyMm) return '';
+        const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                        'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        const [y, m] = yyyyMm.split('-');
+        return `${MONTHS[parseInt(m, 10) - 1]} ${y}`;
+      }
+
       function showLoading() {
         document.getElementById('loading-overlay').classList.add('active');
       }
@@ -3969,6 +4140,8 @@
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = `toast toast--${type}`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
         toast.textContent = message;
         container.appendChild(toast);
 
@@ -4075,14 +4248,14 @@
 
       /* Buttons shown per tab — add IDs here as phases add features */
       const TAB_ACTIONS = {
-        registros: ['btn-add-transaction', 'btn-transfer'],
-        proyeccion: ['btn-add-projection'],
+        registros: ['btn-add-transaction', 'btn-transfer', 'reg-filter-group'],
+        proyeccion: ['btn-add-projection', 'proj-filter-group'],
         recurrentes: ['btn-add-rec'],
         presupuesto: ['btn-save-budgets'],
         'gastos-comunes': ['btn-add-comun'],
         tarjetas: ['btn-add-card'],
         saldos: [],
-        reportes: [],
+        reportes: ['rep-filter-group'],
         configuracion: [],
       };
 
@@ -4096,6 +4269,9 @@
         'btn-edit-selected',
         'btn-delete-selected',
         'btn-add-projection',
+        'reg-filter-group',
+        'proj-filter-group',
+        'rep-filter-group',
       ];
 
       function updateActionBar(tabName) {
@@ -4243,9 +4419,10 @@
           currentTab: null,
           currentUser: null,
           budgetAlertsShown: {},
-          filterMonth: getCurrentMonthStr(),
+          filterMonth: localStorage.getItem('foresee-filter-month') || getCurrentMonthStr(),
           filterBank: '',
           filterCategory: '',
+          _dashCache: null,
         });
       }
 
@@ -4289,31 +4466,81 @@
 
         const today = new Date();
         const currentYear = today.getFullYear();
-        const currentMonth = today.getMonth();
+        const currentMonth = today.getMonth(); // 0-based
         const currentDay = today.getDate();
         const userId = appState.currentUser?.uid;
         if (!userId) return;
 
+        // Determine start month: month after the most recent transaction (gap detection).
+        // Cap at 12 months back to avoid unbounded writes on a fresh import.
+        let gapStartYear = currentYear;
+        let gapStartMonth = currentMonth;
+
+        if (appState.transactions.length > 0) {
+          let latestDate = null;
+          for (const tx of appState.transactions) {
+            if (tx.date) {
+              const d = new Date(tx.date + 'T00:00:00');
+              if (!latestDate || d > latestDate) latestDate = d;
+            }
+          }
+          if (latestDate) {
+            const ly = latestDate.getFullYear();
+            const lm = latestDate.getMonth();
+            if (ly < currentYear || lm < currentMonth) {
+              gapStartMonth = lm + 1;
+              gapStartYear = ly;
+              if (gapStartMonth > 11) { gapStartMonth = 0; gapStartYear++; }
+              // No retroceder más de 12 meses
+              const cap = new Date(currentYear, currentMonth - 11, 1);
+              if (new Date(gapStartYear, gapStartMonth, 1) < cap) {
+                gapStartYear = cap.getFullYear();
+                gapStartMonth = cap.getMonth();
+              }
+            }
+          }
+        }
+
         const toCreate = [];
+        let y = gapStartYear;
+        let m = gapStartMonth;
 
-        for (const expense of appState.recurringExpenses) {
-          const expDay = parseInt(expense.day, 10);
-          if (expDay > currentDay) continue;
+        while (y < currentYear || (y === currentYear && m <= currentMonth)) {
+          const isCurrentMonth = y === currentYear && m === currentMonth;
+          // Para meses pasados procesar todos los días del mes; para el actual solo hasta hoy
+          const daysToCheck = isCurrentMonth ? currentDay : new Date(y, m + 1, 0).getDate();
 
-          // Duplicado: misma fecha (año/mes/día del recurrente), misma descripción, misma categoría.
-          // El monto se ignora a propósito — el usuario puede haberlo ajustado manualmente.
-          const alreadyExists = appState.transactions.some((t) => {
-            const d = new Date(t.date + 'T00:00:00');
-            return (
-              d.getFullYear() === currentYear &&
-              d.getMonth() === currentMonth &&
-              d.getDate() === expDay &&
-              t.description.toLowerCase() === expense.description.toLowerCase() &&
-              t.category === expense.category
-            );
-          });
+          for (const expense of appState.recurringExpenses) {
+            const expDay = parseInt(expense.day, 10);
+            if (expDay > daysToCheck) continue;
 
-          if (!alreadyExists) toCreate.push(expense);
+            // Duplicado: misma fecha (año/mes/día), misma descripción, misma categoría.
+            // El monto se ignora — el usuario puede haberlo ajustado manualmente.
+            const alreadyExists = appState.transactions.some((t) => {
+              const d = new Date(t.date + 'T00:00:00');
+              return (
+                d.getFullYear() === y &&
+                d.getMonth() === m &&
+                d.getDate() === expDay &&
+                t.description.toLowerCase() === expense.description.toLowerCase() &&
+                t.category === expense.category
+              );
+            });
+
+            if (!alreadyExists) {
+              toCreate.push({
+                date: new Date(y, m, expDay).toISOString().split('T')[0],
+                description: expense.description,
+                category: expense.category,
+                bank: expense.bank,
+                amount: expense.amount,
+                type: 'expense',
+              });
+            }
+          }
+
+          m++;
+          if (m > 11) { m = 0; y++; }
         }
 
         if (!toCreate.length) return;
@@ -4322,20 +4549,7 @@
         const txColRef = collection(db, DB_COL(userId, 'transactions'));
         try {
           const batch = writeBatch(db);
-          toCreate.forEach((expense) => {
-            const date = new Date(currentYear, currentMonth, parseInt(expense.day, 10))
-              .toISOString()
-              .split('T')[0];
-            const newRef = doc(txColRef);
-            batch.set(newRef, {
-              date,
-              description: expense.description,
-              category: expense.category,
-              bank: expense.bank,
-              amount: expense.amount,
-              type: 'expense',
-            });
-          });
+          toCreate.forEach((tx) => batch.set(doc(txColRef), tx));
           await batch.commit();
           showToast(
             `${toCreate.length} gasto(s) recurrente(s) registrado(s) automáticamente.`,
@@ -4409,29 +4623,39 @@
 
       function renderDashboard() {
         const month = appState.filterMonth;
-        const { monthIncome, monthExpenses, totalIncome, totalExpenses } =
-          appState.transactions.reduce(
-            (acc, t) => {
-              if (!t || typeof t.date !== 'string') return acc;
-              const inMonth = !month || t.date.substring(0, 7) === month;
-              if (inMonth) {
-                if (t.type === 'income') acc.monthIncome += t.amount;
-                if (t.type === 'expense') acc.monthExpenses += t.amount;
-              }
-              if (!t.isArchived) {
-                if (t.type === 'income') acc.totalIncome += t.amount;
-                if (t.type === 'expense') acc.totalExpenses += t.amount;
-              }
-              return acc;
-            },
-            { monthIncome: 0, monthExpenses: 0, totalIncome: 0, totalExpenses: 0 },
-          );
+        const txCount = appState.transactions.length;
+
+        let monthIncome, monthExpenses, totalIncome, totalExpenses;
+        const c = appState._dashCache;
+        if (c && c.month === month && c.txCount === txCount) {
+          ({ monthIncome, monthExpenses, totalIncome, totalExpenses } = c);
+        } else {
+          ({ monthIncome, monthExpenses, totalIncome, totalExpenses } =
+            appState.transactions.reduce(
+              (acc, t) => {
+                if (!t || typeof t.date !== 'string') return acc;
+                const inMonth = !month || t.date.substring(0, 7) === month;
+                if (inMonth) {
+                  if (t.type === 'income') acc.monthIncome += t.amount;
+                  if (t.type === 'expense') acc.monthExpenses += t.amount;
+                }
+                if (!t.isArchived) {
+                  if (t.type === 'income' && !t.transferLeg) acc.totalIncome += t.amount;
+                  if (t.type === 'expense') acc.totalExpenses += t.amount;
+                }
+                return acc;
+              },
+              { monthIncome: 0, monthExpenses: 0, totalIncome: 0, totalExpenses: 0 },
+            ));
+          appState._dashCache = { month, txCount, monthIncome, monthExpenses, totalIncome, totalExpenses };
+        }
 
         const balance = appState.openingBalance + totalIncome - totalExpenses;
 
         document.getElementById('dash-balance-value').textContent = formatCurrency(balance);
         document.getElementById('dash-income-value').textContent = formatCurrency(monthIncome);
         document.getElementById('dash-expense-value').textContent = formatCurrency(monthExpenses);
+        document.getElementById('dash-month-label').textContent = formatMonthLabel(month);
 
         renderRecurringAlerts();
         checkBudgetLimits();
@@ -4558,8 +4782,33 @@
         if (!tbody) return;
 
         const filtered = getFilteredTransactions();
-        // Sort descending by date
-        filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+        // Índice de posición original en appState.transactions para desempate dentro del mismo día.
+        const txOrder = {};
+        appState.transactions.forEach((t, i) => { txOrder[t.id] = i; });
+
+        // Compute running balance map from ALL transactions: ascending por fecha,
+        // ascendente por índice dentro del mismo día (orden de inserción).
+        const allByDate = [...appState.transactions].sort((a, b) => {
+          const dc = (a.date || '').localeCompare(b.date || '');
+          if (dc !== 0) return dc;
+          return (txOrder[a.id] ?? 0) - (txOrder[b.id] ?? 0);
+        });
+        let runBal = appState.openingBalance;
+        const balMap = {};
+        allByDate.forEach((t) => {
+          if (t.type === 'income') runBal += t.amount || 0;
+          else runBal -= t.amount || 0;
+          balMap[t.id] = runBal;
+        });
+
+        // Display: descendente por fecha; mismo día → orden INVERSO al de allByDate
+        // para que SaldoFila[N] - MontoFila[N] = SaldoFila[N+1] en lectura top-to-bottom.
+        filtered.sort((a, b) => {
+          const dc = (b.date || '').localeCompare(a.date || '');
+          if (dc !== 0) return dc;
+          return (txOrder[b.id] ?? 0) - (txOrder[a.id] ?? 0);
+        });
 
         let totalIncome = 0,
           totalExpenses = 0;
@@ -4574,23 +4823,10 @@
         if (empty) empty.classList.add('hidden');
         if (tfoot) tfoot.classList.remove('hidden');
 
-        // Compute running balance map from ALL transactions (ascending) so
-        // manually edited amounts don't break the displayed saldo.
-        const allByDate = [...appState.transactions].sort((a, b) =>
-          (a.date || '').localeCompare(b.date || ''),
-        );
-        let runBal = appState.openingBalance;
-        const balMap = {};
-        allByDate.forEach((t) => {
-          if (t.type === 'income') runBal += t.amount || 0;
-          else runBal -= t.amount || 0;
-          balMap[t.id] = runBal;
-        });
-
         filtered.forEach((tx) => {
           const isIncome = tx.type === 'income';
           const isTransfer = tx.type === 'transfer';
-          if (isIncome) totalIncome += tx.amount || 0;
+          if (isIncome && !tx.transferLeg) totalIncome += tx.amount || 0;
           if (!isIncome && !isTransfer) totalExpenses += tx.amount || 0;
 
           const rowClass = isIncome ? 'row--income' : isTransfer ? 'row--transfer' : 'row--expense';
@@ -4631,9 +4867,20 @@
           tdCat.appendChild(buildCatDisplay(tx.category || ''));
           tr.appendChild(tdCat);
 
-          // 5 — Banco
+          // 5 — Banco (desktop) / ícono info (mobile)
           const tdBank = document.createElement('td');
-          tdBank.textContent = tx.bank || '—';
+          const bankSpan = document.createElement('span');
+          bankSpan.className = 'cell-bank-text';
+          bankSpan.textContent = tx.bank || '—';
+          tdBank.appendChild(bankSpan);
+          const infoBtn = document.createElement('button');
+          infoBtn.className = 'btn-row-info';
+          infoBtn.dataset.action = 'info';
+          infoBtn.dataset.desc = tx.description || '';
+          infoBtn.dataset.bank = tx.bank || '';
+          infoBtn.setAttribute('aria-label', 'Ver detalle');
+          infoBtn.textContent = 'i';
+          tdBank.appendChild(infoBtn);
           tr.appendChild(tdBank);
 
           // 6 — Monto
@@ -4983,15 +5230,9 @@
         showLoading();
         closeTransferModal();
         try {
-          const base = { type: 'transfer', date, amount, createdAt: new Date().toISOString() };
           const colRef = collection(db, DB_COL(user.uid, 'transactions'));
-          await addDoc(colRef, { ...base, bank: from, description: `Transferencia a ${to}` });
-          await addDoc(colRef, {
-            ...base,
-            bank: to,
-            description: `Transferencia desde ${from}`,
-            type: 'income',
-          });
+          await addDoc(colRef, { type: 'transfer', date, amount, createdAt: new Date().toISOString(), bank: from, description: `Transferencia a ${to}` });
+          await addDoc(colRef, { type: 'income', transferLeg: true, date, amount, createdAt: new Date().toISOString(), bank: to, description: `Transferencia desde ${from}` });
           showToast('Transferencia registrada.', 'success');
         } catch (err) {
           console.error('[Firestore] Transferencia:', err);
@@ -5646,6 +5887,8 @@
           async () => {
             showLoading();
             try {
+              const now = new Date();
+              const next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
               const txRef = collection(db, DB_COL(user.uid, 'transactions'));
               const projRef = collection(db, DB_COL(user.uid, 'projections'));
 
@@ -5654,41 +5897,50 @@
                 return t.type === 'income' ? bal + t.amount : bal - t.amount;
               }, appState.openingBalance);
 
+              // Archive current period to Firestore BEFORE deleting anything.
+              // If this write fails, the catch block aborts — no data loss.
+              const archiveMonth = appState.filterMonth || now.toISOString().slice(0, 7);
+              if (appState.transactions.length > 0 || appState.projections.length > 0) {
+                const archiveRef = doc(
+                  db,
+                  `artifacts/${APP_ID}/users/${user.uid}/user_data/archive_${archiveMonth}`,
+                );
+                await setDoc(archiveRef, {
+                  month: archiveMonth,
+                  archivedAt: new Date().toISOString(),
+                  openingBalance: appState.openingBalance,
+                  finalBalance,
+                  transactions: appState.transactions.map((t) => ({ ...t })),
+                  projections: appState.projections.map((p) => ({ ...p })),
+                });
+              }
+
               const batch = writeBatch(db);
 
-              // Delete existing transactions + projections
+              // Delete existing transactions + projections from active collection
               appState.transactions.forEach((t) => batch.delete(doc(txRef, t.id)));
               appState.projections.forEach((p) => batch.delete(doc(projRef, p.id)));
 
               // Update opening balance
               batch.update(doc(db, DB_PREF(user.uid)), { openingBalance: finalBalance });
 
-              // Pre-register recurring expenses due already in next month
-              const now = new Date();
-              const next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-              appState.recurringExpenses.forEach((re) => {
-                const txDate = new Date(next.getFullYear(), next.getMonth(), re.day)
-                  .toISOString()
-                  .slice(0, 10);
-                const txData = {
-                  date: txDate,
-                  description: re.description,
-                  category: re.category,
-                  bank: re.bank,
-                  amount: re.amount,
-                  type: 'expense',
-                  createdAt: new Date().toISOString(),
-                };
-                if (re.day <= now.getDate()) {
-                  const ref = doc(txRef);
-                  batch.set(ref, { ...txData, id: ref.id });
-                }
-              });
-
               await batch.commit();
+
+              // Reset Gastos Comunes: limpiar paidDay de todos los ítems
+              if (appState.gastosComunes?.items?.length > 0) {
+                appState.gastosComunes.items.forEach((item) => {
+                  if (item.distribution) {
+                    Object.keys(item.distribution).forEach((key) => {
+                      delete item.distribution[key].paidDay;
+                    });
+                  }
+                });
+                await saveGastosComunesState();
+              }
 
               // Update filter to next month
               appState.filterMonth = next.toISOString().slice(0, 7);
+              localStorage.setItem('foresee-filter-month', appState.filterMonth);
               switchTab('registros');
               showToast('Nuevo mes iniciado correctamente.', 'success');
             } catch (err) {
@@ -6678,7 +6930,7 @@
           const txRef = doc(collection(db, DB_COL(user.uid, 'transactions')));
           await setDoc(txRef, {
             id: txRef.id,
-            type: 'expense',
+            type: 'income',
             amount,
             description,
             date,
@@ -6835,9 +7087,9 @@
             tdChk.appendChild(chk);
           }
 
-          // Fecha
+          // Fecha — solo el día (igual que reg-table)
           const tdDate = tr.insertCell();
-          tdDate.textContent = formatDate(p.date);
+          tdDate.textContent = p.date ? parseInt(p.date.split('-')[2], 10) : '—';
 
           // Descripción
           const tdDesc = tr.insertCell();
@@ -7659,6 +7911,34 @@
           if (!btn) return;
           if (btn.dataset.action === 'edit') openEditModal(btn.dataset.id);
           if (btn.dataset.action === 'delete') deleteTransaction(btn.dataset.id);
+          if (btn.dataset.action === 'info') {
+            const row = btn.closest('tr');
+            const next = row.nextElementSibling;
+            if (next?.classList.contains('info-row')) {
+              next.remove();
+            } else {
+              const infoTr = document.createElement('tr');
+              infoTr.className = 'info-row';
+              const infoTd = document.createElement('td');
+              infoTd.colSpan = 8;
+              const inner = document.createElement('div');
+              inner.className = 'info-row-content';
+              if (btn.dataset.desc) {
+                const dSpan = document.createElement('span');
+                dSpan.textContent = btn.dataset.desc;
+                inner.appendChild(dSpan);
+              }
+              if (btn.dataset.bank) {
+                const bSpan = document.createElement('span');
+                bSpan.className = 'info-bank';
+                bSpan.textContent = btn.dataset.bank;
+                inner.appendChild(bSpan);
+              }
+              infoTd.appendChild(inner);
+              infoTr.appendChild(infoTd);
+              row.after(infoTr);
+            }
+          }
         });
 
         // Checkboxes — select-all para las 3 tablas
@@ -7693,6 +7973,7 @@
         // Filter changes → re-render
         document.getElementById('reg-filter-month').addEventListener('change', (e) => {
           appState.filterMonth = e.target.value;
+          localStorage.setItem('foresee-filter-month', e.target.value);
           renderTransactionsTable();
         });
         document.getElementById('reg-filter-bank').addEventListener('change', (e) => {
@@ -7702,6 +7983,12 @@
         document.getElementById('reg-filter-cat').addEventListener('change', (e) => {
           appState.filterCategory = e.target.value;
           renderTransactionsTable();
+        });
+
+        // Filter group toggle (mobile)
+        document.addEventListener('click', (e) => {
+          const btn = e.target.closest('.btn-filter-toggle');
+          if (btn) btn.closest('.filter-group').classList.toggle('filter-open');
         });
 
         document.getElementById('btn-save-budgets').addEventListener('click', handleSaveBudgets);
@@ -7798,6 +8085,7 @@
         document.getElementById('proj-save-btn').addEventListener('click', handleProjSubmit);
         document.getElementById('proj-filter-month').addEventListener('change', (e) => {
           appState.filterMonth = e.target.value;
+          localStorage.setItem('foresee-filter-month', e.target.value);
           renderProyeccionTable();
         });
         document.getElementById('rep-filter-month').addEventListener('change', () => {
@@ -7870,7 +8158,11 @@
           'blur',
           (e) => {
             if (e.target.matches('.item-card-name, .item-card-total, .person-chip-name')) {
-              saveGastosComunesState();
+              const input = e.target;
+              saveGastosComunesState().then(() => {
+                input.style.borderBottomColor = 'var(--color-success)';
+                setTimeout(() => { input.style.borderBottomColor = ''; }, 800);
+              });
             }
           },
           true,
