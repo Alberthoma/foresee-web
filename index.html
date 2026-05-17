@@ -1113,8 +1113,12 @@
       }
 
       /* Elementos visibles solo en mobile — ocultos por defecto en desktop */
-      .btn-filter-toggle { display: none; }
-      .btn-row-info      { display: none; }
+      .btn-filter-toggle {
+        display: none;
+      }
+      .btn-row-info {
+        display: none;
+      }
 
       /* =====================================================================
        20. RESPONSIVE — MOBILE (≤ 768px)
@@ -1126,12 +1130,12 @@
         }
 
         body {
-          padding-top: calc(var(--header-bar-h) + var(--tab-bar-mobile-h));
+          padding-top: var(--tab-bar-mobile-h);
         }
 
-        /* Shrink header on mobile */
+        /* Header siempre oculto en mobile */
         #app-header {
-          height: var(--header-bar-h);
+          display: none;
         }
         .logotipo {
           width: 36px;
@@ -1149,9 +1153,10 @@
           display: none;
         }
 
-        /* Tab bar: top on mobile, increased height */
+        /* Tab bar: siempre pegado al borde superior en mobile */
         #tab-bar {
           height: var(--tab-bar-mobile-h);
+          top: 0;
         }
 
         /* Content view: header hidden, padding = tab-bar only */
@@ -3938,7 +3943,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v1.0.0</p>
+      <p id="app-version">v 0.0.0.1</p>
     </footer>
 
     <script type="module">
@@ -3956,6 +3961,7 @@
       import {
         initializeFirestore,
         persistentLocalCache,
+        persistentMultipleTabManager,
         doc,
         collection,
         addDoc,
@@ -3991,7 +3997,9 @@
        =================================================================== */
       const firebaseApp = initializeApp(FIREBASE_CONFIG);
       const auth = getAuth(firebaseApp);
-      const db = initializeFirestore(firebaseApp, { localCache: persistentLocalCache() });
+      const db = initializeFirestore(firebaseApp, {
+        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+      });
 
       /* ===================================================================
        STATE
@@ -4122,8 +4130,20 @@
 
       function formatMonthLabel(yyyyMm) {
         if (!yyyyMm) return '';
-        const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                        'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        const MONTHS = [
+          'Enero',
+          'Febrero',
+          'Marzo',
+          'Abril',
+          'Mayo',
+          'Junio',
+          'Julio',
+          'Agosto',
+          'Septiembre',
+          'Octubre',
+          'Noviembre',
+          'Diciembre',
+        ];
         const [y, m] = yyyyMm.split('-');
         return `${MONTHS[parseInt(m, 10) - 1]} ${y}`;
       }
@@ -4490,7 +4510,10 @@
             if (ly < currentYear || lm < currentMonth) {
               gapStartMonth = lm + 1;
               gapStartYear = ly;
-              if (gapStartMonth > 11) { gapStartMonth = 0; gapStartYear++; }
+              if (gapStartMonth > 11) {
+                gapStartMonth = 0;
+                gapStartYear++;
+              }
               // No retroceder más de 12 meses
               const cap = new Date(currentYear, currentMonth - 11, 1);
               if (new Date(gapStartYear, gapStartMonth, 1) < cap) {
@@ -4540,7 +4563,10 @@
           }
 
           m++;
-          if (m > 11) { m = 0; y++; }
+          if (m > 11) {
+            m = 0;
+            y++;
+          }
         }
 
         if (!toCreate.length) return;
@@ -4647,7 +4673,14 @@
               },
               { monthIncome: 0, monthExpenses: 0, totalIncome: 0, totalExpenses: 0 },
             ));
-          appState._dashCache = { month, txCount, monthIncome, monthExpenses, totalIncome, totalExpenses };
+          appState._dashCache = {
+            month,
+            txCount,
+            monthIncome,
+            monthExpenses,
+            totalIncome,
+            totalExpenses,
+          };
         }
 
         const balance = appState.openingBalance + totalIncome - totalExpenses;
@@ -4785,7 +4818,9 @@
 
         // Índice de posición original en appState.transactions para desempate dentro del mismo día.
         const txOrder = {};
-        appState.transactions.forEach((t, i) => { txOrder[t.id] = i; });
+        appState.transactions.forEach((t, i) => {
+          txOrder[t.id] = i;
+        });
 
         // Compute running balance map from ALL transactions: ascending por fecha,
         // ascendente por índice dentro del mismo día (orden de inserción).
@@ -5231,8 +5266,23 @@
         closeTransferModal();
         try {
           const colRef = collection(db, DB_COL(user.uid, 'transactions'));
-          await addDoc(colRef, { type: 'transfer', date, amount, createdAt: new Date().toISOString(), bank: from, description: `Transferencia a ${to}` });
-          await addDoc(colRef, { type: 'income', transferLeg: true, date, amount, createdAt: new Date().toISOString(), bank: to, description: `Transferencia desde ${from}` });
+          await addDoc(colRef, {
+            type: 'transfer',
+            date,
+            amount,
+            createdAt: new Date().toISOString(),
+            bank: from,
+            description: `Transferencia a ${to}`,
+          });
+          await addDoc(colRef, {
+            type: 'income',
+            transferLeg: true,
+            date,
+            amount,
+            createdAt: new Date().toISOString(),
+            bank: to,
+            description: `Transferencia desde ${from}`,
+          });
           showToast('Transferencia registrada.', 'success');
         } catch (err) {
           console.error('[Firestore] Transferencia:', err);
@@ -8161,7 +8211,9 @@
               const input = e.target;
               saveGastosComunesState().then(() => {
                 input.style.borderBottomColor = 'var(--color-success)';
-                setTimeout(() => { input.style.borderBottomColor = ''; }, 800);
+                setTimeout(() => {
+                  input.style.borderBottomColor = '';
+                }, 800);
               });
             }
           },
