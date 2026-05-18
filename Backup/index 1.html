@@ -6,7 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Foresee Finances</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -1426,6 +1425,12 @@
           text-align: right;
         }
 
+        /* Presupuesto: hide progreso column */
+        #budget-table th:nth-child(4),
+        #budget-table td:nth-child(4) {
+          display: none;
+        }
+
         .btn-key {
           font-size: var(--font-base);
           padding: var(--space-xs);
@@ -1894,11 +1899,6 @@
         grid-template-columns: repeat(3, 1fr);
         gap: var(--space-lg);
       }
-      @media (max-width: 768px) {
-        .cfg-grid {
-          grid-template-columns: 1fr;
-        }
-      }
       .cfg-grid-section h3 {
         font-size: var(--font-md);
         font-weight: 400;
@@ -2116,12 +2116,6 @@
         font-size: var(--font-sm);
         text-align: right;
         font-family: inherit;
-      }
-      @media (max-width: 768px) {
-        .budget-input {
-          max-width: 70px;
-          padding: 3px 4px;
-        }
       }
       .budget-input:focus {
         outline: none;
