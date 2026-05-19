@@ -4921,12 +4921,15 @@
           mode === 'projection' ? 'Nueva Proyección' : 'Nueva Transacción';
         document.getElementById('calc-modal').classList.add('active');
 
-        const d = document.getElementById('calc-date');
-        try {
-          d.showPicker();
-        } catch (_) {
-          d.focus();
-        }
+        // Abrir calendario automáticamente al entrar al modal
+        setTimeout(() => {
+          const d = document.getElementById('calc-date');
+          try {
+            d.showPicker();
+          } catch (_) {
+            d.focus();
+          }
+        }, 80);
       }
 
       function closeCalcModal() {
