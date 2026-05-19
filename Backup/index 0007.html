@@ -1139,14 +1139,6 @@
         display: none;
       }
 
-      #reg-table tbody td:nth-child(3) {
-        width: 200px; /* Ancho fijo muy pequeño */
-        max-width: 200px; /* Ancho máximo igual al fijo */
-        white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
-        overflow: hidden; /* Oculta cualquier desbordamiento */
-        text-overflow: ellipsis; /* Añade "..." si el contenido es demasiado largo */
-      }
-
       /* =====================================================================
        20. RESPONSIVE — MOBILE (≤ 768px)
        ===================================================================== */
@@ -1414,14 +1406,12 @@
           text-align: right;
         }
 
-        /* ── Proyección: hide Descripción(3), Banco(5), Acciones(8) ──
-           Visible: chk(1) fecha(2) cat(4) monto(6) saldo(7) */
+        /* ── Proyección: hide Descripción(3), Acciones(7) ──
+           Visible: chk(1) fecha(2) cat(4) monto(5) saldo(6) */
         #proj-table th:nth-child(3),
         #proj-table td:nth-child(3),
-        #proj-table th:nth-child(5),
-        #proj-table td:nth-child(5),
-        #proj-table th:nth-child(8),
-        #proj-table td:nth-child(8) {
+        #proj-table th:nth-child(7),
+        #proj-table td:nth-child(7) {
           display: none;
         }
         #proj-table {
@@ -1443,11 +1433,11 @@
           padding: 4px 2px;
           text-align: right;
         }
-        #proj-table tbody td:nth-child(6) {
+        #proj-table tbody td:nth-child(5) {
           width: 39%;
           white-space: nowrap;
         }
-        #proj-table tbody td:nth-child(7) {
+        #proj-table tbody td:nth-child(6) {
           width: 39%;
           white-space: nowrap;
           text-align: right;
@@ -1582,13 +1572,10 @@
       .row--transfer td:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)) {
         color: var(--color-text);
       }
-      /* Banco (col 5) en reg-table y proj-table también neutro */
+      /* Banco (col 5) en reg-table también neutro — en proj-table col 5 es Monto, no aplica */
       #reg-table .row--income td:nth-child(5),
       #reg-table .row--expense td:nth-child(5),
-      #reg-table .row--transfer td:nth-child(5),
-      #proj-table .row--income td:nth-child(5),
-      #proj-table .row--expense td:nth-child(5),
-      #proj-table .row--transfer td:nth-child(5) {
+      #reg-table .row--transfer td:nth-child(5) {
         color: var(--color-text);
       }
 
@@ -1604,10 +1591,10 @@
       #reg-table td:nth-child(6),
       #reg-table th:nth-child(7),
       #reg-table td:nth-child(7),
+      #proj-table th:nth-child(5),
+      #proj-table td:nth-child(5),
       #proj-table th:nth-child(6),
-      #proj-table td:nth-child(6),
-      #proj-table th:nth-child(7),
-      #proj-table td:nth-child(7) {
+      #proj-table td:nth-child(6) {
         text-align: right;
       }
 
@@ -3094,7 +3081,6 @@
                   <th>Fecha</th>
                   <th>Descripción</th>
                   <th>Categoría</th>
-                  <th>Banco</th>
                   <th>Monto</th>
                   <th>Saldo</th>
                   <th>Acciones</th>
@@ -3103,12 +3089,12 @@
               <tbody id="proj-tbody"></tbody>
               <tfoot id="proj-tfoot" class="hidden">
                 <tr>
-                  <td colspan="5" class="tfoot-label">Ingresos proyectados:</td>
+                  <td colspan="4" class="tfoot-label">Ingresos proyectados:</td>
                   <td id="proj-total-income" class="amount--income"></td>
                   <td colspan="2"></td>
                 </tr>
                 <tr>
-                  <td colspan="5" class="tfoot-label">Gastos proyectados:</td>
+                  <td colspan="4" class="tfoot-label">Gastos proyectados:</td>
                   <td id="proj-total-expenses" class="amount--expense"></td>
                   <td colspan="2"></td>
                 </tr>
@@ -4026,7 +4012,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.0.7</p>
+      <p id="app-version">v 0.0.0.6</p>
     </footer>
 
     <script type="module">
@@ -7291,10 +7277,6 @@
           } else {
             tdCat.textContent = '—';
           }
-
-          // Banco
-          const tdBank = tr.insertCell();
-          tdBank.textContent = p.bank || '—';
 
           // Monto
           const tdAmt = tr.insertCell();
