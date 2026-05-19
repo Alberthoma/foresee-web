@@ -6,10 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Foresee Finances</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>"
-    />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -1243,14 +1240,26 @@
           min-height: 44px;
         }
 
-        /* Tablas: scroll horizontal — todas las columnas visibles */
-        .data-table {
-          white-space: nowrap;
+        /* Hide table headers on mobile (reference app behavior) */
+        #reg-table thead,
+        #rec-table thead,
+        #proj-table thead,
+        #cc-table thead,
+        #budget-table thead {
+          display: none;
         }
-        .data-table th,
-        .data-table td {
-          font-size: 0.82rem;
-          padding: 5px 6px;
+
+        /* Table cells scoped to tbody (tfoot queda libre) */
+        #reg-table tbody td,
+        #rec-table tbody td,
+        #proj-table tbody td,
+        #budget-table tbody td {
+          font-size: 1rem;
+          font-weight: 400;
+          padding: 4px 2px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 0;
         }
 
         /* Filter group: toggle muestra selects en mobile */
@@ -1273,6 +1282,148 @@
           display: block;
           flex: 1;
           min-width: 110px;
+        }
+
+        /* ── Registros: hide Descripción(3), Acciones(8); col5 = ícono info ──
+           Visible: chk(1) día(2) cat(4) info(5) monto(6) saldo(7) */
+        #reg-table th:nth-child(3),
+        #reg-table td:nth-child(3),
+        #reg-table th:nth-child(8),
+        #reg-table td:nth-child(8) {
+          display: none;
+        }
+        #reg-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #reg-table tbody td:nth-child(1) {
+          width: 5%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #reg-table tbody td:nth-child(2) {
+          width: 7%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #reg-table tbody td:nth-child(4) {
+          width: 7%;
+          padding: 4px 2px;
+        }
+        #reg-table tbody td:nth-child(5) {
+          width: 7%;
+          text-align: center;
+          padding: 4px 0;
+        }
+        #reg-table tbody td:nth-child(6) {
+          width: 37%;
+          white-space: nowrap;
+        }
+        #reg-table tbody td:nth-child(7) {
+          width: 37%;
+          white-space: nowrap;
+          text-align: right;
+        }
+
+        /* Info icon (mobile): sustituye el texto de banco en col5 */
+        .cell-bank-text {
+          display: none;
+        }
+        .btn-row-info {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: var(--color-accent);
+          color: #fff;
+          font-size: 0.7rem;
+          font-weight: 400;
+          font-style: italic;
+          border: none;
+          cursor: pointer;
+        }
+
+        /* Hide category label, keep icon */
+        .cat-display span {
+          display: none;
+        }
+        .cat-display img {
+          width: 22px;
+          height: 22px;
+        }
+
+        /* ── Recurrentes: hide Banco(6), Acciones(7) ──
+           Visible: chk(1) día(2) desc(3) cat(4) monto(5) */
+        #rec-table th:nth-child(6),
+        #rec-table td:nth-child(6),
+        #rec-table th:nth-child(7),
+        #rec-table td:nth-child(7) {
+          display: none;
+        }
+        #rec-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #rec-table tbody td:nth-child(1) {
+          width: 6%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #rec-table tbody td:nth-child(2) {
+          width: 8%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #rec-table tbody td:nth-child(3) {
+          width: 48%;
+        }
+        #rec-table tbody td:nth-child(4) {
+          width: 8%;
+          padding: 4px 2px;
+          text-align: center;
+        }
+        #rec-table tbody td:nth-child(5) {
+          width: 30%;
+          white-space: nowrap;
+          text-align: right;
+        }
+
+        /* ── Proyección: hide Descripción(3), Acciones(7) ──
+           Visible: chk(1) día(2) cat(4) monto(5) saldo(6) */
+        #proj-table th:nth-child(3),
+        #proj-table td:nth-child(3),
+        #proj-table th:nth-child(7),
+        #proj-table td:nth-child(7) {
+          display: none;
+        }
+        #proj-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #proj-table tbody td:nth-child(1) {
+          width: 6%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #proj-table tbody td:nth-child(2) {
+          width: 8%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #proj-table tbody td:nth-child(4) {
+          width: 8%;
+          padding: 4px 2px;
+        }
+        #proj-table tbody td:nth-child(5) {
+          width: 39%;
+          white-space: nowrap;
+        }
+        #proj-table tbody td:nth-child(6) {
+          width: 39%;
+          white-space: nowrap;
+          text-align: right;
         }
 
         .btn-key {
@@ -1329,8 +1480,22 @@
           font-size: 0.78rem;
         }
 
+        /* Tarjetas: hide Línea crédito(5), Interés%(7), Meses(8) */
+        #cc-table th:nth-child(5),
+        #cc-table td:nth-child(5),
+        #cc-table th:nth-child(7),
+        #cc-table td:nth-child(7),
+        #cc-table th:nth-child(8),
+        #cc-table td:nth-child(8) {
+          display: none;
+        }
+        #cc-table th,
+        #cc-table td {
+          font-size: 0.78rem;
+          padding: 5px 3px;
+        }
         .cc-table-input {
-          max-width: 70px;
+          max-width: 80px;
           font-size: 0.78rem;
           padding: 3px 4px;
         }
@@ -1448,7 +1613,6 @@
 
       .calc-meta {
         display: flex;
-        flex-direction: column;
         gap: var(--space-sm);
         margin-bottom: var(--space-sm);
       }
@@ -1522,61 +1686,6 @@
       }
 
       /* =====================================================================
-       22a. CALCULATOR MODAL — glow de tipo (ingreso/gasto)
-       ===================================================================== */
-      #calc-modal .modal-box.tipo--income {
-        box-shadow:
-          0 0 0 1.5px var(--color-success),
-          0 8px 32px rgba(34, 197, 94, 0.22);
-      }
-      #calc-modal .modal-box.tipo--expense {
-        box-shadow:
-          0 0 0 1.5px var(--color-danger),
-          0 8px 32px rgba(240, 82, 82, 0.22);
-      }
-      #calc-modal .calc-display.tipo--income {
-        border-color: var(--color-success);
-        color: var(--color-success);
-      }
-      #calc-modal .calc-display.tipo--expense {
-        border-color: var(--color-danger);
-        color: var(--color-danger);
-      }
-
-      /* =====================================================================
-       22b. CALCULATOR MODAL — compacto (reduce altura total)
-       ===================================================================== */
-      #calc-modal .modal-body {
-        padding: var(--space-sm) var(--space-md);
-      }
-      #calc-modal .tipo-bar {
-        margin-bottom: var(--space-xs);
-      }
-      #calc-modal .calc-meta {
-        gap: 5px;
-        margin-bottom: 5px;
-      }
-      #calc-modal .calc-meta input,
-      #calc-modal .calc-meta select {
-        min-height: unset;
-        height: 34px;
-        padding: 4px var(--space-sm);
-      }
-      #calc-modal .calc-display {
-        min-height: 42px;
-        font-size: 1.5rem;
-        padding: 6px var(--space-md);
-        margin-bottom: 5px;
-      }
-      #calc-modal .keypad {
-        gap: 4px;
-      }
-      #calc-modal .btn-key {
-        padding: 8px var(--space-xs);
-        font-size: var(--font-md);
-      }
-
-      /* =====================================================================
        23. CATEGORY MODAL
        ===================================================================== */
       .cat-grid {
@@ -1616,76 +1725,99 @@
       }
 
       /* =====================================================================
-       24b. MODAL FORM — columna única (rec-modal, cc-modal)
+       24. DESCRIPTION PROMPT
        ===================================================================== */
-      .modal-form {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: var(--space-md);
+      .desc-prompt {
+        padding: var(--space-md);
+        border-top: 1px solid var(--color-border);
+        display: none;
       }
-      .modal-input-wrap {
-        position: relative;
+      .desc-prompt.visible {
+        display: block;
+      }
+      .desc-prompt-header {
         display: flex;
         align-items: center;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-md);
       }
-      .modal-input-wrap input,
-      .modal-input-wrap select {
-        width: 100%;
-        height: 34px;
+      .desc-icon {
+        width: 36px;
+        height: 36px;
+        background-color: rgba(79, 143, 255, 0.15);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .desc-label {
+        font-size: var(--font-sm);
+        color: var(--color-text-muted);
+      }
+      .desc-btn-row {
+        display: flex;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-sm);
+      }
+      .btn-desc {
+        flex: 1;
+        padding: var(--space-sm);
+        border-radius: var(--radius-md);
+        font-weight: 400;
+        font-size: var(--font-sm);
+        cursor: pointer;
+        border: 2px solid var(--color-border);
+        background: transparent;
+        color: var(--color-text);
+        transition: border-color 0.2s;
+      }
+      .btn-desc:hover {
+        border-color: var(--color-text-muted);
+      }
+      .btn-desc--yes {
+        background-color: var(--color-accent);
+        border-color: var(--color-accent);
+        color: #fff;
+      }
+      .btn-desc--yes:hover {
+        opacity: 0.9;
+        border-color: var(--color-accent);
+      }
+      .desc-input-row {
+        display: flex;
+        gap: var(--space-xs);
+        margin-top: var(--space-sm);
+      }
+      .desc-input-row input {
+        flex: 1;
+        min-width: 0;
         background-color: var(--color-surface-2);
         border: 1px solid var(--color-border);
         color: var(--color-text);
         border-radius: var(--radius-sm);
-        padding: 4px var(--space-sm);
+        padding: var(--space-xs) var(--space-sm);
         font-size: var(--font-sm);
-        font-family: inherit;
-        min-height: unset;
       }
-      .modal-input-wrap input:focus,
-      .modal-input-wrap select:focus {
+      .desc-input-row input:focus {
         outline: none;
         border-color: var(--color-accent);
       }
-      .modal-input-wrap--prefix input {
-        padding-left: 28px;
-      }
-      .modal-prefix {
-        position: absolute;
-        left: 10px;
-        font-size: var(--font-sm);
+      .desc-input-row input::placeholder {
         color: var(--color-text-muted);
-        pointer-events: none;
-        user-select: none;
       }
-      .btn-modal-save {
-        width: 100%;
-        padding: var(--space-sm);
+      .btn-desc-ok {
         background-color: var(--color-accent);
-        color: #fff;
         border: none;
-        border-radius: var(--radius-md);
-        font-size: var(--font-md);
-        font-family: inherit;
+        border-radius: var(--radius-sm);
+        padding: var(--space-xs) var(--space-sm);
+        color: #fff;
+        font-weight: 400;
         cursor: pointer;
-        transition: opacity 0.15s;
+        flex-shrink: 0;
       }
-      .btn-modal-save:hover {
-        opacity: 0.88;
-      }
-      .btn-modal-save:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-      #rec-modal .modal-box {
-        box-shadow:
-          0 0 0 1.5px var(--color-danger),
-          0 8px 32px rgba(240, 82, 82, 0.18);
-      }
-      #cc-modal .modal-box {
-        box-shadow:
-          0 0 0 1.5px var(--color-accent),
-          0 8px 32px rgba(79, 143, 255, 0.18);
+      .btn-desc-ok:hover {
+        opacity: 0.9;
       }
 
       /* =====================================================================
@@ -2377,11 +2509,6 @@
       #cc-table td:nth-child(1),
       #cc-table td:nth-child(3) {
         text-align: center;
-      }
-      #cc-table th,
-      #cc-table td,
-      #cc-table .cc-table-input {
-        font-size: 0.75rem;
       }
       .cc-empty {
         padding: var(--space-xl) var(--space-md);
@@ -3211,18 +3338,11 @@
             <button class="btn-tipo" data-tipo="income">Ingreso</button>
             <button class="btn-tipo" data-tipo="expense">Gasto</button>
           </div>
-          <!-- Fecha + Descripción + Banco -->
+          <!-- Fecha + Banco -->
           <div class="calc-meta">
             <input type="date" id="calc-date" />
-            <input
-              type="text"
-              id="calc-desc"
-              list="description-list"
-              placeholder="Descripción…"
-              autocomplete="off"
-            />
             <select id="calc-bank">
-              <option value="">— Banco / Cuenta —</option>
+              <option value="">-- Banco --</option>
             </select>
           </div>
           <!-- Display -->
@@ -3268,6 +3388,42 @@
         </div>
         <div class="modal-body modal-body--compact">
           <div class="cat-grid" id="cat-grid"></div>
+        </div>
+        <!-- Description prompt — hidden until category selected -->
+        <div class="desc-prompt" id="desc-prompt">
+          <div class="desc-prompt-header">
+            <div class="desc-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#4f8fff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </div>
+            <span class="desc-label">¿Deseas agregar una descripción?</span>
+          </div>
+          <div class="desc-btn-row">
+            <button class="btn-desc" id="desc-no-btn">No, guardar</button>
+            <button class="btn-desc btn-desc--yes" id="desc-yes-btn">Sí, agregar</button>
+          </div>
+          <div class="desc-input-row hidden" id="desc-input-row">
+            <input
+              type="text"
+              id="desc-input"
+              list="description-list"
+              placeholder="Descripción…"
+              autocomplete="off"
+            />
+            <button class="btn-desc-ok" id="desc-ok-btn">✓</button>
+          </div>
         </div>
       </div>
     </div>
@@ -3431,70 +3587,46 @@
         </div>
         <div class="modal-body">
           <form id="cc-form" novalidate>
-            <div class="modal-form">
-              <div class="modal-input-wrap">
-                <input
-                  type="text"
-                  id="cc-bank"
-                  placeholder="Banco o nombre de la tarjeta"
-                  required
-                />
+            <div class="form-grid">
+              <div class="form-field col-full">
+                <label for="cc-bank">Banco / Nombre</label>
+                <input type="text" id="cc-bank" placeholder="Ej: Banco Mercantil" required />
               </div>
-              <div class="modal-input-wrap modal-input-wrap--prefix">
-                <span class="modal-prefix">$</span>
-                <input
-                  type="number"
-                  id="cc-amount"
-                  min="0"
-                  step="0.01"
-                  placeholder="Monto adeudado"
-                  required
-                />
-              </div>
-              <div class="modal-input-wrap modal-input-wrap--prefix">
-                <span class="modal-prefix">$</span>
-                <input
-                  type="number"
-                  id="cc-limit"
-                  min="0"
-                  step="0.01"
-                  placeholder="Línea de crédito (opcional)"
-                />
-              </div>
-              <div class="modal-input-wrap modal-input-wrap--prefix">
-                <span class="modal-prefix">#</span>
+              <div class="form-field">
+                <label for="cc-due-date">Día de Pago (1-31)</label>
                 <input
                   type="number"
                   id="cc-due-date"
                   min="1"
                   max="31"
-                  placeholder="Día de pago (1–31)"
+                  placeholder="Ej: 15"
                   required
                 />
               </div>
-              <div class="modal-input-wrap modal-input-wrap--prefix">
-                <span class="modal-prefix">%</span>
+              <div class="form-field">
+                <label for="cc-amount">Monto Adeudado</label>
                 <input
                   type="number"
-                  id="cc-rate"
+                  id="cc-amount"
                   min="0"
                   step="0.01"
-                  placeholder="Interés anual"
+                  placeholder="0.00"
                   required
                 />
               </div>
-              <div class="modal-input-wrap modal-input-wrap--prefix">
-                <span class="modal-prefix">÷</span>
-                <input
-                  type="number"
-                  id="cc-months"
-                  min="1"
-                  placeholder="Meses para saldar"
-                  required
-                />
+              <div class="form-field">
+                <label for="cc-rate">Interés Anual (%)</label>
+                <input type="number" id="cc-rate" min="0" step="0.01" placeholder="0.00" required />
+              </div>
+              <div class="form-field">
+                <label for="cc-months">Meses para Saldar</label>
+                <input type="number" id="cc-months" min="1" placeholder="12" required />
               </div>
             </div>
-            <button type="submit" class="btn-modal-save" id="cc-save-btn">Añadir Tarjeta</button>
+            <div class="form-actions">
+              <button type="button" class="btn-outline" id="cc-cancel-btn">Cancelar</button>
+              <button type="submit" class="btn-primary" id="cc-save-btn">Añadir Tarjeta</button>
+            </div>
           </form>
         </div>
       </div>
@@ -3658,51 +3790,50 @@
         <div class="modal-body">
           <form id="rec-form" novalidate>
             <input type="hidden" id="rec-edit-id" />
-            <div class="modal-form">
-              <div class="modal-input-wrap">
+            <div class="form-grid">
+              <div class="form-field col-full">
+                <label for="rec-desc">Descripción</label>
                 <input
                   type="text"
                   id="rec-desc"
                   list="description-list"
                   autocomplete="off"
-                  placeholder="Descripción del gasto"
+                  placeholder="Ej: Pago de Alquiler"
                   required
                 />
               </div>
-              <div class="modal-input-wrap">
+              <div class="form-field">
+                <label for="rec-cat">Categoría</label>
                 <select id="rec-cat" required>
-                  <option value="">— Categoría —</option>
+                  <option value="">-- Categoría --</option>
                 </select>
               </div>
-              <div class="modal-input-wrap">
+              <div class="form-field">
+                <label for="rec-bank">Banco/Cuenta</label>
                 <select id="rec-bank" required>
-                  <option value="">— Banco / Cuenta —</option>
+                  <option value="">-- Banco --</option>
                 </select>
               </div>
-              <div class="modal-input-wrap modal-input-wrap--prefix">
-                <span class="modal-prefix">$</span>
+              <div class="form-field">
+                <label for="rec-amount">Monto Mensual</label>
                 <input
                   type="number"
                   id="rec-amount"
                   min="0.01"
                   step="0.01"
-                  placeholder="Monto mensual"
+                  placeholder="0.00"
                   required
                 />
               </div>
-              <div class="modal-input-wrap modal-input-wrap--prefix">
-                <span class="modal-prefix">#</span>
-                <input
-                  type="number"
-                  id="rec-day"
-                  min="1"
-                  max="31"
-                  placeholder="Día de pago (1–31)"
-                  required
-                />
+              <div class="form-field">
+                <label for="rec-day">Día de Pago (1-31)</label>
+                <input type="number" id="rec-day" min="1" max="31" placeholder="Ej: 15" required />
               </div>
             </div>
-            <button type="submit" class="btn-modal-save" id="rec-save-btn">Guardar</button>
+            <div class="form-actions">
+              <button type="button" class="btn-outline" id="rec-cancel-btn">Cancelar</button>
+              <button type="submit" class="btn-primary" id="rec-save-btn">Guardar</button>
+            </div>
           </form>
         </div>
       </div>
@@ -3827,7 +3958,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.0.3</p>
+      <p id="app-version">v 0.0.0.2</p>
     </footer>
 
     <script type="module">
@@ -4903,33 +5034,23 @@
       /* ===================================================================
        CALCULATOR MODAL
        =================================================================== */
-      function openCalcModal(mode = 'transaction') {
+      function openCalcModal() {
         calcExpr = '0';
-        tempTxData = { _mode: mode };
+        tempTxData = {};
 
+        // Default tipo = expense
         setCalcTipo('expense');
 
+        // Default date = today
         const today = new Date().toISOString().slice(0, 10);
         document.getElementById('calc-date').value = today;
-        document.getElementById('calc-desc').value = '';
 
+        // Populate bank select
         populateBankSelects('calc-bank');
         document.getElementById('calc-bank').value = '';
 
         document.getElementById('calc-display').textContent = '0';
-        document.getElementById('calc-modal-title').textContent =
-          mode === 'projection' ? 'Nueva Proyección' : 'Nueva Transacción';
         document.getElementById('calc-modal').classList.add('active');
-
-        // Abrir calendario automáticamente al entrar al modal
-        setTimeout(() => {
-          const d = document.getElementById('calc-date');
-          try {
-            d.showPicker();
-          } catch (_) {
-            d.focus();
-          }
-        }, 80);
       }
 
       function closeCalcModal() {
@@ -4945,12 +5066,6 @@
             btn.classList.add(tipo === 'income' ? 'active--income' : 'active--expense');
           }
         });
-        const box = document.querySelector('#calc-modal .modal-box');
-        const display = document.getElementById('calc-display');
-        box.classList.toggle('tipo--income', tipo === 'income');
-        box.classList.toggle('tipo--expense', tipo === 'expense');
-        display.classList.toggle('tipo--income', tipo === 'income');
-        display.classList.toggle('tipo--expense', tipo === 'expense');
       }
 
       function handleCalcKey(key) {
@@ -4977,12 +5092,6 @@
       }
 
       function handleCalcKeyboard(e) {
-        // No interceptar cuando el foco está en un input/select/textarea
-        const tag = document.activeElement?.tagName;
-        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
-        // Solo actuar cuando el modal calculadora está activo
-        if (!document.getElementById('calc-modal').classList.contains('active')) return;
-
         const map = {
           Backspace: 'DEL',
           Enter: 'OK',
@@ -5046,6 +5155,12 @@
         const grid = document.getElementById('cat-grid');
         grid.innerHTML = '';
 
+        // Hide description prompt
+        const prompt = document.getElementById('desc-prompt');
+        prompt.classList.remove('visible');
+        document.getElementById('desc-input-row').classList.add('hidden');
+        document.getElementById('desc-input').value = '';
+
         appState.categories.forEach((cat) => {
           const btn = document.createElement('button');
           btn.className = 'btn-cat';
@@ -5072,11 +5187,16 @@
         document.getElementById('cat-modal').classList.remove('active');
       }
 
+      function showDescPrompt(categoryName) {
+        tempTxData.category = categoryName;
+        document.getElementById('desc-prompt').classList.add('visible');
+        document.getElementById('desc-no-btn').focus();
+      }
+
       /* ===================================================================
        SAVE TRANSACTION
        =================================================================== */
       async function finalizeTransaction(description) {
-        if (tempTxData._mode === 'projection') return finalizeProjection(description);
         const user = appState.currentUser;
         if (!user) return;
 
@@ -5117,50 +5237,6 @@
         } catch (err) {
           console.error('[Firestore] Guardar transacción:', err);
           showToast('Error al guardar la transacción.', 'error');
-        } finally {
-          hideLoading();
-          tempTxData = {};
-        }
-      }
-
-      async function finalizeProjection(description) {
-        const user = appState.currentUser;
-        if (!user) return;
-        const data = {
-          type: tempTxData.type,
-          amount: tempTxData.amount,
-          date: tempTxData.date,
-          bank: tempTxData.bank,
-          category: tempTxData.category || '',
-          description: description ? toTitleCase(description.trim()) : '',
-        };
-        closeCatModal();
-        showLoading();
-        try {
-          const ref = doc(collection(db, DB_COL(user.uid, 'projections')));
-          await setDoc(ref, { ...data, id: ref.id });
-          showToast('Proyección añadida.', 'success');
-          if (data.description && !appState.descriptions.includes(data.description)) {
-            openConfirmModal(
-              '¿Guardar descripción?',
-              `¿Deseas guardar "${data.description}" para usarla en el futuro?`,
-              async () => {
-                const newDescs = [...appState.descriptions, data.description];
-                try {
-                  await setDoc(
-                    doc(db, DB_PREF(user.uid)),
-                    { descriptions: newDescs },
-                    { merge: true },
-                  );
-                } catch (err) {
-                  console.error('[Firestore] Guardar descripción:', err);
-                }
-              },
-            );
-          }
-        } catch (err) {
-          console.error('[Firestore] Guardar proyección:', err);
-          showToast('Error al guardar la proyección.', 'error');
         } finally {
           hideLoading();
           tempTxData = {};
@@ -6529,7 +6605,6 @@
         const bank = toTitleCase(document.getElementById('cc-bank').value.trim());
         const dueDate = parseInt(document.getElementById('cc-due-date').value, 10);
         const amount = parseFloat(document.getElementById('cc-amount').value);
-        const limitVal = parseFloat(document.getElementById('cc-limit').value) || 0;
         const rate = parseFloat(document.getElementById('cc-rate').value);
         const months = parseInt(document.getElementById('cc-months').value, 10);
 
@@ -6564,7 +6639,7 @@
             amount,
             rate,
             months,
-            limit: limitVal,
+            limit: 0,
             exclude: false,
           });
           showToast(`Tarjeta "${bank}" añadida.`, 'success');
@@ -7826,18 +7901,10 @@
         document.getElementById('calc-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeCalcModal();
         });
-        // Tipo buttons — al seleccionar tipo, re-abre el calendario para iniciar la secuencia
+        // Tipo buttons
         document.getElementById('calc-modal').addEventListener('click', (e) => {
           const btn = e.target.closest('.btn-tipo');
-          if (btn) {
-            setCalcTipo(btn.dataset.tipo);
-            const d = document.getElementById('calc-date');
-            try {
-              d.showPicker();
-            } catch (_) {
-              d.focus();
-            }
-          }
+          if (btn) setCalcTipo(btn.dataset.tipo);
         });
         // Keypad (event delegation)
         document.getElementById('calc-modal').addEventListener('click', (e) => {
@@ -7851,27 +7918,26 @@
           if (e.target === e.currentTarget) closeCatModal();
         });
         // Category grid (event delegation)
-        // Categoría seleccionada → guardar con descripción ya completada en el modal
         document.getElementById('cat-grid').addEventListener('click', (e) => {
           const btn = e.target.closest('.btn-cat[data-name]');
-          if (btn) {
-            tempTxData.category = btn.dataset.name;
-            finalizeTransaction(document.getElementById('calc-desc').value.trim());
-          }
+          if (btn) showDescPrompt(btn.dataset.name);
         });
-
-        // Flujo automático: fecha → descripción → banco → calculadora
-        document.getElementById('calc-date').addEventListener('change', () => {
-          document.getElementById('calc-desc').focus();
+        // Description prompt buttons
+        document.getElementById('desc-no-btn').addEventListener('click', () => {
+          finalizeTransaction('');
         });
-        document.getElementById('calc-desc').addEventListener('keydown', (e) => {
+        document.getElementById('desc-yes-btn').addEventListener('click', () => {
+          document.getElementById('desc-input-row').classList.remove('hidden');
+          document.getElementById('desc-input').focus();
+        });
+        document.getElementById('desc-ok-btn').addEventListener('click', () => {
+          finalizeTransaction(document.getElementById('desc-input').value);
+        });
+        document.getElementById('desc-input').addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
-            document.getElementById('calc-bank').focus();
+            finalizeTransaction(e.target.value);
           }
-        });
-        document.getElementById('calc-bank').addEventListener('change', () => {
-          document.getElementById('calc-display').focus();
         });
 
         // ── Confirm modal ───────────────────────────────────────────────
@@ -8075,7 +8141,7 @@
         // ── Proyección ─────────────────────────────────────────────────
         document
           .getElementById('btn-add-projection')
-          .addEventListener('click', () => openCalcModal('projection'));
+          .addEventListener('click', () => openProjModal());
         document.getElementById('proj-close-btn').addEventListener('click', closeProjModal);
         document.getElementById('proj-cancel-btn').addEventListener('click', closeProjModal);
         document.getElementById('proj-modal').addEventListener('click', (e) => {
@@ -8105,6 +8171,7 @@
         // ── Tarjetas de Crédito ────────────────────────────────────────
         document.getElementById('btn-add-card').addEventListener('click', openCcModal);
         document.getElementById('cc-close-btn').addEventListener('click', closeCcModal);
+        document.getElementById('cc-cancel-btn').addEventListener('click', closeCcModal);
         document.getElementById('cc-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeCcModal();
         });
@@ -8335,47 +8402,11 @@
         // ── Gastos Recurrentes ──────────────────────────────────────────
         document.getElementById('btn-add-rec').addEventListener('click', () => openRecModal());
         document.getElementById('rec-close-btn').addEventListener('click', closeRecModal);
+        document.getElementById('rec-cancel-btn').addEventListener('click', closeRecModal);
         document.getElementById('rec-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeRecModal();
         });
         document.getElementById('rec-form').addEventListener('submit', handleRecFormSubmit);
-
-        // Enter-flow rec-form: desc → cat → bank → amount → day → submit
-        ['rec-desc', 'rec-cat', 'rec-bank', 'rec-amount'].forEach((id, i, arr) => {
-          document.getElementById(id).addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              document.getElementById(arr[i + 1]).focus();
-            }
-          });
-        });
-        document
-          .getElementById('rec-cat')
-          .addEventListener('change', () => document.getElementById('rec-bank').focus());
-        document
-          .getElementById('rec-bank')
-          .addEventListener('change', () => document.getElementById('rec-amount').focus());
-        document.getElementById('rec-day').addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('rec-form').requestSubmit();
-          }
-        });
-
-        // Enter-flow cc-form: bank → amount → limit → due-date → rate → months → submit
-        ['cc-bank', 'cc-amount', 'cc-limit', 'cc-due-date', 'cc-rate', 'cc-months'].forEach(
-          (id, i, arr) => {
-            document.getElementById(id).addEventListener('keydown', (e) => {
-              if (e.key !== 'Enter') return;
-              e.preventDefault();
-              if (i < arr.length - 1) {
-                document.getElementById(arr[i + 1]).focus();
-              } else {
-                document.getElementById('cc-form').requestSubmit();
-              }
-            });
-          },
-        );
         document.getElementById('rec-tbody').addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
