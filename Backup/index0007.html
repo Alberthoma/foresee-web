@@ -1139,13 +1139,12 @@
         display: none;
       }
 
-      #reg-table tbody td:nth-child(3),
-      #proj-table tbody td:nth-child(3) {
-        width: 200px;
-        max-width: 200px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      #reg-table tbody td:nth-child(3) {
+        width: 200px; /* Ancho fijo muy pequeño */
+        max-width: 200px; /* Ancho máximo igual al fijo */
+        white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+        overflow: hidden; /* Oculta cualquier desbordamiento */
+        text-overflow: ellipsis; /* Añade "..." si el contenido es demasiado largo */
       }
 
       /* =====================================================================
@@ -1415,10 +1414,12 @@
           text-align: right;
         }
 
-        /* ── Proyección: hide Descripción(3), Acciones(8) ──
-           Visible: chk(1) fecha(2) cat(4) info(5) monto(6) saldo(7) */
+        /* ── Proyección: hide Descripción(3), Banco(5), Acciones(8) ──
+           Visible: chk(1) fecha(2) cat(4) monto(6) saldo(7) */
         #proj-table th:nth-child(3),
         #proj-table td:nth-child(3),
+        #proj-table th:nth-child(5),
+        #proj-table td:nth-child(5),
         #proj-table th:nth-child(8),
         #proj-table td:nth-child(8) {
           display: none;
@@ -1428,31 +1429,26 @@
           width: 100%;
         }
         #proj-table tbody td:nth-child(1) {
-          width: 5%;
+          width: 10%;
           padding-left: 4px;
           padding-right: 2px;
         }
         #proj-table tbody td:nth-child(2) {
-          width: 10%;
+          width: 14%;
           text-align: center;
           padding: 4px 2px;
         }
         #proj-table tbody td:nth-child(4) {
-          width: 15%;
+          width: 12%;
           padding: 4px 2px;
           text-align: right;
         }
-        #proj-table tbody td:nth-child(5) {
-          width: 7%;
-          text-align: center;
-          padding: 4px 0;
-        }
         #proj-table tbody td:nth-child(6) {
-          width: 37%;
+          width: 39%;
           white-space: nowrap;
         }
         #proj-table tbody td:nth-child(7) {
-          width: 37%;
+          width: 39%;
           white-space: nowrap;
           text-align: right;
         }
@@ -4030,7 +4026,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.0.8</p>
+      <p id="app-version">v 0.0.0.7</p>
     </footer>
 
     <script type="module">
@@ -7296,20 +7292,9 @@
             tdCat.textContent = '—';
           }
 
-          // Banco (desktop) / ícono info (mobile)
+          // Banco
           const tdBank = tr.insertCell();
-          const bankSpan = document.createElement('span');
-          bankSpan.className = 'cell-bank-text';
-          bankSpan.textContent = p.bank || '—';
-          tdBank.appendChild(bankSpan);
-          const infoBtn = document.createElement('button');
-          infoBtn.className = 'btn-row-info';
-          infoBtn.dataset.action = 'info';
-          infoBtn.dataset.desc = p.description || '';
-          infoBtn.dataset.bank = p.bank || '';
-          infoBtn.setAttribute('aria-label', 'Ver detalle');
-          infoBtn.textContent = 'i';
-          tdBank.appendChild(infoBtn);
+          tdBank.textContent = p.bank || '—';
 
           // Monto
           const tdAmt = tr.insertCell();
@@ -8306,7 +8291,7 @@
           renderReportes();
         });
 
-        // Event delegation en proj-tbody para editar/eliminar/info
+        // Event delegation en proj-tbody para editar/eliminar
         document.getElementById('proj-tbody').addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
@@ -8315,34 +8300,6 @@
           if (action === 'edit-proj') openProjModal(id);
           if (action === 'delete-tx') deleteTransaction(id);
           if (action === 'edit-tx') openEditModal(id);
-          if (action === 'info') {
-            const row = btn.closest('tr');
-            const next = row.nextElementSibling;
-            if (next?.classList.contains('info-row')) {
-              next.remove();
-            } else {
-              const infoTr = document.createElement('tr');
-              infoTr.className = 'info-row';
-              const infoTd = document.createElement('td');
-              infoTd.colSpan = 8;
-              const inner = document.createElement('div');
-              inner.className = 'info-row-content';
-              if (btn.dataset.desc) {
-                const dSpan = document.createElement('span');
-                dSpan.textContent = btn.dataset.desc;
-                inner.appendChild(dSpan);
-              }
-              if (btn.dataset.bank) {
-                const bSpan = document.createElement('span');
-                bSpan.className = 'info-bank';
-                bSpan.textContent = btn.dataset.bank;
-                inner.appendChild(bSpan);
-              }
-              infoTd.appendChild(inner);
-              infoTr.appendChild(infoTd);
-              row.after(infoTr);
-            }
-          }
         });
 
         // ── Tarjetas de Crédito ────────────────────────────────────────
