@@ -1320,7 +1320,7 @@
           width: 100%;
         }
         #reg-table tbody td:nth-child(1) {
-          width: 10%;
+          width: 5%;
           padding-left: 4px;
           padding-right: 2px;
         }
@@ -1373,6 +1373,10 @@
         .cat-display span {
           display: none;
         }
+        .cat-display img {
+          width: 22px;
+          height: 22px;
+        }
 
         /* ── Recurrentes: hide Banco(6), Acciones(7) ──
            Visible: chk(1) día(2) desc(3) cat(4) monto(5) */
@@ -1387,12 +1391,12 @@
           width: 100%;
         }
         #rec-table tbody td:nth-child(1) {
-          width: 8%;
+          width: 10%;
           padding-left: 4px;
           padding-right: 2px;
         }
         #rec-table tbody td:nth-child(2) {
-          width: 10%;
+          width: 12%;
           text-align: center;
           padding: 4px 2px;
         }
@@ -1401,7 +1405,7 @@
           text-align: left;
         }
         #rec-table tbody td:nth-child(4) {
-          width: 15%;
+          width: 8%;
           padding: 4px 2px;
           text-align: center;
         }
@@ -1424,7 +1428,7 @@
           width: 100%;
         }
         #proj-table tbody td:nth-child(1) {
-          width: 10%;
+          width: 5%;
           padding-left: 4px;
           padding-right: 2px;
         }
@@ -1435,7 +1439,7 @@
         }
         #proj-table tbody td:nth-child(4) {
           width: 15%;
-          padding: 2px 2px;
+          padding: 4px 2px;
           text-align: right;
         }
         #proj-table tbody td:nth-child(5) {
@@ -1493,8 +1497,7 @@
           grid-column: span 2;
         }
 
-        .person-chip .person-chip-name {
-          font-size: var(--font-xs);
+        .person-chip-name {
           width: 70px;
           min-width: 40px;
         }
@@ -1610,11 +1613,6 @@
       #proj-table th:nth-child(7),
       #proj-table td:nth-child(7) {
         text-align: right;
-      }
-
-      #reg-table td:nth-child(7),
-      #proj-table td:nth-child(7) {
-        padding-right: 5px;
       }
 
       /* =====================================================================
@@ -2205,24 +2203,14 @@
         outline: none;
         border-color: var(--color-accent);
       }
-      input[type='number']::-webkit-inner-spin-button,
-      input[type='number']::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        appearance: none;
-        margin: 0;
-      }
-      input[type='number'] {
-        -moz-appearance: textfield;
-        appearance: textfield;
-      }
       .cat-display {
         display: flex;
         align-items: center;
         gap: var(--space-xs);
       }
       .cat-display img {
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
         object-fit: contain;
       }
       .data-table td.balance--positive {
@@ -2362,12 +2350,12 @@
         color: #0d1117;
         flex-shrink: 0;
       }
-      .person-chip .person-chip-name {
+      .person-chip-name {
         background: transparent;
         border: none;
         outline: none;
         font-family: inherit;
-        font-size: var(--font-xs);
+        font-size: var(--font-sm);
         font-weight: 400;
         color: var(--color-text);
         width: 90px;
@@ -2528,34 +2516,6 @@
         font-size: 0.65rem;
         font-weight: 400;
         white-space: nowrap;
-      }
-      .undo-paid-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        background: transparent;
-        color: var(--color-text-muted);
-        font-size: 0.65rem;
-        line-height: 1;
-        cursor: pointer;
-        padding: 0;
-        opacity: 0;
-        transition:
-          opacity 0.15s,
-          background 0.15s,
-          color 0.15s;
-      }
-      .dist-row.is-paid:hover .undo-paid-btn {
-        opacity: 1;
-      }
-      .undo-paid-btn:hover {
-        background: rgba(239, 68, 68, 0.15);
-        border-color: rgba(239, 68, 68, 0.4);
-        color: #ef4444;
       }
       .no-people-hint {
         padding: var(--space-sm) var(--space-md);
@@ -3045,6 +3005,7 @@
           <button class="btn-action btn-action--purple hidden" id="btn-transfer">
             ⇄ Transferir
           </button>
+          <button class="btn-action hidden" id="btn-save-budgets">✓ Guardar presupuesto</button>
           <button class="btn-action btn-action--primary hidden" id="btn-add-rec">+ Añadir</button>
           <button class="btn-action btn-action--primary hidden" id="btn-add-comun">
             + Añadir Ítem
@@ -4069,7 +4030,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.0.9</p>
+      <p id="app-version">v 0.0.0.8</p>
     </footer>
 
     <script type="module">
@@ -4397,7 +4358,7 @@
         registros: ['btn-add-transaction', 'btn-transfer', 'reg-filter-group'],
         proyeccion: ['btn-add-projection', 'proj-filter-group'],
         recurrentes: ['btn-add-rec'],
-        presupuesto: [],
+        presupuesto: ['btn-save-budgets'],
         'gastos-comunes': ['btn-add-comun'],
         tarjetas: ['btn-add-card'],
         saldos: [],
@@ -4411,6 +4372,7 @@
         'btn-add-rec',
         'btn-add-comun',
         'btn-add-card',
+        'btn-save-budgets',
         'btn-edit-selected',
         'btn-delete-selected',
         'btn-add-projection',
@@ -6254,14 +6216,8 @@
         document.getElementById('budget-table').classList.remove('hidden');
 
         // Expenses by category for the current filter month
-        // Filtra solo por mes — ignora filterBank/filterCategory del tab Registros
-        const month = appState.filterMonth;
-        const expByCat = appState.transactions
-          .filter((t) => {
-            if (!t || typeof t.date !== 'string') return false;
-            if (month && t.date.substring(0, 7) !== month) return false;
-            return t.type === 'expense' && !t.transferLeg;
-          })
+        const expByCat = getFilteredTransactions()
+          .filter((t) => t.type === 'expense')
           .reduce((acc, t) => {
             acc[t.category] = (acc[t.category] || 0) + t.amount;
             return acc;
@@ -6353,33 +6309,31 @@
       }
 
       /* ===================================================================
-       PRESUPUESTO — AUTO-GUARDAR (blur)
+       PRESUPUESTO — GUARDAR
        =================================================================== */
-      async function saveBudgets(triggerInput) {
+      async function handleSaveBudgets() {
         const user = appState.currentUser;
         if (!user) return;
         const newBudgets = {};
-        document.querySelectorAll('.budget-input').forEach((inp) => {
-          const cat = inp.dataset.category;
-          const val = parseFloat(inp.value);
+        document.querySelectorAll('.budget-input').forEach((input) => {
+          const cat = input.dataset.category;
+          const val = parseFloat(input.value);
           if (cat && !isNaN(val) && val > 0) newBudgets[cat] = val;
         });
+        const btn = document.getElementById('btn-save-budgets');
+        btn.disabled = true;
         try {
           await setDoc(
             doc(db, DB_PREF(user.uid)),
             { categoryBudgets: newBudgets },
             { merge: true },
           );
-          appState.categoryBudgets = newBudgets;
-          if (triggerInput) {
-            triggerInput.style.borderBottomColor = 'var(--color-success)';
-            setTimeout(() => {
-              triggerInput.style.borderBottomColor = '';
-            }, 800);
-          }
+          showToast('Presupuestos guardados.', 'success');
         } catch (err) {
           console.error('[Firestore] Guardar presupuestos:', err);
-          showToast('Error al guardar presupuesto.', 'error');
+          showToast('Error al guardar presupuestos.', 'error');
+        } finally {
+          btn.disabled = false;
         }
       }
 
@@ -7057,13 +7011,6 @@
                 tag.className = 'paid-tag';
                 tag.textContent = `✔ Día ${distData.paidDay}`;
                 statusCol.appendChild(tag);
-                const undoBtn = document.createElement('button');
-                undoBtn.className = 'undo-paid-btn';
-                undoBtn.title = 'Revertir pago';
-                undoBtn.dataset.itemId = item.id;
-                undoBtn.dataset.personIndex = pIdx;
-                undoBtn.textContent = '✕';
-                statusCol.appendChild(undoBtn);
               } else {
                 const dayIn = document.createElement('input');
                 dayIn.type = 'number';
@@ -7190,7 +7137,6 @@
             if (!item.distribution[originalPersonIndex])
               item.distribution[originalPersonIndex] = {};
             item.distribution[originalPersonIndex].paidDay = parseInt(date.split('-')[2], 10);
-            item.distribution[originalPersonIndex].txId = txRef.id;
             await saveGastosComunesState();
           }
           showToast('Pago registrado correctamente.', 'success');
@@ -8259,89 +8205,7 @@
           if (btn) btn.closest('.filter-group').classList.toggle('filter-open');
         });
 
-        // Auto-guardado al salir del input de presupuesto
-        document.getElementById('budget-tbody').addEventListener(
-          'blur',
-          (e) => {
-            const input = e.target.closest('.budget-input');
-            if (input) saveBudgets(input);
-          },
-          true,
-        );
-
-        // Actualización en vivo de Disponible al tipear en el input de Presupuesto
-        document.getElementById('budget-tbody').addEventListener('input', (e) => {
-          const input = e.target.closest('.budget-input');
-          if (!input) return;
-
-          const cat = input.dataset.category;
-          const newBudget = parseFloat(input.value) || 0;
-          const month = appState.filterMonth;
-
-          const spent = appState.transactions
-            .filter((t) => {
-              if (!t || typeof t.date !== 'string') return false;
-              if (month && t.date.substring(0, 7) !== month) return false;
-              return t.type === 'expense' && !t.transferLeg && t.category === cat;
-            })
-            .reduce((sum, t) => sum + t.amount, 0);
-
-          const remain = newBudget - spent;
-          const pct = newBudget > 0 ? Math.min(100, (spent / newBudget) * 100) : 0;
-
-          // Actualizar celda Disponible (col 4)
-          const tdRemain = input.closest('tr').cells[3];
-          tdRemain.textContent = '';
-          const balSpan = document.createElement('div');
-          balSpan.className =
-            remain > 0 ? 'balance--positive' : remain < 0 ? 'balance--negative' : 'balance--zero';
-          balSpan.textContent = formatCurrency(remain);
-          tdRemain.appendChild(balSpan);
-          if (newBudget > 0) {
-            const bar = document.createElement('div');
-            bar.className = 'progress-bar';
-            const fill = document.createElement('div');
-            fill.className =
-              'progress-bar__fill' +
-              (pct >= 100
-                ? ' progress-bar__fill--danger'
-                : pct >= 80
-                  ? ' progress-bar__fill--warning'
-                  : '');
-            fill.style.width = pct + '%';
-            bar.appendChild(fill);
-            tdRemain.appendChild(bar);
-          }
-
-          // Actualizar totales del tfoot
-          let totBudget = 0,
-            totSpent = 0,
-            totRemain = 0;
-          document.querySelectorAll('.budget-input').forEach((inp) => {
-            const c = inp.dataset.category;
-            const b = parseFloat(inp.value) || 0;
-            const s = appState.transactions
-              .filter((t) => {
-                if (!t || typeof t.date !== 'string') return false;
-                if (month && t.date.substring(0, 7) !== month) return false;
-                return t.type === 'expense' && !t.transferLeg && t.category === c;
-              })
-              .reduce((sum, t) => sum + t.amount, 0);
-            totBudget += b;
-            totSpent += s;
-            totRemain += b - s;
-          });
-          document.getElementById('budget-total-budgeted').textContent = formatCurrency(totBudget);
-          document.getElementById('budget-total-spent').textContent = formatCurrency(totSpent);
-          const totEl = document.getElementById('budget-total-remaining');
-          totEl.textContent = formatCurrency(totRemain);
-          totEl.className =
-            totRemain > 0
-              ? 'balance--positive'
-              : totRemain < 0
-                ? 'balance--negative'
-                : 'balance--zero';
-        });
+        document.getElementById('btn-save-budgets').addEventListener('click', handleSaveBudgets);
 
         // ── Configuración — alias + saldo ──────────────────────────────
         document.getElementById('cfg-alias').addEventListener('input', (e) => {
@@ -8630,44 +8494,6 @@
               originalItemId: item.id,
               originalPersonIndex: pIdx,
             });
-            return;
-          }
-          const undoPaidBtn = e.target.closest('.undo-paid-btn');
-          if (undoPaidBtn) {
-            const item = appState.gastosComunes.items?.find(
-              (i) => i.id === undoPaidBtn.dataset.itemId,
-            );
-            const pIdx = parseInt(undoPaidBtn.dataset.personIndex, 10);
-            const person = item?.people?.[pIdx];
-            if (!item || !person) return;
-            const personName = person.name || `Persona ${pIdx + 1}`;
-            openConfirmModal(
-              'Revertir pago',
-              `¿Revertir el pago de "${personName}"? Se eliminará el ingreso registrado en Registros.`,
-              async () => {
-                const distEntry = item.distribution?.[pIdx];
-                const txId = distEntry?.txId;
-                if (txId) {
-                  const user = appState.currentUser;
-                  if (user) {
-                    try {
-                      await deleteDoc(doc(db, DB_COL(user.uid, 'transactions'), txId));
-                      appState.transactions = appState.transactions.filter((t) => t.id !== txId);
-                    } catch (err) {
-                      console.error('[Firestore] Revertir pago gasto común:', err);
-                      showToast('Error al eliminar la transacción.', 'error');
-                      return;
-                    }
-                  }
-                }
-                if (item.distribution?.[pIdx]) {
-                  delete item.distribution[pIdx].paidDay;
-                  delete item.distribution[pIdx].txId;
-                }
-                await saveGastosComunesState();
-                showToast('Pago revertido.', 'success');
-              },
-            );
             return;
           }
           const delItemBtn = e.target.closest('.item-delete-btn');
