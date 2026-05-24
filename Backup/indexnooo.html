@@ -1255,13 +1255,7 @@
         .modal-box input[type='date'],
         .modal-box select,
         .modal-box textarea {
-          min-height: 58px;
-          font-size: 1rem;
-        }
-        .modal-input-wrap input,
-        .modal-input-wrap select {
-          height: 58px;
-          min-height: 58px;
+          min-height: 52px;
           font-size: 1rem;
         }
 
@@ -1460,10 +1454,13 @@
           text-align: right;
         }
 
-        .btn-key,
+        .btn-key {
+          font-size: 1.2rem;
+          padding: 16px var(--space-xs);
+        }
         #calc-modal .btn-key {
-          font-size: 1.3rem;
-          padding: 22px var(--space-xs);
+          font-size: 1.2rem;
+          padding: 16px var(--space-xs);
         }
         .calc-display,
         #calc-modal .calc-display {
@@ -1488,17 +1485,6 @@
 
         .form-grid {
           grid-template-columns: 1fr;
-          gap: var(--space-md);
-        }
-        .modal-form {
-          gap: var(--space-md);
-        }
-        .form-field {
-          gap: var(--space-xs);
-        }
-        #calc-modal .calc-meta {
-          gap: var(--space-sm);
-          margin-bottom: var(--space-sm);
         }
 
         .modal-overlay {
@@ -1518,7 +1504,7 @@
         .modal-body {
           flex: 1;
           overflow-y: auto;
-          padding: var(--space-md);
+          padding: var(--space-xl);
         }
         .modal-footer {
           padding: var(--space-sm) var(--space-md);
