@@ -24,6 +24,7 @@
         --color-border: #2a2d3a;
         --color-text: #e8eaf0;
         --color-text-muted: #bcbfd2; /*--color-text-muted: #8b8fa8;*/
+        --color-text-2: #bcbfd2;
         --color-accent: #4f8fff;
         --color-danger: #f05252;
         --color-success: #22c97a;
@@ -1124,6 +1125,11 @@
         border: none;
         text-decoration: underline;
       }
+      .cfg-note {
+        font-size: var(--font-xs);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-sm);
+      }
 
       /* Elementos visibles solo en mobile — ocultos por defecto en desktop */
       .btn-filter-toggle {
@@ -1131,6 +1137,15 @@
       }
       .btn-row-info {
         display: none;
+      }
+
+      #reg-table tbody td:nth-child(3),
+      #proj-table tbody td:nth-child(3) {
+        width: 200px;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       /* =====================================================================
@@ -1243,14 +1258,31 @@
           min-height: 44px;
         }
 
-        /* Tablas: scroll horizontal — todas las columnas visibles */
-        .data-table {
-          white-space: nowrap;
+        /* Hide table headers on mobile */
+        #reg-table thead,
+        #rec-table thead,
+        #proj-table thead,
+        #budget-table thead {
+          display: none;
         }
-        .data-table th,
-        .data-table td {
-          font-size: 0.82rem;
-          padding: 5px 6px;
+
+        /* Table cells scoped to tbody (tfoot queda libre) */
+        #reg-table tbody td,
+        #rec-table tbody td,
+        #proj-table tbody td,
+        #budget-table tbody td {
+          font-size: 1rem;
+          font-weight: 400;
+          padding: 4px 2px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 0;
+          text-align: right;
+        }
+
+        /* Solo tarjetas de crédito tiene scroll horizontal */
+        #cc-table {
+          white-space: nowrap;
         }
 
         /* Filter group: toggle muestra selects en mobile */
@@ -1273,6 +1305,152 @@
           display: block;
           flex: 1;
           min-width: 110px;
+        }
+
+        /* ── Registros: hide Descripción(3), Acciones(8) ──
+           Visible: chk(1) fecha(2) cat(4) info(5) monto(6) saldo(7) */
+        #reg-table th:nth-child(3),
+        #reg-table td:nth-child(3),
+        #reg-table th:nth-child(8),
+        #reg-table td:nth-child(8) {
+          display: none;
+        }
+        #reg-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #reg-table tbody td:nth-child(1) {
+          width: 10%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #reg-table tbody td:nth-child(2) {
+          width: 10%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #reg-table tbody td:nth-child(4) {
+          width: 15%;
+          padding: 4px 2px;
+          text-align: right;
+        }
+        #reg-table tbody td:nth-child(5) {
+          width: 7%;
+          text-align: center;
+          padding: 4px 0;
+        }
+        #reg-table tbody td:nth-child(6) {
+          width: 37%;
+          white-space: nowrap;
+        }
+        #reg-table tbody td:nth-child(7) {
+          width: 37%;
+          white-space: nowrap;
+          text-align: right;
+        }
+
+        /* Info icon (mobile): sustituye el texto de banco en col5 */
+        .cell-bank-text {
+          display: none;
+        }
+        .btn-row-info {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: var(--color-accent);
+          color: #fff;
+          font-size: 0.7rem;
+          font-weight: 400;
+          font-style: italic;
+          border: none;
+          cursor: pointer;
+        }
+
+        /* Hide category label, keep icon */
+        .cat-display span {
+          display: none;
+        }
+
+        /* ── Recurrentes: hide Banco(6), Acciones(7) ──
+           Visible: chk(1) día(2) desc(3) cat(4) monto(5) */
+        #rec-table th:nth-child(6),
+        #rec-table td:nth-child(6),
+        #rec-table th:nth-child(7),
+        #rec-table td:nth-child(7) {
+          display: none;
+        }
+        #rec-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #rec-table tbody td:nth-child(1) {
+          width: 8%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #rec-table tbody td:nth-child(2) {
+          width: 10%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #rec-table tbody td:nth-child(3) {
+          width: 48%;
+          text-align: left;
+        }
+        #rec-table tbody td:nth-child(4) {
+          width: 15%;
+          padding: 4px 2px;
+          text-align: center;
+        }
+        #rec-table tbody td:nth-child(5) {
+          width: 30%;
+          white-space: nowrap;
+          text-align: right;
+        }
+
+        /* ── Proyección: hide Descripción(3), Acciones(8) ──
+           Visible: chk(1) fecha(2) cat(4) info(5) monto(6) saldo(7) */
+        #proj-table th:nth-child(3),
+        #proj-table td:nth-child(3),
+        #proj-table th:nth-child(8),
+        #proj-table td:nth-child(8) {
+          display: none;
+        }
+        #proj-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+        #proj-table tbody td:nth-child(1) {
+          width: 10%;
+          padding-left: 4px;
+          padding-right: 2px;
+        }
+        #proj-table tbody td:nth-child(2) {
+          width: 10%;
+          text-align: center;
+          padding: 4px 2px;
+        }
+        #proj-table tbody td:nth-child(4) {
+          width: 15%;
+          padding: 2px 2px;
+          text-align: right;
+        }
+        #proj-table tbody td:nth-child(5) {
+          width: 7%;
+          text-align: center;
+          padding: 4px 0;
+        }
+        #proj-table tbody td:nth-child(6) {
+          width: 37%;
+          white-space: nowrap;
+        }
+        #proj-table tbody td:nth-child(7) {
+          width: 37%;
+          white-space: nowrap;
+          text-align: right;
         }
 
         .btn-key {
@@ -1315,7 +1493,8 @@
           grid-column: span 2;
         }
 
-        .person-chip-name {
+        .person-chip .person-chip-name {
+          font-size: var(--font-xs);
           width: 70px;
           min-width: 40px;
         }
@@ -1399,9 +1578,18 @@
       }
 
       /* Columnas no-transaccionales siempre en color neutro */
-      .row--income td:is(:nth-child(1), :nth-child(2), :nth-child(4)),
-      .row--expense td:is(:nth-child(1), :nth-child(2), :nth-child(4)),
-      .row--transfer td:is(:nth-child(1), :nth-child(2), :nth-child(4)) {
+      .row--income td:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)),
+      .row--expense td:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)),
+      .row--transfer td:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)) {
+        color: var(--color-text);
+      }
+      /* Banco (col 5) en reg-table y proj-table también neutro */
+      #reg-table .row--income td:nth-child(5),
+      #reg-table .row--expense td:nth-child(5),
+      #reg-table .row--transfer td:nth-child(5),
+      #proj-table .row--income td:nth-child(5),
+      #proj-table .row--expense td:nth-child(5),
+      #proj-table .row--transfer td:nth-child(5) {
         color: var(--color-text);
       }
 
@@ -1410,6 +1598,23 @@
         height: 16px;
         accent-color: var(--color-accent);
         cursor: pointer;
+      }
+
+      /* Monto y Saldo alineados a la derecha en Registros y Proyección */
+      #reg-table th:nth-child(6),
+      #reg-table td:nth-child(6),
+      #reg-table th:nth-child(7),
+      #reg-table td:nth-child(7),
+      #proj-table th:nth-child(6),
+      #proj-table td:nth-child(6),
+      #proj-table th:nth-child(7),
+      #proj-table td:nth-child(7) {
+        text-align: right;
+      }
+
+      #reg-table td:nth-child(7),
+      #proj-table td:nth-child(7) {
+        padding-right: 5px;
       }
 
       /* =====================================================================
@@ -1686,6 +1891,11 @@
         box-shadow:
           0 0 0 1.5px var(--color-accent),
           0 8px 32px rgba(79, 143, 255, 0.18);
+      }
+      #transfer-modal .modal-box {
+        box-shadow:
+          0 0 0 1.5px var(--color-warning),
+          0 8px 32px rgba(245, 158, 11, 0.18);
       }
 
       /* =====================================================================
@@ -1995,14 +2205,24 @@
         outline: none;
         border-color: var(--color-accent);
       }
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0;
+      }
+      input[type='number'] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
       .cat-display {
         display: flex;
         align-items: center;
         gap: var(--space-xs);
       }
       .cat-display img {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         object-fit: contain;
       }
       .data-table td.balance--positive {
@@ -2142,12 +2362,12 @@
         color: #0d1117;
         flex-shrink: 0;
       }
-      .person-chip-name {
+      .person-chip .person-chip-name {
         background: transparent;
         border: none;
         outline: none;
         font-family: inherit;
-        font-size: var(--font-sm);
+        font-size: var(--font-xs);
         font-weight: 400;
         color: var(--color-text);
         width: 90px;
@@ -2308,6 +2528,34 @@
         font-size: 0.65rem;
         font-weight: 400;
         white-space: nowrap;
+      }
+      .undo-paid-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: transparent;
+        color: var(--color-text-muted);
+        font-size: 0.65rem;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0;
+        opacity: 0;
+        transition:
+          opacity 0.15s,
+          background 0.15s,
+          color 0.15s;
+      }
+      .dist-row.is-paid:hover .undo-paid-btn {
+        opacity: 1;
+      }
+      .undo-paid-btn:hover {
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #ef4444;
       }
       .no-people-hint {
         padding: var(--space-sm) var(--space-md);
@@ -2797,7 +3045,6 @@
           <button class="btn-action btn-action--purple hidden" id="btn-transfer">
             ⇄ Transferir
           </button>
-          <button class="btn-action hidden" id="btn-save-budgets">✓ Guardar presupuesto</button>
           <button class="btn-action btn-action--primary hidden" id="btn-add-rec">+ Añadir</button>
           <button class="btn-action btn-action--primary hidden" id="btn-add-comun">
             + Añadir Ítem
@@ -2890,6 +3137,7 @@
                   <th>Fecha</th>
                   <th>Descripción</th>
                   <th>Categoría</th>
+                  <th>Banco</th>
                   <th>Monto</th>
                   <th>Saldo</th>
                   <th>Acciones</th>
@@ -2898,12 +3146,12 @@
               <tbody id="proj-tbody"></tbody>
               <tfoot id="proj-tfoot" class="hidden">
                 <tr>
-                  <td colspan="4" class="tfoot-label">Ingresos proyectados:</td>
+                  <td colspan="5" class="tfoot-label">Ingresos proyectados:</td>
                   <td id="proj-total-income" class="amount--income"></td>
                   <td colspan="2"></td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="tfoot-label">Gastos proyectados:</td>
+                  <td colspan="5" class="tfoot-label">Gastos proyectados:</td>
                   <td id="proj-total-expenses" class="amount--expense"></td>
                   <td colspan="2"></td>
                 </tr>
@@ -3314,39 +3562,33 @@
         </div>
         <div class="modal-body">
           <form id="transfer-form" novalidate>
-            <div class="form-grid">
-              <div class="form-field col-full">
-                <label for="tr-date">Fecha</label>
+            <div class="modal-form">
+              <div class="modal-input-wrap">
                 <input type="date" id="tr-date" required />
               </div>
-              <div class="form-field">
-                <label for="tr-from">Desde</label>
+              <div class="modal-input-wrap">
                 <select id="tr-from" required>
-                  <option value="">-- Cuenta --</option>
+                  <option value="">— Origen —</option>
                 </select>
               </div>
-              <div class="form-field">
-                <label for="tr-to">Hacia</label>
+              <div class="modal-input-wrap">
                 <select id="tr-to" required>
-                  <option value="">-- Cuenta --</option>
+                  <option value="">— Destino —</option>
                 </select>
               </div>
-              <div class="form-field col-full">
-                <label for="tr-amount">Monto</label>
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">$</span>
                 <input
                   type="number"
                   id="tr-amount"
                   min="0.01"
                   step="0.01"
-                  placeholder="0.00"
+                  placeholder="Monto"
                   required
                 />
               </div>
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn-outline" id="transfer-cancel-btn">Cancelar</button>
-              <button type="submit" class="btn-primary">Transferir</button>
-            </div>
+            <button type="submit" class="btn-modal-save">Transferir</button>
           </form>
         </div>
       </div>
@@ -3827,7 +4069,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.0.3</p>
+      <p id="app-version">v 0.0.0.9</p>
     </footer>
 
     <script type="module">
@@ -4155,7 +4397,7 @@
         registros: ['btn-add-transaction', 'btn-transfer', 'reg-filter-group'],
         proyeccion: ['btn-add-projection', 'proj-filter-group'],
         recurrentes: ['btn-add-rec'],
-        presupuesto: ['btn-save-budgets'],
+        presupuesto: [],
         'gastos-comunes': ['btn-add-comun'],
         tarjetas: ['btn-add-card'],
         saldos: [],
@@ -4169,7 +4411,6 @@
         'btn-add-rec',
         'btn-add-comun',
         'btn-add-card',
-        'btn-save-budgets',
         'btn-edit-selected',
         'btn-delete-selected',
         'btn-add-projection',
@@ -6013,8 +6254,14 @@
         document.getElementById('budget-table').classList.remove('hidden');
 
         // Expenses by category for the current filter month
-        const expByCat = getFilteredTransactions()
-          .filter((t) => t.type === 'expense')
+        // Filtra solo por mes — ignora filterBank/filterCategory del tab Registros
+        const month = appState.filterMonth;
+        const expByCat = appState.transactions
+          .filter((t) => {
+            if (!t || typeof t.date !== 'string') return false;
+            if (month && t.date.substring(0, 7) !== month) return false;
+            return t.type === 'expense' && !t.transferLeg;
+          })
           .reduce((acc, t) => {
             acc[t.category] = (acc[t.category] || 0) + t.amount;
             return acc;
@@ -6106,31 +6353,33 @@
       }
 
       /* ===================================================================
-       PRESUPUESTO — GUARDAR
+       PRESUPUESTO — AUTO-GUARDAR (blur)
        =================================================================== */
-      async function handleSaveBudgets() {
+      async function saveBudgets(triggerInput) {
         const user = appState.currentUser;
         if (!user) return;
         const newBudgets = {};
-        document.querySelectorAll('.budget-input').forEach((input) => {
-          const cat = input.dataset.category;
-          const val = parseFloat(input.value);
+        document.querySelectorAll('.budget-input').forEach((inp) => {
+          const cat = inp.dataset.category;
+          const val = parseFloat(inp.value);
           if (cat && !isNaN(val) && val > 0) newBudgets[cat] = val;
         });
-        const btn = document.getElementById('btn-save-budgets');
-        btn.disabled = true;
         try {
           await setDoc(
             doc(db, DB_PREF(user.uid)),
             { categoryBudgets: newBudgets },
             { merge: true },
           );
-          showToast('Presupuestos guardados.', 'success');
+          appState.categoryBudgets = newBudgets;
+          if (triggerInput) {
+            triggerInput.style.borderBottomColor = 'var(--color-success)';
+            setTimeout(() => {
+              triggerInput.style.borderBottomColor = '';
+            }, 800);
+          }
         } catch (err) {
           console.error('[Firestore] Guardar presupuestos:', err);
-          showToast('Error al guardar presupuestos.', 'error');
-        } finally {
-          btn.disabled = false;
+          showToast('Error al guardar presupuesto.', 'error');
         }
       }
 
@@ -6808,6 +7057,13 @@
                 tag.className = 'paid-tag';
                 tag.textContent = `✔ Día ${distData.paidDay}`;
                 statusCol.appendChild(tag);
+                const undoBtn = document.createElement('button');
+                undoBtn.className = 'undo-paid-btn';
+                undoBtn.title = 'Revertir pago';
+                undoBtn.dataset.itemId = item.id;
+                undoBtn.dataset.personIndex = pIdx;
+                undoBtn.textContent = '✕';
+                statusCol.appendChild(undoBtn);
               } else {
                 const dayIn = document.createElement('input');
                 dayIn.type = 'number';
@@ -6934,6 +7190,7 @@
             if (!item.distribution[originalPersonIndex])
               item.distribution[originalPersonIndex] = {};
             item.distribution[originalPersonIndex].paidDay = parseInt(date.split('-')[2], 10);
+            item.distribution[originalPersonIndex].txId = txRef.id;
             await saveGastosComunesState();
           }
           showToast('Pago registrado correctamente.', 'success');
@@ -7092,6 +7349,21 @@
           } else {
             tdCat.textContent = '—';
           }
+
+          // Banco (desktop) / ícono info (mobile)
+          const tdBank = tr.insertCell();
+          const bankSpan = document.createElement('span');
+          bankSpan.className = 'cell-bank-text';
+          bankSpan.textContent = p.bank || '—';
+          tdBank.appendChild(bankSpan);
+          const infoBtn = document.createElement('button');
+          infoBtn.className = 'btn-row-info';
+          infoBtn.dataset.action = 'info';
+          infoBtn.dataset.desc = p.description || '';
+          infoBtn.dataset.bank = p.bank || '';
+          infoBtn.setAttribute('aria-label', 'Ver detalle');
+          infoBtn.textContent = 'i';
+          tdBank.appendChild(infoBtn);
 
           // Monto
           const tdAmt = tr.insertCell();
@@ -7888,9 +8160,6 @@
 
         // ── Transfer modal ──────────────────────────────────────────────
         document.getElementById('transfer-close-btn').addEventListener('click', closeTransferModal);
-        document
-          .getElementById('transfer-cancel-btn')
-          .addEventListener('click', closeTransferModal);
         document.getElementById('transfer-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeTransferModal();
         });
@@ -7990,7 +8259,89 @@
           if (btn) btn.closest('.filter-group').classList.toggle('filter-open');
         });
 
-        document.getElementById('btn-save-budgets').addEventListener('click', handleSaveBudgets);
+        // Auto-guardado al salir del input de presupuesto
+        document.getElementById('budget-tbody').addEventListener(
+          'blur',
+          (e) => {
+            const input = e.target.closest('.budget-input');
+            if (input) saveBudgets(input);
+          },
+          true,
+        );
+
+        // Actualización en vivo de Disponible al tipear en el input de Presupuesto
+        document.getElementById('budget-tbody').addEventListener('input', (e) => {
+          const input = e.target.closest('.budget-input');
+          if (!input) return;
+
+          const cat = input.dataset.category;
+          const newBudget = parseFloat(input.value) || 0;
+          const month = appState.filterMonth;
+
+          const spent = appState.transactions
+            .filter((t) => {
+              if (!t || typeof t.date !== 'string') return false;
+              if (month && t.date.substring(0, 7) !== month) return false;
+              return t.type === 'expense' && !t.transferLeg && t.category === cat;
+            })
+            .reduce((sum, t) => sum + t.amount, 0);
+
+          const remain = newBudget - spent;
+          const pct = newBudget > 0 ? Math.min(100, (spent / newBudget) * 100) : 0;
+
+          // Actualizar celda Disponible (col 4)
+          const tdRemain = input.closest('tr').cells[3];
+          tdRemain.textContent = '';
+          const balSpan = document.createElement('div');
+          balSpan.className =
+            remain > 0 ? 'balance--positive' : remain < 0 ? 'balance--negative' : 'balance--zero';
+          balSpan.textContent = formatCurrency(remain);
+          tdRemain.appendChild(balSpan);
+          if (newBudget > 0) {
+            const bar = document.createElement('div');
+            bar.className = 'progress-bar';
+            const fill = document.createElement('div');
+            fill.className =
+              'progress-bar__fill' +
+              (pct >= 100
+                ? ' progress-bar__fill--danger'
+                : pct >= 80
+                  ? ' progress-bar__fill--warning'
+                  : '');
+            fill.style.width = pct + '%';
+            bar.appendChild(fill);
+            tdRemain.appendChild(bar);
+          }
+
+          // Actualizar totales del tfoot
+          let totBudget = 0,
+            totSpent = 0,
+            totRemain = 0;
+          document.querySelectorAll('.budget-input').forEach((inp) => {
+            const c = inp.dataset.category;
+            const b = parseFloat(inp.value) || 0;
+            const s = appState.transactions
+              .filter((t) => {
+                if (!t || typeof t.date !== 'string') return false;
+                if (month && t.date.substring(0, 7) !== month) return false;
+                return t.type === 'expense' && !t.transferLeg && t.category === c;
+              })
+              .reduce((sum, t) => sum + t.amount, 0);
+            totBudget += b;
+            totSpent += s;
+            totRemain += b - s;
+          });
+          document.getElementById('budget-total-budgeted').textContent = formatCurrency(totBudget);
+          document.getElementById('budget-total-spent').textContent = formatCurrency(totSpent);
+          const totEl = document.getElementById('budget-total-remaining');
+          totEl.textContent = formatCurrency(totRemain);
+          totEl.className =
+            totRemain > 0
+              ? 'balance--positive'
+              : totRemain < 0
+                ? 'balance--negative'
+                : 'balance--zero';
+        });
 
         // ── Configuración — alias + saldo ──────────────────────────────
         document.getElementById('cfg-alias').addEventListener('input', (e) => {
@@ -8091,7 +8442,7 @@
           renderReportes();
         });
 
-        // Event delegation en proj-tbody para editar/eliminar
+        // Event delegation en proj-tbody para editar/eliminar/info
         document.getElementById('proj-tbody').addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
@@ -8100,6 +8451,34 @@
           if (action === 'edit-proj') openProjModal(id);
           if (action === 'delete-tx') deleteTransaction(id);
           if (action === 'edit-tx') openEditModal(id);
+          if (action === 'info') {
+            const row = btn.closest('tr');
+            const next = row.nextElementSibling;
+            if (next?.classList.contains('info-row')) {
+              next.remove();
+            } else {
+              const infoTr = document.createElement('tr');
+              infoTr.className = 'info-row';
+              const infoTd = document.createElement('td');
+              infoTd.colSpan = 8;
+              const inner = document.createElement('div');
+              inner.className = 'info-row-content';
+              if (btn.dataset.desc) {
+                const dSpan = document.createElement('span');
+                dSpan.textContent = btn.dataset.desc;
+                inner.appendChild(dSpan);
+              }
+              if (btn.dataset.bank) {
+                const bSpan = document.createElement('span');
+                bSpan.className = 'info-bank';
+                bSpan.textContent = btn.dataset.bank;
+                inner.appendChild(bSpan);
+              }
+              infoTd.appendChild(inner);
+              infoTr.appendChild(infoTd);
+              row.after(infoTr);
+            }
+          }
         });
 
         // ── Tarjetas de Crédito ────────────────────────────────────────
@@ -8251,6 +8630,44 @@
               originalItemId: item.id,
               originalPersonIndex: pIdx,
             });
+            return;
+          }
+          const undoPaidBtn = e.target.closest('.undo-paid-btn');
+          if (undoPaidBtn) {
+            const item = appState.gastosComunes.items?.find(
+              (i) => i.id === undoPaidBtn.dataset.itemId,
+            );
+            const pIdx = parseInt(undoPaidBtn.dataset.personIndex, 10);
+            const person = item?.people?.[pIdx];
+            if (!item || !person) return;
+            const personName = person.name || `Persona ${pIdx + 1}`;
+            openConfirmModal(
+              'Revertir pago',
+              `¿Revertir el pago de "${personName}"? Se eliminará el ingreso registrado en Registros.`,
+              async () => {
+                const distEntry = item.distribution?.[pIdx];
+                const txId = distEntry?.txId;
+                if (txId) {
+                  const user = appState.currentUser;
+                  if (user) {
+                    try {
+                      await deleteDoc(doc(db, DB_COL(user.uid, 'transactions'), txId));
+                      appState.transactions = appState.transactions.filter((t) => t.id !== txId);
+                    } catch (err) {
+                      console.error('[Firestore] Revertir pago gasto común:', err);
+                      showToast('Error al eliminar la transacción.', 'error');
+                      return;
+                    }
+                  }
+                }
+                if (item.distribution?.[pIdx]) {
+                  delete item.distribution[pIdx].paidDay;
+                  delete item.distribution[pIdx].txId;
+                }
+                await saveGastosComunesState();
+                showToast('Pago revertido.', 'success');
+              },
+            );
             return;
           }
           const delItemBtn = e.target.closest('.item-delete-btn');

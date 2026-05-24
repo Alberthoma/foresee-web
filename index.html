@@ -1255,7 +1255,8 @@
         .modal-box input[type='date'],
         .modal-box select,
         .modal-box textarea {
-          min-height: 44px;
+          min-height: 52px;
+          font-size: 1rem;
         }
 
         /* Hide table headers on mobile */
@@ -1454,15 +1455,27 @@
         }
 
         .btn-key {
-          font-size: var(--font-base);
-          padding: var(--space-xs);
-        }
-        .calc-display {
           font-size: 1.2rem;
+          padding: 16px var(--space-xs);
         }
-
+        #calc-modal .btn-key {
+          font-size: 1.2rem;
+          padding: 16px var(--space-xs);
+        }
+        .calc-display,
+        #calc-modal .calc-display {
+          font-size: 1.8rem;
+          min-height: 64px;
+        }
+        #cat-modal .modal-box {
+          max-height: 90vh;
+        }
+        #cat-modal .modal-body {
+          padding: var(--space-sm);
+        }
         .cat-grid {
           grid-template-columns: repeat(3, 1fr);
+          max-height: none;
         }
 
         .icon-grid {
@@ -1474,11 +1487,26 @@
           grid-template-columns: 1fr;
         }
 
+        .modal-overlay {
+          align-items: flex-end;
+          padding: 0;
+        }
         .modal-box {
-          width: calc(100vw - var(--space-md) * 2);
+          width: 100vw;
           max-width: 100%;
-          margin: var(--space-sm);
-          max-height: 90vh;
+          max-height: 92vh;
+          margin: 0;
+          border-radius: 20px 20px 0 0;
+          display: flex;
+          flex-direction: column;
+        }
+        .modal-body {
+          flex: 1;
+          overflow-y: auto;
+          padding: var(--space-md);
+        }
+        .modal-footer {
+          padding: var(--space-sm) var(--space-md);
         }
 
         .cfg-grid {
@@ -3594,70 +3622,6 @@
       </div>
     </div>
 
-    <!-- ===================================================================
-       MODAL: EDITAR TRANSACCIÓN (#edit-modal)
-       =================================================================== -->
-    <div
-      class="modal-overlay"
-      id="edit-modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="edit-modal-title"
-    >
-      <div class="modal-box">
-        <div class="modal-header">
-          <span class="modal-title" id="edit-modal-title">Editar Transacción</span>
-          <button class="btn-modal-close" id="edit-close-btn" aria-label="Cerrar">✕</button>
-        </div>
-        <div class="modal-body">
-          <form id="edit-form" novalidate>
-            <div class="form-grid">
-              <div class="form-field">
-                <label for="edit-tipo">Tipo</label>
-                <select id="edit-tipo">
-                  <option value="income">Ingreso</option>
-                  <option value="expense">Gasto</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label for="edit-date">Fecha</label>
-                <input type="date" id="edit-date" required />
-              </div>
-              <div class="form-field">
-                <label for="edit-bank">Banco</label>
-                <select id="edit-bank">
-                  <option value="">-- Banco --</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label for="edit-category">Categoría</label>
-                <select id="edit-category">
-                  <option value="">-- Categoría --</option>
-                </select>
-              </div>
-              <div class="form-field col-full">
-                <label for="edit-amount">Monto</label>
-                <input type="number" id="edit-amount" min="0.01" step="0.01" required />
-              </div>
-              <div class="form-field col-full">
-                <label for="edit-description">Descripción</label>
-                <input
-                  type="text"
-                  id="edit-description"
-                  list="description-list"
-                  autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="form-actions">
-              <button type="button" class="btn-outline" id="edit-cancel-btn">Cancelar</button>
-              <button type="submit" class="btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
     <!-- Modal: Añadir Tarjeta de Crédito -->
     <div
       class="modal-overlay"
@@ -4825,7 +4789,6 @@
       let tempTxData = {}; // datos en tránsito durante el flujo calculadora
       let calcExpr = '0'; // expresión actual en el keypad
       let confirmCb = null; // callback para el modal genérico de confirmación
-      let editingTxId = null; // ID de la transacción que se está editando
 
       /* ===================================================================
        REGISTROS — HELPER: poblar selects con bancos / categorías
@@ -5144,33 +5107,43 @@
       /* ===================================================================
        CALCULATOR MODAL
        =================================================================== */
-      function openCalcModal(mode = 'transaction') {
+      function openCalcModal(mode = 'transaction', editTxId = null, initialTipo = 'expense') {
+        const today = new Date().toISOString().slice(0, 10);
         calcExpr = '0';
         tempTxData = { _mode: mode };
 
-        setCalcTipo('expense');
-
-        const today = new Date().toISOString().slice(0, 10);
-        document.getElementById('calc-date').value = today;
-        document.getElementById('calc-desc').value = '';
-
         populateBankSelects('calc-bank');
-        document.getElementById('calc-bank').value = '';
 
-        document.getElementById('calc-display').textContent = '0';
-        document.getElementById('calc-modal-title').textContent =
-          mode === 'projection' ? 'Nueva Proyección' : 'Nueva Transacción';
-        document.getElementById('calc-modal').classList.add('active');
-
-        // Abrir calendario automáticamente al entrar al modal
-        setTimeout(() => {
-          const d = document.getElementById('calc-date');
-          try {
-            d.showPicker();
-          } catch (_) {
-            d.focus();
-          }
-        }, 80);
+        if (editTxId) {
+          const tx = appState.transactions.find((t) => t.id === editTxId);
+          if (!tx) return;
+          tempTxData._editId = editTxId;
+          setCalcTipo(tx.type === 'income' ? 'income' : 'expense');
+          document.getElementById('calc-date').value = tx.date || today;
+          document.getElementById('calc-desc').value = tx.description || '';
+          document.getElementById('calc-bank').value = tx.bank || '';
+          calcExpr = String(tx.amount || 0);
+          document.getElementById('calc-display').textContent = String(tx.amount || 0);
+          document.getElementById('calc-modal-title').textContent = 'Editar Transacción';
+          document.getElementById('calc-modal').classList.add('active');
+        } else {
+          setCalcTipo(initialTipo);
+          document.getElementById('calc-date').value = today;
+          document.getElementById('calc-desc').value = '';
+          document.getElementById('calc-bank').value = '';
+          document.getElementById('calc-display').textContent = '0';
+          document.getElementById('calc-modal-title').textContent =
+            mode === 'projection' ? 'Nueva Proyección' : 'Nueva Transacción';
+          document.getElementById('calc-modal').classList.add('active');
+          setTimeout(() => {
+            const d = document.getElementById('calc-date');
+            try {
+              d.showPicker();
+            } catch (_) {
+              d.focus();
+            }
+          }, 80);
+        }
       }
 
       function closeCalcModal() {
@@ -5321,6 +5294,7 @@
         const user = appState.currentUser;
         if (!user) return;
 
+        const editId = tempTxData._editId || null;
         const tx = {
           type: tempTxData.type,
           amount: tempTxData.amount,
@@ -5328,32 +5302,35 @@
           bank: tempTxData.bank,
           category: tempTxData.category || '',
           description: description ? toTitleCase(description.trim()) : '',
-          createdAt: new Date().toISOString(),
         };
 
         closeCatModal();
         showLoading();
         try {
-          await addDoc(collection(db, DB_COL(user.uid, 'transactions')), tx);
-
-          // If description is new, offer to save it
-          if (tx.description && !appState.descriptions.includes(tx.description)) {
-            openConfirmModal(
-              '¿Guardar descripción?',
-              `¿Deseas guardar "${tx.description}" para usarla en el futuro?`,
-              async () => {
-                const newDescs = [...appState.descriptions, tx.description];
-                try {
-                  await setDoc(
-                    doc(db, DB_PREF(user.uid)),
-                    { descriptions: newDescs },
-                    { merge: true },
-                  );
-                } catch (err) {
-                  console.error('[Firestore] Guardar descripción:', err);
-                }
-              },
-            );
+          if (editId) {
+            await updateDoc(doc(db, DB_COL(user.uid, 'transactions'), editId), tx);
+            showToast('Transacción actualizada.', 'success');
+          } else {
+            tx.createdAt = new Date().toISOString();
+            await addDoc(collection(db, DB_COL(user.uid, 'transactions')), tx);
+            if (tx.description && !appState.descriptions.includes(tx.description)) {
+              openConfirmModal(
+                '¿Guardar descripción?',
+                `¿Deseas guardar "${tx.description}" para usarla en el futuro?`,
+                async () => {
+                  const newDescs = [...appState.descriptions, tx.description];
+                  try {
+                    await setDoc(
+                      doc(db, DB_PREF(user.uid)),
+                      { descriptions: newDescs },
+                      { merge: true },
+                    );
+                  } catch (err) {
+                    console.error('[Firestore] Guardar descripción:', err);
+                  }
+                },
+              );
+            }
           }
         } catch (err) {
           console.error('[Firestore] Guardar transacción:', err);
@@ -5473,66 +5450,6 @@
       }
 
       /* ===================================================================
-       EDIT MODAL
-       =================================================================== */
-      function openEditModal(txId) {
-        const tx = appState.transactions.find((t) => t.id === txId);
-        if (!tx) return;
-        editingTxId = txId;
-
-        document.getElementById('edit-tipo').value = tx.type === 'income' ? 'income' : 'expense';
-        document.getElementById('edit-date').value = tx.date || '';
-        document.getElementById('edit-amount').value = tx.amount || '';
-        document.getElementById('edit-description').value = tx.description || '';
-
-        populateBankSelects('edit-bank');
-        document.getElementById('edit-bank').value = tx.bank || '';
-
-        populateCategorySelect('edit-category');
-        document.getElementById('edit-category').value = tx.category || '';
-
-        updateDescriptionDatalist();
-        document.getElementById('edit-modal').classList.add('active');
-      }
-
-      function closeEditModal() {
-        document.getElementById('edit-modal').classList.remove('active');
-        editingTxId = null;
-      }
-
-      async function handleEditSubmit(e) {
-        e.preventDefault();
-        const user = appState.currentUser;
-        if (!user || !editingTxId) return;
-
-        const amount = parseFloat(document.getElementById('edit-amount').value);
-        if (isNaN(amount) || amount <= 0) {
-          showToast('Ingresa un monto válido.', 'warning');
-          return;
-        }
-
-        const updated = {
-          type: document.getElementById('edit-tipo').value,
-          date: document.getElementById('edit-date').value,
-          bank: document.getElementById('edit-bank').value,
-          category: document.getElementById('edit-category').value,
-          amount,
-          description: toTitleCase(document.getElementById('edit-description').value.trim()),
-        };
-
-        showLoading();
-        closeEditModal();
-        try {
-          await updateDoc(doc(db, DB_COL(user.uid, 'transactions'), editingTxId), updated);
-          showToast('Transacción actualizada.', 'success');
-        } catch (err) {
-          console.error('[Firestore] Editar transacción:', err);
-          showToast('Error al actualizar.', 'error');
-        } finally {
-          hideLoading();
-        }
-      }
-
       /* ===================================================================
        DELETE TRANSACTION
        =================================================================== */
@@ -5614,11 +5531,11 @@
         if (!chk) return;
         const { id, type } = chk.dataset;
 
-        if (tab === 'registros') openEditModal(id);
+        if (tab === 'registros') openCalcModal('transaction', id);
         else if (tab === 'recurrentes') openRecModal(id);
         else if (tab === 'proyeccion') {
           if (type === 'proj') openProjModal(id);
-          else openEditModal(id);
+          else openCalcModal('transaction', id);
         }
       }
 
@@ -8037,7 +7954,16 @@
         // Dashboard cards → navigate to section
         document.getElementById('dashboard').addEventListener('click', (e) => {
           const card = e.target.closest('.dash-card[data-goto]');
-          if (card) switchTab(card.dataset.goto);
+          if (!card) return;
+          if (card.id === 'dash-income') {
+            switchTab('registros');
+            openCalcModal('transaction', null, 'income');
+          } else if (card.id === 'dash-expense') {
+            switchTab('registros');
+            openCalcModal('transaction', null, 'expense');
+          } else {
+            switchTab(card.dataset.goto);
+          }
         });
 
         // Fullscreen
@@ -8165,19 +8091,11 @@
         });
         document.getElementById('transfer-form').addEventListener('submit', handleTransferSubmit);
 
-        // ── Edit modal ──────────────────────────────────────────────────
-        document.getElementById('edit-close-btn').addEventListener('click', closeEditModal);
-        document.getElementById('edit-cancel-btn').addEventListener('click', closeEditModal);
-        document.getElementById('edit-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeEditModal();
-        });
-        document.getElementById('edit-form').addEventListener('submit', handleEditSubmit);
-
         // ── Registros table (event delegation) ─────────────────────────
         document.getElementById('reg-tbody').addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
-          if (btn.dataset.action === 'edit') openEditModal(btn.dataset.id);
+          if (btn.dataset.action === 'edit') openCalcModal('transaction', btn.dataset.id);
           if (btn.dataset.action === 'delete') deleteTransaction(btn.dataset.id);
           if (btn.dataset.action === 'info') {
             const row = btn.closest('tr');
@@ -8450,7 +8368,7 @@
           if (action === 'delete-proj') deleteProjection(id);
           if (action === 'edit-proj') openProjModal(id);
           if (action === 'delete-tx') deleteTransaction(id);
-          if (action === 'edit-tx') openEditModal(id);
+          if (action === 'edit-tx') openCalcModal('transaction', id);
           if (action === 'info') {
             const row = btn.closest('tr');
             const next = row.nextElementSibling;
