@@ -6,6 +6,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Foresee Finances</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -19,7 +23,8 @@
         --color-surface-2: #22253a;
         --color-border: #2a2d3a;
         --color-text: #e8eaf0;
-        --color-text-muted: #8b8fa8;
+        --color-text-muted: #bcbfd2; /*--color-text-muted: #8b8fa8;*/
+        --color-text-2: #bcbfd2;
         --color-accent: #4f8fff;
         --color-danger: #f05252;
         --color-success: #22c97a;
@@ -32,7 +37,7 @@
         --space-xl: 2rem;
 
         --font-xs: 0.7rem;
-        --font-sm: 0.8rem;
+        --font-sm: 1rem;
         --font-base: 0.9rem;
         --font-md: 1rem;
         --font-lg: 1.15rem;
@@ -207,7 +212,7 @@
         border-radius: var(--radius-full);
         padding: var(--space-sm) var(--space-xl);
         font-size: var(--font-base);
-        font-weight: 600;
+        font-weight: 400;
       }
 
       /* =====================================================================
@@ -337,9 +342,9 @@
         text-align: center;
       }
       .header-center h1 {
-        font-size: var(--font-sm);
+        font-size: 1.25rem;
         font-weight: 700;
-        color: var(--color-accent);
+        color: var(--color-text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         white-space: nowrap;
@@ -470,7 +475,7 @@
       }
       .tab-btn--active span {
         color: var(--color-accent);
-        font-weight: 600;
+        font-weight: 400;
       }
 
       /* Tab icon size overrides */
@@ -596,7 +601,7 @@
       }
       .dash-card__value {
         font-size: 1.5rem;
-        font-weight: 800;
+        font-weight: 700;
         line-height: 1;
       }
       #dash-balance-value {
@@ -647,7 +652,7 @@
         border-left: 4px solid var(--color-warning);
         border-radius: var(--radius-md);
         padding: var(--space-sm) var(--space-md);
-        font-size: var(--font-sm);
+        font-size: 0.75rem;
       }
       .alert-item--danger {
         background-color: rgba(240, 82, 82, 0.1);
@@ -687,13 +692,22 @@
         border-radius: var(--radius-md);
         padding: var(--space-xs) var(--space-sm);
         font-size: var(--font-sm);
-        font-weight: 600;
+        font-weight: 400;
         transition:
           background-color var(--transition),
           border-color var(--transition);
       }
       .btn-action:hover {
         border-color: var(--color-accent);
+      }
+      #btn-to-dashboard {
+        background-color: #c00c0ca8;
+        color: #fff;
+        border-color: #f91616a8;
+      }
+      #btn-to-dashboard:hover {
+        background-color: #ea0a0a;
+        border-color: #ea0a0a;
       }
       .btn-action--primary {
         background-color: var(--color-accent);
@@ -797,7 +811,7 @@
       }
       .modal-title {
         font-size: var(--font-lg);
-        font-weight: 700;
+        font-weight: 400;
       }
       .btn-modal-close {
         background: none;
@@ -881,7 +895,7 @@
       }
       .auth-title {
         font-size: var(--font-xl);
-        font-weight: 700;
+        font-weight: 400;
       }
       .auth-subtitle {
         color: var(--color-accent);
@@ -908,7 +922,7 @@
         border-radius: var(--radius-md);
         padding: var(--space-sm) var(--space-md);
         font-size: var(--font-base);
-        font-weight: 600;
+        font-weight: 400;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -926,7 +940,7 @@
         border-radius: var(--radius-md);
         padding: var(--space-sm) var(--space-md);
         font-size: var(--font-base);
-        font-weight: 600;
+        font-weight: 400;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -948,7 +962,7 @@
       .data-table th {
         background-color: var(--color-surface-2);
         color: var(--color-text-muted);
-        font-weight: 600;
+        font-weight: 400;
         padding: var(--space-sm) var(--space-md);
         text-align: left;
         border-bottom: 1px solid var(--color-border);
@@ -977,15 +991,15 @@
       /* Amount colors */
       .amount--income {
         color: var(--color-success);
-        font-weight: 600;
+        font-weight: 400;
       }
       .amount--expense {
         color: var(--color-danger);
-        font-weight: 600;
+        font-weight: 400;
       }
       .amount--transfer {
         color: var(--color-warning);
-        font-weight: 600;
+        font-weight: 400;
       }
 
       /* Row action buttons */
@@ -1111,6 +1125,11 @@
         border: none;
         text-decoration: underline;
       }
+      .cfg-note {
+        font-size: var(--font-xs);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-sm);
+      }
 
       /* Elementos visibles solo en mobile — ocultos por defecto en desktop */
       .btn-filter-toggle {
@@ -1118,6 +1137,15 @@
       }
       .btn-row-info {
         display: none;
+      }
+
+      #reg-table tbody td:nth-child(3),
+      #proj-table tbody td:nth-child(3) {
+        width: 200px;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       /* =====================================================================
@@ -1227,14 +1255,14 @@
         .modal-box input[type='date'],
         .modal-box select,
         .modal-box textarea {
-          min-height: 44px;
+          min-height: 52px;
+          font-size: 1rem;
         }
 
-        /* Hide table headers on mobile (reference app behavior) */
+        /* Hide table headers on mobile */
         #reg-table thead,
         #rec-table thead,
         #proj-table thead,
-        #cc-table thead,
         #budget-table thead {
           display: none;
         }
@@ -1250,6 +1278,12 @@
           overflow: hidden;
           text-overflow: ellipsis;
           max-width: 0;
+          text-align: right;
+        }
+
+        /* Solo tarjetas de crédito tiene scroll horizontal */
+        #cc-table {
+          white-space: nowrap;
         }
 
         /* Filter group: toggle muestra selects en mobile */
@@ -1274,8 +1308,8 @@
           min-width: 110px;
         }
 
-        /* ── Registros: hide Descripción(3), Acciones(8); col5 = ícono info ──
-           Visible: chk(1) día(2) cat(4) info(5) monto(6) saldo(7) */
+        /* ── Registros: hide Descripción(3), Acciones(8) ──
+           Visible: chk(1) fecha(2) cat(4) info(5) monto(6) saldo(7) */
         #reg-table th:nth-child(3),
         #reg-table td:nth-child(3),
         #reg-table th:nth-child(8),
@@ -1287,18 +1321,19 @@
           width: 100%;
         }
         #reg-table tbody td:nth-child(1) {
-          width: 5%;
+          width: 10%;
           padding-left: 4px;
           padding-right: 2px;
         }
         #reg-table tbody td:nth-child(2) {
-          width: 7%;
+          width: 10%;
           text-align: center;
           padding: 4px 2px;
         }
         #reg-table tbody td:nth-child(4) {
-          width: 7%;
+          width: 15%;
           padding: 4px 2px;
+          text-align: right;
         }
         #reg-table tbody td:nth-child(5) {
           width: 7%;
@@ -1329,7 +1364,7 @@
           background: var(--color-accent);
           color: #fff;
           font-size: 0.7rem;
-          font-weight: 700;
+          font-weight: 400;
           font-style: italic;
           border: none;
           cursor: pointer;
@@ -1338,10 +1373,6 @@
         /* Hide category label, keep icon */
         .cat-display span {
           display: none;
-        }
-        .cat-display img {
-          width: 22px;
-          height: 22px;
         }
 
         /* ── Recurrentes: hide Banco(6), Acciones(7) ──
@@ -1357,20 +1388,21 @@
           width: 100%;
         }
         #rec-table tbody td:nth-child(1) {
-          width: 6%;
+          width: 8%;
           padding-left: 4px;
           padding-right: 2px;
         }
         #rec-table tbody td:nth-child(2) {
-          width: 8%;
+          width: 10%;
           text-align: center;
           padding: 4px 2px;
         }
         #rec-table tbody td:nth-child(3) {
           width: 48%;
+          text-align: left;
         }
         #rec-table tbody td:nth-child(4) {
-          width: 8%;
+          width: 15%;
           padding: 4px 2px;
           text-align: center;
         }
@@ -1380,12 +1412,12 @@
           text-align: right;
         }
 
-        /* ── Proyección: hide Descripción(3), Acciones(7) ──
-           Visible: chk(1) día(2) cat(4) monto(5) saldo(6) */
+        /* ── Proyección: hide Descripción(3), Acciones(8) ──
+           Visible: chk(1) fecha(2) cat(4) info(5) monto(6) saldo(7) */
         #proj-table th:nth-child(3),
         #proj-table td:nth-child(3),
-        #proj-table th:nth-child(7),
-        #proj-table td:nth-child(7) {
+        #proj-table th:nth-child(8),
+        #proj-table td:nth-child(8) {
           display: none;
         }
         #proj-table {
@@ -1393,45 +1425,57 @@
           width: 100%;
         }
         #proj-table tbody td:nth-child(1) {
-          width: 6%;
+          width: 10%;
           padding-left: 4px;
           padding-right: 2px;
         }
         #proj-table tbody td:nth-child(2) {
-          width: 8%;
+          width: 10%;
           text-align: center;
           padding: 4px 2px;
         }
         #proj-table tbody td:nth-child(4) {
-          width: 8%;
-          padding: 4px 2px;
+          width: 15%;
+          padding: 2px 2px;
+          text-align: right;
         }
         #proj-table tbody td:nth-child(5) {
-          width: 39%;
-          white-space: nowrap;
+          width: 7%;
+          text-align: center;
+          padding: 4px 0;
         }
         #proj-table tbody td:nth-child(6) {
-          width: 39%;
+          width: 37%;
+          white-space: nowrap;
+        }
+        #proj-table tbody td:nth-child(7) {
+          width: 37%;
           white-space: nowrap;
           text-align: right;
         }
 
-        /* Presupuesto: hide progreso column */
-        #budget-table th:nth-child(4),
-        #budget-table td:nth-child(4) {
-          display: none;
-        }
-
         .btn-key {
-          font-size: var(--font-base);
-          padding: var(--space-xs);
-        }
-        .calc-display {
           font-size: 1.2rem;
+          padding: 16px var(--space-xs);
         }
-
+        #calc-modal .btn-key {
+          font-size: 1.2rem;
+          padding: 16px var(--space-xs);
+        }
+        .calc-display,
+        #calc-modal .calc-display {
+          font-size: 1.8rem;
+          min-height: 64px;
+        }
+        #cat-modal .modal-box {
+          max-height: 90vh;
+        }
+        #cat-modal .modal-body {
+          padding: var(--space-sm);
+        }
         .cat-grid {
           grid-template-columns: repeat(3, 1fr);
+          max-height: none;
         }
 
         .icon-grid {
@@ -1443,11 +1487,26 @@
           grid-template-columns: 1fr;
         }
 
+        .modal-overlay {
+          align-items: flex-end;
+          padding: 0;
+        }
         .modal-box {
-          width: calc(100vw - var(--space-md) * 2);
+          width: 100vw;
           max-width: 100%;
-          margin: var(--space-sm);
-          max-height: 90vh;
+          max-height: 92vh;
+          margin: 0;
+          border-radius: 20px 20px 0 0;
+          display: flex;
+          flex-direction: column;
+        }
+        .modal-body {
+          flex: 1;
+          overflow-y: auto;
+          padding: var(--space-md);
+        }
+        .modal-footer {
+          padding: var(--space-sm) var(--space-md);
         }
 
         .cfg-grid {
@@ -1462,7 +1521,8 @@
           grid-column: span 2;
         }
 
-        .person-chip-name {
+        .person-chip .person-chip-name {
+          font-size: var(--font-xs);
           width: 70px;
           min-width: 40px;
         }
@@ -1476,22 +1536,8 @@
           font-size: 0.78rem;
         }
 
-        /* Tarjetas: hide Línea crédito(5), Interés%(7), Meses(8) */
-        #cc-table th:nth-child(5),
-        #cc-table td:nth-child(5),
-        #cc-table th:nth-child(7),
-        #cc-table td:nth-child(7),
-        #cc-table th:nth-child(8),
-        #cc-table td:nth-child(8) {
-          display: none;
-        }
-        #cc-table th,
-        #cc-table td {
-          font-size: 0.78rem;
-          padding: 5px 3px;
-        }
         .cc-table-input {
-          max-width: 80px;
+          max-width: 70px;
           font-size: 0.78rem;
           padding: 3px 4px;
         }
@@ -1538,7 +1584,7 @@
       }
 
       .data-table tfoot td {
-        font-weight: 700;
+        font-weight: 400;
         background-color: var(--color-surface);
         border-top: 2px solid var(--color-border);
         padding: var(--space-sm) var(--space-md);
@@ -1560,9 +1606,18 @@
       }
 
       /* Columnas no-transaccionales siempre en color neutro */
-      .row--income td:is(:nth-child(1), :nth-child(2), :nth-child(4)),
-      .row--expense td:is(:nth-child(1), :nth-child(2), :nth-child(4)),
-      .row--transfer td:is(:nth-child(1), :nth-child(2), :nth-child(4)) {
+      .row--income td:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)),
+      .row--expense td:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)),
+      .row--transfer td:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)) {
+        color: var(--color-text);
+      }
+      /* Banco (col 5) en reg-table y proj-table también neutro */
+      #reg-table .row--income td:nth-child(5),
+      #reg-table .row--expense td:nth-child(5),
+      #reg-table .row--transfer td:nth-child(5),
+      #proj-table .row--income td:nth-child(5),
+      #proj-table .row--expense td:nth-child(5),
+      #proj-table .row--transfer td:nth-child(5) {
         color: var(--color-text);
       }
 
@@ -1571,6 +1626,23 @@
         height: 16px;
         accent-color: var(--color-accent);
         cursor: pointer;
+      }
+
+      /* Monto y Saldo alineados a la derecha en Registros y Proyección */
+      #reg-table th:nth-child(6),
+      #reg-table td:nth-child(6),
+      #reg-table th:nth-child(7),
+      #reg-table td:nth-child(7),
+      #proj-table th:nth-child(6),
+      #proj-table td:nth-child(6),
+      #proj-table th:nth-child(7),
+      #proj-table td:nth-child(7) {
+        text-align: right;
+      }
+
+      #reg-table td:nth-child(7),
+      #proj-table td:nth-child(7) {
+        padding-right: 5px;
       }
 
       /* =====================================================================
@@ -1591,7 +1663,7 @@
         border-radius: var(--radius-sm);
         background: transparent;
         color: var(--color-text-muted);
-        font-weight: 600;
+        font-weight: 400;
         font-size: var(--font-sm);
         cursor: pointer;
         transition:
@@ -1609,6 +1681,7 @@
 
       .calc-meta {
         display: flex;
+        flex-direction: column;
         gap: var(--space-sm);
         margin-bottom: var(--space-sm);
       }
@@ -1635,7 +1708,7 @@
         border-radius: var(--radius-md);
         padding: var(--space-sm) var(--space-md);
         font-size: 1.8rem;
-        font-weight: 700;
+        font-weight: 400;
         text-align: right;
         color: var(--color-text);
         min-height: 56px;
@@ -1655,7 +1728,7 @@
         border-radius: var(--radius-md);
         padding: var(--space-sm);
         font-size: var(--font-lg);
-        font-weight: 600;
+        font-weight: 400;
         cursor: pointer;
         transition: background-color 0.15s;
       }
@@ -1679,6 +1752,61 @@
       }
       .btn-key--ok:hover {
         opacity: 0.9;
+      }
+
+      /* =====================================================================
+       22a. CALCULATOR MODAL — glow de tipo (ingreso/gasto)
+       ===================================================================== */
+      #calc-modal .modal-box.tipo--income {
+        box-shadow:
+          0 0 0 1.5px var(--color-success),
+          0 8px 32px rgba(34, 197, 94, 0.22);
+      }
+      #calc-modal .modal-box.tipo--expense {
+        box-shadow:
+          0 0 0 1.5px var(--color-danger),
+          0 8px 32px rgba(240, 82, 82, 0.22);
+      }
+      #calc-modal .calc-display.tipo--income {
+        border-color: var(--color-success);
+        color: var(--color-success);
+      }
+      #calc-modal .calc-display.tipo--expense {
+        border-color: var(--color-danger);
+        color: var(--color-danger);
+      }
+
+      /* =====================================================================
+       22b. CALCULATOR MODAL — compacto (reduce altura total)
+       ===================================================================== */
+      #calc-modal .modal-body {
+        padding: var(--space-sm) var(--space-md);
+      }
+      #calc-modal .tipo-bar {
+        margin-bottom: var(--space-xs);
+      }
+      #calc-modal .calc-meta {
+        gap: 5px;
+        margin-bottom: 5px;
+      }
+      #calc-modal .calc-meta input,
+      #calc-modal .calc-meta select {
+        min-height: unset;
+        height: 34px;
+        padding: 4px var(--space-sm);
+      }
+      #calc-modal .calc-display {
+        min-height: 42px;
+        font-size: 1.5rem;
+        padding: 6px var(--space-md);
+        margin-bottom: 5px;
+      }
+      #calc-modal .keypad {
+        gap: 4px;
+      }
+      #calc-modal .btn-key {
+        padding: 8px var(--space-xs);
+        font-size: var(--font-md);
       }
 
       /* =====================================================================
@@ -1721,99 +1849,81 @@
       }
 
       /* =====================================================================
-       24. DESCRIPTION PROMPT
+       24b. MODAL FORM — columna única (rec-modal, cc-modal)
        ===================================================================== */
-      .desc-prompt {
-        padding: var(--space-md);
-        border-top: 1px solid var(--color-border);
-        display: none;
-      }
-      .desc-prompt.visible {
-        display: block;
-      }
-      .desc-prompt-header {
+      .modal-form {
         display: flex;
-        align-items: center;
-        gap: var(--space-sm);
+        flex-direction: column;
+        gap: 8px;
         margin-bottom: var(--space-md);
       }
-      .desc-icon {
-        width: 36px;
-        height: 36px;
-        background-color: rgba(79, 143, 255, 0.15);
-        border-radius: var(--radius-full);
+      .modal-input-wrap {
+        position: relative;
         display: flex;
         align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
       }
-      .desc-label {
-        font-size: var(--font-sm);
-        color: var(--color-text-muted);
-      }
-      .desc-btn-row {
-        display: flex;
-        gap: var(--space-sm);
-        margin-bottom: var(--space-sm);
-      }
-      .btn-desc {
-        flex: 1;
-        padding: var(--space-sm);
-        border-radius: var(--radius-md);
-        font-weight: 600;
-        font-size: var(--font-sm);
-        cursor: pointer;
-        border: 2px solid var(--color-border);
-        background: transparent;
-        color: var(--color-text);
-        transition: border-color 0.2s;
-      }
-      .btn-desc:hover {
-        border-color: var(--color-text-muted);
-      }
-      .btn-desc--yes {
-        background-color: var(--color-accent);
-        border-color: var(--color-accent);
-        color: #fff;
-      }
-      .btn-desc--yes:hover {
-        opacity: 0.9;
-        border-color: var(--color-accent);
-      }
-      .desc-input-row {
-        display: flex;
-        gap: var(--space-xs);
-        margin-top: var(--space-sm);
-      }
-      .desc-input-row input {
-        flex: 1;
-        min-width: 0;
+      .modal-input-wrap input,
+      .modal-input-wrap select {
+        width: 100%;
+        height: 34px;
         background-color: var(--color-surface-2);
         border: 1px solid var(--color-border);
         color: var(--color-text);
         border-radius: var(--radius-sm);
-        padding: var(--space-xs) var(--space-sm);
+        padding: 4px var(--space-sm);
         font-size: var(--font-sm);
+        font-family: inherit;
+        min-height: unset;
       }
-      .desc-input-row input:focus {
+      .modal-input-wrap input:focus,
+      .modal-input-wrap select:focus {
         outline: none;
         border-color: var(--color-accent);
       }
-      .desc-input-row input::placeholder {
+      .modal-input-wrap--prefix input {
+        padding-left: 28px;
+      }
+      .modal-prefix {
+        position: absolute;
+        left: 10px;
+        font-size: var(--font-sm);
         color: var(--color-text-muted);
+        pointer-events: none;
+        user-select: none;
       }
-      .btn-desc-ok {
+      .btn-modal-save {
+        width: 100%;
+        padding: var(--space-sm);
         background-color: var(--color-accent);
-        border: none;
-        border-radius: var(--radius-sm);
-        padding: var(--space-xs) var(--space-sm);
         color: #fff;
-        font-weight: 700;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: var(--font-md);
+        font-family: inherit;
         cursor: pointer;
-        flex-shrink: 0;
+        transition: opacity 0.15s;
       }
-      .btn-desc-ok:hover {
-        opacity: 0.9;
+      .btn-modal-save:hover {
+        opacity: 0.88;
+      }
+      .btn-modal-save:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #rec-modal .modal-box {
+        box-shadow:
+          0 0 0 1.5px var(--color-danger),
+          0 8px 32px rgba(240, 82, 82, 0.18);
+      }
+      #cc-modal .modal-box {
+        box-shadow:
+          0 0 0 1.5px var(--color-accent),
+          0 8px 32px rgba(79, 143, 255, 0.18);
+      }
+      #transfer-modal .modal-box {
+        box-shadow:
+          0 0 0 1.5px var(--color-warning),
+          0 8px 32px rgba(245, 158, 11, 0.18);
       }
 
       /* =====================================================================
@@ -1890,9 +2000,14 @@
         grid-template-columns: repeat(3, 1fr);
         gap: var(--space-lg);
       }
+      @media (max-width: 768px) {
+        .cfg-grid {
+          grid-template-columns: 1fr;
+        }
+      }
       .cfg-grid-section h3 {
         font-size: var(--font-md);
-        font-weight: 700;
+        font-weight: 400;
         color: var(--color-text);
         border-bottom: 1px solid var(--color-border);
         padding-bottom: var(--space-xs);
@@ -1916,7 +2031,7 @@
       }
       .cfg-section h3 {
         font-size: var(--font-md);
-        font-weight: 700;
+        font-weight: 400;
         color: var(--color-text);
         border-bottom: 1px solid var(--color-border);
         padding-bottom: var(--space-xs);
@@ -2108,9 +2223,25 @@
         text-align: right;
         font-family: inherit;
       }
+      @media (max-width: 768px) {
+        .budget-input {
+          max-width: 70px;
+          padding: 3px 4px;
+        }
+      }
       .budget-input:focus {
         outline: none;
         border-color: var(--color-accent);
+      }
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0;
+      }
+      input[type='number'] {
+        -moz-appearance: textfield;
+        appearance: textfield;
       }
       .cat-display {
         display: flex;
@@ -2118,17 +2249,17 @@
         gap: var(--space-xs);
       }
       .cat-display img {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         object-fit: contain;
       }
       .data-table td.balance--positive {
         color: var(--color-success);
-        font-weight: 600;
+        font-weight: 400;
       }
       .data-table td.balance--negative {
         color: var(--color-danger);
-        font-weight: 600;
+        font-weight: 400;
       }
       .balance--zero {
         color: var(--color-text-muted);
@@ -2165,7 +2296,7 @@
       }
       .item-card-name {
         flex: 1;
-        font-weight: 700;
+        font-weight: 400;
         font-size: var(--font-sm);
         color: var(--color-text);
         background: transparent;
@@ -2185,7 +2316,7 @@
       }
       .item-card-total {
         font-size: var(--font-base);
-        font-weight: 800;
+        font-weight: 400;
         color: var(--color-warning);
         background: transparent;
         border: none;
@@ -2255,17 +2386,17 @@
         align-items: center;
         justify-content: center;
         font-size: 0.55rem;
-        font-weight: 800;
+        font-weight: 400;
         color: #0d1117;
         flex-shrink: 0;
       }
-      .person-chip-name {
+      .person-chip .person-chip-name {
         background: transparent;
         border: none;
         outline: none;
         font-family: inherit;
-        font-size: var(--font-sm);
-        font-weight: 600;
+        font-size: var(--font-xs);
+        font-weight: 400;
         color: var(--color-text);
         width: 90px;
         min-width: 50px;
@@ -2336,7 +2467,7 @@
         align-items: center;
         justify-content: center;
         font-size: 0.55rem;
-        font-weight: 800;
+        font-weight: 400;
         color: #0d1117;
         flex-shrink: 0;
       }
@@ -2346,7 +2477,7 @@
       }
       .dist-person-name {
         font-size: 0.78rem;
-        font-weight: 600;
+        font-weight: 400;
         color: var(--color-text);
         white-space: nowrap;
         overflow: hidden;
@@ -2366,7 +2497,7 @@
       }
       .dist-amount-col {
         font-size: 0.85rem;
-        font-weight: 700;
+        font-weight: 400;
         color: var(--color-text);
         text-align: right;
         min-width: 58px;
@@ -2403,7 +2534,7 @@
         border-radius: var(--radius-sm);
         padding: 3px 7px;
         font-size: 0.68rem;
-        font-weight: 700;
+        font-weight: 400;
         cursor: pointer;
         font-family: inherit;
         transition: all 0.15s;
@@ -2423,8 +2554,36 @@
         padding: 3px 8px;
         border-radius: 999px;
         font-size: 0.65rem;
-        font-weight: 700;
+        font-weight: 400;
         white-space: nowrap;
+      }
+      .undo-paid-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: transparent;
+        color: var(--color-text-muted);
+        font-size: 0.65rem;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0;
+        opacity: 0;
+        transition:
+          opacity 0.15s,
+          background 0.15s,
+          color 0.15s;
+      }
+      .dist-row.is-paid:hover .undo-paid-btn {
+        opacity: 1;
+      }
+      .undo-paid-btn:hover {
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #ef4444;
       }
       .no-people-hint {
         padding: var(--space-sm) var(--space-md);
@@ -2495,6 +2654,11 @@
       #cc-table td:nth-child(3) {
         text-align: center;
       }
+      #cc-table th,
+      #cc-table td,
+      #cc-table .cc-table-input {
+        font-size: 0.75rem;
+      }
       .cc-empty {
         padding: var(--space-xl) var(--space-md);
         text-align: center;
@@ -2513,7 +2677,7 @@
       }
       .rec-amount {
         color: var(--color-danger);
-        font-weight: 600;
+        font-weight: 400;
       }
       /* rec modal */
       #rec-modal .form-grid {
@@ -2537,7 +2701,7 @@
       }
       .rep-card__title {
         font-size: var(--font-sm);
-        font-weight: 700;
+        font-weight: 400;
         color: var(--color-text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -2575,7 +2739,7 @@
         text-overflow: ellipsis;
       }
       .rep-legend-val {
-        font-weight: 600;
+        font-weight: 400;
         color: var(--color-text);
         flex-shrink: 0;
       }
@@ -2626,7 +2790,7 @@
       .saldo-card__name {
         font-size: var(--font-sm);
         color: var(--color-text-muted);
-        font-weight: 600;
+        font-weight: 400;
         margin-bottom: var(--space-xs);
         white-space: nowrap;
         overflow: hidden;
@@ -2634,7 +2798,7 @@
       }
       .saldo-card__amount {
         font-size: 1.4rem;
-        font-weight: 800;
+        font-weight: 700;
         line-height: 1;
         margin-bottom: var(--space-xs);
       }
@@ -2909,7 +3073,6 @@
           <button class="btn-action btn-action--purple hidden" id="btn-transfer">
             ⇄ Transferir
           </button>
-          <button class="btn-action hidden" id="btn-save-budgets">✓ Guardar presupuesto</button>
           <button class="btn-action btn-action--primary hidden" id="btn-add-rec">+ Añadir</button>
           <button class="btn-action btn-action--primary hidden" id="btn-add-comun">
             + Añadir Ítem
@@ -3002,6 +3165,7 @@
                   <th>Fecha</th>
                   <th>Descripción</th>
                   <th>Categoría</th>
+                  <th>Banco</th>
                   <th>Monto</th>
                   <th>Saldo</th>
                   <th>Acciones</th>
@@ -3010,12 +3174,12 @@
               <tbody id="proj-tbody"></tbody>
               <tfoot id="proj-tfoot" class="hidden">
                 <tr>
-                  <td colspan="4" class="tfoot-label">Ingresos proyectados:</td>
+                  <td colspan="5" class="tfoot-label">Ingresos proyectados:</td>
                   <td id="proj-total-income" class="amount--income"></td>
                   <td colspan="2"></td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="tfoot-label">Gastos proyectados:</td>
+                  <td colspan="5" class="tfoot-label">Gastos proyectados:</td>
                   <td id="proj-total-expenses" class="amount--expense"></td>
                   <td colspan="2"></td>
                 </tr>
@@ -3323,11 +3487,18 @@
             <button class="btn-tipo" data-tipo="income">Ingreso</button>
             <button class="btn-tipo" data-tipo="expense">Gasto</button>
           </div>
-          <!-- Fecha + Banco -->
+          <!-- Fecha + Descripción + Banco -->
           <div class="calc-meta">
             <input type="date" id="calc-date" />
+            <input
+              type="text"
+              id="calc-desc"
+              list="description-list"
+              placeholder="Descripción…"
+              autocomplete="off"
+            />
             <select id="calc-bank">
-              <option value="">-- Banco --</option>
+              <option value="">— Banco / Cuenta —</option>
             </select>
           </div>
           <!-- Display -->
@@ -3374,42 +3545,6 @@
         <div class="modal-body modal-body--compact">
           <div class="cat-grid" id="cat-grid"></div>
         </div>
-        <!-- Description prompt — hidden until category selected -->
-        <div class="desc-prompt" id="desc-prompt">
-          <div class="desc-prompt-header">
-            <div class="desc-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#4f8fff"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-              </svg>
-            </div>
-            <span class="desc-label">¿Deseas agregar una descripción?</span>
-          </div>
-          <div class="desc-btn-row">
-            <button class="btn-desc" id="desc-no-btn">No, guardar</button>
-            <button class="btn-desc btn-desc--yes" id="desc-yes-btn">Sí, agregar</button>
-          </div>
-          <div class="desc-input-row hidden" id="desc-input-row">
-            <input
-              type="text"
-              id="desc-input"
-              list="description-list"
-              placeholder="Descripción…"
-              autocomplete="off"
-            />
-            <button class="btn-desc-ok" id="desc-ok-btn">✓</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -3455,103 +3590,33 @@
         </div>
         <div class="modal-body">
           <form id="transfer-form" novalidate>
-            <div class="form-grid">
-              <div class="form-field col-full">
-                <label for="tr-date">Fecha</label>
+            <div class="modal-form">
+              <div class="modal-input-wrap">
                 <input type="date" id="tr-date" required />
               </div>
-              <div class="form-field">
-                <label for="tr-from">Desde</label>
+              <div class="modal-input-wrap">
                 <select id="tr-from" required>
-                  <option value="">-- Cuenta --</option>
+                  <option value="">— Origen —</option>
                 </select>
               </div>
-              <div class="form-field">
-                <label for="tr-to">Hacia</label>
+              <div class="modal-input-wrap">
                 <select id="tr-to" required>
-                  <option value="">-- Cuenta --</option>
+                  <option value="">— Destino —</option>
                 </select>
               </div>
-              <div class="form-field col-full">
-                <label for="tr-amount">Monto</label>
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">$</span>
                 <input
                   type="number"
                   id="tr-amount"
                   min="0.01"
                   step="0.01"
-                  placeholder="0.00"
+                  placeholder="Monto"
                   required
                 />
               </div>
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn-outline" id="transfer-cancel-btn">Cancelar</button>
-              <button type="submit" class="btn-primary">Transferir</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===================================================================
-       MODAL: EDITAR TRANSACCIÓN (#edit-modal)
-       =================================================================== -->
-    <div
-      class="modal-overlay"
-      id="edit-modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="edit-modal-title"
-    >
-      <div class="modal-box">
-        <div class="modal-header">
-          <span class="modal-title" id="edit-modal-title">Editar Transacción</span>
-          <button class="btn-modal-close" id="edit-close-btn" aria-label="Cerrar">✕</button>
-        </div>
-        <div class="modal-body">
-          <form id="edit-form" novalidate>
-            <div class="form-grid">
-              <div class="form-field">
-                <label for="edit-tipo">Tipo</label>
-                <select id="edit-tipo">
-                  <option value="income">Ingreso</option>
-                  <option value="expense">Gasto</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label for="edit-date">Fecha</label>
-                <input type="date" id="edit-date" required />
-              </div>
-              <div class="form-field">
-                <label for="edit-bank">Banco</label>
-                <select id="edit-bank">
-                  <option value="">-- Banco --</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label for="edit-category">Categoría</label>
-                <select id="edit-category">
-                  <option value="">-- Categoría --</option>
-                </select>
-              </div>
-              <div class="form-field col-full">
-                <label for="edit-amount">Monto</label>
-                <input type="number" id="edit-amount" min="0.01" step="0.01" required />
-              </div>
-              <div class="form-field col-full">
-                <label for="edit-description">Descripción</label>
-                <input
-                  type="text"
-                  id="edit-description"
-                  list="description-list"
-                  autocomplete="off"
-                />
-              </div>
-            </div>
-            <div class="form-actions">
-              <button type="button" class="btn-outline" id="edit-cancel-btn">Cancelar</button>
-              <button type="submit" class="btn-primary">Guardar</button>
-            </div>
+            <button type="submit" class="btn-modal-save">Transferir</button>
           </form>
         </div>
       </div>
@@ -3572,46 +3637,70 @@
         </div>
         <div class="modal-body">
           <form id="cc-form" novalidate>
-            <div class="form-grid">
-              <div class="form-field col-full">
-                <label for="cc-bank">Banco / Nombre</label>
-                <input type="text" id="cc-bank" placeholder="Ej: Banco Mercantil" required />
-              </div>
-              <div class="form-field">
-                <label for="cc-due-date">Día de Pago (1-31)</label>
+            <div class="modal-form">
+              <div class="modal-input-wrap">
                 <input
-                  type="number"
-                  id="cc-due-date"
-                  min="1"
-                  max="31"
-                  placeholder="Ej: 15"
+                  type="text"
+                  id="cc-bank"
+                  placeholder="Banco o nombre de la tarjeta"
                   required
                 />
               </div>
-              <div class="form-field">
-                <label for="cc-amount">Monto Adeudado</label>
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">$</span>
                 <input
                   type="number"
                   id="cc-amount"
                   min="0"
                   step="0.01"
-                  placeholder="0.00"
+                  placeholder="Monto adeudado"
                   required
                 />
               </div>
-              <div class="form-field">
-                <label for="cc-rate">Interés Anual (%)</label>
-                <input type="number" id="cc-rate" min="0" step="0.01" placeholder="0.00" required />
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">$</span>
+                <input
+                  type="number"
+                  id="cc-limit"
+                  min="0"
+                  step="0.01"
+                  placeholder="Línea de crédito (opcional)"
+                />
               </div>
-              <div class="form-field">
-                <label for="cc-months">Meses para Saldar</label>
-                <input type="number" id="cc-months" min="1" placeholder="12" required />
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">#</span>
+                <input
+                  type="number"
+                  id="cc-due-date"
+                  min="1"
+                  max="31"
+                  placeholder="Día de pago (1–31)"
+                  required
+                />
+              </div>
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">%</span>
+                <input
+                  type="number"
+                  id="cc-rate"
+                  min="0"
+                  step="0.01"
+                  placeholder="Interés anual"
+                  required
+                />
+              </div>
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">÷</span>
+                <input
+                  type="number"
+                  id="cc-months"
+                  min="1"
+                  placeholder="Meses para saldar"
+                  required
+                />
               </div>
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn-outline" id="cc-cancel-btn">Cancelar</button>
-              <button type="submit" class="btn-primary" id="cc-save-btn">Añadir Tarjeta</button>
-            </div>
+            <button type="submit" class="btn-modal-save" id="cc-save-btn">Añadir Tarjeta</button>
           </form>
         </div>
       </div>
@@ -3775,50 +3864,51 @@
         <div class="modal-body">
           <form id="rec-form" novalidate>
             <input type="hidden" id="rec-edit-id" />
-            <div class="form-grid">
-              <div class="form-field col-full">
-                <label for="rec-desc">Descripción</label>
+            <div class="modal-form">
+              <div class="modal-input-wrap">
                 <input
                   type="text"
                   id="rec-desc"
                   list="description-list"
                   autocomplete="off"
-                  placeholder="Ej: Pago de Alquiler"
+                  placeholder="Descripción del gasto"
                   required
                 />
               </div>
-              <div class="form-field">
-                <label for="rec-cat">Categoría</label>
+              <div class="modal-input-wrap">
                 <select id="rec-cat" required>
-                  <option value="">-- Categoría --</option>
+                  <option value="">— Categoría —</option>
                 </select>
               </div>
-              <div class="form-field">
-                <label for="rec-bank">Banco/Cuenta</label>
+              <div class="modal-input-wrap">
                 <select id="rec-bank" required>
-                  <option value="">-- Banco --</option>
+                  <option value="">— Banco / Cuenta —</option>
                 </select>
               </div>
-              <div class="form-field">
-                <label for="rec-amount">Monto Mensual</label>
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">$</span>
                 <input
                   type="number"
                   id="rec-amount"
                   min="0.01"
                   step="0.01"
-                  placeholder="0.00"
+                  placeholder="Monto mensual"
                   required
                 />
               </div>
-              <div class="form-field">
-                <label for="rec-day">Día de Pago (1-31)</label>
-                <input type="number" id="rec-day" min="1" max="31" placeholder="Ej: 15" required />
+              <div class="modal-input-wrap modal-input-wrap--prefix">
+                <span class="modal-prefix">#</span>
+                <input
+                  type="number"
+                  id="rec-day"
+                  min="1"
+                  max="31"
+                  placeholder="Día de pago (1–31)"
+                  required
+                />
               </div>
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn-outline" id="rec-cancel-btn">Cancelar</button>
-              <button type="submit" class="btn-primary" id="rec-save-btn">Guardar</button>
-            </div>
+            <button type="submit" class="btn-modal-save" id="rec-save-btn">Guardar</button>
           </form>
         </div>
       </div>
@@ -3943,7 +4033,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.0.1</p>
+      <p id="app-version">v 0.0.0.9</p>
     </footer>
 
     <script type="module">
@@ -4271,7 +4361,7 @@
         registros: ['btn-add-transaction', 'btn-transfer', 'reg-filter-group'],
         proyeccion: ['btn-add-projection', 'proj-filter-group'],
         recurrentes: ['btn-add-rec'],
-        presupuesto: ['btn-save-budgets'],
+        presupuesto: [],
         'gastos-comunes': ['btn-add-comun'],
         tarjetas: ['btn-add-card'],
         saldos: [],
@@ -4285,7 +4375,6 @@
         'btn-add-rec',
         'btn-add-comun',
         'btn-add-card',
-        'btn-save-budgets',
         'btn-edit-selected',
         'btn-delete-selected',
         'btn-add-projection',
@@ -4700,7 +4789,6 @@
       let tempTxData = {}; // datos en tránsito durante el flujo calculadora
       let calcExpr = '0'; // expresión actual en el keypad
       let confirmCb = null; // callback para el modal genérico de confirmación
-      let editingTxId = null; // ID de la transacción que se está editando
 
       /* ===================================================================
        REGISTROS — HELPER: poblar selects con bancos / categorías
@@ -5019,23 +5107,43 @@
       /* ===================================================================
        CALCULATOR MODAL
        =================================================================== */
-      function openCalcModal() {
-        calcExpr = '0';
-        tempTxData = {};
-
-        // Default tipo = expense
-        setCalcTipo('expense');
-
-        // Default date = today
+      function openCalcModal(mode = 'transaction', editTxId = null, initialTipo = 'expense') {
         const today = new Date().toISOString().slice(0, 10);
-        document.getElementById('calc-date').value = today;
+        calcExpr = '0';
+        tempTxData = { _mode: mode };
 
-        // Populate bank select
         populateBankSelects('calc-bank');
-        document.getElementById('calc-bank').value = '';
 
-        document.getElementById('calc-display').textContent = '0';
-        document.getElementById('calc-modal').classList.add('active');
+        if (editTxId) {
+          const tx = appState.transactions.find((t) => t.id === editTxId);
+          if (!tx) return;
+          tempTxData._editId = editTxId;
+          setCalcTipo(tx.type === 'income' ? 'income' : 'expense');
+          document.getElementById('calc-date').value = tx.date || today;
+          document.getElementById('calc-desc').value = tx.description || '';
+          document.getElementById('calc-bank').value = tx.bank || '';
+          calcExpr = String(tx.amount || 0);
+          document.getElementById('calc-display').textContent = String(tx.amount || 0);
+          document.getElementById('calc-modal-title').textContent = 'Editar Transacción';
+          document.getElementById('calc-modal').classList.add('active');
+        } else {
+          setCalcTipo(initialTipo);
+          document.getElementById('calc-date').value = today;
+          document.getElementById('calc-desc').value = '';
+          document.getElementById('calc-bank').value = '';
+          document.getElementById('calc-display').textContent = '0';
+          document.getElementById('calc-modal-title').textContent =
+            mode === 'projection' ? 'Nueva Proyección' : 'Nueva Transacción';
+          document.getElementById('calc-modal').classList.add('active');
+          setTimeout(() => {
+            const d = document.getElementById('calc-date');
+            try {
+              d.showPicker();
+            } catch (_) {
+              d.focus();
+            }
+          }, 80);
+        }
       }
 
       function closeCalcModal() {
@@ -5051,6 +5159,12 @@
             btn.classList.add(tipo === 'income' ? 'active--income' : 'active--expense');
           }
         });
+        const box = document.querySelector('#calc-modal .modal-box');
+        const display = document.getElementById('calc-display');
+        box.classList.toggle('tipo--income', tipo === 'income');
+        box.classList.toggle('tipo--expense', tipo === 'expense');
+        display.classList.toggle('tipo--income', tipo === 'income');
+        display.classList.toggle('tipo--expense', tipo === 'expense');
       }
 
       function handleCalcKey(key) {
@@ -5077,6 +5191,12 @@
       }
 
       function handleCalcKeyboard(e) {
+        // No interceptar cuando el foco está en un input/select/textarea
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+        // Solo actuar cuando el modal calculadora está activo
+        if (!document.getElementById('calc-modal').classList.contains('active')) return;
+
         const map = {
           Backspace: 'DEL',
           Enter: 'OK',
@@ -5140,12 +5260,6 @@
         const grid = document.getElementById('cat-grid');
         grid.innerHTML = '';
 
-        // Hide description prompt
-        const prompt = document.getElementById('desc-prompt');
-        prompt.classList.remove('visible');
-        document.getElementById('desc-input-row').classList.add('hidden');
-        document.getElementById('desc-input').value = '';
-
         appState.categories.forEach((cat) => {
           const btn = document.createElement('button');
           btn.className = 'btn-cat';
@@ -5172,19 +5286,15 @@
         document.getElementById('cat-modal').classList.remove('active');
       }
 
-      function showDescPrompt(categoryName) {
-        tempTxData.category = categoryName;
-        document.getElementById('desc-prompt').classList.add('visible');
-        document.getElementById('desc-no-btn').focus();
-      }
-
       /* ===================================================================
        SAVE TRANSACTION
        =================================================================== */
       async function finalizeTransaction(description) {
+        if (tempTxData._mode === 'projection') return finalizeProjection(description);
         const user = appState.currentUser;
         if (!user) return;
 
+        const editId = tempTxData._editId || null;
         const tx = {
           type: tempTxData.type,
           amount: tempTxData.amount,
@@ -5192,21 +5302,68 @@
           bank: tempTxData.bank,
           category: tempTxData.category || '',
           description: description ? toTitleCase(description.trim()) : '',
-          createdAt: new Date().toISOString(),
         };
 
         closeCatModal();
         showLoading();
         try {
-          await addDoc(collection(db, DB_COL(user.uid, 'transactions')), tx);
+          if (editId) {
+            await updateDoc(doc(db, DB_COL(user.uid, 'transactions'), editId), tx);
+            showToast('Transacción actualizada.', 'success');
+          } else {
+            tx.createdAt = new Date().toISOString();
+            await addDoc(collection(db, DB_COL(user.uid, 'transactions')), tx);
+            if (tx.description && !appState.descriptions.includes(tx.description)) {
+              openConfirmModal(
+                '¿Guardar descripción?',
+                `¿Deseas guardar "${tx.description}" para usarla en el futuro?`,
+                async () => {
+                  const newDescs = [...appState.descriptions, tx.description];
+                  try {
+                    await setDoc(
+                      doc(db, DB_PREF(user.uid)),
+                      { descriptions: newDescs },
+                      { merge: true },
+                    );
+                  } catch (err) {
+                    console.error('[Firestore] Guardar descripción:', err);
+                  }
+                },
+              );
+            }
+          }
+        } catch (err) {
+          console.error('[Firestore] Guardar transacción:', err);
+          showToast('Error al guardar la transacción.', 'error');
+        } finally {
+          hideLoading();
+          tempTxData = {};
+        }
+      }
 
-          // If description is new, offer to save it
-          if (tx.description && !appState.descriptions.includes(tx.description)) {
+      async function finalizeProjection(description) {
+        const user = appState.currentUser;
+        if (!user) return;
+        const data = {
+          type: tempTxData.type,
+          amount: tempTxData.amount,
+          date: tempTxData.date,
+          bank: tempTxData.bank,
+          category: tempTxData.category || '',
+          description: description ? toTitleCase(description.trim()) : '',
+        };
+        closeCatModal();
+        showLoading();
+        try {
+          const ref = doc(collection(db, DB_COL(user.uid, 'projections')));
+          await setDoc(ref, { ...data, id: ref.id });
+          showToast('Proyección añadida.', 'success');
+          if (data.description && !appState.descriptions.includes(data.description)) {
             openConfirmModal(
               '¿Guardar descripción?',
-              `¿Deseas guardar "${tx.description}" para usarla en el futuro?`,
+              `¿Deseas guardar "${data.description}" para usarla en el futuro?`,
               async () => {
-                const newDescs = [...appState.descriptions, tx.description];
+                const newDescs = [...appState.descriptions, data.description];
                 try {
                   await setDoc(
                     doc(db, DB_PREF(user.uid)),
@@ -5220,8 +5377,8 @@
             );
           }
         } catch (err) {
-          console.error('[Firestore] Guardar transacción:', err);
-          showToast('Error al guardar la transacción.', 'error');
+          console.error('[Firestore] Guardar proyección:', err);
+          showToast('Error al guardar la proyección.', 'error');
         } finally {
           hideLoading();
           tempTxData = {};
@@ -5293,66 +5450,6 @@
       }
 
       /* ===================================================================
-       EDIT MODAL
-       =================================================================== */
-      function openEditModal(txId) {
-        const tx = appState.transactions.find((t) => t.id === txId);
-        if (!tx) return;
-        editingTxId = txId;
-
-        document.getElementById('edit-tipo').value = tx.type === 'income' ? 'income' : 'expense';
-        document.getElementById('edit-date').value = tx.date || '';
-        document.getElementById('edit-amount').value = tx.amount || '';
-        document.getElementById('edit-description').value = tx.description || '';
-
-        populateBankSelects('edit-bank');
-        document.getElementById('edit-bank').value = tx.bank || '';
-
-        populateCategorySelect('edit-category');
-        document.getElementById('edit-category').value = tx.category || '';
-
-        updateDescriptionDatalist();
-        document.getElementById('edit-modal').classList.add('active');
-      }
-
-      function closeEditModal() {
-        document.getElementById('edit-modal').classList.remove('active');
-        editingTxId = null;
-      }
-
-      async function handleEditSubmit(e) {
-        e.preventDefault();
-        const user = appState.currentUser;
-        if (!user || !editingTxId) return;
-
-        const amount = parseFloat(document.getElementById('edit-amount').value);
-        if (isNaN(amount) || amount <= 0) {
-          showToast('Ingresa un monto válido.', 'warning');
-          return;
-        }
-
-        const updated = {
-          type: document.getElementById('edit-tipo').value,
-          date: document.getElementById('edit-date').value,
-          bank: document.getElementById('edit-bank').value,
-          category: document.getElementById('edit-category').value,
-          amount,
-          description: toTitleCase(document.getElementById('edit-description').value.trim()),
-        };
-
-        showLoading();
-        closeEditModal();
-        try {
-          await updateDoc(doc(db, DB_COL(user.uid, 'transactions'), editingTxId), updated);
-          showToast('Transacción actualizada.', 'success');
-        } catch (err) {
-          console.error('[Firestore] Editar transacción:', err);
-          showToast('Error al actualizar.', 'error');
-        } finally {
-          hideLoading();
-        }
-      }
-
       /* ===================================================================
        DELETE TRANSACTION
        =================================================================== */
@@ -5434,11 +5531,11 @@
         if (!chk) return;
         const { id, type } = chk.dataset;
 
-        if (tab === 'registros') openEditModal(id);
+        if (tab === 'registros') openCalcModal('transaction', id);
         else if (tab === 'recurrentes') openRecModal(id);
         else if (tab === 'proyeccion') {
           if (type === 'proj') openProjModal(id);
-          else openEditModal(id);
+          else openCalcModal('transaction', id);
         }
       }
 
@@ -6074,8 +6171,14 @@
         document.getElementById('budget-table').classList.remove('hidden');
 
         // Expenses by category for the current filter month
-        const expByCat = getFilteredTransactions()
-          .filter((t) => t.type === 'expense')
+        // Filtra solo por mes — ignora filterBank/filterCategory del tab Registros
+        const month = appState.filterMonth;
+        const expByCat = appState.transactions
+          .filter((t) => {
+            if (!t || typeof t.date !== 'string') return false;
+            if (month && t.date.substring(0, 7) !== month) return false;
+            return t.type === 'expense' && !t.transferLeg;
+          })
           .reduce((acc, t) => {
             acc[t.category] = (acc[t.category] || 0) + t.amount;
             return acc;
@@ -6167,31 +6270,33 @@
       }
 
       /* ===================================================================
-       PRESUPUESTO — GUARDAR
+       PRESUPUESTO — AUTO-GUARDAR (blur)
        =================================================================== */
-      async function handleSaveBudgets() {
+      async function saveBudgets(triggerInput) {
         const user = appState.currentUser;
         if (!user) return;
         const newBudgets = {};
-        document.querySelectorAll('.budget-input').forEach((input) => {
-          const cat = input.dataset.category;
-          const val = parseFloat(input.value);
+        document.querySelectorAll('.budget-input').forEach((inp) => {
+          const cat = inp.dataset.category;
+          const val = parseFloat(inp.value);
           if (cat && !isNaN(val) && val > 0) newBudgets[cat] = val;
         });
-        const btn = document.getElementById('btn-save-budgets');
-        btn.disabled = true;
         try {
           await setDoc(
             doc(db, DB_PREF(user.uid)),
             { categoryBudgets: newBudgets },
             { merge: true },
           );
-          showToast('Presupuestos guardados.', 'success');
+          appState.categoryBudgets = newBudgets;
+          if (triggerInput) {
+            triggerInput.style.borderBottomColor = 'var(--color-success)';
+            setTimeout(() => {
+              triggerInput.style.borderBottomColor = '';
+            }, 800);
+          }
         } catch (err) {
           console.error('[Firestore] Guardar presupuestos:', err);
-          showToast('Error al guardar presupuestos.', 'error');
-        } finally {
-          btn.disabled = false;
+          showToast('Error al guardar presupuesto.', 'error');
         }
       }
 
@@ -6590,6 +6695,7 @@
         const bank = toTitleCase(document.getElementById('cc-bank').value.trim());
         const dueDate = parseInt(document.getElementById('cc-due-date').value, 10);
         const amount = parseFloat(document.getElementById('cc-amount').value);
+        const limitVal = parseFloat(document.getElementById('cc-limit').value) || 0;
         const rate = parseFloat(document.getElementById('cc-rate').value);
         const months = parseInt(document.getElementById('cc-months').value, 10);
 
@@ -6624,7 +6730,7 @@
             amount,
             rate,
             months,
-            limit: 0,
+            limit: limitVal,
             exclude: false,
           });
           showToast(`Tarjeta "${bank}" añadida.`, 'success');
@@ -6868,6 +6974,13 @@
                 tag.className = 'paid-tag';
                 tag.textContent = `✔ Día ${distData.paidDay}`;
                 statusCol.appendChild(tag);
+                const undoBtn = document.createElement('button');
+                undoBtn.className = 'undo-paid-btn';
+                undoBtn.title = 'Revertir pago';
+                undoBtn.dataset.itemId = item.id;
+                undoBtn.dataset.personIndex = pIdx;
+                undoBtn.textContent = '✕';
+                statusCol.appendChild(undoBtn);
               } else {
                 const dayIn = document.createElement('input');
                 dayIn.type = 'number';
@@ -6994,6 +7107,7 @@
             if (!item.distribution[originalPersonIndex])
               item.distribution[originalPersonIndex] = {};
             item.distribution[originalPersonIndex].paidDay = parseInt(date.split('-')[2], 10);
+            item.distribution[originalPersonIndex].txId = txRef.id;
             await saveGastosComunesState();
           }
           showToast('Pago registrado correctamente.', 'success');
@@ -7152,6 +7266,21 @@
           } else {
             tdCat.textContent = '—';
           }
+
+          // Banco (desktop) / ícono info (mobile)
+          const tdBank = tr.insertCell();
+          const bankSpan = document.createElement('span');
+          bankSpan.className = 'cell-bank-text';
+          bankSpan.textContent = p.bank || '—';
+          tdBank.appendChild(bankSpan);
+          const infoBtn = document.createElement('button');
+          infoBtn.className = 'btn-row-info';
+          infoBtn.dataset.action = 'info';
+          infoBtn.dataset.desc = p.description || '';
+          infoBtn.dataset.bank = p.bank || '';
+          infoBtn.setAttribute('aria-label', 'Ver detalle');
+          infoBtn.textContent = 'i';
+          tdBank.appendChild(infoBtn);
 
           // Monto
           const tdAmt = tr.insertCell();
@@ -7825,7 +7954,16 @@
         // Dashboard cards → navigate to section
         document.getElementById('dashboard').addEventListener('click', (e) => {
           const card = e.target.closest('.dash-card[data-goto]');
-          if (card) switchTab(card.dataset.goto);
+          if (!card) return;
+          if (card.id === 'dash-income') {
+            switchTab('registros');
+            openCalcModal('transaction', null, 'income');
+          } else if (card.id === 'dash-expense') {
+            switchTab('registros');
+            openCalcModal('transaction', null, 'expense');
+          } else {
+            switchTab(card.dataset.goto);
+          }
         });
 
         // Fullscreen
@@ -7886,10 +8024,18 @@
         document.getElementById('calc-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeCalcModal();
         });
-        // Tipo buttons
+        // Tipo buttons — al seleccionar tipo, re-abre el calendario para iniciar la secuencia
         document.getElementById('calc-modal').addEventListener('click', (e) => {
           const btn = e.target.closest('.btn-tipo');
-          if (btn) setCalcTipo(btn.dataset.tipo);
+          if (btn) {
+            setCalcTipo(btn.dataset.tipo);
+            const d = document.getElementById('calc-date');
+            try {
+              d.showPicker();
+            } catch (_) {
+              d.focus();
+            }
+          }
         });
         // Keypad (event delegation)
         document.getElementById('calc-modal').addEventListener('click', (e) => {
@@ -7903,26 +8049,27 @@
           if (e.target === e.currentTarget) closeCatModal();
         });
         // Category grid (event delegation)
+        // Categoría seleccionada → guardar con descripción ya completada en el modal
         document.getElementById('cat-grid').addEventListener('click', (e) => {
           const btn = e.target.closest('.btn-cat[data-name]');
-          if (btn) showDescPrompt(btn.dataset.name);
+          if (btn) {
+            tempTxData.category = btn.dataset.name;
+            finalizeTransaction(document.getElementById('calc-desc').value.trim());
+          }
         });
-        // Description prompt buttons
-        document.getElementById('desc-no-btn').addEventListener('click', () => {
-          finalizeTransaction('');
+
+        // Flujo automático: fecha → descripción → banco → calculadora
+        document.getElementById('calc-date').addEventListener('change', () => {
+          document.getElementById('calc-desc').focus();
         });
-        document.getElementById('desc-yes-btn').addEventListener('click', () => {
-          document.getElementById('desc-input-row').classList.remove('hidden');
-          document.getElementById('desc-input').focus();
-        });
-        document.getElementById('desc-ok-btn').addEventListener('click', () => {
-          finalizeTransaction(document.getElementById('desc-input').value);
-        });
-        document.getElementById('desc-input').addEventListener('keydown', (e) => {
+        document.getElementById('calc-desc').addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
-            finalizeTransaction(e.target.value);
+            document.getElementById('calc-bank').focus();
           }
+        });
+        document.getElementById('calc-bank').addEventListener('change', () => {
+          document.getElementById('calc-display').focus();
         });
 
         // ── Confirm modal ───────────────────────────────────────────────
@@ -7939,27 +8086,16 @@
 
         // ── Transfer modal ──────────────────────────────────────────────
         document.getElementById('transfer-close-btn').addEventListener('click', closeTransferModal);
-        document
-          .getElementById('transfer-cancel-btn')
-          .addEventListener('click', closeTransferModal);
         document.getElementById('transfer-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeTransferModal();
         });
         document.getElementById('transfer-form').addEventListener('submit', handleTransferSubmit);
 
-        // ── Edit modal ──────────────────────────────────────────────────
-        document.getElementById('edit-close-btn').addEventListener('click', closeEditModal);
-        document.getElementById('edit-cancel-btn').addEventListener('click', closeEditModal);
-        document.getElementById('edit-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeEditModal();
-        });
-        document.getElementById('edit-form').addEventListener('submit', handleEditSubmit);
-
         // ── Registros table (event delegation) ─────────────────────────
         document.getElementById('reg-tbody').addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
-          if (btn.dataset.action === 'edit') openEditModal(btn.dataset.id);
+          if (btn.dataset.action === 'edit') openCalcModal('transaction', btn.dataset.id);
           if (btn.dataset.action === 'delete') deleteTransaction(btn.dataset.id);
           if (btn.dataset.action === 'info') {
             const row = btn.closest('tr');
@@ -8041,7 +8177,89 @@
           if (btn) btn.closest('.filter-group').classList.toggle('filter-open');
         });
 
-        document.getElementById('btn-save-budgets').addEventListener('click', handleSaveBudgets);
+        // Auto-guardado al salir del input de presupuesto
+        document.getElementById('budget-tbody').addEventListener(
+          'blur',
+          (e) => {
+            const input = e.target.closest('.budget-input');
+            if (input) saveBudgets(input);
+          },
+          true,
+        );
+
+        // Actualización en vivo de Disponible al tipear en el input de Presupuesto
+        document.getElementById('budget-tbody').addEventListener('input', (e) => {
+          const input = e.target.closest('.budget-input');
+          if (!input) return;
+
+          const cat = input.dataset.category;
+          const newBudget = parseFloat(input.value) || 0;
+          const month = appState.filterMonth;
+
+          const spent = appState.transactions
+            .filter((t) => {
+              if (!t || typeof t.date !== 'string') return false;
+              if (month && t.date.substring(0, 7) !== month) return false;
+              return t.type === 'expense' && !t.transferLeg && t.category === cat;
+            })
+            .reduce((sum, t) => sum + t.amount, 0);
+
+          const remain = newBudget - spent;
+          const pct = newBudget > 0 ? Math.min(100, (spent / newBudget) * 100) : 0;
+
+          // Actualizar celda Disponible (col 4)
+          const tdRemain = input.closest('tr').cells[3];
+          tdRemain.textContent = '';
+          const balSpan = document.createElement('div');
+          balSpan.className =
+            remain > 0 ? 'balance--positive' : remain < 0 ? 'balance--negative' : 'balance--zero';
+          balSpan.textContent = formatCurrency(remain);
+          tdRemain.appendChild(balSpan);
+          if (newBudget > 0) {
+            const bar = document.createElement('div');
+            bar.className = 'progress-bar';
+            const fill = document.createElement('div');
+            fill.className =
+              'progress-bar__fill' +
+              (pct >= 100
+                ? ' progress-bar__fill--danger'
+                : pct >= 80
+                  ? ' progress-bar__fill--warning'
+                  : '');
+            fill.style.width = pct + '%';
+            bar.appendChild(fill);
+            tdRemain.appendChild(bar);
+          }
+
+          // Actualizar totales del tfoot
+          let totBudget = 0,
+            totSpent = 0,
+            totRemain = 0;
+          document.querySelectorAll('.budget-input').forEach((inp) => {
+            const c = inp.dataset.category;
+            const b = parseFloat(inp.value) || 0;
+            const s = appState.transactions
+              .filter((t) => {
+                if (!t || typeof t.date !== 'string') return false;
+                if (month && t.date.substring(0, 7) !== month) return false;
+                return t.type === 'expense' && !t.transferLeg && t.category === c;
+              })
+              .reduce((sum, t) => sum + t.amount, 0);
+            totBudget += b;
+            totSpent += s;
+            totRemain += b - s;
+          });
+          document.getElementById('budget-total-budgeted').textContent = formatCurrency(totBudget);
+          document.getElementById('budget-total-spent').textContent = formatCurrency(totSpent);
+          const totEl = document.getElementById('budget-total-remaining');
+          totEl.textContent = formatCurrency(totRemain);
+          totEl.className =
+            totRemain > 0
+              ? 'balance--positive'
+              : totRemain < 0
+                ? 'balance--negative'
+                : 'balance--zero';
+        });
 
         // ── Configuración — alias + saldo ──────────────────────────────
         document.getElementById('cfg-alias').addEventListener('input', (e) => {
@@ -8126,7 +8344,7 @@
         // ── Proyección ─────────────────────────────────────────────────
         document
           .getElementById('btn-add-projection')
-          .addEventListener('click', () => openProjModal());
+          .addEventListener('click', () => openCalcModal('projection'));
         document.getElementById('proj-close-btn').addEventListener('click', closeProjModal);
         document.getElementById('proj-cancel-btn').addEventListener('click', closeProjModal);
         document.getElementById('proj-modal').addEventListener('click', (e) => {
@@ -8142,7 +8360,7 @@
           renderReportes();
         });
 
-        // Event delegation en proj-tbody para editar/eliminar
+        // Event delegation en proj-tbody para editar/eliminar/info
         document.getElementById('proj-tbody').addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
@@ -8150,13 +8368,40 @@
           if (action === 'delete-proj') deleteProjection(id);
           if (action === 'edit-proj') openProjModal(id);
           if (action === 'delete-tx') deleteTransaction(id);
-          if (action === 'edit-tx') openEditModal(id);
+          if (action === 'edit-tx') openCalcModal('transaction', id);
+          if (action === 'info') {
+            const row = btn.closest('tr');
+            const next = row.nextElementSibling;
+            if (next?.classList.contains('info-row')) {
+              next.remove();
+            } else {
+              const infoTr = document.createElement('tr');
+              infoTr.className = 'info-row';
+              const infoTd = document.createElement('td');
+              infoTd.colSpan = 8;
+              const inner = document.createElement('div');
+              inner.className = 'info-row-content';
+              if (btn.dataset.desc) {
+                const dSpan = document.createElement('span');
+                dSpan.textContent = btn.dataset.desc;
+                inner.appendChild(dSpan);
+              }
+              if (btn.dataset.bank) {
+                const bSpan = document.createElement('span');
+                bSpan.className = 'info-bank';
+                bSpan.textContent = btn.dataset.bank;
+                inner.appendChild(bSpan);
+              }
+              infoTd.appendChild(inner);
+              infoTr.appendChild(infoTd);
+              row.after(infoTr);
+            }
+          }
         });
 
         // ── Tarjetas de Crédito ────────────────────────────────────────
         document.getElementById('btn-add-card').addEventListener('click', openCcModal);
         document.getElementById('cc-close-btn').addEventListener('click', closeCcModal);
-        document.getElementById('cc-cancel-btn').addEventListener('click', closeCcModal);
         document.getElementById('cc-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeCcModal();
         });
@@ -8305,6 +8550,44 @@
             });
             return;
           }
+          const undoPaidBtn = e.target.closest('.undo-paid-btn');
+          if (undoPaidBtn) {
+            const item = appState.gastosComunes.items?.find(
+              (i) => i.id === undoPaidBtn.dataset.itemId,
+            );
+            const pIdx = parseInt(undoPaidBtn.dataset.personIndex, 10);
+            const person = item?.people?.[pIdx];
+            if (!item || !person) return;
+            const personName = person.name || `Persona ${pIdx + 1}`;
+            openConfirmModal(
+              'Revertir pago',
+              `¿Revertir el pago de "${personName}"? Se eliminará el ingreso registrado en Registros.`,
+              async () => {
+                const distEntry = item.distribution?.[pIdx];
+                const txId = distEntry?.txId;
+                if (txId) {
+                  const user = appState.currentUser;
+                  if (user) {
+                    try {
+                      await deleteDoc(doc(db, DB_COL(user.uid, 'transactions'), txId));
+                      appState.transactions = appState.transactions.filter((t) => t.id !== txId);
+                    } catch (err) {
+                      console.error('[Firestore] Revertir pago gasto común:', err);
+                      showToast('Error al eliminar la transacción.', 'error');
+                      return;
+                    }
+                  }
+                }
+                if (item.distribution?.[pIdx]) {
+                  delete item.distribution[pIdx].paidDay;
+                  delete item.distribution[pIdx].txId;
+                }
+                await saveGastosComunesState();
+                showToast('Pago revertido.', 'success');
+              },
+            );
+            return;
+          }
           const delItemBtn = e.target.closest('.item-delete-btn');
           if (delItemBtn) {
             const item = appState.gastosComunes.items?.find(
@@ -8387,11 +8670,47 @@
         // ── Gastos Recurrentes ──────────────────────────────────────────
         document.getElementById('btn-add-rec').addEventListener('click', () => openRecModal());
         document.getElementById('rec-close-btn').addEventListener('click', closeRecModal);
-        document.getElementById('rec-cancel-btn').addEventListener('click', closeRecModal);
         document.getElementById('rec-modal').addEventListener('click', (e) => {
           if (e.target === e.currentTarget) closeRecModal();
         });
         document.getElementById('rec-form').addEventListener('submit', handleRecFormSubmit);
+
+        // Enter-flow rec-form: desc → cat → bank → amount → day → submit
+        ['rec-desc', 'rec-cat', 'rec-bank', 'rec-amount'].forEach((id, i, arr) => {
+          document.getElementById(id).addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              document.getElementById(arr[i + 1]).focus();
+            }
+          });
+        });
+        document
+          .getElementById('rec-cat')
+          .addEventListener('change', () => document.getElementById('rec-bank').focus());
+        document
+          .getElementById('rec-bank')
+          .addEventListener('change', () => document.getElementById('rec-amount').focus());
+        document.getElementById('rec-day').addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('rec-form').requestSubmit();
+          }
+        });
+
+        // Enter-flow cc-form: bank → amount → limit → due-date → rate → months → submit
+        ['cc-bank', 'cc-amount', 'cc-limit', 'cc-due-date', 'cc-rate', 'cc-months'].forEach(
+          (id, i, arr) => {
+            document.getElementById(id).addEventListener('keydown', (e) => {
+              if (e.key !== 'Enter') return;
+              e.preventDefault();
+              if (i < arr.length - 1) {
+                document.getElementById(arr[i + 1]).focus();
+              } else {
+                document.getElementById('cc-form').requestSubmit();
+              }
+            });
+          },
+        );
         document.getElementById('rec-tbody').addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
