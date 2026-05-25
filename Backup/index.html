@@ -4073,7 +4073,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.1.4</p>
+      <p id="app-version">v 0.0.1.6</p>
     </footer>
 
     <script type="module">
@@ -4152,7 +4152,6 @@
         filterMonth: localStorage.getItem('foresee-filter-month') || getCurrentMonthStr(),
         filterBank: '',
         filterCategory: '',
-        _dashCache: null,
       };
 
       let unsubscribers = [];
@@ -4477,10 +4476,13 @@
                 appState.categoryBudgets = d.categoryBudgets || {};
               }
               renderHeaderAlias();
-              renderAll();
+              scheduleRenderAll();
               hideLoading();
             },
-            (err) => console.error('[Firestore] preferencias:', err),
+            (err) => {
+              console.error('[Firestore] preferencias:', err);
+              hideLoading();
+            },
           ),
 
           onSnapshot(
@@ -4489,7 +4491,7 @@
               appState.transactions = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
               initialTransactionsLoaded = true;
               tryProcessRecurringExpenses();
-              renderAll();
+              scheduleRenderAll();
             },
             (err) => console.error('[Firestore] transacciones:', err),
           ),
@@ -4501,7 +4503,7 @@
               initialRecurringLoaded = true;
               tryProcessRecurringExpenses();
               checkRecurringPaymentReminders();
-              renderAll();
+              scheduleRenderAll();
             },
             (err) => console.error('[Firestore] recurrentes:', err),
           ),
@@ -4510,7 +4512,7 @@
             cardsCol,
             (snap) => {
               appState.creditCards = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-              renderAll();
+              scheduleRenderAll();
             },
             (err) => console.error('[Firestore] tarjetas:', err),
           ),
@@ -4519,7 +4521,7 @@
             projCol,
             (snap) => {
               appState.projections = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-              renderAll();
+              scheduleRenderAll();
             },
             (err) => console.error('[Firestore] proyecciones:', err),
           ),
@@ -4540,7 +4542,7 @@
               } else {
                 setDoc(gComunRef, { items: [] });
               }
-              renderAll();
+              scheduleRenderAll();
             },
             (err) => console.error('[Firestore] gastosComunes:', err),
           ),
@@ -4571,7 +4573,6 @@
           filterMonth: localStorage.getItem('foresee-filter-month') || getCurrentMonthStr(),
           filterBank: '',
           filterCategory: '',
-          _dashCache: null,
         });
       }
 
@@ -4653,6 +4654,12 @@
           }
         }
 
+        const existingKeys = new Set(
+          appState.transactions.map(
+            (t) => `${t.date}_${t.category}_${(t.description || '').toLowerCase()}`,
+          ),
+        );
+
         const toCreate = [];
         let y = gapStartYear;
         let m = gapStartMonth;
@@ -4666,22 +4673,14 @@
             const expDay = parseInt(expense.day, 10);
             if (expDay > daysToCheck) continue;
 
-            // Duplicado: misma fecha (año/mes/día), misma descripción, misma categoría.
-            // El monto se ignora — el usuario puede haberlo ajustado manualmente.
-            const alreadyExists = appState.transactions.some((t) => {
-              const d = new Date(t.date + 'T00:00:00');
-              return (
-                d.getFullYear() === y &&
-                d.getMonth() === m &&
-                d.getDate() === expDay &&
-                t.description.toLowerCase() === expense.description.toLowerCase() &&
-                t.category === expense.category
-              );
-            });
+            const dateStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(expDay).padStart(2, '0')}`;
+            const alreadyExists = existingKeys.has(
+              `${dateStr}_${expense.category}_${(expense.description || '').toLowerCase()}`,
+            );
 
             if (!alreadyExists) {
               toCreate.push({
-                date: new Date(y, m, expDay).toISOString().split('T')[0],
+                date: `${y}-${String(m + 1).padStart(2, '0')}-${String(expDay).padStart(2, '0')}`,
                 description: expense.description,
                 category: expense.category,
                 bank: expense.bank,
@@ -4718,8 +4717,9 @@
       }
 
       function checkBudgetLimits() {
-        const byCategory = getFilteredTransactions()
-          .filter((t) => t.type === 'expense')
+        const currentMonth = appState.filterMonth || getCurrentMonthStr();
+        const byCategory = appState.transactions
+          .filter((t) => t.type === 'expense' && t.date && t.date.substring(0, 7) === currentMonth)
           .reduce((acc, t) => {
             acc[t.category] = (acc[t.category] || 0) + t.amount;
             return acc;
@@ -4731,6 +4731,10 @@
           if (!budget || !spent) continue;
           const pct = (spent / budget) * 100;
           const alertKey = `${appState.filterMonth}-${cat}`;
+          if (pct < 80) {
+            delete appState.budgetAlertsShown[alertKey];
+            continue;
+          }
           if (appState.budgetAlertsShown[alertKey]) continue;
           if (pct >= 90) {
             showToast(
@@ -4746,6 +4750,22 @@
             appState.budgetAlertsShown[alertKey] = true;
           }
         }
+      }
+
+      function renderCreditCardAlerts() {
+        const container = document.getElementById('credit-card-alerts');
+        container.textContent = '';
+        appState.creditCards.forEach((card) => {
+          const deuda = parseFloat(card.amount) || 0;
+          const limite = parseFloat(card.limit) || 0;
+          if (!limite || deuda / limite < 0.8) return;
+          const pct = ((deuda / limite) * 100).toFixed(0);
+          const text = `Tarjeta ${card.bank}: ${pct}% del límite usado (${formatCurrency(deuda)} de ${formatCurrency(limite)}).`;
+          const div = document.createElement('div');
+          div.className = deuda / limite >= 0.9 ? 'alert-item alert-item--danger' : 'alert-item';
+          div.appendChild(document.createTextNode(text));
+          container.appendChild(div);
+        });
       }
 
       function renderRecurringAlerts() {
@@ -4778,39 +4798,24 @@
 
       function renderDashboard() {
         const month = appState.filterMonth;
-        const txCount = appState.transactions.length;
 
-        let monthIncome, monthExpenses, totalIncome, totalExpenses;
-        const c = appState._dashCache;
-        if (c && c.month === month && c.txCount === txCount) {
-          ({ monthIncome, monthExpenses, totalIncome, totalExpenses } = c);
-        } else {
-          ({ monthIncome, monthExpenses, totalIncome, totalExpenses } =
-            appState.transactions.reduce(
-              (acc, t) => {
-                if (!t || typeof t.date !== 'string') return acc;
-                const inMonth = !month || t.date.substring(0, 7) === month;
-                if (inMonth) {
-                  if (t.type === 'income') acc.monthIncome += t.amount;
-                  if (t.type === 'expense') acc.monthExpenses += t.amount;
-                }
-                if (!t.isArchived) {
-                  if (t.type === 'income' && !t.transferLeg) acc.totalIncome += t.amount;
-                  if (t.type === 'expense') acc.totalExpenses += t.amount;
-                }
-                return acc;
-              },
-              { monthIncome: 0, monthExpenses: 0, totalIncome: 0, totalExpenses: 0 },
-            ));
-          appState._dashCache = {
-            month,
-            txCount,
-            monthIncome,
-            monthExpenses,
-            totalIncome,
-            totalExpenses,
-          };
-        }
+        const { monthIncome, monthExpenses, totalIncome, totalExpenses } =
+          appState.transactions.reduce(
+            (acc, t) => {
+              if (!t || typeof t.date !== 'string') return acc;
+              const inMonth = !month || t.date.substring(0, 7) === month;
+              if (inMonth) {
+                if (t.type === 'income') acc.monthIncome += t.amount;
+                if (t.type === 'expense') acc.monthExpenses += t.amount;
+              }
+              if (!t.isArchived) {
+                if (t.type === 'income' && !t.transferLeg) acc.totalIncome += t.amount;
+                if (t.type === 'expense') acc.totalExpenses += t.amount;
+              }
+              return acc;
+            },
+            { monthIncome: 0, monthExpenses: 0, totalIncome: 0, totalExpenses: 0 },
+          );
 
         const balance = appState.openingBalance + totalIncome - totalExpenses;
 
@@ -4819,6 +4824,11 @@
         document.getElementById('dash-expense-value').textContent = formatCurrency(monthExpenses);
         document.getElementById('dash-month-label').textContent = formatMonthLabel(month);
 
+        try {
+          renderCreditCardAlerts();
+        } catch (e) {
+          console.error('[renderDashboard] CC alerts:', e);
+        }
         renderRecurringAlerts();
         checkBudgetLimits();
       }
@@ -5184,6 +5194,8 @@
             }
           }, 80);
         }
+        document.removeEventListener('keydown', handleCalcKeyboard);
+        document.addEventListener('keydown', handleCalcKeyboard);
       }
 
       function closeCalcModal() {
@@ -5997,6 +6009,15 @@
         showToast('Copia exportada a JSON.', 'success');
       }
 
+      async function commitInChunks(ops) {
+        const CHUNK = 499;
+        for (let i = 0; i < ops.length; i += CHUNK) {
+          const b = writeBatch(db);
+          ops.slice(i, i + CHUNK).forEach((fn) => fn(b));
+          await b.commit();
+        }
+      }
+
       async function cfgImportJson(file) {
         if (!file) return;
         const user = appState.currentUser;
@@ -6017,9 +6038,7 @@
             async () => {
               showLoading();
               try {
-                const batch = writeBatch(db);
-
-                // Preferences
+                // Preferences — commit independently (always < 500 ops)
                 const prefData = {};
                 if (data.categories) prefData.categories = data.categories;
                 if (data.banks) prefData.banks = data.banks;
@@ -6027,27 +6046,31 @@
                 if (data.categoryBudgets) prefData.categoryBudgets = data.categoryBudgets;
                 if (data.openingBalance != null) prefData.openingBalance = data.openingBalance;
                 if (data.userAlias) prefData.userAlias = data.userAlias;
-                if (Object.keys(prefData).length)
-                  batch.set(doc(db, DB_PREF(user.uid)), prefData, { merge: true });
+                if (Object.keys(prefData).length) {
+                  const prefBatch = writeBatch(db);
+                  prefBatch.set(doc(db, DB_PREF(user.uid)), prefData, { merge: true });
+                  await prefBatch.commit();
+                }
 
-                // Clear + import collections helper
+                // Clear + import each collection with chunked batches
                 const importCol = async (colName, items) => {
                   if (!Array.isArray(items)) return;
                   const colRef = collection(db, DB_COL(user.uid, colName));
                   const snap = await getDocs(colRef);
-                  snap.docs.forEach((d) => batch.delete(doc(colRef, d.id)));
-                  items.forEach((item) => {
-                    const ref = item.id ? doc(colRef, item.id) : doc(colRef);
-                    batch.set(ref, item);
-                  });
+                  const ops = [
+                    ...snap.docs.map((d) => (b) => b.delete(doc(colRef, d.id))),
+                    ...(items || []).map((item) => {
+                      const ref = item.id ? doc(colRef, item.id) : doc(colRef);
+                      return (b) => b.set(ref, item);
+                    }),
+                  ];
+                  await commitInChunks(ops);
                 };
 
                 await importCol('transactions', data.transactions);
                 await importCol('projections', data.projections);
                 await importCol('recurringExpenses', data.recurringExpenses);
                 await importCol('creditCards', data.creditCards);
-
-                await batch.commit();
                 showToast('Datos importados correctamente.', 'success');
               } catch (err) {
                 console.error('[Firestore] Importar JSON:', err);
@@ -6102,16 +6125,12 @@
                 });
               }
 
-              const batch = writeBatch(db);
-
-              // Delete existing transactions + projections from active collection
-              appState.transactions.forEach((t) => batch.delete(doc(txRef, t.id)));
-              appState.projections.forEach((p) => batch.delete(doc(projRef, p.id)));
-
-              // Update opening balance
-              batch.update(doc(db, DB_PREF(user.uid)), { openingBalance: finalBalance });
-
-              await batch.commit();
+              const ops = [
+                ...appState.transactions.map((t) => (b) => b.delete(doc(txRef, t.id))),
+                ...appState.projections.map((p) => (b) => b.delete(doc(projRef, p.id))),
+                (b) => b.update(doc(db, DB_PREF(user.uid)), { openingBalance: finalBalance }),
+              ];
+              await commitInChunks(ops);
 
               // Reset Gastos Comunes: limpiar paidDay de todos los ítems
               if (appState.gastosComunes?.items?.length > 0) {
@@ -6154,14 +6173,15 @@
             try {
               const txRef = collection(db, DB_COL(user.uid, 'transactions'));
               const projRef = collection(db, DB_COL(user.uid, 'projections'));
-              const batch = writeBatch(db);
 
               const [txSnap, projSnap] = await Promise.all([getDocs(txRef), getDocs(projRef)]);
-              txSnap.docs.forEach((d) => batch.delete(doc(txRef, d.id)));
-              projSnap.docs.forEach((d) => batch.delete(doc(projRef, d.id)));
-              batch.update(doc(db, DB_PREF(user.uid)), { openingBalance: 0, categoryBudgets: {} });
-
-              await batch.commit();
+              const ops = [
+                ...txSnap.docs.map((d) => (b) => b.delete(doc(txRef, d.id))),
+                ...projSnap.docs.map((d) => (b) => b.delete(doc(projRef, d.id))),
+                (b) =>
+                  b.update(doc(db, DB_PREF(user.uid)), { openingBalance: 0, categoryBudgets: {} }),
+              ];
+              await commitInChunks(ops);
               showToast('Período reiniciado. Configuración conservada.', 'success');
             } catch (err) {
               console.error('[Firestore] Reiniciar período:', err);
@@ -7187,7 +7207,7 @@
         const [year, mo] = month.split('-').map(Number);
         const virtualFromRecurring = appState.recurringExpenses.map((re) => ({
           id: `recurring-${re.id}`,
-          date: new Date(year, mo - 1, re.day).toISOString().split('T')[0],
+          date: `${year}-${String(mo).padStart(2, '0')}-${String(re.day).padStart(2, '0')}`,
           description: re.description,
           category: re.category,
           bank: re.bank,
@@ -7868,6 +7888,12 @@
         showToast('PDF generado correctamente.', 'success');
       }
 
+      let _renderAllTimer = null;
+      function scheduleRenderAll() {
+        if (_renderAllTimer) clearTimeout(_renderAllTimer);
+        _renderAllTimer = setTimeout(renderAll, 50);
+      }
+
       function renderAll() {
         renderDashboard();
         // Active-tab renders (Phase 3+)
@@ -8051,7 +8077,6 @@
         // ── Action bar buttons ──────────────────────────────────────────
         document.getElementById('btn-add-transaction').addEventListener('click', () => {
           openCalcModal();
-          document.addEventListener('keydown', handleCalcKeyboard);
         });
         document.getElementById('btn-transfer').addEventListener('click', openTransferModal);
         document.getElementById('btn-edit-selected').addEventListener('click', editSelectedItem);
