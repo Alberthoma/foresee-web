@@ -1255,7 +1255,13 @@
         .modal-box input[type='date'],
         .modal-box select,
         .modal-box textarea {
-          min-height: 52px;
+          min-height: 58px;
+          font-size: 1rem;
+        }
+        .modal-input-wrap input,
+        .modal-input-wrap select {
+          height: 58px;
+          min-height: 58px;
           font-size: 1rem;
         }
 
@@ -1454,13 +1460,10 @@
           text-align: right;
         }
 
-        .btn-key {
-          font-size: 1.2rem;
-          padding: 16px var(--space-xs);
-        }
+        .btn-key,
         #calc-modal .btn-key {
-          font-size: 1.2rem;
-          padding: 16px var(--space-xs);
+          font-size: 1.3rem;
+          padding: 22px var(--space-xs);
         }
         .calc-display,
         #calc-modal .calc-display {
@@ -1485,6 +1488,17 @@
 
         .form-grid {
           grid-template-columns: 1fr;
+          gap: var(--space-md);
+        }
+        .modal-form {
+          gap: var(--space-md);
+        }
+        .form-field {
+          gap: var(--space-xs);
+        }
+        #calc-modal .calc-meta {
+          gap: var(--space-sm);
+          margin-bottom: var(--space-sm);
         }
 
         .modal-overlay {
@@ -2833,6 +2847,31 @@
       .info-modal-body strong {
         color: var(--color-text);
       }
+
+      /* =====================================================================
+         MOBILE OVERRIDES — campos y teclas (al final para ganar en cascade)
+         ===================================================================== */
+      @media (max-width: 768px) {
+        .modal-input-wrap input,
+        .modal-input-wrap select,
+        #calc-modal .calc-meta input,
+        #calc-modal .calc-meta select {
+          height: 48px;
+          min-height: 48px;
+          font-size: 1rem;
+          -webkit-appearance: none;
+          appearance: none;
+        }
+        .btn-tipo {
+          height: 48px;
+          font-size: 1rem;
+        }
+        .btn-key,
+        #calc-modal .btn-key {
+          font-size: 1.3rem;
+          padding: 16px var(--space-xs);
+        }
+      }
     </style>
   </head>
   <body class="view-dashboard">
@@ -4034,7 +4073,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.1.1</p>
+      <p id="app-version">v 0.0.1.4</p>
     </footer>
 
     <script type="module">
