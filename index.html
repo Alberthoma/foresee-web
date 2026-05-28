@@ -10,6 +10,12 @@
       rel="icon"
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>"
     />
+    <script>
+      (function () {
+        var t = localStorage.getItem('foresee-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -55,9 +61,28 @@
 
         --transition: 0.2s ease;
 
-        --header-bar-h: 5rem;
+        --header-bar-h: 6.5rem;
         --tab-bar-h: 5.5rem;
         --tab-bar-mobile-h: 5rem;
+      }
+
+      /* =====================================================================
+        1b. MODO CLARO — Gris Perla
+       ===================================================================== */
+      html[data-theme='light'] {
+        --color-bg: #f0f2f5;
+        --color-surface: #ffffff;
+        --color-surface-2: #f5f7fa;
+        --color-border: #dde1e9;
+        --color-text: #1a1d23;
+        --color-text-muted: #5a6070;
+        --color-text-2: #5a6070;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+      html[data-theme='light'] #dash-balance .dash-card__label {
+        color: var(--color-accent);
       }
 
       /* Section accent overrides — only --color-accent changes per section */
@@ -320,10 +345,11 @@
         border-bottom: 1px solid var(--color-border);
         z-index: 100;
         height: var(--header-bar-h);
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        gap: var(--space-md);
         padding: 0 var(--space-md);
+        gap: var(--space-md);
       }
 
       .logotipo {
@@ -334,12 +360,13 @@
       }
 
       .header-center {
-        flex: 1;
-        min-width: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+        justify-content: center;
+        min-width: 0;
+        justify-self: center;
       }
       .header-center h1 {
         font-size: 1.25rem;
@@ -371,13 +398,22 @@
 
       .header-actions {
         display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-md);
+        flex-shrink: 0;
+        justify-self: end;
+        padding: 2px;
+      }
+      .header-actions-group {
+        display: flex;
         flex-direction: column;
         gap: 2px;
-        flex-shrink: 0;
-        align-self: stretch;
-        justify-content: center;
-        padding: 2px;
-        margin-left: auto;
+        align-items: stretch;
+      }
+      .header-actions-group + .header-actions-group {
+        border-left: 1px solid var(--color-border);
+        padding-left: var(--space-md);
       }
       .btn-header {
         background-color: var(--color-surface-2);
@@ -996,6 +1032,38 @@
         display: flex;
         gap: var(--space-sm);
         margin-top: var(--space-md);
+      }
+      .auth-forgot-row {
+        display: flex;
+        justify-content: center;
+        margin-top: var(--space-sm);
+      }
+      .auth-forgot-btn {
+        background: none;
+        border: none;
+        color: var(--color-accent);
+        font-size: var(--font-sm);
+        cursor: pointer;
+        padding: 0;
+        text-decoration: underline;
+        opacity: 0.85;
+      }
+      .auth-forgot-btn:hover {
+        opacity: 1;
+      }
+      .auth-reset-msg {
+        display: block;
+        text-align: center;
+        font-size: var(--font-sm);
+        margin-top: var(--space-sm);
+        padding: var(--space-xs) var(--space-sm);
+        border-radius: var(--radius-sm);
+      }
+      .auth-reset-msg.success {
+        color: var(--color-income);
+      }
+      .auth-reset-msg.error {
+        color: var(--color-expense);
       }
       .btn-primary {
         flex: 1;
@@ -1665,6 +1733,24 @@
         outline: none;
         border-color: var(--color-accent);
       }
+      .btn-csv {
+        background: none;
+        border: 1px solid var(--color-border);
+        color: var(--color-text-muted);
+        border-radius: var(--radius-sm);
+        padding: var(--space-xs) var(--space-sm);
+        font-size: var(--font-xs);
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
+      }
+      .btn-csv:hover {
+        border-color: var(--color-success);
+        color: var(--color-success);
+      }
       .info-row td {
         background-color: var(--color-surface-2);
         padding: 5px var(--space-sm);
@@ -2156,7 +2242,8 @@
       .cfg-form input[type='password'],
       .cfg-form input[type='url'],
       .cfg-form input[type='number'],
-      .cfg-number-input {
+      .cfg-number-input,
+      .cfg-select {
         width: 100%;
         box-sizing: border-box;
         background-color: var(--color-surface-2);
@@ -2166,6 +2253,14 @@
         padding: var(--space-xs) var(--space-sm);
         font-size: var(--font-sm);
         font-family: inherit;
+      }
+      .cfg-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right var(--space-sm) center;
+        padding-right: calc(var(--space-sm) * 2 + 12px);
+        cursor: pointer;
       }
       .cfg-form input:focus,
       .cfg-number-input:focus {
@@ -2250,9 +2345,302 @@
         border-color: var(--color-danger);
         color: var(--color-danger);
       }
+      .cfg-notif-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        flex-wrap: wrap;
+      }
+      .cfg-notif-status {
+        flex: 1;
+        font-size: var(--font-xs);
+        color: var(--color-text-muted);
+      }
+      .cfg-notif-status.notif-on {
+        color: var(--color-success);
+      }
+      .cfg-notif-status.notif-blocked {
+        color: var(--color-danger);
+      }
       .cfg-number-input {
         width: 100%;
         box-sizing: border-box;
+      }
+
+      /* =====================================================================
+       26b-0. TUTORIAL — botón flotante + modal
+       ===================================================================== */
+      #tutorial-fab {
+        position: fixed;
+        bottom: calc(var(--tab-bar-mobile-h, 64px) + var(--space-md));
+        left: var(--space-md);
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-full);
+        background: var(--color-accent);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        z-index: 800;
+        transition:
+          transform 0.18s,
+          opacity 0.18s;
+      }
+      #tutorial-fab:hover {
+        transform: scale(1.1);
+      }
+      #tutorial-fab svg {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+      body.auth-modal-active #tutorial-fab {
+        display: none;
+      }
+
+      #tutorial-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-md);
+      }
+      #tutorial-modal.active {
+        display: flex;
+      }
+      #tutorial-modal-content {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        width: 100%;
+        max-width: 900px;
+        max-height: 88vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      #tutorial-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-md) var(--space-lg);
+        border-bottom: 1px solid var(--color-border);
+        flex-shrink: 0;
+      }
+      #tutorial-modal-header h2 {
+        font-size: var(--font-lg);
+        font-weight: 600;
+        color: var(--color-text);
+        margin: 0;
+      }
+      #tutorial-modal-close {
+        background: none;
+        border: none;
+        color: var(--color-text-muted);
+        cursor: pointer;
+        padding: var(--space-xs);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+      }
+      #tutorial-modal-close:hover {
+        color: var(--color-text);
+      }
+      #tutorial-modal-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow: hidden;
+        gap: var(--space-md);
+        padding: var(--space-md);
+      }
+      #tutorial-video-section {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      #tutorial-video-title {
+        font-size: var(--font-base);
+        font-weight: 600;
+        color: var(--color-accent);
+        margin-bottom: var(--space-sm);
+        text-align: center;
+      }
+      .tutorial-video-wrap {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        background: #000;
+        flex-shrink: 0;
+      }
+      .tutorial-video-wrap video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #tutorial-list-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      #tutorial-list-section h4 {
+        font-size: var(--font-xs);
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: var(--space-sm);
+        flex-shrink: 0;
+      }
+      #tutorial-list {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+      }
+      .tutorial-item {
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--radius-md);
+        border: 1px solid transparent;
+        cursor: pointer;
+        background: var(--color-surface-2);
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+      }
+      .tutorial-item:hover {
+        border-color: var(--color-text-muted);
+      }
+      .tutorial-item.active {
+        border-color: var(--color-accent);
+        background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+      }
+      .tutorial-item h5 {
+        font-size: var(--font-base);
+        font-weight: 600;
+        color: var(--color-text);
+        margin: 0 0 2px;
+      }
+      .tutorial-item p {
+        font-size: var(--font-xs);
+        color: var(--color-text-muted);
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      @media (min-width: 768px) {
+        #tutorial-modal-body {
+          flex-direction: row;
+        }
+        #tutorial-list-section {
+          overflow-y: auto;
+        }
+      }
+
+      /* =====================================================================
+       26b-1. ONBOARDING — modal de bienvenida (nuevo usuario)
+       ===================================================================== */
+      #onboarding-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 3000;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-md);
+      }
+      #onboarding-modal.active {
+        display: flex;
+      }
+      #onboarding-box {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        width: 100%;
+        max-width: 480px;
+        padding: var(--space-xl);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+      }
+      .onboarding-progress {
+        display: flex;
+        gap: var(--space-sm);
+      }
+      .onboarding-dot {
+        flex: 1;
+        height: 3px;
+        border-radius: var(--radius-full);
+        background: var(--color-border);
+        transition: background 0.3s;
+      }
+      .onboarding-dot.done {
+        background: var(--color-accent);
+      }
+      .onboarding-step {
+        display: none;
+        flex-direction: column;
+        gap: var(--space-md);
+      }
+      .onboarding-step.active {
+        display: flex;
+      }
+      .onboarding-logo {
+        font-size: 2.5rem;
+        text-align: center;
+      }
+      .onboarding-title {
+        font-size: var(--font-xl);
+        font-weight: 700;
+        color: var(--color-text);
+        text-align: center;
+        margin: 0;
+      }
+      .onboarding-desc {
+        font-size: var(--font-base);
+        color: var(--color-text-muted);
+        text-align: center;
+        margin: 0;
+        line-height: 1.6;
+      }
+      .onboarding-actions {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+      }
+      .onboarding-actions .btn-primary,
+      .onboarding-actions .btn-outline {
+        width: 100%;
+      }
+      .onboarding-skip {
+        background: none;
+        border: none;
+        color: var(--color-text-muted);
+        font-size: var(--font-xs);
+        cursor: pointer;
+        text-align: center;
+        padding: var(--space-xs);
+      }
+      .onboarding-skip:hover {
+        color: var(--color-text);
       }
 
       /* =====================================================================
@@ -3035,6 +3423,12 @@
               <span class="btn-spinner hidden" id="register-spinner"></span>
             </button>
           </div>
+          <div class="auth-forgot-row">
+            <button class="auth-forgot-btn" id="forgot-password-btn" type="button">
+              ¿Olvidaste tu contraseña?
+            </button>
+          </div>
+          <span class="auth-reset-msg hidden" id="auth-reset-msg" role="alert"></span>
         </form>
       </div>
     </div>
@@ -3130,12 +3524,17 @@
         <button id="btn-philosophy">Conoce nuestra filosofía</button>
       </div>
       <div class="header-actions">
-        <button class="btn-header" id="btn-fullscreen">Pantalla Completa</button>
-        <button class="btn-header" id="btn-exit-fullscreen">Mostrar Navegador</button>
-        <button class="btn-header btn-header--danger" id="logout-btn">
-          Cerrar Sesión
-          <span class="btn-spinner hidden"></span>
-        </button>
+        <div class="header-actions-group">
+          <button class="btn-header" id="btn-fullscreen">Pantalla Completa</button>
+          <button class="btn-header" id="btn-exit-fullscreen">Mostrar Navegador</button>
+        </div>
+        <div class="header-actions-group">
+          <button class="btn-header btn-header--danger" id="logout-btn">
+            Cerrar Sesión
+            <span class="btn-spinner hidden"></span>
+          </button>
+          <button class="btn-header" id="btn-theme-toggle" title="Cambiar tema">☀ Claro</button>
+        </div>
       </div>
     </header>
 
@@ -3306,6 +3705,9 @@
             <select id="reg-filter-cat" aria-label="Filtrar por categoría">
               <option value="">Todas las categorías</option>
             </select>
+            <button class="btn-csv" id="btn-export-csv-month" title="Exportar mes visible a CSV">
+              ⬇ CSV
+            </button>
           </div>
           <div id="proj-filter-group" class="filter-group hidden">
             <button class="btn-filter-toggle" aria-label="Mostrar filtros">&#9881; Filtros</button>
@@ -3632,6 +4034,45 @@
               </div>
             </div>
 
+            <!-- Divisa -->
+            <div class="cfg-section">
+              <h3>Divisa</h3>
+              <div class="cfg-form">
+                <label for="cfg-currency">Moneda para mostrar importes</label>
+                <select id="cfg-currency" class="cfg-select">
+                  <option value="USD">USD — Dólar estadounidense ($)</option>
+                  <option value="EUR">EUR — Euro (€)</option>
+                  <option value="GBP">GBP — Libra esterlina (£)</option>
+                  <option value="CAD">CAD — Dólar canadiense (CA$)</option>
+                  <option value="AUD">AUD — Dólar australiano (A$)</option>
+                  <option value="MXN">MXN — Peso mexicano ($)</option>
+                  <option value="COP">COP — Peso colombiano ($)</option>
+                  <option value="ARS">ARS — Peso argentino ($)</option>
+                  <option value="CLP">CLP — Peso chileno ($)</option>
+                  <option value="PEN">PEN — Sol peruano (S/)</option>
+                  <option value="BRL">BRL — Real brasileño (R$)</option>
+                  <option value="JPY">JPY — Yen japonés (¥)</option>
+                  <option value="CNY">CNY — Yuan chino (¥)</option>
+                  <option value="INR">INR — Rupia india (₹)</option>
+                  <option value="CHF">CHF — Franco suizo (CHF)</option>
+                </select>
+                <button class="btn-primary btn-cfg" id="cfg-currency-btn">Guardar Divisa</button>
+              </div>
+            </div>
+
+            <!-- Notificaciones -->
+            <div class="cfg-section">
+              <h3>Notificaciones</h3>
+              <div class="cfg-notif-row">
+                <span id="cfg-notif-status" class="cfg-notif-status">Cargando...</span>
+                <button class="btn-outline btn-cfg" id="cfg-notif-btn">Activar</button>
+              </div>
+              <p class="cfg-desc">
+                Recibe alertas del navegador cuando un gasto recurrente vence mañana o una tarjeta
+                de crédito supera el 80% del límite.
+              </p>
+            </div>
+
             <!-- Acciones de período -->
             <div class="cfg-section">
               <h3>Acciones de Período</h3>
@@ -3657,6 +4098,20 @@
               </p>
             </div>
 
+            <!-- Exportar datos -->
+            <div class="cfg-section">
+              <h3>Exportar Datos</h3>
+              <p class="cfg-desc">
+                Descarga tus transacciones en formato CSV para abrirlas en Excel o Google Sheets.
+              </p>
+              <div class="cfg-form" style="flex-direction: row; flex-wrap: wrap">
+                <button class="btn-outline btn-cfg" id="cfg-export-month-btn">⬇ Mes actual</button>
+                <button class="btn-outline btn-cfg" id="cfg-export-all-btn">
+                  ⬇ Todo el historial
+                </button>
+              </div>
+            </div>
+
             <!-- Zona de peligro -->
             <div class="cfg-section cfg-danger">
               <h3>Zona de Peligro</h3>
@@ -3667,11 +4122,200 @@
                 Elimina todas las transacciones y proyecciones. Conserva categorías, bancos,
                 descripciones y gastos recurrentes.
               </p>
+              <button
+                class="btn-outline cfg-btn-danger btn-cfg"
+                id="cfg-delete-account-btn"
+                style="margin-top: var(--space-md)"
+              >
+                Eliminar Mi Cuenta
+              </button>
+              <p class="cfg-desc">
+                Elimina permanentemente tu cuenta y todos tus datos. Esta acción no se puede
+                deshacer.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </main>
+
+    <!-- ===================================================================
+       MODAL: ELIMINAR CUENTA (#delete-account-modal)
+       =================================================================== -->
+    <div
+      class="modal-overlay"
+      id="delete-account-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-account-title"
+    >
+      <div class="modal-box">
+        <div class="modal-header">
+          <span class="modal-title" id="delete-account-title">Eliminar Cuenta</span>
+          <button class="btn-modal-close" id="delete-account-close-btn" aria-label="Cerrar">
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="color: var(--color-danger); font-weight: 600; margin-bottom: var(--space-sm)">
+            ⚠️ Esta acción es permanente e irreversible.
+          </p>
+          <p
+            style="
+              color: var(--color-text-secondary);
+              font-size: var(--font-sm);
+              margin-bottom: var(--space-md);
+            "
+          >
+            Se eliminarán todos tus datos: transacciones, proyecciones, tarjetas, gastos
+            recurrentes, presupuestos y configuración.
+          </p>
+          <div class="form-group">
+            <label class="form-label" for="delete-account-password"
+              >Confirma tu contraseña para continuar</label
+            >
+            <input
+              class="form-input"
+              id="delete-account-password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Tu contraseña actual"
+            />
+            <span class="input-error" id="delete-account-error" role="alert"></span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-outline" id="delete-account-cancel-btn">Cancelar</button>
+          <button
+            class="btn-primary"
+            id="delete-account-confirm-btn"
+            style="background: var(--color-danger); border-color: var(--color-danger)"
+          >
+            Eliminar Todo
+            <span class="btn-spinner hidden" id="delete-account-spinner"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+       BOTÓN FLOTANTE: TUTORIAL
+       =================================================================== -->
+    <button id="tutorial-fab" title="Ver tutoriales" aria-label="Ver tutoriales en video">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8 5.14v14l11-7-11-7z" />
+      </svg>
+    </button>
+
+    <!-- ===================================================================
+       MODAL: TUTORIAL DE VIDEOS (#tutorial-modal)
+       =================================================================== -->
+    <div
+      id="tutorial-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tutorial-modal-heading"
+    >
+      <div id="tutorial-modal-content">
+        <div id="tutorial-modal-header">
+          <h2 id="tutorial-modal-heading">Videos Tutoriales</h2>
+          <button id="tutorial-modal-close" aria-label="Cerrar">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div id="tutorial-modal-body">
+          <div id="tutorial-video-section">
+            <p id="tutorial-video-title">Selecciona un video</p>
+            <div class="tutorial-video-wrap">
+              <video id="tutorial-player" controls preload="none"></video>
+            </div>
+          </div>
+          <div id="tutorial-list-section">
+            <h4>Lista de videos</h4>
+            <div id="tutorial-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+       MODAL: ONBOARDING (#onboarding-modal)
+       =================================================================== -->
+    <div id="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+      <div id="onboarding-box">
+        <!-- Barra de progreso -->
+        <div class="onboarding-progress" id="onboarding-progress">
+          <div class="onboarding-dot done" data-step="0"></div>
+          <div class="onboarding-dot" data-step="1"></div>
+          <div class="onboarding-dot" data-step="2"></div>
+        </div>
+
+        <!-- Paso 1: Bienvenida -->
+        <div class="onboarding-step active" id="onboarding-step-0">
+          <div class="onboarding-logo">🎯</div>
+          <h2 class="onboarding-title" id="onboarding-title">Bienvenido a Foresee</h2>
+          <p class="onboarding-desc">
+            Tu gestor de presupuesto personal. En menos de 2 minutos estarás listo para controlar tu
+            dinero.
+          </p>
+          <div class="cfg-form" style="margin-top: 0">
+            <label class="form-label" for="onboarding-alias">¿Cómo te llamamos?</label>
+            <input
+              class="form-input"
+              id="onboarding-alias"
+              type="text"
+              placeholder="Tu nombre o alias"
+              autocomplete="given-name"
+              maxlength="30"
+            />
+          </div>
+          <div class="onboarding-actions">
+            <button class="btn-primary" id="onboarding-next-0">Continuar →</button>
+          </div>
+        </div>
+
+        <!-- Paso 2: Datos de demo -->
+        <div class="onboarding-step" id="onboarding-step-1">
+          <div class="onboarding-logo">📊</div>
+          <h2 class="onboarding-title">¿Empezar con datos de ejemplo?</h2>
+          <p class="onboarding-desc">
+            Cargamos categorías, bancos y transacciones de muestra para que veas la app en acción.
+            Puedes borrarlos cuando quieras.
+          </p>
+          <div class="onboarding-actions">
+            <button class="btn-primary" id="onboarding-demo-yes">
+              Sí, cargar datos de ejemplo
+            </button>
+            <button class="btn-outline" id="onboarding-demo-no">No, empezar desde cero</button>
+          </div>
+        </div>
+
+        <!-- Paso 3: Tutorial -->
+        <div class="onboarding-step" id="onboarding-step-2">
+          <div class="onboarding-logo">🎬</div>
+          <h2 class="onboarding-title">¡Listo para comenzar!</h2>
+          <p class="onboarding-desc">
+            Te recomendamos ver el tutorial de 7 videos. Aprenderás todo lo que necesitas en pocos
+            minutos.
+          </p>
+          <div class="onboarding-actions">
+            <button class="btn-primary" id="onboarding-watch-tutorial">Ver tutorial ahora</button>
+            <button class="btn-outline" id="onboarding-finish">Explorar solo</button>
+          </div>
+          <button class="onboarding-skip" id="onboarding-skip-all">Saltar por ahora</button>
+        </div>
+      </div>
+    </div>
 
     <!-- ===================================================================
        MODAL: CALCULADORA (#calc-modal)
@@ -4240,7 +4884,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.1.7</p>
+      <p id="app-version">v 0.0.1.9</p>
     </footer>
 
     <script type="module">
@@ -4250,10 +4894,12 @@
         onAuthStateChanged,
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
+        sendPasswordResetEmail,
         signOut,
         updatePassword,
         reauthenticateWithCredential,
         EmailAuthProvider,
+        deleteUser,
       } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
       import {
         initializeFirestore,
@@ -4313,6 +4959,8 @@
         categoryBudgets: {},
         openingBalance: 0,
         userAlias: '',
+        currency: 'USD',
+        notificationsEnabled: false,
         currentTab: null,
         currentUser: null,
         budgetAlertsShown: {},
@@ -4404,15 +5052,61 @@
        UTILITIES
        =================================================================== */
       function formatCurrency(amount) {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-          amount || 0,
-        );
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: appState.currency || 'USD',
+        }).format(amount || 0);
       }
 
       function formatDate(dateStr) {
         if (!dateStr) return '';
         const [y, m, d] = dateStr.split('-');
         return `${d}/${m}/${y}`;
+      }
+
+      function roundMoney(x) {
+        return Math.round(x * 100) / 100;
+      }
+
+      /* ===================================================================
+       TEMA (claro / oscuro)
+       =================================================================== */
+      const THEME_KEY = 'foresee-theme';
+
+      function _isLight() {
+        return document.documentElement.getAttribute('data-theme') === 'light';
+      }
+
+      function _chartColors() {
+        return _isLight()
+          ? { tick: '#5a6070', grid: '#dde1e9', border: '#ffffff' }
+          : { tick: '#8b8fa8', grid: '#2a2d3a', border: '#1a1d27' };
+      }
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem(THEME_KEY, theme);
+        const btn = document.getElementById('btn-theme-toggle');
+        if (btn) btn.textContent = theme === 'light' ? '🌙 Oscuro' : '☀ Claro';
+        if (expensesChartInstance) {
+          expensesChartInstance.destroy();
+          expensesChartInstance = null;
+        }
+        if (cashFlowChartInstance) {
+          cashFlowChartInstance.destroy();
+          cashFlowChartInstance = null;
+        }
+        scheduleRenderAll();
+      }
+
+      function toggleTheme() {
+        applyTheme(_isLight() ? 'dark' : 'light');
+      }
+
+      function initThemeBtn() {
+        const btn = document.getElementById('btn-theme-toggle');
+        if (!btn) return;
+        btn.textContent = _isLight() ? '🌙 Oscuro' : '☀ Claro';
       }
 
       function toTitleCase(str) {
@@ -4514,40 +5208,75 @@
         document.getElementById('auth-password-error').textContent = '';
       }
 
+      let _authInProgress = false;
+      let _showFullscreenOnLoad = false;
+
       async function handleLogin(email, password) {
+        if (_authInProgress) return;
         clearAuthErrors();
+        _authInProgress = true;
         setAuthLoading(true);
         try {
           await signInWithEmailAndPassword(auth, email, password);
-          // El login es un gesto de usuario — aprovechar para entrar en fullscreen
-          requestFullscreen();
         } catch (err) {
-          setAuthLoading(false);
           const msg =
-            err.code === 'auth/invalid-credential'
+            err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password'
               ? 'Correo o contraseña incorrectos.'
-              : 'Error al iniciar sesión. Intenta de nuevo.';
+              : err.code === 'auth/too-many-requests'
+                ? 'Demasiados intentos fallidos. Espera unos minutos e intenta de nuevo.'
+                : 'Error al iniciar sesión. Intenta de nuevo.';
           document.getElementById('auth-password-error').textContent = msg;
+        } finally {
+          _authInProgress = false;
+          setAuthLoading(false);
         }
       }
 
       async function handleRegister(email, password) {
+        if (_authInProgress) return;
         clearAuthErrors();
         if (!email || !password) {
           document.getElementById('auth-email-error').textContent = 'Completa ambos campos.';
           return;
         }
+        _authInProgress = true;
         setAuthLoading(true);
         try {
           await createUserWithEmailAndPassword(auth, email, password);
+          localStorage.setItem('foresee-new-user', '1');
         } catch (err) {
-          setAuthLoading(false);
           let msg = 'Error al registrarse.';
           if (err.code === 'auth/email-already-in-use') msg = 'Este correo ya está registrado.';
           if (err.code === 'auth/weak-password')
             msg = 'La contraseña debe tener al menos 6 caracteres.';
           if (err.code === 'auth/invalid-email') msg = 'Correo electrónico inválido.';
           document.getElementById('auth-email-error').textContent = msg;
+        } finally {
+          _authInProgress = false;
+          setAuthLoading(false);
+        }
+      }
+
+      async function handleForgotPassword() {
+        const email = document.getElementById('auth-email').value.trim();
+        const msgEl = document.getElementById('auth-reset-msg');
+        msgEl.className = 'auth-reset-msg';
+        if (!email) {
+          msgEl.textContent = 'Escribe tu correo arriba y vuelve a intentarlo.';
+          msgEl.classList.add('error');
+          return;
+        }
+        try {
+          await sendPasswordResetEmail(auth, email);
+          msgEl.textContent = 'Correo enviado. Revisa tu bandeja de entrada.';
+          msgEl.classList.add('success');
+        } catch (err) {
+          const msg =
+            err.code === 'auth/user-not-found' || err.code === 'auth/invalid-email'
+              ? 'No existe una cuenta con ese correo.'
+              : 'Error al enviar el correo. Intenta de nuevo.';
+          msgEl.textContent = msg;
+          msgEl.classList.add('error');
         }
       }
 
@@ -4558,6 +5287,64 @@
           await signOut(auth);
         } catch (err) {
           console.error('[Auth] Error al cerrar sesión:', err);
+        }
+      }
+
+      async function handleDeleteAccount() {
+        const user = appState.currentUser;
+        if (!user) return;
+
+        const password = document.getElementById('delete-account-password').value;
+        const errorEl = document.getElementById('delete-account-error');
+        const spinner = document.getElementById('delete-account-spinner');
+        const confirmBtn = document.getElementById('delete-account-confirm-btn');
+        errorEl.textContent = '';
+
+        if (!password) {
+          errorEl.textContent = 'Introduce tu contraseña para confirmar.';
+          return;
+        }
+
+        confirmBtn.disabled = true;
+        spinner.classList.remove('hidden');
+
+        try {
+          // Re-autenticar antes de borrar (requerido por Firebase)
+          const credential = EmailAuthProvider.credential(user.email, password);
+          await reauthenticateWithCredential(user, credential);
+
+          const uid = user.uid;
+          const COLLECTIONS = ['transactions', 'recurringExpenses', 'creditCards', 'projections'];
+
+          // Borrar todas las colecciones en batch
+          for (const colName of COLLECTIONS) {
+            const snap = await getDocs(collection(db, DB_COL(uid, colName)));
+            if (!snap.empty) {
+              const batch = writeBatch(db);
+              snap.forEach((d) => batch.delete(d.ref));
+              await batch.commit();
+            }
+          }
+
+          // Borrar documentos sueltos en user_data
+          const gastosRef = doc(db, `artifacts/${APP_ID}/users/${uid}/user_data/gastosComunes`);
+          const prefRef = doc(db, DB_PREF(uid));
+          const batch = writeBatch(db);
+          batch.delete(gastosRef);
+          batch.delete(prefRef);
+          await batch.commit();
+
+          // Borrar la cuenta de Firebase Auth (cierra sesión automáticamente)
+          await deleteUser(user);
+        } catch (err) {
+          confirmBtn.disabled = false;
+          spinner.classList.add('hidden');
+          const msg =
+            err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential'
+              ? 'Contraseña incorrecta.'
+              : 'Error al eliminar la cuenta. Intenta de nuevo.';
+          errorEl.textContent = msg;
+          console.error('[Auth] Error al eliminar cuenta:', err);
         }
       }
 
@@ -4657,11 +5444,23 @@
                 appState.descriptions = d.descriptions || [];
                 appState.openingBalance = d.openingBalance || 0;
                 appState.userAlias = d.userAlias || '';
+                appState.currency = d.currency || 'USD';
+                appState.notificationsEnabled = d.notificationsEnabled || false;
                 appState.categoryBudgets = d.categoryBudgets || {};
               }
               renderHeaderAlias();
               scheduleRenderAll();
               hideLoading();
+              if (_showFullscreenOnLoad && !document.fullscreenElement) {
+                _showFullscreenOnLoad = false;
+                document.getElementById('fullscreen-prompt').classList.add('active');
+              }
+              if (localStorage.getItem('foresee-new-user') === '1') {
+                localStorage.removeItem('foresee-new-user');
+                if (!localStorage.getItem(ONBOARDING_KEY)) {
+                  setTimeout(showOnboarding, 800);
+                }
+              }
             },
             (err) => {
               console.error('[Firestore] preferencias:', err);
@@ -4696,6 +5495,7 @@
             cardsCol,
             (snap) => {
               appState.creditCards = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+              checkCreditCardNotifications();
               scheduleRenderAll();
             },
             (err) => console.error('[Firestore] tarjetas:', err),
@@ -4736,6 +5536,7 @@
       function unloadUserData() {
         unsubscribers.forEach((fn) => fn());
         unsubscribers = [];
+        _showFullscreenOnLoad = false;
         initialTransactionsLoaded = false;
         initialRecurringLoaded = false;
         recurringProcessed = false;
@@ -4751,6 +5552,7 @@
           categoryBudgets: {},
           openingBalance: 0,
           userAlias: '',
+          currency: 'USD',
           currentTab: null,
           currentUser: null,
           budgetAlertsShown: {},
@@ -4770,6 +5572,16 @@
             : 'Usuario';
       }
 
+      function sendBrowserNotification(title, body) {
+        if (!appState.notificationsEnabled) return;
+        if (!('Notification' in window) || Notification.permission !== 'granted') return;
+        try {
+          new Notification(title, { body });
+        } catch (err) {
+          console.error('[Notification]', err);
+        }
+      }
+
       function checkRecurringPaymentReminders() {
         const today = new Date();
         const tomorrow = new Date(today);
@@ -4779,13 +5591,33 @@
 
         appState.recurringExpenses.forEach((exp) => {
           if (parseInt(exp.day, 10) !== tomorrowDay) return;
-          const key = `reminder-${exp.id}-${tomorrowKey}`;
-          if (sessionStorage.getItem(key)) return;
-          showToast(
-            `Recordatorio: Mañana vence "${exp.description}" — ${formatCurrency(exp.amount)}.`,
-            'warning',
+          const toastKey = `reminder-${exp.id}-${tomorrowKey}`;
+          if (sessionStorage.getItem(toastKey)) return;
+          const msg = `Recordatorio: Mañana vence "${exp.description}" — ${formatCurrency(exp.amount)}.`;
+          showToast(msg, 'warning');
+          sessionStorage.setItem(toastKey, '1');
+          const notifKey = `notif-rec-${exp.id}-${tomorrowKey}`;
+          if (!localStorage.getItem(notifKey)) {
+            sendBrowserNotification('Foresee — Gasto recurrente', msg);
+            localStorage.setItem(notifKey, '1');
+          }
+        });
+      }
+
+      function checkCreditCardNotifications() {
+        const todayKey = new Date().toISOString().split('T')[0];
+        appState.creditCards.forEach((card) => {
+          const deuda = parseFloat(card.amount) || 0;
+          const limite = parseFloat(card.limit) || 0;
+          if (!limite || deuda / limite < 0.8) return;
+          const notifKey = `notif-cc-${card.id}-${todayKey}`;
+          if (localStorage.getItem(notifKey)) return;
+          const pct = ((deuda / limite) * 100).toFixed(0);
+          sendBrowserNotification(
+            'Foresee — Tarjeta de crédito',
+            `Tarjeta ${card.bank}: ${pct}% del límite usado (${formatCurrency(deuda)} de ${formatCurrency(limite)}).`,
           );
-          sessionStorage.setItem(key, '1');
+          localStorage.setItem(notifKey, '1');
         });
       }
 
@@ -5154,8 +5986,8 @@
         let runBal = appState.openingBalance;
         const balMap = {};
         allByDate.forEach((t) => {
-          if (t.type === 'income') runBal += t.amount || 0;
-          else runBal -= t.amount || 0;
+          if (t.type === 'income') runBal = roundMoney(runBal + (t.amount || 0));
+          else runBal = roundMoney(runBal - (t.amount || 0));
           balMap[t.id] = runBal;
         });
 
@@ -5180,6 +6012,7 @@
         if (empty) empty.classList.add('hidden');
         if (tfoot) tfoot.classList.remove('hidden');
 
+        const frag = document.createDocumentFragment();
         filtered.forEach((tx) => {
           const isIncome = tx.type === 'income';
           const isTransfer = tx.type === 'transfer';
@@ -5273,8 +6106,9 @@
           tdAct.appendChild(btnDel);
           tr.appendChild(tdAct);
 
-          tbody.appendChild(tr);
+          frag.appendChild(tr);
         });
+        tbody.appendChild(frag);
 
         document.getElementById('reg-total-income').textContent =
           '+ ' + formatCurrency(totalIncome);
@@ -5802,6 +6636,14 @@
           balInput.value = appState.openingBalance || '';
         }
 
+        // Currency selector
+        const currencySelect = document.getElementById('cfg-currency');
+        if (currencySelect) {
+          currencySelect.value = appState.currency || 'USD';
+        }
+
+        renderNotificationToggle();
+
         // Categories list
         const catList = document.getElementById('cfg-cat-list');
         if (catList) {
@@ -5935,6 +6777,416 @@
         } catch (err) {
           console.error('[Firestore] Saldo inicial:', err);
           showToast('Error al guardar el saldo.', 'error');
+        }
+      }
+
+      async function handleSaveCurrency() {
+        const user = appState.currentUser;
+        if (!user) return;
+        const select = document.getElementById('cfg-currency');
+        const val = select?.value;
+        if (!val) return;
+        try {
+          await setDoc(doc(db, DB_PREF(user.uid)), { currency: val }, { merge: true });
+          appState.currency = val;
+          scheduleRenderAll();
+          showToast('Divisa guardada.', 'success');
+        } catch (err) {
+          console.error('[Firestore] Divisa:', err);
+          showToast('Error al guardar la divisa.', 'error');
+        }
+      }
+
+      async function handleNotificationToggle() {
+        const user = appState.currentUser;
+        if (!user) return;
+
+        if (appState.notificationsEnabled) {
+          try {
+            await setDoc(
+              doc(db, DB_PREF(user.uid)),
+              { notificationsEnabled: false },
+              { merge: true },
+            );
+            appState.notificationsEnabled = false;
+            renderNotificationToggle();
+            showToast('Notificaciones desactivadas.', 'success');
+          } catch (err) {
+            console.error('[Firestore] notificaciones:', err);
+            showToast('Error al guardar preferencia.', 'error');
+          }
+          return;
+        }
+
+        if (!('Notification' in window)) {
+          showToast('Este navegador no soporta notificaciones.', 'warning');
+          return;
+        }
+        if (Notification.permission === 'denied') {
+          showToast(
+            'Notificaciones bloqueadas. Actívalas en la configuración del sitio.',
+            'warning',
+          );
+          renderNotificationToggle();
+          return;
+        }
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          renderNotificationToggle();
+          return;
+        }
+        try {
+          await setDoc(doc(db, DB_PREF(user.uid)), { notificationsEnabled: true }, { merge: true });
+          appState.notificationsEnabled = true;
+          renderNotificationToggle();
+          showToast('Notificaciones activadas.', 'success');
+        } catch (err) {
+          console.error('[Firestore] notificaciones:', err);
+          showToast('Error al guardar preferencia.', 'error');
+        }
+      }
+
+      function renderNotificationToggle() {
+        const statusEl = document.getElementById('cfg-notif-status');
+        const btnEl = document.getElementById('cfg-notif-btn');
+        if (!statusEl || !btnEl) return;
+
+        if (!('Notification' in window)) {
+          statusEl.textContent = 'No soportado por este navegador.';
+          statusEl.className = 'cfg-notif-status';
+          btnEl.disabled = true;
+          return;
+        }
+        if (Notification.permission === 'denied') {
+          statusEl.textContent = 'Bloqueadas en la configuración del navegador.';
+          statusEl.className = 'cfg-notif-status notif-blocked';
+          btnEl.textContent = 'Bloqueadas';
+          btnEl.disabled = true;
+          return;
+        }
+        btnEl.disabled = false;
+        if (appState.notificationsEnabled && Notification.permission === 'granted') {
+          statusEl.textContent = 'Activas — recibirás alertas de vencimientos y tarjetas.';
+          statusEl.className = 'cfg-notif-status notif-on';
+          btnEl.textContent = 'Desactivar';
+        } else {
+          statusEl.textContent = 'Inactivas.';
+          statusEl.className = 'cfg-notif-status';
+          btnEl.textContent = 'Activar';
+        }
+      }
+
+      /* ===================================================================
+       EXPORTAR CSV
+       =================================================================== */
+      function exportCSV(mode) {
+        const allTx = appState.transactions;
+        if (!allTx.length) {
+          showToast('No hay transacciones para exportar.', 'warning');
+          return;
+        }
+
+        const rows =
+          mode === 'month'
+            ? allTx.filter((t) => t.date && t.date.startsWith(appState.filterMonth))
+            : [...allTx].sort((a, b) => (a.date > b.date ? 1 : -1));
+
+        if (!rows.length) {
+          showToast('No hay transacciones en el período seleccionado.', 'warning');
+          return;
+        }
+
+        const headers = ['Fecha', 'Tipo', 'Descripción', 'Categoría', 'Banco', 'Monto'];
+        const escape = (v) => {
+          const s = String(v ?? '');
+          return s.includes(',') || s.includes('"') || s.includes('\n')
+            ? `"${s.replace(/"/g, '""')}"`
+            : s;
+        };
+
+        const lines = [
+          headers.join(','),
+          ...rows.map((t) =>
+            [
+              t.date ?? '',
+              t.type === 'income' ? 'Ingreso' : 'Gasto',
+              t.description ?? '',
+              t.category ?? '',
+              t.bank ?? '',
+              (t.amount ?? 0).toFixed(2),
+            ]
+              .map(escape)
+              .join(','),
+          ),
+        ];
+
+        const bom = '﻿';
+        const blob = new Blob([bom + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download =
+          mode === 'month' ? `foresee-${appState.filterMonth}.csv` : 'foresee-historial.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast(`CSV exportado (${rows.length} transacciones).`, 'success');
+      }
+
+      /* ===================================================================
+       TUTORIAL DE VIDEOS
+       =================================================================== */
+      const TUTORIAL_VIDEOS = [
+        {
+          title: 'Paso 1: Configuración Inicial',
+          desc: 'Crea tus categorías y bancos. La base de todo el sistema.',
+          url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512589/Paso_1_Bienvenida_y_Gestion_de_Categoria_y_Bancos_plya2u.mp4',
+        },
+        {
+          title: 'Paso 2: Gastos Recurrentes',
+          desc: 'Pon tus pagos fijos en automático y recibe alertas antes del vencimiento.',
+          url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512570/Paso_2_Gastos_Recurrentes_mboofi.mp4',
+        },
+        {
+          title: 'Paso 3: Tarjetas de Crédito',
+          desc: 'Controla tus deudas y evita superar el límite de tus tarjetas.',
+          url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512577/Paso_3_Targetas_de_Credito_krqk9f.mp4',
+        },
+        {
+          title: 'Paso 4: Registro Diario',
+          desc: 'El hábito que lo cambia todo. Registra ingresos y gastos en segundos.',
+          url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512590/Paso_4_Registro_Diaro_cujs8c.mp4',
+        },
+        {
+          title: 'Paso 5: Reportes, Presupuesto y Tablas',
+          desc: 'Visión completa de tu dinero: dónde va, cuánto queda y cómo mejorar.',
+          url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512588/Paso_5_Reportes_Presupuesto_y_Tablas_p0zj9b.mp4',
+        },
+        {
+          title: 'Paso 6: Proyección',
+          desc: 'Anticipa el futuro. Sabe cuánto puedes gastar y cuánto puedes ahorrar.',
+          url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758514065/Paso_6_Proyeccion_bhrr1a.mp4',
+        },
+        {
+          title: 'Paso 7: Gastos Comunes',
+          desc: 'Divide gastos compartidos y cobra tu parte a cada persona.',
+          url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1759005488/Gastos_comunes_kvozqf.mp4',
+        },
+      ];
+
+      function openTutorialModal(startIndex = 0) {
+        const modal = document.getElementById('tutorial-modal');
+        if (!modal) return;
+        buildTutorialList();
+        playTutorialVideo(startIndex);
+        modal.classList.add('active');
+      }
+
+      function closeTutorialModal() {
+        const modal = document.getElementById('tutorial-modal');
+        if (!modal) return;
+        const player = document.getElementById('tutorial-player');
+        if (player) {
+          player.pause();
+          player.src = '';
+        }
+        modal.classList.remove('active');
+      }
+
+      function buildTutorialList() {
+        const list = document.getElementById('tutorial-list');
+        if (!list || list.dataset.built) return;
+        const frag = document.createDocumentFragment();
+        TUTORIAL_VIDEOS.forEach((v, i) => {
+          const item = document.createElement('div');
+          item.className = 'tutorial-item';
+          item.dataset.index = i;
+          const h5 = document.createElement('h5');
+          h5.textContent = v.title;
+          const p = document.createElement('p');
+          p.textContent = v.desc;
+          item.appendChild(h5);
+          item.appendChild(p);
+          item.addEventListener('click', () => playTutorialVideo(i));
+          frag.appendChild(item);
+        });
+        list.appendChild(frag);
+        list.dataset.built = '1';
+      }
+
+      function playTutorialVideo(index) {
+        const v = TUTORIAL_VIDEOS[index];
+        if (!v) return;
+        const player = document.getElementById('tutorial-player');
+        const titleEl = document.getElementById('tutorial-video-title');
+        if (player) {
+          player.src = v.url;
+          player.load();
+        }
+        if (titleEl) titleEl.textContent = v.title;
+        document.querySelectorAll('.tutorial-item').forEach((el) => {
+          el.classList.toggle('active', Number(el.dataset.index) === index);
+        });
+      }
+
+      /* ===================================================================
+       ONBOARDING
+       =================================================================== */
+      const ONBOARDING_KEY = 'foresee-onboarding-done';
+      let _onboardingStep = 0;
+
+      function showOnboarding() {
+        _onboardingStep = 0;
+        _setOnboardingStep(0);
+        document.getElementById('onboarding-modal').classList.add('active');
+      }
+
+      function closeOnboarding() {
+        document.getElementById('onboarding-modal').classList.remove('active');
+        localStorage.setItem(ONBOARDING_KEY, '1');
+      }
+
+      function _setOnboardingStep(step) {
+        _onboardingStep = step;
+        document.querySelectorAll('.onboarding-step').forEach((el, i) => {
+          el.classList.toggle('active', i === step);
+        });
+        document.querySelectorAll('.onboarding-dot').forEach((el, i) => {
+          el.classList.toggle('done', i <= step);
+        });
+      }
+
+      async function _onboardingSaveAlias() {
+        const input = document.getElementById('onboarding-alias');
+        const alias = input ? input.value.trim() : '';
+        if (!alias) return;
+        const user = appState.currentUser;
+        if (!user) return;
+        appState.userAlias = alias;
+        renderHeaderAlias();
+        try {
+          await setDoc(doc(db, DB_PREF(user.uid)), { userAlias: alias }, { merge: true });
+        } catch (err) {
+          console.error('[Onboarding] alias:', err);
+        }
+      }
+
+      /* ===================================================================
+       DATOS DE DEMO
+       =================================================================== */
+      async function loadDemoData() {
+        const user = appState.currentUser;
+        if (!user) return;
+        const uid = user.uid;
+        const month = appState.filterMonth;
+
+        const demoCategories = [
+          { name: 'Alimentación', icon: '🛒' },
+          { name: 'Transporte', icon: '🚗' },
+          { name: 'Entretenimiento', icon: '🎬' },
+          { name: 'Salud', icon: '💊' },
+          { name: 'Vivienda', icon: '🏠' },
+        ];
+        const demoBanks = ['Mi Banco', 'Efectivo'];
+
+        const [y, m] = month.split('-').map(Number);
+        const d = (day) => `${month}-${String(day).padStart(2, '0')}`;
+
+        const demoTx = [
+          {
+            type: 'income',
+            amount: 3500,
+            description: 'Salario',
+            category: 'Vivienda',
+            bank: 'Mi Banco',
+            date: d(1),
+          },
+          {
+            type: 'expense',
+            amount: 850,
+            description: 'Alquiler',
+            category: 'Vivienda',
+            bank: 'Mi Banco',
+            date: d(2),
+          },
+          {
+            type: 'expense',
+            amount: 120,
+            description: 'Supermercado',
+            category: 'Alimentación',
+            bank: 'Efectivo',
+            date: d(5),
+          },
+          {
+            type: 'expense',
+            amount: 45,
+            description: 'Gasolina',
+            category: 'Transporte',
+            bank: 'Efectivo',
+            date: d(8),
+          },
+          {
+            type: 'expense',
+            amount: 30,
+            description: 'Cine + cena',
+            category: 'Entretenimiento',
+            bank: 'Mi Banco',
+            date: d(12),
+          },
+          {
+            type: 'expense',
+            amount: 60,
+            description: 'Farmacia',
+            category: 'Salud',
+            bank: 'Efectivo',
+            date: d(15),
+          },
+        ];
+
+        const demoRecurring = {
+          description: 'Netflix',
+          amount: 15.99,
+          category: 'Entretenimiento',
+          bank: 'Mi Banco',
+          dueDay: 20,
+          active: true,
+        };
+
+        try {
+          const prefRef = doc(db, DB_PREF(uid));
+          await setDoc(
+            prefRef,
+            {
+              categories: demoCategories,
+              banks: demoBanks,
+              openingBalance: 2000,
+              userAlias: appState.userAlias || '',
+              currency: appState.currency || 'USD',
+            },
+            { merge: true },
+          );
+
+          appState.categories = demoCategories;
+          appState.banks = demoBanks;
+          appState.openingBalance = 2000;
+
+          const txRef = collection(db, DB_COL(uid, 'transactions'));
+          const recRef = collection(db, DB_COL(uid, 'recurringExpenses'));
+
+          const ops = [
+            ...demoTx.map(
+              (tx) => (b) => b.set(doc(txRef), { ...tx, createdAt: new Date().toISOString() }),
+            ),
+            (b) => b.set(doc(recRef), { ...demoRecurring, createdAt: new Date().toISOString() }),
+          ];
+          await commitInChunks(ops);
+
+          showToast('Datos de ejemplo cargados.', 'success');
+        } catch (err) {
+          console.error('[Demo] loadDemoData:', err);
+          showToast('Error al cargar datos de ejemplo.', 'error');
         }
       }
 
@@ -6441,6 +7693,7 @@
           totRemain = 0;
         tbody.innerHTML = '';
 
+        const frag = document.createDocumentFragment();
         cats.forEach((cat) => {
           const name = cat.name;
           const budget = appState.categoryBudgets[name] || 0;
@@ -6506,8 +7759,9 @@
             tdRemain.appendChild(balSpan);
           }
           tr.appendChild(tdRemain);
-          tbody.appendChild(tr);
+          frag.appendChild(tr);
         });
+        tbody.appendChild(frag);
 
         document.getElementById('budget-total-budgeted').textContent = formatCurrency(totBudget);
         document.getElementById('budget-total-spent').textContent = formatCurrency(totSpent);
@@ -6571,6 +7825,7 @@
         tfoot.classList.remove('hidden');
         empty.classList.add('hidden');
 
+        const frag = document.createDocumentFragment();
         sorted.forEach((re) => {
           const tr = document.createElement('tr');
 
@@ -6615,10 +7870,11 @@
           tdAct.appendChild(editBtn);
           tdAct.appendChild(delBtn);
 
-          tbody.appendChild(tr);
+          frag.appendChild(tr);
         });
+        tbody.appendChild(frag);
 
-        const total = sorted.reduce((s, r) => s + r.amount, 0);
+        const total = roundMoney(sorted.reduce((s, r) => s + r.amount, 0));
         document.getElementById('rec-total').textContent = formatCurrency(total);
       }
 
@@ -6792,6 +8048,7 @@
         const TRASH = ICON_TRASH;
 
         const tplRow = document.getElementById('tpl-cc-row');
+        const frag = document.createDocumentFragment();
         sorted.forEach((card) => {
           const next = new Date(today.getFullYear(), today.getMonth(), card.dueDate);
           if (today.getDate() > card.dueDate) next.setMonth(next.getMonth() + 1);
@@ -6839,8 +8096,9 @@
           delBtn.dataset.id = card.id;
           delBtn.innerHTML = TRASH;
 
-          tbody.appendChild(tr);
+          frag.appendChild(tr);
         });
+        tbody.appendChild(frag);
 
         const totalDisp = totalLimite - totalAdeudado;
         document.getElementById('cc-total-amount').textContent = formatCurrency(totalAdeudado);
@@ -7095,6 +8353,7 @@
             distContainer.appendChild(hint);
           } else {
             const amounts = computeAllAmounts(item);
+            const distFrag = document.createDocumentFragment();
             people.forEach((person, pIdx) => {
               const distData = item.distribution?.[pIdx] || { method: 'equal', value: 0 };
               const isPaid = !!distData.paidDay;
@@ -7160,8 +8419,9 @@
                 statusCol.appendChild(okBtn);
               }
 
-              distContainer.appendChild(row);
+              distFrag.appendChild(row);
             });
+            distContainer.appendChild(distFrag);
           }
 
           container.appendChild(card);
@@ -7372,7 +8632,9 @@
             .filter((t) => t?.date && t.date.substring(0, 7) < month)
             .sort((a, b) => new Date(a.date) - new Date(b.date))
             .forEach((t) => {
-              runningBalance += t.type === 'income' ? t.amount : -t.amount;
+              runningBalance = roundMoney(
+                runningBalance + (t.type === 'income' ? t.amount : -t.amount),
+              );
             });
         }
 
@@ -7382,8 +8644,11 @@
         let totalIncome = 0,
           totalExpenses = 0;
 
+        const frag = document.createDocumentFragment();
         projections.forEach((p) => {
-          runningBalance += p.type === 'income' ? p.amount : -p.amount;
+          runningBalance = roundMoney(
+            runningBalance + (p.type === 'income' ? p.amount : -p.amount),
+          );
           if (p.type === 'income') totalIncome += p.amount;
           else totalExpenses += p.amount;
 
@@ -7484,8 +8749,9 @@
             tdAct.appendChild(btnE);
             tdAct.appendChild(btnD);
           }
-          tbody.appendChild(tr);
+          frag.appendChild(tr);
         });
+        tbody.appendChild(frag);
 
         document.getElementById('proj-total-income').textContent = formatCurrency(totalIncome);
         document.getElementById('proj-total-expenses').textContent = formatCurrency(totalExpenses);
@@ -7684,6 +8950,11 @@
         populateRepFilterMonth();
         const month = document.getElementById('rep-filter-month').value || appState.filterMonth;
 
+        if (typeof Chart === 'undefined') {
+          console.warn('Chart.js no está disponible. Saltando renderizado de gráficos.');
+          return;
+        }
+
         /* --- Doughnut: gastos por categoría --- */
         const expByCategory = appState.transactions
           .filter((t) => t.type === 'expense' && t.date && t.date.substring(0, 7) === month)
@@ -7716,7 +8987,7 @@
                 data: catValues,
                 backgroundColor: colors,
                 borderWidth: 2,
-                borderColor: '#1a1d27',
+                borderColor: _chartColors().border,
               },
             ],
           },
@@ -7770,14 +9041,18 @@
         }
 
         const incomeData = months6.map((m) =>
-          appState.transactions
-            .filter((t) => t.type === 'income' && t.date && t.date.substring(0, 7) === m)
-            .reduce((s, t) => s + t.amount, 0),
+          roundMoney(
+            appState.transactions
+              .filter((t) => t.type === 'income' && t.date && t.date.substring(0, 7) === m)
+              .reduce((s, t) => s + t.amount, 0),
+          ),
         );
         const expenseData = months6.map((m) =>
-          appState.transactions
-            .filter((t) => t.type === 'expense' && t.date && t.date.substring(0, 7) === m)
-            .reduce((s, t) => s + t.amount, 0),
+          roundMoney(
+            appState.transactions
+              .filter((t) => t.type === 'expense' && t.date && t.date.substring(0, 7) === m)
+              .reduce((s, t) => s + t.amount, 0),
+          ),
         );
         const barLabels = months6.map((m) => {
           const [y, mo] = m.split('-');
@@ -7816,16 +9091,16 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: { labels: { color: '#8b8fa8', font: { size: 11 } } },
+              legend: { labels: { color: _chartColors().tick, font: { size: 11 } } },
               tooltip: {
                 callbacks: { label: (ctx) => ` ${formatCurrency(ctx.parsed.y)}` },
               },
             },
             scales: {
-              x: { ticks: { color: '#8b8fa8' }, grid: { color: '#2a2d3a' } },
+              x: { ticks: { color: _chartColors().tick }, grid: { color: _chartColors().grid } },
               y: {
-                ticks: { color: '#8b8fa8', callback: (v) => formatCurrency(v) },
-                grid: { color: '#2a2d3a' },
+                ticks: { color: _chartColors().tick, callback: (v) => formatCurrency(v) },
+                grid: { color: _chartColors().grid },
               },
             },
           },
@@ -8098,6 +9373,10 @@
           handleRegister(email, password);
         });
 
+        document
+          .getElementById('forgot-password-btn')
+          .addEventListener('click', handleForgotPassword);
+
         // Tab bar (event delegation)
         document.getElementById('tab-bar').addEventListener('click', (e) => {
           const btn = e.target.closest('.tab-btn[data-tab]');
@@ -8183,9 +9462,7 @@
           calcExpr !== '0' ||
           !!document.getElementById('calc-desc').value.trim() ||
           !!document.getElementById('calc-bank').value;
-        document
-          .getElementById('calc-close-btn')
-          .addEventListener('click', () => guardClose(_isCalcDirty, closeCalcModal));
+        document.getElementById('calc-close-btn').addEventListener('click', closeCalcModal);
         // Tipo buttons — al seleccionar tipo, re-abre el calendario para iniciar la secuencia
         document.getElementById('calc-modal').addEventListener('click', (e) => {
           const btn = e.target.closest('.btn-tipo');
@@ -8441,6 +9718,58 @@
           .getElementById('cfg-balance-btn')
           .addEventListener('click', handleSaveOpeningBalance);
 
+        document.getElementById('cfg-currency-btn').addEventListener('click', handleSaveCurrency);
+
+        document
+          .getElementById('cfg-notif-btn')
+          .addEventListener('click', handleNotificationToggle);
+
+        // ── Tema ─────────────────────────────────────────────────────────
+        initThemeBtn();
+        document.getElementById('btn-theme-toggle').addEventListener('click', toggleTheme);
+
+        // ── Exportar CSV ────────────────────────────────────────────────
+        document
+          .getElementById('btn-export-csv-month')
+          .addEventListener('click', () => exportCSV('month'));
+        document
+          .getElementById('cfg-export-month-btn')
+          .addEventListener('click', () => exportCSV('month'));
+        document
+          .getElementById('cfg-export-all-btn')
+          .addEventListener('click', () => exportCSV('all'));
+
+        // ── Tutorial ────────────────────────────────────────────────────
+        document
+          .getElementById('tutorial-fab')
+          .addEventListener('click', () => openTutorialModal(0));
+        document
+          .getElementById('tutorial-modal-close')
+          .addEventListener('click', closeTutorialModal);
+        document.getElementById('tutorial-modal').addEventListener('click', (e) => {
+          if (e.target === document.getElementById('tutorial-modal')) closeTutorialModal();
+        });
+
+        // ── Onboarding ──────────────────────────────────────────────────
+        document.getElementById('onboarding-next-0').addEventListener('click', async () => {
+          await _onboardingSaveAlias();
+          _setOnboardingStep(1);
+        });
+        document.getElementById('onboarding-demo-yes').addEventListener('click', async () => {
+          await loadDemoData();
+          scheduleRenderAll();
+          _setOnboardingStep(2);
+        });
+        document.getElementById('onboarding-demo-no').addEventListener('click', () => {
+          _setOnboardingStep(2);
+        });
+        document.getElementById('onboarding-watch-tutorial').addEventListener('click', () => {
+          closeOnboarding();
+          openTutorialModal(0);
+        });
+        document.getElementById('onboarding-finish').addEventListener('click', closeOnboarding);
+        document.getElementById('onboarding-skip-all').addEventListener('click', closeOnboarding);
+
         // ── Configuración — contraseña ──────────────────────────────────
         document
           .getElementById('cfg-password-form')
@@ -8508,6 +9837,27 @@
         document.getElementById('cfg-new-month-btn').addEventListener('click', initiateNewMonth);
         document.getElementById('cfg-reset-btn').addEventListener('click', resetPeriod);
 
+        // ── Eliminar cuenta ────────────────────────────────────────────
+        const deleteAccountModal = document.getElementById('delete-account-modal');
+        document.getElementById('cfg-delete-account-btn').addEventListener('click', () => {
+          document.getElementById('delete-account-password').value = '';
+          document.getElementById('delete-account-error').textContent = '';
+          deleteAccountModal.classList.add('active');
+          document.getElementById('delete-account-password').focus();
+        });
+        document.getElementById('delete-account-close-btn').addEventListener('click', () => {
+          deleteAccountModal.classList.remove('active');
+        });
+        document.getElementById('delete-account-cancel-btn').addEventListener('click', () => {
+          deleteAccountModal.classList.remove('active');
+        });
+        document
+          .getElementById('delete-account-confirm-btn')
+          .addEventListener('click', handleDeleteAccount);
+        deleteAccountModal.addEventListener('click', (e) => {
+          if (e.target === deleteAccountModal) deleteAccountModal.classList.remove('active');
+        });
+
         // ── Proyección ─────────────────────────────────────────────────
         document
           .getElementById('btn-add-projection')
@@ -8516,9 +9866,7 @@
           const amt = document.getElementById('proj-amount').value;
           return !!(amt && parseFloat(amt) > 0);
         };
-        document
-          .getElementById('proj-close-btn')
-          .addEventListener('click', () => guardClose(_isProjDirty, closeProjModal));
+        document.getElementById('proj-close-btn').addEventListener('click', closeProjModal);
         document
           .getElementById('proj-cancel-btn')
           .addEventListener('click', () => guardClose(_isProjDirty, closeProjModal));
@@ -8578,9 +9926,7 @@
             document.getElementById('cc-bank').value.trim() ||
             parseFloat(document.getElementById('cc-amount').value) > 0
           );
-        document
-          .getElementById('cc-close-btn')
-          .addEventListener('click', () => guardClose(_isCcDirty, closeCcModal));
+        document.getElementById('cc-close-btn').addEventListener('click', closeCcModal);
         document.getElementById('cc-form').addEventListener('submit', handleCcFormSubmit);
 
         // Edición inline y eliminación (event delegation en tbody)
@@ -8847,9 +10193,7 @@
             document.getElementById('rec-desc').value.trim() ||
             parseFloat(document.getElementById('rec-amount').value) > 0
           );
-        document
-          .getElementById('rec-close-btn')
-          .addEventListener('click', () => guardClose(_isRecDirty, closeRecModal));
+        document.getElementById('rec-close-btn').addEventListener('click', closeRecModal);
         document.getElementById('rec-form').addEventListener('submit', handleRecFormSubmit);
 
         // Enter-flow rec-form: desc → cat → bank → amount → day → submit
@@ -8927,6 +10271,8 @@
           'shared-bank-modal',
           'proj-modal',
           'philosophy-modal',
+          'privacy-modal',
+          'terms-modal',
         ];
         document.addEventListener('keydown', (e) => {
           if (e.key !== 'Tab') return;
@@ -8963,13 +10309,8 @@
             return el && el.classList.contains('active');
           });
           _ariaBackdrops.forEach((el) => {
-            if (anyOpen) {
-              el.setAttribute('aria-hidden', 'true');
-              el.style.pointerEvents = 'none';
-            } else {
-              el.removeAttribute('aria-hidden');
-              el.style.pointerEvents = '';
-            }
+            if (anyOpen) el.setAttribute('aria-hidden', 'true');
+            else el.removeAttribute('aria-hidden');
           });
           document.body.style.overflow = anyOpen ? 'hidden' : '';
         };
@@ -8988,6 +10329,7 @@
       onAuthStateChanged(auth, (user) => {
         if (user) {
           appState.currentUser = user;
+          _showFullscreenOnLoad = true;
           hideAuthModal();
           showLoading();
           loadUserData(user.uid);

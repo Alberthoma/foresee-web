@@ -403,6 +403,26 @@
         border-color: var(--color-danger);
       }
 
+      #offline-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--color-success, #22c55e);
+        flex-shrink: 0;
+        align-self: center;
+        margin-left: auto;
+        margin-right: var(--space-sm);
+        transition:
+          background-color 0.4s ease,
+          box-shadow 0.4s ease;
+        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
+        cursor: default;
+      }
+      #offline-dot.offline {
+        background-color: var(--color-danger, #f05252);
+        box-shadow: 0 0 0 2px rgba(240, 82, 82, 0.25);
+      }
+
       /* =====================================================================
        8. TAB BAR
        ===================================================================== */
@@ -782,7 +802,9 @@
         display: none;
         position: fixed;
         inset: 0;
-        background-color: rgba(0, 0, 0, 0.75);
+        background-color: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         z-index: 1000;
         align-items: center;
         justify-content: center;
@@ -872,6 +894,10 @@
         outline: none;
         border-color: var(--color-accent);
       }
+      .input--invalid {
+        border-color: var(--color-danger) !important;
+        box-shadow: 0 0 0 2px rgba(240, 82, 82, 0.15);
+      }
       .form-input::placeholder {
         color: var(--color-text-muted);
       }
@@ -886,24 +912,81 @@
       /* =====================================================================
        15. AUTH MODAL
        ===================================================================== */
-      #auth-modal .modal-box {
-        max-width: 420px;
+      /* ── Auth: pantalla de login full-screen ──────────────────────────── */
+      #auth-modal {
+        background: #050810;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
       }
-      .auth-heading {
-        padding: var(--space-xl) var(--space-xl) 0;
+      /* Halo de luz ambiental detrás del card — se filtra a través del cristal */
+      #auth-modal::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 680px 520px at 50% 22%,
+          rgba(79, 143, 255, 0.18) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+      /* Card: cristal oscuro con el halo difuminado a través + neon glow en borde */
+      #auth-modal .modal-box {
+        position: relative;
+        z-index: 1;
+        background: rgba(10, 12, 22, 0.55);
+        backdrop-filter: blur(28px);
+        -webkit-backdrop-filter: blur(28px);
+        border: 1px solid rgba(79, 143, 255, 0.28);
+        box-shadow:
+          0 0 0 1px rgba(79, 143, 255, 0.08),
+          0 0 24px rgba(79, 143, 255, 0.22),
+          0 0 60px rgba(79, 143, 255, 0.1),
+          0 40px 90px rgba(0, 0, 0, 0.75);
+        max-width: 380px;
+      }
+      .auth-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-xs);
+        padding: var(--space-xl) var(--space-xl) var(--space-lg);
         text-align: center;
       }
-      .auth-title {
-        font-size: var(--font-xl);
-        font-weight: 400;
+      .auth-brand-logo {
+        width: 76px;
+        height: 76px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 12px rgba(79, 143, 255, 0.9))
+          drop-shadow(0 0 30px rgba(79, 143, 255, 0.45));
+        margin-bottom: var(--space-sm);
       }
-      .auth-subtitle {
+      /* Título con gradiente blanco → azul accent */
+      .auth-brand-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        line-height: 1.4;
+        margin: 0;
+        background: linear-gradient(135deg, #e8eaf0 30%, #4f8fff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .auth-brand-tagline {
+        font-size: var(--font-xs);
         color: var(--color-accent);
+        opacity: 0.65;
+        margin: var(--space-xs) 0 0;
       }
-      .auth-intro {
-        font-size: var(--font-sm);
-        color: var(--color-text-muted);
-        margin-top: var(--space-sm);
+      /* Divisor con glow azul en el centro */
+      .auth-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(79, 143, 255, 0.45), transparent);
+        margin: 0 var(--space-xl);
+        box-shadow: 0 0 8px rgba(79, 143, 255, 0.3);
       }
 
       .auth-form {
@@ -2913,13 +2996,18 @@
       aria-labelledby="auth-title"
     >
       <div class="modal-box">
-        <div class="auth-heading">
-          <h2 class="auth-title" id="auth-title">
-            Foresee Finances
-            <span class="auth-subtitle">Bienvenido</span>
-          </h2>
-          <p class="auth-intro">Inicia sesión o regístrate para acceder a tus datos.</p>
+        <div class="auth-brand">
+          <img
+            class="auth-brand-logo"
+            src="https://res.cloudinary.com/datwdagbf/image/upload/v1756514680/logo_jkwegt.png"
+            alt="Logo Foresee"
+          />
+          <h1 class="auth-brand-title" id="auth-title">
+            Gestor Financiero<br />y de Presupuesto Web
+          </h1>
+          <p class="auth-brand-tagline">Inicia sesión para acceder a tus datos</p>
         </div>
+        <div class="auth-divider"></div>
         <form id="auth-form" class="auth-form" novalidate>
           <div class="form-group">
             <label class="form-label" for="auth-email">Correo Electrónico</label>
@@ -2950,6 +3038,84 @@
         </form>
       </div>
     </div>
+
+    <!-- ─── HTML Templates (invisible, clonados por JS) ──────────────────── -->
+    <template id="tpl-cc-row">
+      <tr>
+        <td><input type="checkbox" class="card-data-input" data-field="exclude" /></td>
+        <td class="js-bank"></td>
+        <td class="js-due-date"></td>
+        <td>
+          <input
+            type="number"
+            class="cc-table-input card-data-input"
+            data-field="amount"
+            step="0.01"
+          />
+        </td>
+        <td>
+          <input
+            type="number"
+            class="cc-table-input card-data-input"
+            data-field="limit"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </td>
+        <td class="js-disp"></td>
+        <td>
+          <input
+            type="number"
+            class="cc-table-input card-data-input"
+            data-field="rate"
+            step="0.01"
+          />
+        </td>
+        <td>
+          <input type="number" class="cc-table-input card-data-input" data-field="months" min="1" />
+        </td>
+        <td class="rec-amount js-pago"></td>
+        <td>
+          <button
+            class="btn-icon btn-icon--danger"
+            data-action="delete"
+            title="Eliminar tarjeta"
+          ></button>
+        </td>
+      </tr>
+    </template>
+
+    <template id="tpl-comunes-card">
+      <div class="item-card">
+        <div class="item-card-header">
+          <input type="text" class="item-card-name" placeholder="Nombre del gasto" />
+          <input type="number" class="item-card-total" placeholder="0.00" step="0.01" />
+          <button class="item-delete-btn" title="Eliminar ítem"></button>
+        </div>
+        <div class="item-people-panel"></div>
+        <div class="item-distributions"></div>
+      </div>
+    </template>
+
+    <template id="tpl-person-chip">
+      <div class="person-chip">
+        <div class="person-chip-avatar"></div>
+        <input type="text" class="person-chip-name" />
+        <button class="person-chip-delete" title="Eliminar">×</button>
+      </div>
+    </template>
+
+    <template id="tpl-dist-row">
+      <div class="dist-row">
+        <div class="dist-avatar"></div>
+        <div class="dist-person-info">
+          <div class="dist-person-name"></div>
+          <div class="dist-method-tag"></div>
+        </div>
+        <div class="dist-amount-col"></div>
+        <div class="dist-status-col"></div>
+      </div>
+    </template>
 
     <!-- HEADER BAR (desktop) -->
     <header id="app-header">
@@ -3052,6 +3218,7 @@
         />
         <span>Salir</span>
       </button>
+      <div id="offline-dot" title="Conectado"></div>
     </nav>
 
     <!-- MAIN CONTENT -->
@@ -4073,7 +4240,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.1.6</p>
+      <p id="app-version">v 0.0.1.7</p>
     </footer>
 
     <script type="module">
@@ -4302,6 +4469,23 @@
           toast.addEventListener('transitionend', remove, { once: true });
           setTimeout(remove, 500); // fallback if transitionend doesn't fire
         }, 3000);
+      }
+
+      function markInvalid(el) {
+        el.classList.add('input--invalid');
+        el.addEventListener('input', () => el.classList.remove('input--invalid'), { once: true });
+      }
+
+      function guardClose(isDirtyFn, closeFn) {
+        if (!isDirtyFn()) {
+          closeFn();
+          return;
+        }
+        openConfirmModal(
+          '¿Descartar cambios?',
+          'Hay datos ingresados que se perderán. ¿Deseas cerrar de todas formas?',
+          closeFn,
+        );
       }
 
       /* ===================================================================
@@ -5462,7 +5646,15 @@
         const to = document.getElementById('tr-to').value.trim();
         const amount = parseFloat(document.getElementById('tr-amount').value);
 
-        if (!date || !from || !to || isNaN(amount) || amount <= 0) {
+        const _trFields = [
+          [document.getElementById('tr-date'), !date],
+          [document.getElementById('tr-from'), !from],
+          [document.getElementById('tr-to'), !to],
+          [document.getElementById('tr-amount'), isNaN(amount) || amount <= 0],
+        ];
+        const _trInvalid = _trFields.filter(([, bad]) => bad);
+        if (_trInvalid.length) {
+          _trInvalid.forEach(([el]) => markInvalid(el));
           showToast('Completa todos los campos correctamente.', 'warning');
           return;
         }
@@ -6494,16 +6686,16 @@
         const amount = parseFloat(document.getElementById('rec-amount').value);
         const day = parseInt(document.getElementById('rec-day').value, 10);
 
-        if (
-          !description ||
-          !category ||
-          !bank ||
-          isNaN(amount) ||
-          amount <= 0 ||
-          isNaN(day) ||
-          day < 1 ||
-          day > 31
-        ) {
+        const _recFields = [
+          [document.getElementById('rec-desc'), !description],
+          [document.getElementById('rec-cat'), !category],
+          [document.getElementById('rec-bank'), !bank],
+          [document.getElementById('rec-amount'), isNaN(amount) || amount <= 0],
+          [document.getElementById('rec-day'), isNaN(day) || day < 1 || day > 31],
+        ];
+        const _recInvalid = _recFields.filter(([, bad]) => bad);
+        if (_recInvalid.length) {
+          _recInvalid.forEach(([el]) => markInvalid(el));
           showToast('Completa todos los campos correctamente.', 'error');
           return;
         }
@@ -6599,6 +6791,7 @@
 
         const TRASH = ICON_TRASH;
 
+        const tplRow = document.getElementById('tpl-cc-row');
         sorted.forEach((card) => {
           const next = new Date(today.getFullYear(), today.getMonth(), card.dueDate);
           if (today.getDate() > card.dueDate) next.setMonth(next.getMonth() + 1);
@@ -6613,88 +6806,38 @@
           totalLimite += limite;
           totalMensual += pago;
 
-          const tr = document.createElement('tr');
+          const tr = tplRow.content.cloneNode(true).querySelector('tr');
           tr.dataset.cardId = card.id;
           if (days >= 0 && days <= 2) tr.classList.add('due-danger');
           else if (days <= 5) tr.classList.add('due-warning');
 
-          // Col 1: Excluir checkbox
-          const tdEx = tr.insertCell();
-          const chk = document.createElement('input');
-          chk.type = 'checkbox';
-          chk.className = 'card-data-input';
-          chk.dataset.field = 'exclude';
+          const chk = tr.querySelector('[data-field="exclude"]');
           chk.checked = !!card.exclude;
-          tdEx.appendChild(chk);
 
-          // Col 2: Banco
-          const tdBank = tr.insertCell();
-          tdBank.textContent = card.bank;
+          tr.querySelector('.js-bank').textContent = card.bank;
+          tr.querySelector('.js-due-date').textContent = card.dueDate;
 
-          // Col 3: Día pago
-          const tdDay = tr.insertCell();
-          tdDay.textContent = card.dueDate;
-
-          // Col 4: Monto adeudado (editable)
-          const tdAmt = tr.insertCell();
-          const inAmt = document.createElement('input');
-          inAmt.type = 'number';
-          inAmt.className = 'cc-table-input card-data-input';
-          inAmt.dataset.field = 'amount';
+          const inAmt = tr.querySelector('[data-field="amount"]');
           inAmt.value = deuda.toFixed(2);
-          inAmt.step = '0.01';
-          tdAmt.appendChild(inAmt);
 
-          // Col 5: Línea crédito (editable)
-          const tdLim = tr.insertCell();
-          const inLim = document.createElement('input');
-          inLim.type = 'number';
-          inLim.className = 'cc-table-input card-data-input';
-          inLim.dataset.field = 'limit';
+          const inLim = tr.querySelector('[data-field="limit"]');
           inLim.value = limite.toFixed(2);
-          inLim.step = '0.01';
-          inLim.placeholder = '0.00';
-          tdLim.appendChild(inLim);
 
-          // Col 6: Disponible (calculado)
-          const tdDisp = tr.insertCell();
+          const tdDisp = tr.querySelector('.js-disp');
           tdDisp.textContent = formatCurrency(disponible);
-          tdDisp.className = disponible >= 0 ? 'balance--positive' : 'balance--negative';
+          tdDisp.className = `js-disp ${disponible >= 0 ? 'balance--positive' : 'balance--negative'}`;
 
-          // Col 7: Tasa (editable)
-          const tdRate = tr.insertCell();
-          const inRate = document.createElement('input');
-          inRate.type = 'number';
-          inRate.className = 'cc-table-input card-data-input';
-          inRate.dataset.field = 'rate';
+          const inRate = tr.querySelector('[data-field="rate"]');
           inRate.value = Number(card.rate).toFixed(2);
-          inRate.step = '0.01';
-          tdRate.appendChild(inRate);
 
-          // Col 8: Meses (editable)
-          const tdMon = tr.insertCell();
-          const inMon = document.createElement('input');
-          inMon.type = 'number';
-          inMon.className = 'cc-table-input card-data-input';
-          inMon.dataset.field = 'months';
+          const inMon = tr.querySelector('[data-field="months"]');
           inMon.value = card.months;
-          inMon.min = '1';
-          tdMon.appendChild(inMon);
 
-          // Col 9: Pago mensual (calculado)
-          const tdPago = tr.insertCell();
-          tdPago.textContent = formatCurrency(pago);
-          tdPago.className = 'rec-amount';
+          tr.querySelector('.js-pago').textContent = formatCurrency(pago);
 
-          // Col 10: Eliminar
-          const tdAct = tr.insertCell();
-          const delBtn = document.createElement('button');
-          delBtn.className = 'btn-icon btn-icon--danger';
-          delBtn.dataset.action = 'delete';
+          const delBtn = tr.querySelector('[data-action="delete"]');
           delBtn.dataset.id = card.id;
-          delBtn.title = 'Eliminar tarjeta';
           delBtn.innerHTML = TRASH;
-          tdAct.appendChild(delBtn);
 
           tbody.appendChild(tr);
         });
@@ -6759,18 +6902,16 @@
         const rate = parseFloat(document.getElementById('cc-rate').value);
         const months = parseInt(document.getElementById('cc-months').value, 10);
 
-        if (
-          !bank ||
-          isNaN(dueDate) ||
-          dueDate < 1 ||
-          dueDate > 31 ||
-          isNaN(amount) ||
-          amount < 0 ||
-          isNaN(rate) ||
-          rate < 0 ||
-          isNaN(months) ||
-          months < 1
-        ) {
+        const _ccFields = [
+          [document.getElementById('cc-bank'), !bank],
+          [document.getElementById('cc-due-date'), isNaN(dueDate) || dueDate < 1 || dueDate > 31],
+          [document.getElementById('cc-amount'), isNaN(amount) || amount < 0],
+          [document.getElementById('cc-rate'), isNaN(rate) || rate < 0],
+          [document.getElementById('cc-months'), isNaN(months) || months < 1],
+        ];
+        const _ccInvalid = _ccFields.filter(([, bad]) => bad);
+        if (_ccInvalid.length) {
+          _ccInvalid.forEach(([el]) => markInvalid(el));
           showToast('Completa todos los campos correctamente.', 'error');
           return;
         }
@@ -6891,73 +7032,49 @@
         empty.classList.add('hidden');
 
         const TRASH = ICON_TRASH_SOLID;
+        const tplCard = document.getElementById('tpl-comunes-card');
+        const tplChip = document.getElementById('tpl-person-chip');
+        const tplDistRow = document.getElementById('tpl-dist-row');
 
         items.forEach((item) => {
           const people = item.people || [];
-          const card = document.createElement('div');
-          card.className = 'item-card';
+
+          // ── Card skeleton ────────────────────────────────────────────────
+          const card = tplCard.content.cloneNode(true).querySelector('.item-card');
           card.dataset.itemId = item.id;
 
-          // Header
-          const header = document.createElement('div');
-          header.className = 'item-card-header';
-
-          const nameInput = document.createElement('input');
-          nameInput.type = 'text';
-          nameInput.className = 'item-card-name';
+          const nameInput = card.querySelector('.item-card-name');
           nameInput.value = item.name || '';
-          nameInput.placeholder = 'Nombre del gasto';
           nameInput.dataset.itemId = item.id;
 
-          const totalInput = document.createElement('input');
-          totalInput.type = 'number';
-          totalInput.className = 'item-card-total';
+          const totalInput = card.querySelector('.item-card-total');
           totalInput.value = item.totalAmount || '';
-          totalInput.placeholder = '0.00';
-          totalInput.step = '0.01';
           totalInput.dataset.itemId = item.id;
 
-          const delBtn = document.createElement('button');
-          delBtn.className = 'item-delete-btn';
+          const delBtn = card.querySelector('.item-delete-btn');
           delBtn.dataset.itemId = item.id;
-          delBtn.title = 'Eliminar ítem';
           delBtn.innerHTML = TRASH;
 
-          header.appendChild(nameInput);
-          header.appendChild(totalInput);
-          header.appendChild(delBtn);
-
-          // People panel
-          const peoplePanel = document.createElement('div');
-          peoplePanel.className = 'item-people-panel';
+          // ── People panel ─────────────────────────────────────────────────
+          const peoplePanel = card.querySelector('.item-people-panel');
           people.forEach((person, idx) => {
-            const chip = document.createElement('div');
-            chip.className = 'person-chip';
+            const chip = tplChip.content.cloneNode(true).querySelector('.person-chip');
 
-            const avatar = document.createElement('div');
-            avatar.className = 'person-chip-avatar';
+            const avatar = chip.querySelector('.person-chip-avatar');
             avatar.style.setProperty('background-color', AVATAR_COLORS[idx % AVATAR_COLORS.length]);
             const pName = person.name || `P${idx + 1}`;
             avatar.textContent = pName.slice(0, 2).toUpperCase();
 
-            const pInput = document.createElement('input');
-            pInput.type = 'text';
-            pInput.className = 'person-chip-name';
+            const pInput = chip.querySelector('.person-chip-name');
             pInput.value = person.name || '';
             pInput.placeholder = `Persona ${idx + 1}`;
             pInput.dataset.itemId = item.id;
             pInput.dataset.personIndex = idx;
 
-            const pDel = document.createElement('button');
-            pDel.className = 'person-chip-delete';
+            const pDel = chip.querySelector('.person-chip-delete');
             pDel.dataset.itemId = item.id;
             pDel.dataset.personIndex = idx;
-            pDel.title = 'Eliminar';
-            pDel.textContent = '×';
 
-            chip.appendChild(avatar);
-            chip.appendChild(pInput);
-            chip.appendChild(pDel);
             peoplePanel.appendChild(chip);
           });
 
@@ -6968,9 +7085,8 @@
           addPBtn.textContent = '+';
           peoplePanel.appendChild(addPBtn);
 
-          // Distributions
-          const distContainer = document.createElement('div');
-          distContainer.className = 'item-distributions';
+          // ── Distributions ─────────────────────────────────────────────────
+          const distContainer = card.querySelector('.item-distributions');
 
           if (people.length === 0) {
             const hint = document.createElement('p');
@@ -7001,45 +7117,32 @@
                 }
               }
 
-              const row = document.createElement('div');
-              row.className = isPaid ? 'dist-row is-paid' : 'dist-row';
+              const row = tplDistRow.content.cloneNode(true).querySelector('.dist-row');
+              if (isPaid) row.classList.add('is-paid');
               row.dataset.itemId = item.id;
               row.dataset.personIndex = pIdx;
 
-              const av = document.createElement('div');
-              av.className = 'dist-avatar';
+              const av = row.querySelector('.dist-avatar');
               av.style.setProperty('background-color', AVATAR_COLORS[pIdx % AVATAR_COLORS.length]);
               av.textContent = (person.name || `P${pIdx + 1}`).slice(0, 2).toUpperCase();
 
-              const info = document.createElement('div');
-              info.className = 'dist-person-info';
-              const nameDiv = document.createElement('div');
-              nameDiv.className = 'dist-person-name';
-              nameDiv.textContent = person.name || `Persona ${pIdx + 1}`;
-              const methodDiv = document.createElement('div');
-              methodDiv.className = 'dist-method-tag';
-              methodDiv.textContent = methodLabel;
-              info.appendChild(nameDiv);
-              info.appendChild(methodDiv);
+              row.querySelector('.dist-person-name').textContent =
+                person.name || `Persona ${pIdx + 1}`;
+              row.querySelector('.dist-method-tag').textContent = methodLabel;
+              row.querySelector('.dist-amount-col').textContent = formatCurrency(amount);
 
-              const amtCol = document.createElement('div');
-              amtCol.className = 'dist-amount-col';
-              amtCol.textContent = formatCurrency(amount);
-
-              const statusCol = document.createElement('div');
-              statusCol.className = 'dist-status-col';
-
+              const statusCol = row.querySelector('.dist-status-col');
               if (isPaid) {
                 const tag = document.createElement('span');
                 tag.className = 'paid-tag';
                 tag.textContent = `✔ Día ${distData.paidDay}`;
-                statusCol.appendChild(tag);
                 const undoBtn = document.createElement('button');
                 undoBtn.className = 'undo-paid-btn';
                 undoBtn.title = 'Revertir pago';
                 undoBtn.dataset.itemId = item.id;
                 undoBtn.dataset.personIndex = pIdx;
                 undoBtn.textContent = '✕';
+                statusCol.appendChild(tag);
                 statusCol.appendChild(undoBtn);
               } else {
                 const dayIn = document.createElement('input');
@@ -7048,28 +7151,19 @@
                 dayIn.min = '1';
                 dayIn.max = '31';
                 dayIn.placeholder = 'Día';
-
                 const okBtn = document.createElement('button');
                 okBtn.className = 'mini-ok-btn';
                 okBtn.dataset.itemId = item.id;
                 okBtn.dataset.personIndex = pIdx;
                 okBtn.textContent = 'OK';
-
                 statusCol.appendChild(dayIn);
                 statusCol.appendChild(okBtn);
               }
 
-              row.appendChild(av);
-              row.appendChild(info);
-              row.appendChild(amtCol);
-              row.appendChild(statusCol);
               distContainer.appendChild(row);
             });
           }
 
-          card.appendChild(header);
-          card.appendChild(peoplePanel);
-          card.appendChild(distContainer);
           container.appendChild(card);
         });
       }
@@ -8085,10 +8179,13 @@
           .addEventListener('click', deleteSelectedItems);
 
         // ── Calculator modal ────────────────────────────────────────────
-        document.getElementById('calc-close-btn').addEventListener('click', closeCalcModal);
-        document.getElementById('calc-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeCalcModal();
-        });
+        const _isCalcDirty = () =>
+          calcExpr !== '0' ||
+          !!document.getElementById('calc-desc').value.trim() ||
+          !!document.getElementById('calc-bank').value;
+        document
+          .getElementById('calc-close-btn')
+          .addEventListener('click', () => guardClose(_isCalcDirty, closeCalcModal));
         // Tipo buttons — al seleccionar tipo, re-abre el calendario para iniciar la secuencia
         document.getElementById('calc-modal').addEventListener('click', (e) => {
           const btn = e.target.closest('.btn-tipo');
@@ -8150,10 +8247,15 @@
         });
 
         // ── Transfer modal ──────────────────────────────────────────────
-        document.getElementById('transfer-close-btn').addEventListener('click', closeTransferModal);
-        document.getElementById('transfer-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeTransferModal();
-        });
+        const _isTransferDirty = () =>
+          !!(
+            document.getElementById('tr-from').value ||
+            document.getElementById('tr-to').value ||
+            parseFloat(document.getElementById('tr-amount').value) > 0
+          );
+        document
+          .getElementById('transfer-close-btn')
+          .addEventListener('click', () => guardClose(_isTransferDirty, closeTransferModal));
         document.getElementById('transfer-form').addEventListener('submit', handleTransferSubmit);
 
         // ── Registros table (event delegation) ─────────────────────────
@@ -8410,11 +8512,16 @@
         document
           .getElementById('btn-add-projection')
           .addEventListener('click', () => openCalcModal('projection'));
-        document.getElementById('proj-close-btn').addEventListener('click', closeProjModal);
-        document.getElementById('proj-cancel-btn').addEventListener('click', closeProjModal);
-        document.getElementById('proj-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeProjModal();
-        });
+        const _isProjDirty = () => {
+          const amt = document.getElementById('proj-amount').value;
+          return !!(amt && parseFloat(amt) > 0);
+        };
+        document
+          .getElementById('proj-close-btn')
+          .addEventListener('click', () => guardClose(_isProjDirty, closeProjModal));
+        document
+          .getElementById('proj-cancel-btn')
+          .addEventListener('click', () => guardClose(_isProjDirty, closeProjModal));
         document.getElementById('proj-save-btn').addEventListener('click', handleProjSubmit);
         document.getElementById('proj-filter-month').addEventListener('change', (e) => {
           appState.filterMonth = e.target.value;
@@ -8466,10 +8573,14 @@
 
         // ── Tarjetas de Crédito ────────────────────────────────────────
         document.getElementById('btn-add-card').addEventListener('click', openCcModal);
-        document.getElementById('cc-close-btn').addEventListener('click', closeCcModal);
-        document.getElementById('cc-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeCcModal();
-        });
+        const _isCcDirty = () =>
+          !!(
+            document.getElementById('cc-bank').value.trim() ||
+            parseFloat(document.getElementById('cc-amount').value) > 0
+          );
+        document
+          .getElementById('cc-close-btn')
+          .addEventListener('click', () => guardClose(_isCcDirty, closeCcModal));
         document.getElementById('cc-form').addEventListener('submit', handleCcFormSubmit);
 
         // Edición inline y eliminación (event delegation en tbody)
@@ -8714,9 +8825,6 @@
         document
           .getElementById('dist-input-cancel-btn')
           .addEventListener('click', closeDistInputModal);
-        document.getElementById('dist-input-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeDistInputModal();
-        });
 
         // Modal banco pago compartido
         document
@@ -8734,10 +8842,14 @@
 
         // ── Gastos Recurrentes ──────────────────────────────────────────
         document.getElementById('btn-add-rec').addEventListener('click', () => openRecModal());
-        document.getElementById('rec-close-btn').addEventListener('click', closeRecModal);
-        document.getElementById('rec-modal').addEventListener('click', (e) => {
-          if (e.target === e.currentTarget) closeRecModal();
-        });
+        const _isRecDirty = () =>
+          !!(
+            document.getElementById('rec-desc').value.trim() ||
+            parseFloat(document.getElementById('rec-amount').value) > 0
+          );
+        document
+          .getElementById('rec-close-btn')
+          .addEventListener('click', () => guardClose(_isRecDirty, closeRecModal));
         document.getElementById('rec-form').addEventListener('submit', handleRecFormSubmit);
 
         // Enter-flow rec-form: desc → cat → bank → amount → day → submit
@@ -8784,6 +8896,88 @@
         });
 
         setupPullToRefresh();
+
+        // ── Offline / Online indicator ────────────────────────────────────
+        const _offlineDot = document.getElementById('offline-dot');
+        function _syncDotState() {
+          if (!_offlineDot) return;
+          const isOnline = navigator.onLine;
+          _offlineDot.classList.toggle('offline', !isOnline);
+          _offlineDot.title = isOnline
+            ? 'Conectado'
+            : 'Sin conexión — los cambios se sincronizarán al reconectar';
+        }
+        window.addEventListener('offline', _syncDotState);
+        window.addEventListener('online', _syncDotState);
+        _syncDotState();
+
+        // ── Focus Trap — cicla Tab dentro del modal activo ────────────────
+        const FOCUSABLE =
+          'button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+        const MODAL_IDS = [
+          'auth-modal',
+          'calc-modal',
+          'cat-modal',
+          'confirm-modal',
+          'transfer-modal',
+          'cfg-cat-icon-modal',
+          'rec-modal',
+          'cc-modal',
+          'dist-input-modal',
+          'shared-bank-modal',
+          'proj-modal',
+          'philosophy-modal',
+        ];
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Tab') return;
+          const activeModal = MODAL_IDS.map((id) => document.getElementById(id)).find(
+            (el) => el && el.classList.contains('active'),
+          );
+          if (!activeModal) return;
+          const focusable = Array.from(activeModal.querySelectorAll(FOCUSABLE)).filter(
+            (el) => el.offsetParent !== null,
+          );
+          if (focusable.length === 0) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        });
+
+        // ── Aislamiento de modal: ARIA + scroll lock + pointer-events ────────
+        const _ariaBackdrops = ['app-header', 'tab-bar', 'main-wrapper']
+          .map((id) => document.getElementById(id))
+          .filter(Boolean);
+        const _syncModalState = () => {
+          const anyOpen = MODAL_IDS.some((id) => {
+            const el = document.getElementById(id);
+            return el && el.classList.contains('active');
+          });
+          _ariaBackdrops.forEach((el) => {
+            if (anyOpen) {
+              el.setAttribute('aria-hidden', 'true');
+              el.style.pointerEvents = 'none';
+            } else {
+              el.removeAttribute('aria-hidden');
+              el.style.pointerEvents = '';
+            }
+          });
+          document.body.style.overflow = anyOpen ? 'hidden' : '';
+        };
+        const _modalObserver = new MutationObserver(_syncModalState);
+        MODAL_IDS.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) _modalObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+        });
       }
 
       /* ===================================================================
