@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#1f2937" />
     <title>Foresee Finances</title>
+    <link rel="manifest" href="manifest.json" />
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>"
@@ -3575,14 +3577,28 @@
          evitar interferir con otras animaciones (modales, spinners, etc.)
        ===================================================================== */
       body,
-      #app-header, #tab-bar, #main-wrapper,
-      .tab-pane, .tab-btn, .modal-overlay,
-      .dash-card, .card,
-      input, select, textarea,
-      table, th, td,
-      .cfg-section, .cfg-form,
-      .action-bar, .section-header,
-      .rec-item, .cc-row, .proj-row, .tx-row {
+      #app-header,
+      #tab-bar,
+      #main-wrapper,
+      .tab-pane,
+      .tab-btn,
+      .modal-overlay,
+      .dash-card,
+      .card,
+      input,
+      select,
+      textarea,
+      table,
+      th,
+      td,
+      .cfg-section,
+      .cfg-form,
+      .action-bar,
+      .section-header,
+      .rec-item,
+      .cc-row,
+      .proj-row,
+      .tx-row {
         transition:
           background-color 0.25s ease,
           border-color 0.25s ease,
@@ -3951,7 +3967,12 @@
             <select id="reg-filter-cat" aria-label="Filtrar por categoría">
               <option value="">Todas las categorías</option>
             </select>
-            <button class="btn-csv hidden" id="btn-export-csv-month" title="Exportar mes visible a CSV" aria-hidden="true">
+            <button
+              class="btn-csv hidden"
+              id="btn-export-csv-month"
+              title="Exportar mes visible a CSV"
+              aria-hidden="true"
+            >
               ⬇ CSV
             </button>
           </div>
@@ -5216,7 +5237,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">v 0.0.2.0</p>
+      <p id="app-version">V FS 0001</p>
     </footer>
 
     <script type="module">
