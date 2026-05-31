@@ -30,17 +30,12 @@
         --color-surface-2: #22253a;
         --color-border: #2a2d3a;
         --color-text: #e8eaf0;
-        --color-text-muted: #bcbfd2;
+        --color-text-muted: #bcbfd2; /*--color-text-muted: #8b8fa8;*/
         --color-text-2: #bcbfd2;
         --color-accent: #4f8fff;
-        --color-primary: #4f8fff;
         --color-danger: #f05252;
         --color-success: #22c97a;
         --color-warning: #f59e0b;
-        --color-bg-secondary: #1a1d27;
-        --color-bg-tertiary: #22253a;
-        --color-input: #1a1d27;
-        --color-overlay: rgba(0, 0, 0, 0.65);
 
         --space-xs: 0.25rem;
         --space-sm: 0.5rem;
@@ -83,11 +78,6 @@
         --color-text: #1a1d23;
         --color-text-muted: #5a6070;
         --color-text-2: #5a6070;
-        --color-primary: #2563eb;
-        --color-bg-secondary: #ffffff;
-        --color-bg-tertiary: #f5f7fa;
-        --color-input: #ffffff;
-        --color-overlay: rgba(0, 0, 0, 0.4);
         --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
         --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -849,7 +839,7 @@
         display: none;
         position: fixed;
         inset: 0;
-        background-color: var(--color-overlay);
+        background-color: rgba(0, 0, 0, 0.45);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
         z-index: 1000;
@@ -3568,27 +3558,6 @@
       .voice-hint strong {
         color: var(--color-text);
       }
-
-      /* =====================================================================
-         TRANSICIÓN SUAVE AL CAMBIAR TEMA (claro ↔ oscuro)
-         Aplicada a los elementos que usan variables de color, no a * para
-         evitar interferir con otras animaciones (modales, spinners, etc.)
-       ===================================================================== */
-      body,
-      #app-header, #tab-bar, #main-wrapper,
-      .tab-pane, .tab-btn, .modal-overlay,
-      .dash-card, .card,
-      input, select, textarea,
-      table, th, td,
-      .cfg-section, .cfg-form,
-      .action-bar, .section-header,
-      .rec-item, .cc-row, .proj-row, .tx-row {
-        transition:
-          background-color 0.25s ease,
-          border-color 0.25s ease,
-          color 0.15s ease,
-          box-shadow 0.25s ease;
-      }
     </style>
   </head>
   <body class="view-dashboard">
@@ -3951,7 +3920,7 @@
             <select id="reg-filter-cat" aria-label="Filtrar por categoría">
               <option value="">Todas las categorías</option>
             </select>
-            <button class="btn-csv hidden" id="btn-export-csv-month" title="Exportar mes visible a CSV" aria-hidden="true">
+            <button class="btn-csv" id="btn-export-csv-month" title="Exportar mes visible a CSV">
               ⬇ CSV
             </button>
           </div>
@@ -4347,10 +4316,16 @@
             <!-- Exportar datos -->
             <div class="cfg-section">
               <h3>Exportar Datos</h3>
-              <!-- CSV oculto — reemplazado por Excel. Función exportCSV() conservada en JS. -->
-              <button class="hidden" id="cfg-export-month-btn" aria-hidden="true"></button>
-              <button class="hidden" id="cfg-export-all-btn" aria-hidden="true"></button>
               <p class="cfg-desc">
+                Descarga tus transacciones en formato CSV para abrirlas en Excel o Google Sheets.
+              </p>
+              <div class="cfg-form" style="flex-direction: row; flex-wrap: wrap">
+                <button class="btn-outline btn-cfg" id="cfg-export-month-btn">⬇ Mes actual</button>
+                <button class="btn-outline btn-cfg" id="cfg-export-all-btn">
+                  ⬇ Todo el historial
+                </button>
+              </div>
+              <p class="cfg-desc" style="margin-top: var(--space-md)">
                 Exporta todas las secciones a un único archivo Excel con 4 hojas: Registro,
                 Proyecciones, Gastos Recurrentes y Tarjetas.
               </p>
@@ -4550,7 +4525,7 @@
     >
       <div id="tutorial-modal-content">
         <div id="tutorial-modal-header">
-          <h2 id="tutorial-modal-heading">Aprende Foresee</h2>
+          <h2 id="tutorial-modal-heading">Videos Tutoriales</h2>
           <button id="tutorial-modal-close" aria-label="Cerrar">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -4573,7 +4548,7 @@
             </div>
           </div>
           <div id="tutorial-list-section">
-            <h4>Paso a paso</h4>
+            <h4>Lista de videos</h4>
             <div id="tutorial-list"></div>
           </div>
         </div>
@@ -7573,38 +7548,38 @@
        =================================================================== */
       const TUTORIAL_VIDEOS = [
         {
-          title: 'Paso 1: Empieza Fuerte',
-          desc: 'Tu primera configuración: categorías y bancos en minutos. La base que hace que todo funcione.',
+          title: 'Paso 1: Configuración Inicial',
+          desc: 'Crea tus categorías y bancos. La base de todo el sistema.',
           url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512589/Paso_1_Bienvenida_y_Gestion_de_Categoria_y_Bancos_plya2u.mp4',
         },
         {
-          title: 'Paso 2: Automatiza tu Tranquilidad',
-          desc: 'Gastos fijos en piloto automático. Recibe alertas antes de que venza cada pago.',
+          title: 'Paso 2: Gastos Recurrentes',
+          desc: 'Pon tus pagos fijos en automático y recibe alertas antes del vencimiento.',
           url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512570/Paso_2_Gastos_Recurrentes_mboofi.mp4',
         },
         {
-          title: 'Paso 3: Domina tus Deudas',
-          desc: 'Convierte tus tarjetas de crédito en una herramienta, no en un problema. Controla límites y pagos.',
+          title: 'Paso 3: Tarjetas de Crédito',
+          desc: 'Controla tus deudas y evita superar el límite de tus tarjetas.',
           url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512577/Paso_3_Targetas_de_Credito_krqk9f.mp4',
         },
         {
-          title: 'Paso 4: El Hábito que Cambia Todo',
-          desc: 'Registra ingresos y gastos en segundos. Cada registro es un paso hacia el control total.',
+          title: 'Paso 4: Registro Diario',
+          desc: 'El hábito que lo cambia todo. Registra ingresos y gastos en segundos.',
           url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512590/Paso_4_Registro_Diaro_cujs8c.mp4',
         },
         {
-          title: 'Paso 5: Conoce tu Dinero',
-          desc: 'Reportes, presupuestos y tablas: descubre a dónde va tu dinero y cómo mejorar mes a mes.',
+          title: 'Paso 5: Reportes, Presupuesto y Tablas',
+          desc: 'Visión completa de tu dinero: dónde va, cuánto queda y cómo mejorar.',
           url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758512588/Paso_5_Reportes_Presupuesto_y_Tablas_p0zj9b.mp4',
         },
         {
-          title: 'Paso 6: Viaja al Futuro',
-          desc: 'Proyecta tu saldo. Anticipa cuánto puedes gastar — y cuánto puedes ahorrar.',
+          title: 'Paso 6: Proyección',
+          desc: 'Anticipa el futuro. Sabe cuánto puedes gastar y cuánto puedes ahorrar.',
           url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1758514065/Paso_6_Proyeccion_bhrr1a.mp4',
         },
         {
-          title: 'Paso 7: Divide sin Conflictos',
-          desc: 'Gastos compartidos sin incomodidad. Registra, divide y cobra tu parte a cada persona.',
+          title: 'Paso 7: Gastos Comunes',
+          desc: 'Divide gastos compartidos y cobra tu parte a cada persona.',
           url: 'https://res.cloudinary.com/datwdagbf/video/upload/v1759005488/Gastos_comunes_kvozqf.mp4',
         },
       ];
