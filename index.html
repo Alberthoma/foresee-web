@@ -8204,10 +8204,6 @@
         const lastProcessed = appState.lastMonthProcessed;
 
         if (!lastProcessed) {
-<<<<<<< HEAD
-          // Primera vez: registrar el mes actual sin archivar nada
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
           const user = appState.currentUser;
           if (user) {
             updateDoc(doc(db, DB_PREF(user.uid)), { lastMonthProcessed: currentMonth }).catch(
@@ -8218,19 +8214,10 @@
         }
 
         if (currentMonth > lastProcessed) {
-<<<<<<< HEAD
-          // Auto-transición: el mes real ya avanzó respecto al último procesado
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
           runMonthTransition(currentMonth);
         }
       }
 
-<<<<<<< HEAD
-      // newMonth: mes al que se transiciona (YYYY-MM).
-      // El mes archivado es siempre appState.lastMonthProcessed (el mes de trabajo anterior).
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
       async function runMonthTransition(newMonth) {
         const user = appState.currentUser;
         if (!user) return;
