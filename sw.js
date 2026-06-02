@@ -1,40 +1,47 @@
-// Nombre de la caché de nuestra aplicación
-const CACHE_NAME = 'gestor-financiero-cache-v1';
+const CACHE_NAME = 'foresee-cache-v2';
 
-// Archivos que queremos guardar en la caché para que la app funcione sin conexión
-const urlsToCache = [
-  '/',
-  '/index.html',
-  // NOTA: Si añades archivos CSS o JS locales, deberás agregarlos aquí también.
-  // Por ahora, como usas CDNs, solo necesitamos los básicos.
-  'https://res.cloudinary.com/datwdagbf/image/upload/v1756514685/proyeccion_hh3xyt.png'
+const STATIC_ASSETS = [
+  'manifest.json',
+  'numberParser.js',
 ];
 
-// Evento "install": se dispara cuando el Service Worker se instala por primera vez.
 self.addEventListener('install', event => {
-  // Esperamos a que la promesa de abrir la caché y añadir los archivos se complete.
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Caché abierta, guardando archivos...');
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS))
   );
 });
 
-// Evento "fetch": se dispara cada vez que la página pide un recurso (una imagen, un archivo, etc.).
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
 self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // HTML: siempre de la red — nunca servir versión cacheada
+  if (event.request.destination === 'document' || url.pathname.endsWith('.html')) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
+  // Assets estáticos: cache-first
   event.respondWith(
-    // Buscamos primero en la caché si tenemos el recurso.
-    caches.match(event.request)
-      .then(response => {
-        // Si lo encontramos en la caché, lo devolvemos.
-        if (response) {
-          return response;
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
+        if (response && response.status === 200 && response.type === 'basic') {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
-        // Si no, lo pedimos a la red (a internet).
-        return fetch(event.request);
-      }
-    )
+        return response;
+      });
+    })
   );
 });
