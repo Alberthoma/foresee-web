@@ -5237,7 +5237,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">V FS 0002</p>
+      <p id="app-version">V FS 0001</p>
     </footer>
 
     <script type="module">
@@ -8204,10 +8204,7 @@
         const lastProcessed = appState.lastMonthProcessed;
 
         if (!lastProcessed) {
-<<<<<<< HEAD
           // Primera vez: registrar el mes actual sin archivar nada
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
           const user = appState.currentUser;
           if (user) {
             updateDoc(doc(db, DB_PREF(user.uid)), { lastMonthProcessed: currentMonth }).catch(
@@ -8218,19 +8215,13 @@
         }
 
         if (currentMonth > lastProcessed) {
-<<<<<<< HEAD
           // Auto-transición: el mes real ya avanzó respecto al último procesado
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
           runMonthTransition(currentMonth);
         }
       }
 
-<<<<<<< HEAD
       // newMonth: mes al que se transiciona (YYYY-MM).
       // El mes archivado es siempre appState.lastMonthProcessed (el mes de trabajo anterior).
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
       async function runMonthTransition(newMonth) {
         const user = appState.currentUser;
         if (!user) return;
@@ -10705,6 +10696,7 @@
             item.name = e.target.value;
           } else if (e.target.matches('.item-card-total')) {
             item.totalAmount = parseFloat(e.target.value) || 0;
+            renderGastosComunesTable();
           } else if (e.target.matches('.person-chip-name')) {
             const idx = parseInt(e.target.dataset.personIndex, 10);
             if (item.people?.[idx]) {
@@ -10879,10 +10871,9 @@
           if (!item.distribution) item.distribution = {};
           if (!item.distribution[distPopoverPersonIndex])
             item.distribution[distPopoverPersonIndex] = {};
-          const pIndex = distPopoverPersonIndex;
-          const currentValue = item.distribution[pIndex].value;
+          const currentValue = item.distribution[distPopoverPersonIndex].value;
           const applyChange = (val) => {
-            item.distribution[pIndex] = { method, value: parseFloat(val) || 0 };
+            item.distribution[distPopoverPersonIndex] = { method, value: parseFloat(val) || 0 };
             hideDistPopover();
             saveGastosComunesState();
           };

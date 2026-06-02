@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sesión 016 — Blueprint · Foresee</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --surface: #161b27; --surface2: #1e2538; --border: #2a3050;
+      --text: #e2e8f0; --muted: #8892a4; --accent: #4f8fff; --green: #22c97a;
+      --red: #f05252; --yellow: #f59e0b; --purple: #a78bfa;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.6; }
+
+    /* ── Layout ── */
+    .wrapper { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* ── Header ── */
+    .session-header {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 2rem; margin-bottom: 2rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;
+    }
+    .session-header h1 { font-size: 1.5rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .session-header .meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+    .session-header .badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; padding: 3px 9px; border-radius: 999px; font-weight: 600; }
+    .badge-green { background: rgba(34,201,122,.15); color: var(--green); border: 1px solid rgba(34,201,122,.3); }
+    .badge-blue { background: rgba(79,143,255,.15); color: var(--accent); border: 1px solid rgba(79,143,255,.3); }
+    .badge-yellow { background: rgba(245,158,11,.15); color: var(--yellow); border: 1px solid rgba(245,158,11,.3); }
+    .badge-purple { background: rgba(167,139,250,.15); color: var(--purple); border: 1px solid rgba(167,139,250,.3); }
+    .badge-red { background: rgba(240,82,82,.15); color: var(--red); border: 1px solid rgba(240,82,82,.3); }
+    .session-stats { text-align: right; }
+    .stat-num { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+    /* ── Progress bar ── */
+    .progress-section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; }
+    .progress-section h2 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 1rem; }
+    .phase-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+    .phase-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem; }
+    .phase-card.done { border-color: rgba(34,201,122,.4); background: rgba(34,201,122,.06); }
+    .phase-card.active { border-color: rgba(79,143,255,.5); background: rgba(79,143,255,.08); }
+    .phase-card.pending { opacity: .6; }
+    .phase-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: .3rem; }
+    .phase-title { font-size: 0.8rem; font-weight: 600; }
+    .phase-tasks { font-size: 0.7rem; color: var(--muted); margin-top: .3rem; }
+    .phase-status { font-size: 0.7rem; margin-top: .5rem; }
+
+    /* ── Section headers ── */
+    .section-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin: 2rem 0 1rem; display: flex; align-items: center; gap: .5rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── Chat timeline ── */
+    .timeline { display: flex; flex-direction: column; gap: 1rem; }
+    .msg { display: flex; gap: .75rem; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .msg.user .msg-avatar { background: rgba(79,143,255,.25); color: var(--accent); }
+    .msg.ai .msg-avatar { background: rgba(167,139,250,.25); color: var(--purple); }
+    .msg-content { max-width: 78%; }
+    .msg-bubble { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: .75rem 1rem; font-size: .82rem; line-height: 1.55; }
+    .msg.user .msg-bubble { background: rgba(79,143,255,.1); border-color: rgba(79,143,255,.25); border-top-right-radius: 4px; }
+    .msg.ai .msg-bubble { border-top-left-radius: 4px; }
+    .msg-time { font-size: .65rem; color: var(--muted); margin-top: .3rem; text-align: right; }
+    .msg.ai .msg-time { text-align: left; }
+
+    /* ── Change blocks ── */
+    .change-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 1rem; }
+    .change-header { display: flex; align-items: center; gap: .6rem; padding: .7rem 1rem; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .change-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: .65rem; font-weight: 700; flex-shrink: 0; }
+    .change-title { font-size: .82rem; font-weight: 600; }
+    .change-type { margin-left: auto; font-size: .65rem; }
+    .change-body { padding: .9rem 1rem; font-size: .8rem; line-height: 1.55; }
+    .change-body p { margin-bottom: .5rem; }
+    .change-body p:last-child { margin-bottom: 0; }
+    .change-body ul { padding-left: 1.2rem; }
+    .change-body li { margin-bottom: .25rem; }
+    code { background: rgba(79,143,255,.12); color: var(--accent); padding: 1px 5px; border-radius: 4px; font-size: .8em; font-family: 'Consolas', 'Fira Code', monospace; }
+    pre { background: #0a0d14; border: 1px solid var(--border); border-radius: 8px; padding: .8rem 1rem; font-size: .75rem; font-family: 'Consolas', 'Fira Code', monospace; overflow-x: auto; line-height: 1.5; color: #c9d1d9; margin: .5rem 0; }
+    pre .kw { color: #ff7b72; }
+    pre .fn { color: #d2a8ff; }
+    pre .str { color: #a5d6ff; }
+    pre .cmt { color: #8b949e; font-style: italic; }
+    pre .num { color: #79c0ff; }
+
+    /* ── Bug investigation ── */
+    .investigation { background: rgba(245,158,11,.05); border: 1px solid rgba(245,158,11,.2); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    .investigation-title { font-size: .75rem; font-weight: 700; color: var(--yellow); display: flex; align-items: center; gap: .4rem; margin-bottom: .6rem; }
+    .investigation-body { font-size: .8rem; line-height: 1.55; color: var(--text); }
+    .cause-box { background: rgba(240,82,82,.07); border: 1px solid rgba(240,82,82,.2); border-radius: 8px; padding: .7rem .9rem; margin: .5rem 0; }
+    .cause-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .07em; color: var(--red); font-weight: 700; margin-bottom: .25rem; }
+    .fix-box { background: rgba(34,201,122,.07); border: 1px solid rgba(34,201,122,.2); border-radius: 8px; padding: .7rem .9rem; margin: .5rem 0; }
+    .fix-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .07em; color: var(--green); font-weight: 700; margin-bottom: .25rem; }
+
+    /* ── Flow diagram ── */
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; margin: .6rem 0; }
+    .flow-node { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: .3rem .6rem; font-size: .72rem; white-space: nowrap; }
+    .flow-node.green { background: rgba(34,201,122,.12); border-color: rgba(34,201,122,.3); color: var(--green); }
+    .flow-node.blue { background: rgba(79,143,255,.12); border-color: rgba(79,143,255,.3); color: var(--accent); }
+    .flow-node.yellow { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.3); color: var(--yellow); }
+    .flow-node.red { background: rgba(240,82,82,.12); border-color: rgba(240,82,82,.3); color: var(--red); }
+    .flow-arrow { color: var(--muted); font-size: .8rem; }
+
+    /* ── Task table ── */
+    .task-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+    .task-table th { padding: .5rem .75rem; text-align: left; font-size: .65rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .task-table td { padding: .6rem .75rem; border-bottom: 1px solid var(--border); }
+    .task-table tr:last-child td { border-bottom: none; }
+    .task-table tr:hover td { background: rgba(255,255,255,.02); }
+    .status-done { color: var(--green); font-weight: 600; }
+    .status-active { color: var(--accent); font-weight: 600; }
+    .status-pending { color: var(--muted); }
+
+    /* ── File card ── */
+    .file-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: .8rem 1rem; margin-bottom: .75rem; display: flex; align-items: center; gap: .75rem; }
+    .file-icon { font-size: 1.3rem; }
+    .file-name { font-size: .82rem; font-weight: 600; color: var(--accent); }
+    .file-desc { font-size: .72rem; color: var(--muted); margin-top: .1rem; }
+
+    /* ── Tabs ── */
+    .tabs { display: flex; gap: .25rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab { padding: .4rem .9rem; border-radius: 6px; font-size: .75rem; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all .15s; }
+    .tab.active, .tab:hover { background: rgba(79,143,255,.15); border-color: var(--accent); color: var(--accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .phase-row { grid-template-columns: 1fr 1fr; }
+      .session-header { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ══════════ HEADER ══════════ -->
+  <div class="session-header">
+    <div>
+      <h1>Foresee — Sesión 016</h1>
+      <p class="meta">2026-05-26 · Archivo activo: <code>New 0018.html</code></p>
+      <div class="badges">
+        <span class="badge badge-green">✓ Task 9 Notificaciones</span>
+        <span class="badge badge-green">✓ Bug Login/Fullscreen</span>
+        <span class="badge badge-green">✓ Fullscreen post-login</span>
+        <span class="badge badge-blue">Fase 2 — 3/4 tareas ✓</span>
+        <span class="badge badge-yellow">Siguiente: Task 10 Reportes</span>
+      </div>
+    </div>
+    <div class="session-stats">
+      <div class="stat-num">3</div>
+      <div class="stat-label">cambios mayores</div>
+    </div>
+  </div>
+
+  <!-- ══════════ PROGRESO GENERAL ══════════ -->
+  <div class="progress-section">
+    <h2>Progreso del plan de comercialización</h2>
+    <div class="phase-row">
+      <div class="phase-card done">
+        <div class="phase-label">Fase 1</div>
+        <div class="phase-title">App lista para usuarios</div>
+        <div class="phase-tasks">Tareas 1–6 · Fix modales X</div>
+        <div class="phase-status status-done">✓ Completa</div>
+      </div>
+      <div class="phase-card active">
+        <div class="phase-label">Fase 2</div>
+        <div class="phase-title">Mejoras de producto</div>
+        <div class="phase-tasks">7 CSV · 8 Tema · 9 Notif · <strong>10 Reportes ⏳</strong></div>
+        <div class="phase-status status-active">→ En curso (3/4)</div>
+      </div>
+      <div class="phase-card pending">
+        <div class="phase-label">Fase 3</div>
+        <div class="phase-title">Monetización</div>
+        <div class="phase-tasks">Freemium · Upgrade · Stripe · Legal</div>
+        <div class="phase-status status-pending">⏳ Pendiente</div>
+      </div>
+      <div class="phase-card pending">
+        <div class="phase-label">Fase 4</div>
+        <div class="phase-title">Lanzamiento</div>
+        <div class="phase-tasks">Dominio · Landing · PWA · Soporte</div>
+        <div class="phase-status status-pending">⏳ Pendiente</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ TIMELINE DE LA SESIÓN ══════════ -->
+  <div class="section-title">Conversación de la sesión</div>
+
+  <div class="timeline">
+
+    <!-- Inicio sesión -->
+    <div class="msg ai">
+      <div class="msg-avatar">AI</div>
+      <div class="msg-content">
+        <div class="msg-bubble">Continúo desde sesión 015 (contexto comprimido). Archivo activo: <code>New 0018.html</code>. Última tarea: el usuario había dicho "realiza la 9" — implementar Notificaciones del navegador (Task 9 del plan de comercialización).</div>
+        <div class="msg-time">inicio de sesión</div>
+      </div>
+    </div>
+
+    <!-- Task 9 -->
+    <div class="msg ai">
+      <div class="msg-avatar">AI</div>
+      <div class="msg-content">
+        <div class="msg-bubble">Implementé Task 9 — Notificaciones del navegador en 9 bloques. Browser Notification API nativa, toggle en Configuración, deduplicación con localStorage, notifica gastos recurrentes vencen mañana y tarjetas &gt;80% límite.</div>
+        <div class="msg-time">bloque 1–9 aplicados</div>
+      </div>
+    </div>
+
+    <!-- Pregunta mobile -->
+    <div class="msg user">
+      <div class="msg-avatar">A</div>
+      <div class="msg-content">
+        <div class="msg-bubble">y en el móvil también notifica?</div>
+        <div class="msg-time">pregunta</div>
+      </div>
+    </div>
+
+    <div class="msg ai">
+      <div class="msg-avatar">AI</div>
+      <div class="msg-content">
+        <div class="msg-bubble"><strong>No en Android.</strong> <code>new Notification()</code> está prohibido en el hilo principal de Chrome para Android. La solución es <code>ServiceWorkerRegistration.showNotification()</code> — funciona en Android sin servidor. El <code>sw.js</code> ya existe. Fix pendiente para después.</div>
+        <div class="msg-time">respuesta técnica</div>
+      </div>
+    </div>
+
+    <div class="msg user">
+      <div class="msg-avatar">A</div>
+      <div class="msg-content">
+        <div class="msg-bubble">por ahora no</div>
+        <div class="msg-time">decisión</div>
+      </div>
+    </div>
+
+    <!-- Bug login -->
+    <div class="msg user">
+      <div class="msg-avatar">A</div>
+      <div class="msg-content">
+        <div class="msg-bubble">ocurre algo muy extrano cuando me logeo mal y luego entro ala app se bloquean algunas funciones los formularios no responden se bloquea la pagina no funciona las teclas esc f12 f11 y los tab-btn de targeta, saldo y reportes no funcionan. una pregunta adicional si coloco la contrasena errada varias veces el usuario se bloquea y de ser asi por cuanto tiempo</div>
+        <div class="msg-time">reporte de bug</div>
+      </div>
+    </div>
+
+    <div class="msg ai">
+      <div class="msg-avatar">AI</div>
+      <div class="msg-content">
+        <div class="msg-bubble">Investigué ~50 funciones y encontré dos causas raíz. Implementé los fixes.</div>
+        <div class="msg-time">diagnóstico + fix</div>
+      </div>
+    </div>
+
+    <!-- Fullscreen -->
+    <div class="msg user">
+      <div class="msg-avatar">A</div>
+      <div class="msg-content">
+        <div class="msg-bubble">por ahora con la modificacion esta funcionando bien pero antes desde que hice la aplicacion la pantalla abria en fullscreen al iniciar la app y no ocurria ese error y yo quiero que la aplicacion despues de logearse abra fullscreen</div>
+        <div class="msg-time">solicitud</div>
+      </div>
+    </div>
+
+    <div class="msg ai">
+      <div class="msg-avatar">AI</div>
+      <div class="msg-content">
+        <div class="msg-bubble">Diseñé un plan: no se puede llamar <code>requestFullscreen()</code> en callbacks de Firebase (fuera de la ventana de user gesture). La solución es activar <code>#fullscreen-prompt</code> (ya existía en HTML, nunca se había activado). El clic del usuario ES un gesture válido. Plan aprobado, implementado con 3 edits mínimos.</div>
+        <div class="msg-time">plan + implementación</div>
+      </div>
+    </div>
+
+    <!-- Informe -->
+    <div class="msg user">
+      <div class="msg-avatar">A</div>
+      <div class="msg-content">
+        <div class="msg-bubble">quiero que hagas un informe detallado de todos los cambios realizados en esta sesion y un blueprint HTML visual con todas mis preguntas y respuestas</div>
+        <div class="msg-time">solicitud actual</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════ CAMBIO 1: TASK 9 ══════════ -->
+  <div class="section-title">Cambio 1 — Task 9: Notificaciones del navegador</div>
+
+  <div class="change-block">
+    <div class="change-header">
+      <div class="change-num">1</div>
+      <div class="change-title">CSS — estilos del toggle de notificaciones</div>
+      <span class="badge badge-blue change-type">CSS</span>
+    </div>
+    <div class="change-body">
+      <p>Añadidos <code>.cfg-notif-row</code> (flex, wrap) y <code>.cfg-notif-status</code> con variantes <code>.notif-on</code> (verde) y <code>.notif-blocked</code> (rojo). Se insertan después del bloque <code>.cfg-btn-danger</code>.</p>
+    </div>
+  </div>
+
+  <div class="change-block">
+    <div class="change-header">
+      <div class="change-num">2</div>
+      <div class="change-title">HTML — sección "Notificaciones" en Configuración</div>
+      <span class="badge badge-blue change-type">HTML</span>
+    </div>
+    <div class="change-body">
+      <p>Nueva <code>cfg-section</code> entre "Divisa" y "Acciones de Período" con:</p>
+      <ul>
+        <li><code>#cfg-notif-status</code> — texto de estado ("Activas", "Inactivas", "Bloqueadas")</li>
+        <li><code>#cfg-notif-btn</code> — botón "Activar" / "Desactivar"</li>
+        <li>Descripción de qué notificará</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="change-block">
+    <div class="change-header">
+      <div class="change-num">3</div>
+      <div class="change-title">appState + Firestore load</div>
+      <span class="badge badge-purple change-type">JS</span>
+    </div>
+    <div class="change-body">
+      <p>Campo <code>notificationsEnabled: false</code> en <code>appState</code>. Cargado desde Firestore: <code>d.notificationsEnabled || false</code>.</p>
+    </div>
+  </div>
+
+  <div class="change-block">
+    <div class="change-header">
+      <div class="change-num">4–5</div>
+      <div class="change-title">renderConfigurationLists + sendBrowserNotification</div>
+      <span class="badge badge-purple change-type">JS</span>
+    </div>
+    <div class="change-body">
+      <p><code>renderConfigurationLists()</code> llama <code>renderNotificationToggle()</code> al abrir la pestaña Config.</p>
+      <p><code>sendBrowserNotification(title, body)</code> — wrapper que verifica <code>appState.notificationsEnabled</code> y <code>Notification.permission === 'granted'</code> antes de crear <code>new Notification()</code>.</p>
+    </div>
+  </div>
+
+  <div class="change-block">
+    <div class="change-header">
+      <div class="change-num">6–7</div>
+      <div class="change-title">checkRecurringPaymentReminders + checkCreditCardNotifications</div>
+      <span class="badge badge-purple change-type">JS</span>
+    </div>
+    <div class="change-body">
+      <p><strong>Gastos recurrentes:</strong> si el día de pago es mañana → toast (siempre) + browser notification (si habilitado). Deduplicación con <code>localStorage</code> clave <code>notif-rec-{id}-{fecha}</code>.</p>
+      <p><strong>Tarjetas:</strong> <code>checkCreditCardNotifications()</code> — nueva función. Si deuda/límite ≥ 80% → notification una vez por día, clave <code>notif-cc-{id}-{fecha}</code>.</p>
+      <p>Llamada en los onSnapshot respectivos de Firestore.</p>
+    </div>
+  </div>
+
+  <div class="change-block">
+    <div class="change-header">
+      <div class="change-num">8–9</div>
+      <div class="change-title">handleNotificationToggle + renderNotificationToggle + listener</div>
+      <span class="badge badge-purple change-type">JS</span>
+    </div>
+    <div class="change-body">
+      <p><strong>handleNotificationToggle:</strong> si ya activo → desactivar (guarda en Firestore). Si inactivo → <code>Notification.requestPermission()</code> → si concedido → guardar en Firestore.</p>
+      <p>Casos especiales: navegador sin soporte, permiso denegado por el usuario.</p>
+      <p><strong>renderNotificationToggle:</strong> actualiza texto y botón según estado actual + permiso del navegador.</p>
+      <p>Event listener añadido en <code>setupEventListeners()</code>.</p>
+    </div>
+  </div>
+
+  <!-- ══════════ CAMBIO 2: BUG LOGIN ══════════ -->
+  <div class="section-title">Cambio 2 — Bug fix: Login bloqueaba la página</div>
+
+  <div class="investigation">
+    <div class="investigation-title">🔍 Investigación (código revisado)</div>
+    <div class="investigation-body">
+      Revisé: <code>_syncModalState</code>, <code>handleLogin</code>, <code>onAuthStateChanged</code>, <code>loadUserData</code>, <code>loading-overlay</code> CSS, <code>auth-modal</code> CSS, focus trap keydown listener, <code>handleCalcKeyboard</code>, tab bar event delegation, <code>requestFullscreen</code>, <code>MODAL_IDS</code>, <code>unloadUserData</code>. También <code>privacy-modal</code> y <code>terms-modal</code> como modal-overlays no registradas.
+    </div>
+  </div>
+
+  <div class="cause-box">
+    <div class="cause-label">Causa raíz 1 — principal</div>
+    <p style="font-size:.8rem;"><code>requestFullscreen()</code> se llamaba dentro de <code>handleLogin()</code> al autenticar con éxito, mientras <code>auth-modal</code> seguía visible (el <code>onAuthStateChanged</code> no había disparado aún). Efectos en fullscreen:</p>
+    <ul style="font-size:.8rem;padding-left:1.2rem;margin-top:.3rem;">
+      <li><strong>ESC</strong> → sale del fullscreen (browser-native), no cierra modal → usuario percibe "ESC no funciona"</li>
+      <li><strong>F11</strong> → intenta alternar fullscreen del browser, conflicto con API fullscreen</li>
+      <li><strong>F12</strong> → puede comportarse distinto en modo fullscreen de API</li>
+      <li>El layout cambia abruptamente durante la transición</li>
+    </ul>
+  </div>
+
+  <div class="cause-box">
+    <div class="cause-label">Causa raíz 2 — secundaria</div>
+    <p style="font-size:.8rem;">Sin guard de doble envío. Presionar Enter en el campo password dispara el formulario aunque el botón esté deshabilitado (<code>setAuthLoading(true)</code> deshabilita el botón pero no el event del form). Múltiples llamadas concurrentes a Firebase podían dejar UI inconsistente. Además, <code>setAuthLoading(false)</code> solo se llamaba en el <code>catch</code> — si el login tenía éxito, los botones quedaban disabled (invisible porque el modal se oculta, pero estado corrupto).</p>
+  </div>
+
+  <div class="fix-box">
+    <div class="fix-label">Fix 1 — Eliminar requestFullscreen() del login</div>
+    <p style="font-size:.8rem;">Removido de <code>handleLogin()</code>. El login es limpio. El usuario puede entrar a fullscreen con el botón "Pantalla Completa" o con el nuevo prompt post-login.</p>
+  </div>
+
+  <div class="fix-box">
+    <div class="fix-label">Fix 2 — Guard _authInProgress + finally block</div>
+    <pre><span class="kw">let</span> _authInProgress = <span class="num">false</span>;
+
+<span class="kw">async function</span> <span class="fn">handleLogin</span>(email, password) {
+  <span class="kw">if</span> (_authInProgress) <span class="kw">return</span>;          <span class="cmt">// bloquea doble envío</span>
+  _authInProgress = <span class="num">true</span>;
+  <span class="fn">setAuthLoading</span>(<span class="num">true</span>);
+  <span class="kw">try</span> {
+    <span class="kw">await</span> <span class="fn">signInWithEmailAndPassword</span>(auth, email, password);
+  } <span class="kw">catch</span> (err) {
+    <span class="cmt">// mensajes de error incluyendo auth/too-many-requests</span>
+  } <span class="kw">finally</span> {
+    _authInProgress = <span class="num">false</span>;          <span class="cmt">// siempre limpia</span>
+    <span class="fn">setAuthLoading</span>(<span class="num">false</span>);           <span class="cmt">// siempre restaura</span>
+  }
+}</pre>
+  </div>
+
+  <div class="fix-box">
+    <div class="fix-label">Fix 3 — Mejor mensaje auth/too-many-requests</div>
+    <p style="font-size:.8rem;">Antes: "Error al iniciar sesión. Intenta de nuevo." (genérico). Ahora: "Demasiados intentos fallidos. Espera unos minutos e intenta de nuevo."</p>
+  </div>
+
+  <div class="fix-box">
+    <div class="fix-label">Fix 4 — privacy-modal y terms-modal en MODAL_IDS</div>
+    <p style="font-size:.8rem;">Eran <code>modal-overlay</code> que no estaban en <code>MODAL_IDS</code>. Ahora participan en <code>_syncModalState</code> → <code>body.overflow</code> y <code>aria-hidden</code> se gestionan correctamente cuando se abren.</p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-top:.5rem;">
+    <p style="font-size:.75rem;font-weight:700;color:var(--yellow);margin-bottom:.5rem;">🔥 Sobre el bloqueo de cuenta Firebase</p>
+    <p style="font-size:.8rem;">Firebase Auth bloquea temporalmente por <code>auth/too-many-requests</code> tras ~10 intentos fallidos. Usa backoff exponencial — típicamente <strong>unos minutos</strong>, puede extenderse si se sigue intentando. El bloqueo se resetea solo. No hay notificación a Firebase Console por defecto (solo en los logs de Auth). La app ahora muestra mensaje claro.</p>
+  </div>
+
+  <!-- ══════════ CAMBIO 3: FULLSCREEN POST-LOGIN ══════════ -->
+  <div class="section-title">Cambio 3 — Fullscreen post-login restaurado</div>
+
+  <div class="investigation">
+    <div class="investigation-title">⚡ Por qué no se puede llamar requestFullscreen() en callbacks async</div>
+    <div class="investigation-body">
+      <code>requestFullscreen()</code> requiere <strong>transient user activation</strong> — una ventana de ~1 segundo en Chrome desde el último gesto del usuario (clic, tecla). Los callbacks <code>onAuthStateChanged</code> y <code>onSnapshot</code> de Firestore son macrotasks que llegan 1–3 segundos después del gesto. La llamada falla silenciosamente (promesa rechazada sin catch) o lanza "Document is not fully active".
+    </div>
+  </div>
+
+  <div class="change-block">
+    <div class="change-header">
+      <div class="change-num">✓</div>
+      <div class="change-title">Solución: activar #fullscreen-prompt después de cargar datos</div>
+      <span class="badge badge-green change-type">Implementado</span>
+    </div>
+    <div class="change-body">
+      <p>El elemento <code>#fullscreen-prompt</code> ya existía en el HTML con logo, mensaje de bienvenida y botón "Iniciar Aplicación" — <strong>nunca se había activado</strong>. El botón llama <code>requestFullscreen()</code> que es de por sí confiable porque proviene de un clic directo del usuario.</p>
+
+      <p style="margin-top:.5rem;font-weight:600;">Flujo implementado:</p>
+      <div class="flow">
+        <span class="flow-node">Clic Login</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node blue">Firebase autentica</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">onAuthStateChanged</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node yellow">_showFullscreenOnLoad = true</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">loadUserData</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">hideLoading()</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node green">fullscreen-prompt.active</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node blue">Clic "Iniciar Aplicación"</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node green">✓ FULLSCREEN</span>
+      </div>
+
+      <pre><span class="cmt">// onAuthStateChanged</span>
+<span class="kw">if</span> (user) {
+  _showFullscreenOnLoad = <span class="num">true</span>;  <span class="cmt">// activar flag</span>
+  <span class="fn">hideAuthModal</span>();
+  <span class="fn">showLoading</span>();
+  <span class="fn">loadUserData</span>(user.uid);
+}
+
+<span class="cmt">// En onSnapshot preferencias, después de hideLoading():</span>
+<span class="kw">if</span> (_showFullscreenOnLoad && !document.fullscreenElement) {
+  _showFullscreenOnLoad = <span class="num">false</span>;
+  document.<span class="fn">getElementById</span>(<span class="str">'fullscreen-prompt'</span>).classList.<span class="fn">add</span>(<span class="str">'active'</span>);
+}</pre>
+
+      <p><strong>Guards:</strong></p>
+      <ul>
+        <li>Si ya está en fullscreen (<code>document.fullscreenElement</code>) → no muestra el prompt</li>
+        <li>Si Firestore actualiza preferencias en background → flag ya es <code>false</code> → no reaparece</li>
+        <li>Al cerrar sesión (<code>unloadUserData</code>) → flag se limpia → próximo login muestra prompt de nuevo</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════ ESTADO DE TODAS LAS TAREAS ══════════ -->
+  <div class="section-title">Estado de todas las tareas del plan</div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;">
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Tarea</th>
+          <th>Fase</th>
+          <th>Estado</th>
+          <th>Sesión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Recuperación de contraseña</td><td>Fase 1</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>2</td><td>Eliminar cuenta (CCPA/GDPR)</td><td>Fase 1</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>3</td><td>Selección de moneda</td><td>Fase 1</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>4</td><td>Tutorial de videos (7 videos)</td><td>Fase 1</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>5</td><td>Onboarding 3 pasos</td><td>Fase 1</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>6</td><td>Datos de demo</td><td>Fase 1</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>7</td><td>Exportar CSV (mes actual + historial)</td><td>Fase 2</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>8</td><td>Modo oscuro / claro toggle</td><td>Fase 2</td><td class="status-done">✓ Completa</td><td>014</td></tr>
+        <tr><td>9</td><td>Notificaciones / recordatorios del navegador</td><td>Fase 2</td><td class="status-done">✓ Completa</td><td><strong>016</strong></td></tr>
+        <tr style="background:rgba(79,143,255,.06)"><td><strong>10</strong></td><td><strong>Reportes avanzados</strong></td><td>Fase 2</td><td class="status-active">→ PRÓXIMA</td><td>—</td></tr>
+        <tr><td>11</td><td>Lógica freemium</td><td>Fase 3</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+        <tr><td>12</td><td>Pantalla de upgrade</td><td>Fase 3</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+        <tr><td>13</td><td>Stripe + Firebase Cloud Functions</td><td>Fase 3</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+        <tr><td>14</td><td>Textos legales (Privacy, Terms, Refund)</td><td>Fase 3</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+        <tr><td>15</td><td>Dominio propio (foreseefinances.com)</td><td>Fase 4</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+        <tr><td>16</td><td>Landing page de ventas</td><td>Fase 4</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+        <tr><td>17</td><td>PWA — manifest.json</td><td>Fase 4</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+        <tr><td>18</td><td>Email de soporte visible</td><td>Fase 4</td><td class="status-pending">⏳ Pendiente</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════ BUGS EXTRA RESUELTOS ══════════ -->
+  <div class="section-title">Bugs adicionales resueltos (fuera del plan)</div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;">
+    <table class="task-table">
+      <thead>
+        <tr><th>Bug</th><th>Causa</th><th>Sesión</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tabs tarjetas/saldos/reportes bloqueados</td><td><code>pointer-events:none</code> en <code>_syncModalState</code> (sesión 013)</td><td>015</td></tr>
+        <tr><td>Login bloqueaba página (ESC/F11/F12)</td><td><code>requestFullscreen()</code> en <code>handleLogin</code></td><td><strong>016</strong></td></tr>
+        <tr><td>Doble envío formulario auth</td><td>Sin guard; botón deshabilitado pero form submit por Enter no bloqueado</td><td><strong>016</strong></td></tr>
+        <tr><td>privacy-modal y terms-modal sin registrar</td><td>No estaban en MODAL_IDS → _syncModalState no los gestionaba</td><td><strong>016</strong></td></tr>
+        <tr><td>Error genérico en rate limiting</td><td>auth/too-many-requests no manejado específicamente</td><td><strong>016</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════ ARCHIVOS MODIFICADOS ══════════ -->
+  <div class="section-title">Archivos modificados en sesión 016</div>
+
+  <div class="file-card">
+    <div class="file-icon">📄</div>
+    <div>
+      <div class="file-name">New 0018.html</div>
+      <div class="file-desc">Archivo activo principal — ~10.000 líneas. 12 edits aplicados en esta sesión.</div>
+    </div>
+  </div>
+  <div class="file-card">
+    <div class="file-icon">🧠</div>
+    <div>
+      <div class="file-name">memory/informe_sesion_016.md</div>
+      <div class="file-desc">Informe de sesión en memoria persistente</div>
+    </div>
+  </div>
+  <div class="file-card">
+    <div class="file-icon">📋</div>
+    <div>
+      <div class="file-name">memory/project_pendientes.md</div>
+      <div class="file-desc">Tareas 7, 8 y 9 marcadas como completadas</div>
+    </div>
+  </div>
+  <div class="file-card">
+    <div class="file-icon">📁</div>
+    <div>
+      <div class="file-name">Informes/Informe Sesion 016 — 2026-05-26.md</div>
+      <div class="file-desc">Exportado para lectura con Ctrl+Shift+V en VS Code</div>
+    </div>
+  </div>
+  <div class="file-card">
+    <div class="file-icon">🎨</div>
+    <div>
+      <div class="file-name">MD/Sesion 016 — Blueprint.html</div>
+      <div class="file-desc">Este documento</div>
+    </div>
+  </div>
+
+  <!-- ══════════ PRÓXIMA SESIÓN ══════════ -->
+  <div class="section-title">Próxima sesión — Tarea 10: Reportes avanzados</div>
+
+  <div style="background:rgba(79,143,255,.07);border:1px solid rgba(79,143,255,.25);border-radius:12px;padding:1.2rem;">
+    <p style="font-size:.9rem;font-weight:700;color:var(--accent);margin-bottom:.75rem;">Tarea 10 — Reportes Avanzados (Fase 2)</p>
+    <p style="font-size:.8rem;margin-bottom:.5rem;"><strong>Objetivo:</strong> Diferenciador vs apps básicas. Reportes visuales que muestren tendencias, categorías, evolución del balance.</p>
+    <p style="font-size:.8rem;margin-bottom:.5rem;"><strong>Funciones existentes a reusar:</strong> <code>renderReportes()</code>, <code>Chart.js</code> (ya incluido), <code>appState.transactions</code>, <code>formatCurrency()</code>, <code>appState.filterMonth</code>.</p>
+    <p style="font-size:.8rem;"><strong>Ideas a evaluar:</strong> gráfico de barras por categoría, línea de evolución del balance mensual, tabla top 5 gastos, comparativa mes anterior vs mes actual.</p>
+  </div>
+
+  <div style="text-align:center;margin-top:2.5rem;font-size:.7rem;color:var(--muted);">
+    Foresee Finances · Sesión 016 · 2026-05-26 · generado con Claude Code
+  </div>
+
+</div>
+</body>
+</html>

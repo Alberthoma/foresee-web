@@ -5237,7 +5237,7 @@
         <button id="btn-terms">Términos</button>
         <button id="btn-cookies">Cookies</button>
       </nav>
-      <p id="app-version">V FS 0002</p>
+      <p id="app-version">V FS 0001</p>
     </footer>
 
     <script type="module">
@@ -5317,8 +5317,7 @@
         currentTab: null,
         currentUser: null,
         budgetAlertsShown: {},
-        lastMonthProcessed: null,
-        filterMonth: getCurrentMonthStr(),
+        filterMonth: localStorage.getItem('foresee-filter-month') || getCurrentMonthStr(),
         filterBank: '',
         filterCategory: '',
       };
@@ -5327,8 +5326,6 @@
       let initialTransactionsLoaded = false;
       let initialRecurringLoaded = false;
       let recurringProcessed = false;
-      let initialPrefsLoaded = false;
-      let monthTransitionChecked = false;
       let expensesChartInstance = null;
       let cashFlowChartInstance = null;
 
@@ -5803,10 +5800,7 @@
                 appState.currency = d.currency || 'USD';
                 appState.notificationsEnabled = d.notificationsEnabled || false;
                 appState.categoryBudgets = d.categoryBudgets || {};
-                appState.lastMonthProcessed = d.lastMonthProcessed || null;
               }
-              initialPrefsLoaded = true;
-              tryCheckMonthTransition();
               renderHeaderAlias();
               scheduleRenderAll();
               hideLoading();
@@ -5833,7 +5827,6 @@
               appState.transactions = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
               initialTransactionsLoaded = true;
               tryProcessRecurringExpenses();
-              tryCheckMonthTransition();
               scheduleRenderAll();
             },
             (err) => console.error('[Firestore] transacciones:', err),
@@ -5900,8 +5893,6 @@
         initialTransactionsLoaded = false;
         initialRecurringLoaded = false;
         recurringProcessed = false;
-        initialPrefsLoaded = false;
-        monthTransitionChecked = false;
         Object.assign(appState, {
           transactions: [],
           projections: [],
@@ -5918,8 +5909,7 @@
           currentTab: null,
           currentUser: null,
           budgetAlertsShown: {},
-          lastMonthProcessed: null,
-          filterMonth: getCurrentMonthStr(),
+          filterMonth: localStorage.getItem('foresee-filter-month') || getCurrentMonthStr(),
           filterBank: '',
           filterCategory: '',
         });
@@ -8196,118 +8186,73 @@
       /* ===================================================================
        CONFIGURACIÓN — INICIAR NUEVO MES
        =================================================================== */
-      function tryCheckMonthTransition() {
-        if (!initialTransactionsLoaded || !initialPrefsLoaded || monthTransitionChecked) return;
-        monthTransitionChecked = true;
-
-        const currentMonth = getCurrentMonthStr();
-        const lastProcessed = appState.lastMonthProcessed;
-
-        if (!lastProcessed) {
-<<<<<<< HEAD
-          // Primera vez: registrar el mes actual sin archivar nada
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
-          const user = appState.currentUser;
-          if (user) {
-            updateDoc(doc(db, DB_PREF(user.uid)), { lastMonthProcessed: currentMonth }).catch(
-              (err) => console.error('[Firestore] Guardar lastMonthProcessed inicial:', err),
-            );
-          }
-          return;
-        }
-
-        if (currentMonth > lastProcessed) {
-<<<<<<< HEAD
-          // Auto-transición: el mes real ya avanzó respecto al último procesado
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
-          runMonthTransition(currentMonth);
-        }
-      }
-
-<<<<<<< HEAD
-      // newMonth: mes al que se transiciona (YYYY-MM).
-      // El mes archivado es siempre appState.lastMonthProcessed (el mes de trabajo anterior).
-=======
->>>>>>> 4f27c2d (Actualizacion del sitio)
-      async function runMonthTransition(newMonth) {
-        const user = appState.currentUser;
-        if (!user) return;
-        showLoading();
-        try {
-          const txRef = collection(db, DB_COL(user.uid, 'transactions'));
-          const projRef = collection(db, DB_COL(user.uid, 'projections'));
-
-          const finalBalance = appState.transactions.reduce((bal, t) => {
-            return t.type === 'income' ? bal + t.amount : bal - t.amount;
-          }, appState.openingBalance);
-
-          const archiveMonth = appState.lastMonthProcessed || getCurrentMonthStr();
-          if (appState.transactions.length > 0 || appState.projections.length > 0) {
-            const archiveRef = doc(
-              db,
-              `artifacts/${APP_ID}/users/${user.uid}/user_data/archive_${archiveMonth}`,
-            );
-            await setDoc(archiveRef, {
-              month: archiveMonth,
-              archivedAt: new Date().toISOString(),
-              openingBalance: appState.openingBalance,
-              finalBalance,
-              transactions: appState.transactions.map((t) => ({ ...t })),
-              projections: appState.projections.map((p) => ({ ...p })),
-            });
-          }
-
-          const ops = [
-            ...appState.transactions.map((t) => (b) => b.delete(doc(txRef, t.id))),
-            ...appState.projections.map((p) => (b) => b.delete(doc(projRef, p.id))),
-            (b) =>
-              b.update(doc(db, DB_PREF(user.uid)), {
-                openingBalance: finalBalance,
-                lastMonthProcessed: newMonth,
-              }),
-          ];
-          await commitInChunks(ops);
-
-          if (appState.gastosComunes?.items?.length > 0) {
-            appState.gastosComunes.items.forEach((item) => {
-              if (item.distribution) {
-                Object.keys(item.distribution).forEach((key) => {
-                  delete item.distribution[key].paidDay;
-                });
-              }
-            });
-            await saveGastosComunesState();
-          }
-
-          appState.filterMonth = newMonth;
-          localStorage.setItem('foresee-filter-month', newMonth);
-          showToast(
-            `${formatMonthLabel(archiveMonth)} archivado. Bienvenido a ${formatMonthLabel(newMonth)}.`,
-            'success',
-          );
-        } catch (err) {
-          console.error('[Firestore] Transición de mes:', err);
-          showToast('Error en la transición de mes.', 'error');
-        } finally {
-          hideLoading();
-        }
-      }
-
       async function initiateNewMonth() {
         const user = appState.currentUser;
         if (!user) return;
-        const now = new Date();
-        const nextMonthStr = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-          .toISOString()
-          .slice(0, 7);
         openConfirmModal(
           'Iniciar Nuevo Mes',
           'Archivará las transacciones actuales, calculará el saldo final como nuevo saldo inicial y preparará el mes siguiente. ¿Continuar?',
           async () => {
-            await runMonthTransition(nextMonthStr);
-            switchTab('registros');
+            showLoading();
+            try {
+              const now = new Date();
+              const next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+              const txRef = collection(db, DB_COL(user.uid, 'transactions'));
+              const projRef = collection(db, DB_COL(user.uid, 'projections'));
+
+              // Calculate final balance
+              const finalBalance = appState.transactions.reduce((bal, t) => {
+                return t.type === 'income' ? bal + t.amount : bal - t.amount;
+              }, appState.openingBalance);
+
+              // Archive current period to Firestore BEFORE deleting anything.
+              // If this write fails, the catch block aborts — no data loss.
+              const archiveMonth = appState.filterMonth || now.toISOString().slice(0, 7);
+              if (appState.transactions.length > 0 || appState.projections.length > 0) {
+                const archiveRef = doc(
+                  db,
+                  `artifacts/${APP_ID}/users/${user.uid}/user_data/archive_${archiveMonth}`,
+                );
+                await setDoc(archiveRef, {
+                  month: archiveMonth,
+                  archivedAt: new Date().toISOString(),
+                  openingBalance: appState.openingBalance,
+                  finalBalance,
+                  transactions: appState.transactions.map((t) => ({ ...t })),
+                  projections: appState.projections.map((p) => ({ ...p })),
+                });
+              }
+
+              const ops = [
+                ...appState.transactions.map((t) => (b) => b.delete(doc(txRef, t.id))),
+                ...appState.projections.map((p) => (b) => b.delete(doc(projRef, p.id))),
+                (b) => b.update(doc(db, DB_PREF(user.uid)), { openingBalance: finalBalance }),
+              ];
+              await commitInChunks(ops);
+
+              // Reset Gastos Comunes: limpiar paidDay de todos los ítems
+              if (appState.gastosComunes?.items?.length > 0) {
+                appState.gastosComunes.items.forEach((item) => {
+                  if (item.distribution) {
+                    Object.keys(item.distribution).forEach((key) => {
+                      delete item.distribution[key].paidDay;
+                    });
+                  }
+                });
+                await saveGastosComunesState();
+              }
+
+              // Update filter to next month
+              appState.filterMonth = next.toISOString().slice(0, 7);
+              localStorage.setItem('foresee-filter-month', appState.filterMonth);
+              switchTab('registros');
+              showToast('Nuevo mes iniciado correctamente.', 'success');
+            } catch (err) {
+              console.error('[Firestore] Iniciar nuevo mes:', err);
+              showToast('Error al iniciar el nuevo mes.', 'error');
+            } finally {
+              hideLoading();
+            }
           },
         );
       }
@@ -10705,6 +10650,7 @@
             item.name = e.target.value;
           } else if (e.target.matches('.item-card-total')) {
             item.totalAmount = parseFloat(e.target.value) || 0;
+            renderGastosComunesTable();
           } else if (e.target.matches('.person-chip-name')) {
             const idx = parseInt(e.target.dataset.personIndex, 10);
             if (item.people?.[idx]) {
@@ -10879,10 +10825,9 @@
           if (!item.distribution) item.distribution = {};
           if (!item.distribution[distPopoverPersonIndex])
             item.distribution[distPopoverPersonIndex] = {};
-          const pIndex = distPopoverPersonIndex;
-          const currentValue = item.distribution[pIndex].value;
+          const currentValue = item.distribution[distPopoverPersonIndex].value;
           const applyChange = (val) => {
-            item.distribution[pIndex] = { method, value: parseFloat(val) || 0 };
+            item.distribution[distPopoverPersonIndex] = { method, value: parseFloat(val) || 0 };
             hideDistPopover();
             saveGastosComunesState();
           };

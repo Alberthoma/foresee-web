@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foresee — Análisis Comparativo Exhaustivo</title>
+<style>
+  :root {
+    --bg: #0d1117; --bg2: #161b22; --bg3: #1e2530; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --blue: #58a6ff; --green: #3fb950; --red: #f85149;
+    --yellow: #e3b341; --purple: #d2a8ff; --orange: #ffa657;
+    --new: #58a6ff; --ref: #f78166;
+    --new-bg: #0d1f38; --ref-bg: #2d1810;
+    --tie-bg: #1a2d1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+  /* NAV */
+  .nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 16px 32px; position: sticky; top: 0; z-index: 100; }
+  .nav h1 { font-size: 18px; font-weight: 800; color: var(--blue); letter-spacing: -.3px; }
+  .nav .sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .nav-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .nav-links a { font-size: 12px; color: var(--muted); text-decoration: none; padding: 3px 10px; border: 1px solid var(--border); border-radius: 20px; }
+  .nav-links a:hover { color: var(--text); background: var(--bg3); }
+
+  /* LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; display: flex; flex-direction: column; gap: 48px; }
+
+  /* HERO SCORES */
+  .hero { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center; }
+  .score-card { border-radius: 12px; padding: 28px; text-align: center; border: 2px solid; }
+  .score-card.new { background: var(--new-bg); border-color: var(--new); }
+  .score-card.ref { background: var(--ref-bg); border-color: var(--ref); }
+  .score-card .score-num { font-size: 72px; font-weight: 900; line-height: 1; }
+  .score-card.new .score-num { color: var(--new); }
+  .score-card.ref .score-num { color: var(--ref); }
+  .score-card .score-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-top: 8px; }
+  .score-card .score-file { font-size: 13px; font-weight: 600; color: var(--text); margin-top: 6px; }
+  .score-card .score-size { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .vs-circle { width: 80px; height: 80px; border-radius: 50%; background: var(--bg3); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: var(--muted); margin: 0 auto; }
+  .vs-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .verdict-badge { font-size: 11px; font-weight: 700; color: var(--new); text-transform: uppercase; letter-spacing: .5px; }
+
+  /* WIN BARS */
+  .win-bar { display: flex; height: 32px; border-radius: 6px; overflow: hidden; margin-top: 16px; }
+  .win-bar .seg-new { background: linear-gradient(90deg, #1e3a5f, #2d5a8e); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--new); }
+  .win-bar .seg-tie { background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); }
+  .win-bar .seg-ref { background: linear-gradient(90deg, #4a1a10, #7a2a18); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--ref); }
+
+  /* SECTIONS */
+  .section { display: flex; flex-direction: column; gap: 16px; }
+  .section-title { font-size: 20px; font-weight: 800; color: var(--text); padding-bottom: 12px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section-title .icon { font-size: 22px; }
+
+  /* MASTER TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: var(--bg3); }
+  th { padding: 10px 14px; text-align: left; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); border-bottom: 2px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--bg3); vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  .col-dim { font-weight: 600; color: var(--text); width: 18%; }
+  .col-new { background: rgba(88,166,255,.04); width: 28%; }
+  .col-ref { background: rgba(247,129,102,.04); width: 28%; }
+  .col-win { width: 13%; text-align: center; }
+  .col-imp { width: 13%; }
+
+  /* WINNER BADGES */
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .badge-new { background: var(--new-bg); color: var(--new); border: 1px solid #1e3a5f; }
+  .badge-ref { background: var(--ref-bg); color: var(--ref); border: 1px solid #4a1a10; }
+  .badge-tie { background: var(--bg3); color: var(--muted); border: 1px solid var(--border); }
+  .badge-crit { background: #2d0d0d; color: #ff4444; border: 1px solid #5a1a1a; }
+  .badge-warn { background: #2d2200; color: var(--yellow); border: 1px solid #4a3a00; }
+
+  /* IMPACT */
+  .imp-high { color: var(--red); font-weight: 700; }
+  .imp-med { color: var(--yellow); font-weight: 600; }
+  .imp-low { color: var(--muted); }
+
+  /* DETAIL CARDS */
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .detail-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .detail-card.new-card { border-top: 3px solid var(--new); }
+  .detail-card.ref-card { border-top: 3px solid var(--ref); }
+  .detail-header { padding: 14px 18px; background: var(--bg3); border-bottom: 1px solid var(--border); font-weight: 700; font-size: 13px; }
+  .detail-header.new-h { color: var(--new); }
+  .detail-header.ref-h { color: var(--ref); }
+  .detail-body { padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+  .detail-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--muted); }
+  .detail-item .ic { flex-shrink: 0; }
+  .detail-item strong { color: var(--text); }
+
+  /* CODE SNIPPET */
+  pre { background: #010409; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; font-size: 11px; font-family: 'Consolas', monospace; overflow-x: auto; color: #c9d1d9; line-height: 1.5; margin: 4px 0; }
+  code { font-family: 'Consolas', monospace; font-size: 12px; background: #1a2030; padding: 1px 5px; border-radius: 3px; color: var(--blue); }
+
+  /* RADAR */
+  .radar-wrap { display: flex; justify-content: center; padding: 20px 0; }
+  canvas { max-width: 400px; }
+
+  /* PROGRESS BARS */
+  .metric-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .metric-label { width: 140px; font-size: 12px; color: var(--muted); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-new { height: 100%; border-radius: 4px; background: var(--new); }
+  .bar-ref { height: 100%; border-radius: 4px; background: var(--ref); }
+  .bar-dual { display: flex; height: 100%; }
+  .metric-val { font-size: 12px; font-weight: 700; width: 36px; text-align: right; }
+  .metric-val.n { color: var(--new); }
+  .metric-val.r { color: var(--ref); }
+
+  /* CALLOUTS */
+  .callout { border-radius: 8px; padding: 14px 18px; font-size: 13px; margin: 4px 0; }
+  .callout-ok { background: #0d2d1a; border-left: 3px solid var(--green); color: #7dc48a; }
+  .callout-warn { background: #2d2200; border-left: 3px solid var(--yellow); color: #d4a74a; }
+  .callout-err { background: #2d0d0d; border-left: 3px solid var(--red); color: #e08080; }
+  .callout-info { background: #0d1f38; border-left: 3px solid var(--blue); color: #7aaddb; }
+
+  /* FEATURE LIST */
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .feature-col h4 { font-size: 13px; font-weight: 700; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .feature-col.new-col h4 { color: var(--new); }
+  .feature-col.ref-col h4 { color: var(--ref); }
+  .feat { display: flex; gap: 8px; font-size: 12px; color: var(--muted); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.03); }
+  .feat .ic { width: 16px; flex-shrink: 0; }
+  .feat strong { color: var(--text); }
+
+  /* SECURITY */
+  .sec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .sec-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .sec-item h5 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .sec-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
+  .sec-row .label { color: var(--muted); }
+  .sec-good { color: var(--green); font-weight: 700; }
+  .sec-bad { color: var(--red); font-weight: 700; }
+  .sec-med { color: var(--yellow); font-weight: 700; }
+
+  /* FINAL VERDICT */
+  .verdict-wrap { background: var(--bg2); border: 2px solid var(--new); border-radius: 12px; overflow: hidden; }
+  .verdict-head { background: #0d1f38; padding: 20px 28px; border-bottom: 1px solid var(--border); }
+  .verdict-head h2 { font-size: 20px; font-weight: 800; color: var(--new); }
+  .verdict-head p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .verdict-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; }
+  .verdict-row { display: flex; gap: 16px; align-items: flex-start; }
+  .verdict-icon { font-size: 24px; flex-shrink: 0; }
+  .verdict-text h4 { font-size: 14px; font-weight: 700; color: var(--text); }
+  .verdict-text p { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+
+  /* TIMELINE */
+  .roadmap { display: flex; flex-direction: column; gap: 0; padding-left: 24px; border-left: 2px solid var(--border); }
+  .roadmap-item { position: relative; padding: 0 0 20px 24px; }
+  .roadmap-item::before { content: ''; position: absolute; left: -9px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg2); border: 2px solid var(--border); }
+  .roadmap-item.done::before { border-color: var(--green); background: #0d2d1a; }
+  .roadmap-item.next::before { border-color: var(--new); background: var(--new-bg); }
+  .roadmap-item.future::before { border-color: var(--muted); }
+  .roadmap-item h4 { font-size: 13px; font-weight: 700; color: var(--text); }
+  .roadmap-item p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .roadmap-tag { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-left: 6px; }
+  .tag-done { background: #0d2d1a; color: var(--green); }
+  .tag-next { background: var(--new-bg); color: var(--new); }
+  .tag-future { background: var(--bg3); color: var(--muted); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .detail-grid, .feature-grid, .sec-grid { grid-template-columns: 1fr; }
+    .container { padding: 16px; gap: 32px; }
+    .nav { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <h1>Foresee — Análisis Comparativo Exhaustivo</h1>
+  <div class="sub">New 0020.html vs Edicion Cld 0003.html · 2026-05-31 · Análisis línea a línea</div>
+  <div class="nav-links">
+    <a href="#hero">Resumen</a>
+    <a href="#master">Tabla Maestra</a>
+    <a href="#arquitectura">Arquitectura</a>
+    <a href="#seguridad">Seguridad</a>
+    <a href="#funcionalidades">Funcionalidades</a>
+    <a href="#rendimiento">Rendimiento</a>
+    <a href="#diseno">Diseño</a>
+    <a href="#codigo">Código</a>
+    <a href="#comercial">Potencial</a>
+    <a href="#veredicto">Veredicto</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section id="hero">
+  <div class="hero">
+    <div class="score-card new">
+      <div class="score-num">8</div>
+      <div class="score-label">Categorías ganadas</div>
+      <div class="score-file">New 0020.html</div>
+      <div class="score-size">422 KB · ~10 500 líneas</div>
+    </div>
+    <div class="vs-wrap">
+      <div class="vs-circle">VS</div>
+      <div class="verdict-badge">New 0020 gana</div>
+    </div>
+    <div class="score-card ref">
+      <div class="score-num">4</div>
+      <div class="score-label">Categorías ganadas</div>
+      <div class="score-file">Edicion Cld 0003.html</div>
+      <div class="score-size">536 KB · ~12 000 líneas</div>
+    </div>
+  </div>
+  <div class="win-bar">
+    <div class="seg-new" style="flex:8">New 0020 · 8 victorias</div>
+    <div class="seg-tie" style="flex:1">Empate</div>
+    <div class="seg-ref" style="flex:4">Edicion Cld · 4 victorias</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ TABLA MAESTRA ═══════════════════════ -->
+<section id="master" class="section">
+  <div class="section-title"><span class="icon">📊</span>Tabla Comparativa Maestra (13 categorías)</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="col-dim">Categoría</th>
+        <th class="col-new">🔵 New 0020.html</th>
+        <th class="col-ref">🔴 Edicion Cld 0003</th>
+        <th class="col-win">Ganador</th>
+        <th class="col-imp">Impacto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-dim">Arquitectura JS</td>
+        <td class="col-new">ES6 módulos nativos, sin contaminación de <code>window</code>, imports directos de Firebase. Estructura clara: imports → estado → helpers → lógica.</td>
+        <td class="col-ref">Mezcla de ES6 modules <strong>y</strong> asignación a <code>window.*</code> para acceso global (líneas 64-88). Anti-patrón que acopla módulos.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-high">Alto</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Firebase / Firestore</td>
+        <td class="col-new"><code>persistentLocalCache</code> + <code>persistentMultipleTabManager</code> — soporte offline y multi-tab real. <code>DB_COL()</code> y <code>DB_PREF()</code> como helpers de ruta. 27 usos de <code>writeBatch</code>.</td>
+        <td class="col-ref">Sin persistencia local explícita. Sin helpers de ruta. Inicialización básica de Firebase.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-high">Alto</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Seguridad XSS</td>
+        <td class="col-new">207 usos de <code>innerHTML/textContent</code>. Datos de usuario vía <code>textContent</code>/<code>createTextNode</code>. <code>safeEval()</code> con regex whitelist <code>/^[\d+\-*/.() ]+$/</code> antes de evaluar. CSV con escaping propio.</td>
+        <td class="col-ref">157 usos. Ejemplo riesgoso línea 9095: <code>option.innerHTML = `&lt;img src="${iconPath}"&gt;`</code> — si <code>iconPath</code> no está sanitizada, es XSS potencial. Menos validaciones centralizadas.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-high">Crítico</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Accesibilidad ARIA</td>
+        <td class="col-new">80 atributos ARIA. <code>role="alert"</code> en toasts, <code>aria-live="assertive"</code>, <code>aria-selected</code> en tabs, <code>aria-hidden</code> en modales. WCAG-compliant básico.</td>
+        <td class="col-ref">Solo 2 atributos ARIA en todo el archivo. Sin roles, sin live regions, sin accesibilidad real para lectores de pantalla.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-high">Alto</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Export de datos</td>
+        <td class="col-new">4 formatos: CSV (con <code>sep=,</code> para Excel regional), <strong>Excel .xlsx</strong> (4 hojas, fórmulas activas), PDF (jsPDF + autotable), JSON backup completo.</td>
+        <td class="col-ref">2 formatos confirmados: CSV y PDF. Sin Excel nativo. JSON limitado.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-high">Alto</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Entrada por voz</td>
+        <td class="col-new">Motor NLP propio embebido: 20+ keywords ingreso, 25+ gasto, 5 estrategias de monto, fecha relativa + ordinal escrita, mapeo semántico (walmart→Alimentación), Levenshtein para banco/categoría. Tarjeta de confirmación editable antes de guardar.</td>
+        <td class="col-ref">Web Speech API básica. 6 keywords de ingreso. Solo "ayer" como fecha relativa. Sin confirmación — guarda directo. Sin mapeo semántico. Descripción: primeras 2 palabras restantes.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-med">Medio</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Sistema de diseño CSS</td>
+        <td class="col-new">94 líneas de variables CSS: paleta completa, escala de espaciado, tipografía, radios, sombras, transición. Mobile-first. 26 media queries. Layout con CSS Grid en header.</td>
+        <td class="col-ref">Variables CSS pero menos estructuradas. 47 media queries (más breakpoints). Sistema más extenso pero menos coherente.</td>
+        <td class="col-win"><span class="badge badge-tie">Empate</span></td>
+        <td class="col-imp"><span class="imp-med">Medio</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Modo oscuro/claro</td>
+        <td class="col-new">Implementación básica: 15 referencias, toggle funcional, guarda en preferencias.</td>
+        <td class="col-ref">372 referencias — implementación muy elaborada. Más temas, transiciones refinadas, más variables CSS por tema.</td>
+        <td class="col-win"><span class="badge badge-ref">Edicion Cld</span></td>
+        <td class="col-imp"><span class="imp-med">Medio</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Tutorial / Onboarding</td>
+        <td class="col-new">Onboarding 3 pasos (alias → demo → tutorial). 7 videos de Cloudinary accesibles vía modal. Botón FAB flotante.</td>
+        <td class="col-ref">7 tutoriales en video con descripciones elaboradas (líneas 7877-7920): "Paso 1: Empieza fuerte", "Paso 2: Automatiza tu tranquilidad"… Integración educativa más rica.</td>
+        <td class="col-win"><span class="badge badge-ref">Edicion Cld</span></td>
+        <td class="col-imp"><span class="imp-med">Medio</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Tarjetas de crédito</td>
+        <td class="col-new">74 refs. CRUD completo, cuota mensual calculada, días al vence, % usado, alertas ≥80%.</td>
+        <td class="col-ref">143 refs — casi el doble. Features más desarrolladas. Tutorial educativo dedicado. Más columnas y métricas.</td>
+        <td class="col-win"><span class="badge badge-ref">Edicion Cld</span></td>
+        <td class="col-imp"><span class="imp-med">Medio</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Calidad de código</td>
+        <td class="col-new">1 TODO/FIXME. Sin <code>console.log</code> de producción. <code>scheduleRenderAll()</code> con debounce. Funciones con nombres descriptivos y consistentes. 422 KB (27% más compacto).</td>
+        <td class="col-ref">5 TODOs/FIXMEs visibles. Más deuda técnica explícita. 536 KB. Código más grande = más difícil de mantener.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-med">Medio</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Rendimiento</td>
+        <td class="col-new"><code>persistentLocalCache</code> (offline + velocidad). <code>scheduleRenderAll()</code> evita 6 renders simultáneos al cargar. Set para dedup O(1) en recurrentes.</td>
+        <td class="col-ref">Sin cache local. Sin debounce explícito de renders. 6 <code>onSnapshot</code> disparan <code>renderAll()</code> directo al cargar.</td>
+        <td class="col-win"><span class="badge badge-new">New 0020</span></td>
+        <td class="col-imp"><span class="imp-high">Alto</span></td>
+      </tr>
+      <tr>
+        <td class="col-dim">Responsive / Accesibilidad móvil</td>
+        <td class="col-new">Mobile-first. Header CSS Grid. Pull-to-refresh. Modales fullscreen en móvil. Tab bar adaptada.</td>
+        <td class="col-ref">47 media queries (vs 26). Más exhaustivo en breakpoints. Ligeramente más detallado en adaptaciones específicas por pantalla.</td>
+        <td class="col-win"><span class="badge badge-ref">Edicion Cld</span></td>
+        <td class="col-imp"><span class="imp-low">Bajo</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════════════ MÉTRICAS VISUALES ═══════════════════════ -->
+<section class="section">
+  <div class="section-title"><span class="icon">📈</span>Métricas de Referencia</div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:24px">
+
+    <div class="metric-row"><span class="metric-label">Tamaño archivo</span><div class="bar-track"><div class="bar-new" style="width:78%"></div></div><span class="metric-val n">422KB</span><div class="bar-track"><div class="bar-ref" style="width:100%"></div></div><span class="metric-val r">536KB</span></div>
+    <div class="metric-row"><span class="metric-label">ARIA / Accesibilidad</span><div class="bar-track"><div class="bar-new" style="width:100%"></div></div><span class="metric-val n">80</span><div class="bar-track"><div class="bar-ref" style="width:3%"></div></div><span class="metric-val r">2</span></div>
+    <div class="metric-row"><span class="metric-label">Refs Modo oscuro</span><div class="bar-track"><div class="bar-new" style="width:4%"></div></div><span class="metric-val n">15</span><div class="bar-track"><div class="bar-ref" style="width:100%"></div></div><span class="metric-val r">372</span></div>
+    <div class="metric-row"><span class="metric-label">Export formatos</span><div class="bar-track"><div class="bar-new" style="width:100%"></div></div><span class="metric-val n">4</span><div class="bar-track"><div class="bar-ref" style="width:50%"></div></div><span class="metric-val r">2</span></div>
+    <div class="metric-row"><span class="metric-label">Keywords voz</span><div class="bar-track"><div class="bar-new" style="width:100%"></div></div><span class="metric-val n">45+</span><div class="bar-track"><div class="bar-ref" style="width:13%"></div></div><span class="metric-val r">6</span></div>
+    <div class="metric-row"><span class="metric-label">Media queries CSS</span><div class="bar-track"><div class="bar-new" style="width:55%"></div></div><span class="metric-val n">26</span><div class="bar-track"><div class="bar-ref" style="width:100%"></div></div><span class="metric-val r">47</span></div>
+    <div class="metric-row"><span class="metric-label">TODOs / deuda explícita</span><div class="bar-track"><div class="bar-new" style="width:20%"></div></div><span class="metric-val n">1</span><div class="bar-track"><div class="bar-ref" style="width:100%"></div></div><span class="metric-val r">5</span></div>
+    <div class="metric-row"><span class="metric-label">Variables CSS</span><div class="bar-track"><div class="bar-new" style="width:100%"></div></div><span class="metric-val n">94</span><div class="bar-track"><div class="bar-ref" style="width:60%"></div></div><span class="metric-val r">~56</span></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ ARQUITECTURA ═══════════════════════ -->
+<section id="arquitectura" class="section">
+  <div class="section-title"><span class="icon">🏗️</span>Arquitectura</div>
+  <div class="detail-grid">
+    <div class="detail-card new-card">
+      <div class="detail-header new-h">🔵 New 0020.html — Arquitectura</div>
+      <div class="detail-body">
+        <div class="detail-item"><span class="ic">✅</span><div>ES6 módulos nativos — cero contaminación de <code>window</code></div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>Firebase offline-first:</strong> <code>persistentLocalCache({ tabManager: persistentMultipleTabManager() })</code> — funciona sin conexión y con múltiples pestañas</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>Helpers de ruta:</strong> <code>DB_COL(uid, col)</code> y <code>DB_PREF(uid)</code> — rutas Firestore consistentes, sin strings mágicos dispersos</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>scheduleRenderAll():</strong> debounce 50ms — los 6 listeners <code>onSnapshot</code> ya no disparan 6 renders en cascada al iniciar sesión</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>commitInChunks():</strong> divide batches en bloques de 499 — nunca supera el límite de 500 ops de Firestore</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>appState</strong> centralizado y bien tipado: todas las colecciones, filtros activos y flags de UI en un único objeto</div></div>
+        <div class="detail-item"><span class="ic">⚠️</span><div>Sigue siendo un único archivo HTML (~10 500 líneas) — la separación CSS/JS/HTML es deuda técnica pendiente</div></div>
+      </div>
+    </div>
+    <div class="detail-card ref-card">
+      <div class="detail-header ref-h">🔴 Edicion Cld 0003 — Arquitectura</div>
+      <div class="detail-body">
+        <div class="detail-item"><span class="ic">❌</span><div><strong>Antipatrón window.*:</strong> funciones de Firebase asignadas a <code>window</code> para cruzar scope (líneas 64-88) — crea acoplamiento global</div></div>
+        <div class="detail-item"><span class="ic">❌</span><div>Sin persistencia local — cada sesión requiere conexión activa a Firestore para cargar datos</div></div>
+        <div class="detail-item"><span class="ic">❌</span><div>Sin helpers de ruta — rutas Firestore hardcodeadas en múltiples lugares</div></div>
+        <div class="detail-item"><span class="ic">❌</span><div>6 <code>onSnapshot</code> disparan <code>renderAll()</code> directamente — hasta 6 renders completos en los primeros 50ms</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div>Misma estructura general de <code>appState</code></div></div>
+        <div class="detail-item"><span class="ic">⚠️</span><div>Archivo más grande (536KB / ~12 000 líneas) — mayor deuda técnica acumulada</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SEGURIDAD ═══════════════════════ -->
+<section id="seguridad" class="section">
+  <div class="section-title"><span class="icon">🔒</span>Seguridad</div>
+
+  <div class="sec-grid">
+    <div class="sec-item">
+      <h5>XSS Prevention</h5>
+      <div class="sec-row"><span class="label">New 0020</span><span class="sec-good">Controlado</span></div>
+      <div class="sec-row"><span class="label">Edicion Cld</span><span class="sec-med">Riesgo puntual</span></div>
+      <div class="sec-row"><span class="label">innerHTML peligroso</span><span class="sec-good">0 / usuario</span></div>
+    </div>
+    <div class="sec-item">
+      <h5>Eval / Function()</h5>
+      <div class="sec-row"><span class="label">New 0020</span><span class="sec-good">Regex whitelist</span></div>
+      <div class="sec-row"><span class="label">Edicion Cld</span><span class="sec-med">Similar</span></div>
+      <div class="sec-row"><span class="label">Patrón</span><span class="sec-good">/^[\d+\-*/.() ]+$/</span></div>
+    </div>
+    <div class="sec-item">
+      <h5>Autenticación</h5>
+      <div class="sec-row"><span class="label">Rate limiting</span><span class="sec-good">auth/too-many-requests</span></div>
+      <div class="sec-row"><span class="label">Double submit</span><span class="sec-good">_authInProgress flag</span></div>
+      <div class="sec-row"><span class="label">Finally block</span><span class="sec-good">Siempre ejecuta</span></div>
+    </div>
+    <div class="sec-item">
+      <h5>Console Leaks</h5>
+      <div class="sec-row"><span class="label">New 0020</span><span class="sec-good">1 console.error</span></div>
+      <div class="sec-row"><span class="label">Edicion Cld</span><span class="sec-med">2 console refs</span></div>
+      <div class="sec-row"><span class="label">console.log prod</span><span class="sec-good">0 en New 0020</span></div>
+    </div>
+    <div class="sec-item">
+      <h5>Validación Inputs</h5>
+      <div class="sec-row"><span class="label">New 0020</span><span class="sec-good">Centralizada</span></div>
+      <div class="sec-row"><span class="label">Edicion Cld</span><span class="sec-med">Dispersa</span></div>
+      <div class="sec-row"><span class="label">CSV Escaping</span><span class="sec-good">Comillas + doble-quote</span></div>
+    </div>
+    <div class="sec-item">
+      <h5>GDPR / CCPA</h5>
+      <div class="sec-row"><span class="label">Eliminar cuenta</span><span class="sec-good">deleteUser() ✓</span></div>
+      <div class="sec-row"><span class="label">Eliminar datos</span><span class="sec-good">Batch delete ✓</span></div>
+      <div class="sec-row"><span class="label">Re-auth antes de delete</span><span class="sec-good">✓</span></div>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>Riesgo encontrado en Edicion Cld 0003 (línea ~9095):</strong> <code>option.innerHTML = `&lt;img src="${iconPath}"&gt;`</code> — si <code>iconPath</code> proviene de datos del usuario sin sanitizar, esto es un vector XSS. New 0020 no tiene este patrón.
+  </div>
+</section>
+
+<!-- ═══════════════════════ FUNCIONALIDADES ═══════════════════════ -->
+<section id="funcionalidades" class="section">
+  <div class="section-title"><span class="icon">⚙️</span>Inventario de Funcionalidades</div>
+  <div class="feature-grid">
+    <div class="feature-col new-col">
+      <h4>🔵 New 0020.html</h4>
+      <div class="feat"><span class="ic">✅</span><div><strong>Transacciones</strong> — CRUD completo, balance acumulado, filtros mes/banco/categoría</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Proyecciones</strong> — manuales + auto-generadas desde recurrentes</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Gastos recurrentes</strong> — día de vencimiento, notificación D-1</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Tarjetas de crédito</strong> — límite, deuda, cuota, días al vence, % usado</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Gastos comunes</strong> — personas, items, split</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Presupuesto por categoría</strong> — alerta al superar límite</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Saldos por cuenta</strong> — calculado desde todas las transacciones</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Dashboard</strong> — ingresos/gastos/balance, gráfico, alertas tarjetas</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Export CSV</strong> — mes o historial completo, sep=, para Excel</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Export Excel .xlsx</strong> — 4 hojas, fórmulas activas, freeze panes</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Export PDF</strong> — jsPDF + autotable</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Export / Import JSON</strong> — backup completo</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Entrada por voz</strong> — NLP, confirmación editable, 45+ keywords</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Notificaciones OS</strong> — Browser Notification API, toggle, dedup</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Multi-divisa</strong> — 15 monedas, persiste en Firestore</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Modo oscuro / claro</strong> — toggle, persiste</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Onboarding</strong> — 3 pasos: alias → demo → tutorial</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Tutorial videos</strong> — 7 videos Cloudinary, modal propio</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Recuperación contraseña</strong> — sendPasswordResetEmail</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Eliminar cuenta + datos</strong> — GDPR/CCPA, batch delete</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Fullscreen post-login</strong> — prompt de bienvenida, gesture correcto</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Offline support</strong> — persistentLocalCache, funciona sin red</div></div>
+    </div>
+    <div class="feature-col ref-col">
+      <h4>🔴 Edicion Cld 0003.html</h4>
+      <div class="feat"><span class="ic">✅</span><div><strong>Transacciones</strong> — CRUD, similar cobertura</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Proyecciones</strong> — similar</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Gastos recurrentes</strong> — más desarrollado (448 refs vs 78)</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Tarjetas de crédito</strong> — más completo (143 refs vs 74), tutorial educativo propio</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Gastos comunes</strong> — presente</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Presupuesto por categoría</strong> — más énfasis (448 refs vs 143)</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Saldos por cuenta</strong> — presente</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Dashboard</strong> — presente</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Export CSV</strong> — sin sep= (columna única en Excel regional)</div></div>
+      <div class="feat"><span class="ic">❌</span><div><strong>Export Excel</strong> — no disponible</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Export PDF</strong> — presente</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Export / Import JSON</strong> — presente</div></div>
+      <div class="feat"><span class="ic">⚠️</span><div><strong>Entrada por voz</strong> — básica, sin confirmación, 6 keywords, solo "ayer"</div></div>
+      <div class="feat"><span class="ic">⚠️</span><div><strong>Notificaciones</strong> — menos elaboradas</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Multi-divisa</strong> — presente</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Modo oscuro / claro</strong> — muy elaborado (372 refs)</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Onboarding</strong> — presente, con más videos educativos</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Tutorial videos</strong> — 7 videos con descripciones narrativas enriquecidas</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Recuperación contraseña</strong> — presente</div></div>
+      <div class="feat"><span class="ic">✅</span><div><strong>Eliminar cuenta + datos</strong> — presente</div></div>
+      <div class="feat"><span class="ic">⚠️</span><div><strong>Fullscreen post-login</strong> — bug conocido (requestFullscreen en callback async)</div></div>
+      <div class="feat"><span class="ic">❌</span><div><strong>Offline support</strong> — no confirmado</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ RENDIMIENTO ═══════════════════════ -->
+<section id="rendimiento" class="section">
+  <div class="section-title"><span class="icon">⚡</span>Rendimiento</div>
+  <div class="detail-grid">
+    <div class="detail-card new-card">
+      <div class="detail-header new-h">🔵 New 0020 — Ventajas de rendimiento</div>
+      <div class="detail-body">
+        <div class="detail-item"><span class="ic">✅</span><div><strong>Cache local Firestore:</strong> datos disponibles al instante al reabrir la app. Sin esperar a la red.</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>scheduleRenderAll() debounce 50ms:</strong> los 6 onSnapshot no generan 6 renders. Solo 1 render al terminar la ráfaga inicial.</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>O(1) deduplicación:</strong> Pre-computa Set de claves en <code>processRecurringExpenses()</code> — evita O(N×M).</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>Event delegation:</strong> listeners en contenedores padres en lugar de cada fila de tabla.</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>commitInChunks():</strong> batches de Firestore en bloques de 499 — evita rejection por límite.</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><strong>Tutorial lazy:</strong> lista se construye una sola vez (<code>dataset.built</code>) — sin re-renders en cada apertura.</div></div>
+      </div>
+    </div>
+    <div class="detail-card ref-card">
+      <div class="detail-header ref-h">🔴 Edicion Cld — Problemas de rendimiento</div>
+      <div class="detail-body">
+        <div class="detail-item"><span class="ic">❌</span><div><strong>Sin cache local:</strong> cada apertura requiere conexión activa. Datos lentos en redes malas.</div></div>
+        <div class="detail-item"><span class="ic">❌</span><div><strong>6 renders en cascada:</strong> los 6 onSnapshot disparan renderAll() directo — hasta 6 repaints completos en los primeros 50ms de sesión.</div></div>
+        <div class="detail-item"><span class="ic">❌</span><div><strong>O(N×M) en recurrentes:</strong> por cada gasto × mes, <code>.some()</code> con <code>new Date()</code> dentro — se degrada con muchos datos.</div></div>
+        <div class="detail-item"><span class="ic">⚠️</span><div>Sin debounce explícito documentado en ninguna función crítica.</div></div>
+        <div class="detail-item"><span class="ic">⚠️</span><div>Archivo 27% más grande = más tiempo de parse del JS en el navegador.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ DISEÑO ═══════════════════════ -->
+<section id="diseno" class="section">
+  <div class="section-title"><span class="icon">🎨</span>Diseño UI/UX</div>
+
+  <div class="callout callout-ok">
+    <strong>New 0020 ganador absoluto en accesibilidad:</strong> 80 atributos ARIA vs 2 en Edicion Cld. Para un SaaS profesional esto es crítico — usuarios con discapacidades visuales, lectores de pantalla, testing automatizado.
+  </div>
+  <div class="callout callout-info">
+    <strong>Edicion Cld ganador en modo oscuro:</strong> 372 referencias (24x más) indican una implementación muy refinada con transiciones suaves y más variables por tema. New 0020 tiene el toggle funcional pero menos pulido.
+  </div>
+
+  <table>
+    <thead><tr><th>Elemento UI</th><th class="col-new">New 0020</th><th class="col-ref">Edicion Cld</th><th>Ganador</th></tr></thead>
+    <tbody>
+      <tr><td>Variables CSS</td><td class="col-new">94 líneas estructuradas, paleta + espaciado + tipografía + radios + sombras</td><td class="col-ref">Variables presentes pero menos sistemáticas</td><td><span class="badge badge-new">New 0020</span></td></tr>
+      <tr><td>ARIA / A11y</td><td class="col-new">80 atributos, role="alert", aria-live, aria-selected, aria-hidden</td><td class="col-ref">2 atributos — prácticamente sin accesibilidad</td><td><span class="badge badge-new">New 0020 ★★★</span></td></tr>
+      <tr><td>Modo oscuro</td><td class="col-new">Toggle funcional, 15 refs, persiste en prefs</td><td class="col-ref">Muy elaborado, 372 refs, más temas, transiciones</td><td><span class="badge badge-ref">Edicion Cld</span></td></tr>
+      <tr><td>Media queries</td><td class="col-new">26 breakpoints, mobile-first consistente</td><td class="col-ref">47 breakpoints, más casos edge cubiertos</td><td><span class="badge badge-ref">Edicion Cld</span></td></tr>
+      <tr><td>Animaciones</td><td class="col-new">89 refs, enfocadas y suaves</td><td class="col-ref">142 refs, más elaboradas</td><td><span class="badge badge-ref">Edicion Cld</span></td></tr>
+      <tr><td>Sistema de toasts</td><td class="col-new">ARIA live regions, tipos success/warning/error/info, auto-remove</td><td class="col-ref">Similar sin ARIA</td><td><span class="badge badge-new">New 0020</span></td></tr>
+      <tr><td>Loading states</td><td class="col-new">Overlay + spinner, btn-spinner en botones críticos</td><td class="col-ref">Similar</td><td><span class="badge badge-tie">Empate</span></td></tr>
+      <tr><td>Tutorial / educación</td><td class="col-new">Modal de video, 7 videos, FAB flotante</td><td class="col-ref">Videos más narrativos y educativos, mejor copy</td><td><span class="badge badge-ref">Edicion Cld</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════════════ CÓDIGO ═══════════════════════ -->
+<section id="codigo" class="section">
+  <div class="section-title"><span class="icon">💻</span>Calidad de Código</div>
+  <div class="detail-grid">
+    <div class="detail-card new-card">
+      <div class="detail-header new-h">🔵 New 0020 — Puntos fuertes</div>
+      <div class="detail-body">
+        <div class="detail-item"><span class="ic">✅</span><div>1 TODO/FIXME visible — deuda técnica mínima y controlada</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div>0 <code>console.log</code> en producción — solo <code>console.error</code> para errores reales</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div>Nombres consistentes: <code>handleX()</code>, <code>renderX()</code>, <code>openXModal()</code>, <code>closeXModal()</code></div></div>
+        <div class="detail-item"><span class="ic">✅</span><div>Bloques comentados con <code>/* === SECCIÓN === */</code> — navegación clara</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div>27% más compacto — menos código para mantener, más fácil de onboarding</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div><code>toTitleCase()</code>, <code>roundMoney()</code>, <code>formatCurrency()</code> como helpers reutilizables</div></div>
+        <div class="detail-item"><span class="ic">⚠️</span><div><code>exportExcel()</code> tiene ~300 líneas — candidata a refactor en subfunciones</div></div>
+      </div>
+    </div>
+    <div class="detail-card ref-card">
+      <div class="detail-header ref-h">🔴 Edicion Cld — Deuda técnica</div>
+      <div class="detail-body">
+        <div class="detail-item"><span class="ic">❌</span><div>5 TODOs/FIXMEs activos — deuda técnica explícita y visible</div></div>
+        <div class="detail-item"><span class="ic">❌</span><div>Patrón <code>window.*</code> para cruzar módulos — acoplamiento global, difícil de testear</div></div>
+        <div class="detail-item"><span class="ic">❌</span><div>27% más grande — más superficie de bugs, más difícil de mantener</div></div>
+        <div class="detail-item"><span class="ic">⚠️</span><div>2 referencias <code>console</code> en producción — potencial filtración de info</div></div>
+        <div class="detail-item"><span class="ic">⚠️</span><div>Funciones más anidadas y menos separación de responsabilidades</div></div>
+        <div class="detail-item"><span class="ic">✅</span><div>Mayor número de features implementadas = más código, pero también más funcionalidad</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ POTENCIAL COMERCIAL ═══════════════════════ -->
+<section id="comercial" class="section">
+  <div class="section-title"><span class="icon">💰</span>Potencial Comercial y Escalabilidad</div>
+
+  <table>
+    <thead><tr><th>Factor</th><th class="col-new">New 0020</th><th class="col-ref">Edicion Cld</th><th>Impacto comercial</th></tr></thead>
+    <tbody>
+      <tr><td>Offline / PWA ready</td><td class="col-new">✅ persistentLocalCache activo — app funciona sin red</td><td class="col-ref">❌ Sin soporte offline confirmado</td><td><span class="imp-high">Alto — retención de usuarios</span></td></tr>
+      <tr><td>Multi-tab sync</td><td class="col-new">✅ persistentMultipleTabManager — cambios en una pestaña se ven en otras</td><td class="col-ref">❌ Sin coordinación multi-tab</td><td><span class="imp-med">Medio — UX profesional</span></td></tr>
+      <tr><td>Accesibilidad legal</td><td class="col-new">✅ ARIA básico — pasa auditorías de accesibilidad mínimas</td><td class="col-ref">❌ Sin ARIA — falla auditorías ADA/WCAG</td><td><span class="imp-high">Alto — requerimiento legal en muchos mercados</span></td></tr>
+      <tr><td>Export premium</td><td class="col-new">4 formatos (CSV + Excel + PDF + JSON) — upsell natural para plan Pro</td><td class="col-ref">2 formatos — menor superficie de monetización</td><td><span class="imp-high">Alto — diferenciador de precio</span></td></tr>
+      <tr><td>Educación del usuario</td><td class="col-new">Videos OK pero copy básico</td><td class="col-ref">Tutorial narrativo elaborado — mejor adopción</td><td><span class="imp-high">Alto — reduce churn temprano</span></td></tr>
+      <tr><td>Escalabilidad del código</td><td class="col-new">Base limpia — features nuevas se agregan sin romper nada</td><td class="col-ref">Deuda técnica — cada feature nueva requiere más esfuerzo</td><td><span class="imp-high">Alto — velocidad de desarrollo futuro</span></td></tr>
+      <tr><td>Mantenimiento largo plazo</td><td class="col-new">27% menos código, sin window.*, debounce implementado</td><td class="col-ref">27% más código, acoplamiento global, bugs más difíciles de rastrear</td><td><span class="imp-high">Alto — costo operativo</span></td></tr>
+      <tr><td>Features listas YA</td><td class="col-new">Casi todas — voz avanzada, Excel, offline</td><td class="col-ref">Más refinamiento en modo oscuro y tarjetas</td><td><span class="imp-med">Medio — depende del mercado objetivo</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="detail-grid" style="margin-top:8px">
+    <div class="callout callout-ok">
+      <strong>New 0020 para construir:</strong> Base técnica superior, código limpio, escalable. Agregar features es más barato y rápido. Para un producto SaaS a largo plazo, esta es la apuesta ganadora. Solo necesita pulir el modo oscuro y ampliar tutoriales.
+    </div>
+    <div class="callout callout-warn">
+      <strong>Edicion Cld para lanzar YA:</strong> Videos educativos elaborados y modo oscuro refinado dan una percepción de producto más terminado. Si la prioridad es lanzar esta semana, el copy de los tutoriales y el dark mode de Edicion Cld son ventajas visibles para el usuario.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ ROADMAP ═══════════════════════ -->
+<section class="section">
+  <div class="section-title"><span class="icon">🗺️</span>Brechas a cerrar en New 0020 para superar a Edicion Cld en todo</div>
+  <div class="roadmap">
+    <div class="roadmap-item done">
+      <h4>Export Excel (.xlsx) con fórmulas<span class="roadmap-tag tag-done">Hecho</span></h4>
+      <p>4 hojas, fórmulas de balance en cascada, freeze panes — sesión 017</p>
+    </div>
+    <div class="roadmap-item done">
+      <h4>Entrada por voz NLP avanzado<span class="roadmap-tag tag-done">Hecho</span></h4>
+      <p>45+ keywords, confirmación editable, fecha relativa/ordinal, semántica — sesión 018</p>
+    </div>
+    <div class="roadmap-item next">
+      <h4>Reportes avanzados<span class="roadmap-tag tag-next">Próximo — Tarea 10</span></h4>
+      <p>Diferenciador clave vs apps básicas. Gráficos por categoría, tendencias, proyecciones visuales.</p>
+    </div>
+    <div class="roadmap-item future">
+      <h4>Mejorar modo oscuro<span class="roadmap-tag tag-future">Pendiente</span></h4>
+      <p>Llevar las 15 refs actuales al nivel de las 372 de Edicion Cld. Más variables por tema, transiciones.</p>
+    </div>
+    <div class="roadmap-item future">
+      <h4>Copy educativo en tutoriales<span class="roadmap-tag tag-future">Pendiente</span></h4>
+      <p>Mejorar el copy de los 7 videos — narrativa tipo "Paso 1: Empieza fuerte" como en Edicion Cld.</p>
+    </div>
+    <div class="roadmap-item future">
+      <h4>Monetización Fase 3<span class="roadmap-tag tag-future">Pendiente</span></h4>
+      <p>Freemium, pantalla upgrade, Stripe + Cloud Functions, textos legales.</p>
+    </div>
+    <div class="roadmap-item future">
+      <h4>Lanzamiento Fase 4<span class="roadmap-tag tag-future">Pendiente</span></h4>
+      <p>Dominio propio, landing page, PWA manifest, email soporte.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ VEREDICTO FINAL ═══════════════════════ -->
+<section id="veredicto" class="section">
+  <div class="section-title"><span class="icon">🏆</span>Veredicto Final</div>
+  <div class="verdict-wrap">
+    <div class="verdict-head">
+      <h2>New 0020.html gana en 8 de 13 categorías</h2>
+      <p>Ganador técnico absoluto. Edicion Cld mantiene ventaja en refinamiento visual y profundidad educativa.</p>
+    </div>
+    <div class="verdict-body">
+      <div class="verdict-row">
+        <div class="verdict-icon">🔵</div>
+        <div class="verdict-text">
+          <h4>New 0020 gana en: Arquitectura, Firebase, Seguridad XSS, Accesibilidad, Export, Voz, Rendimiento, Calidad de código</h4>
+          <p>La base técnica es significativamente superior. Código 27% más compacto, offline-first, multi-tab, sin antipatrones, 80 ARIA vs 2. Para un SaaS a largo plazo, esta es la plataforma correcta.</p>
+        </div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-icon">🔴</div>
+        <div class="verdict-text">
+          <h4>Edicion Cld gana en: Modo oscuro, Tutorial/copy educativo, Tarjetas de crédito depth, Responsive breakpoints</h4>
+          <p>Cuatro victorias todas relacionadas con el pulido visual y la profundidad de features específicas. Son brechas cerrables — no son problemas arquitecturales.</p>
+        </div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-icon">⚡</div>
+        <div class="verdict-text">
+          <h4>La brecha más crítica de Edicion Cld: 2 atributos ARIA</h4>
+          <p>Para cualquier mercado anglosajón o europeo, la accesibilidad es un requerimiento legal. New 0020 con 80 atributos ARIA ya cumple el mínimo; Edicion Cld con 2 fallaría una auditoría de accesibilidad básica.</p>
+        </div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-icon">🎯</div>
+        <div class="verdict-text">
+          <h4>Recomendación: continuar con New 0020 — agregar el pulido visual de Edicion Cld</h4>
+          <p>La estrategia óptima es usar New 0020 como plataforma (base técnica ganadora) e importar las dos cosas donde Edicion Cld gana: (1) mejorar modo oscuro y (2) mejorar el copy educativo de los tutoriales. El resultado superaría a Edicion Cld en las 13 categorías.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div style="text-align:center;padding:28px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)">
+  Foresee — Análisis Comparativo Exhaustivo · New 0020 vs Edicion Cld 0003 · 2026-05-31
+</div>
+
+</body>
+</html>

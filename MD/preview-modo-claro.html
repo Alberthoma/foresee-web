@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview — Modo Claro Gris Perla · Foresee</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:          #f0f2f5;
+      --color-surface:     #ffffff;
+      --color-surface-2:   #f5f7fa;
+      --color-border:      #dde1e9;
+      --color-text:        #1a1d23;
+      --color-text-muted:  #5a6070;
+      --color-text-2:      #5a6070;
+      --color-accent:      #4f8fff;
+      --color-success:     #22c97a;
+      --color-danger:      #f05252;
+      --color-warning:     #f59e0b;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-full: 9999px;
+      --font-xs: 0.7rem;
+      --font-sm: 0.85rem;
+      --font-base: 0.9rem;
+      --font-md: 1rem;
+      --font-lg: 1.15rem;
+      --font-xl: 1.35rem;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: var(--font-base);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .header-logo {
+      font-size: var(--font-lg);
+      font-weight: 700;
+      color: var(--color-accent);
+      letter-spacing: -0.02em;
+    }
+    .header-alias {
+      font-size: var(--font-sm);
+      color: var(--color-text-muted);
+    }
+    .theme-toggle {
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      font-size: var(--font-xs);
+      cursor: pointer;
+      color: var(--color-text-muted);
+    }
+
+    /* ── Layout ── */
+    .page { max-width: 480px; margin: 0 auto; padding: 1rem 1rem 6rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    /* ── Dashboard cards ── */
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .dash-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .dash-card.balance { grid-column: 1 / -1; }
+    .dash-label { font-size: var(--font-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+    .dash-value { font-size: 1.6rem; font-weight: 700; color: var(--color-text); }
+    .dash-value.income { color: var(--color-success); }
+    .dash-value.expense { color: var(--color-danger); }
+    .dash-month { font-size: var(--font-xs); color: var(--color-text-muted); margin-top: 0.25rem; }
+
+    /* ── Sección ── */
+    .section-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .section-title {
+      font-size: var(--font-sm);
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+    }
+
+    /* ── Tabla ── */
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: var(--font-xs);
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      background: var(--color-surface-2);
+      border-bottom: 1px solid var(--color-border);
+    }
+    td {
+      padding: 0.65rem 0.75rem;
+      font-size: var(--font-sm);
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--color-surface-2); }
+    .amount-income { color: var(--color-success); font-weight: 600; }
+    .amount-expense { color: var(--color-danger); font-weight: 600; }
+    .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+    }
+    .badge-income { background: rgba(34,201,122,0.12); color: var(--color-success); }
+    .badge-expense { background: rgba(240,82,82,0.12); color: var(--color-danger); }
+
+    /* ── Alertas ── */
+    .alert-list { display: flex; flex-direction: column; gap: 0; }
+    .alert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.65rem 1rem;
+      font-size: var(--font-sm);
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+    .alert-item:last-child { border-bottom: none; }
+    .alert-item--danger { background: rgba(240,82,82,0.06); }
+    .alert-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .dot-warn { background: var(--color-warning); }
+    .dot-danger { background: var(--color-danger); }
+
+    /* ── Botones ── */
+    .btn-row { display: flex; gap: 0.5rem; padding: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--color-accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem;
+      font-size: var(--font-sm);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-outline {
+      background: none;
+      color: var(--color-accent);
+      border: 1px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem;
+      font-size: var(--font-sm);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-danger {
+      background: none;
+      color: var(--color-danger);
+      border: 1px solid var(--color-danger);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem;
+      font-size: var(--font-sm);
+      cursor: pointer;
+    }
+
+    /* ── Tab bar ── */
+    .tab-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-around;
+      padding: 0.4rem 0 0.6rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+    }
+    .tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.6rem;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+    }
+    .tab-btn.active { color: var(--color-accent); }
+    .tab-btn svg { width: 20px; height: 20px; }
+
+    /* ── Modal muestra ── */
+    .modal-preview {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+    }
+    .modal-title { font-weight: 600; font-size: var(--font-md); }
+    .modal-close { background: none; border: none; font-size: 1rem; color: var(--color-text-muted); cursor: pointer; }
+    .modal-body { padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .form-label { font-size: var(--font-xs); color: var(--color-text-muted); font-weight: 500; }
+    .form-input {
+      width: 100%;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.6rem;
+      font-size: var(--font-sm);
+      color: var(--color-text);
+    }
+    .form-input:focus { outline: none; border-color: var(--color-accent); }
+    .tipo-bar { display: flex; gap: 0.5rem; }
+    .btn-tipo {
+      flex: 1;
+      padding: 0.4rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      font-size: var(--font-sm);
+      cursor: pointer;
+      color: var(--color-text-muted);
+    }
+    .btn-tipo.active-income {
+      background: rgba(34,201,122,0.12);
+      border-color: var(--color-success);
+      color: var(--color-success);
+      font-weight: 600;
+    }
+
+    /* ── Toast muestra ── */
+    .toast {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-success);
+      border-radius: var(--radius-md);
+      padding: 0.65rem 1rem;
+      font-size: var(--font-sm);
+      color: var(--color-text);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+    }
+
+    /* ── Label ── */
+    .preview-label {
+      font-size: var(--font-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="header-logo">Foresee</span>
+    <span class="header-alias">Hola, Albert</span>
+    <button class="theme-toggle">☀ Claro</button>
+  </div>
+
+  <div class="page">
+
+    <!-- Dashboard -->
+    <div>
+      <p class="preview-label">Dashboard</p>
+      <div class="dash-grid">
+        <div class="dash-card balance">
+          <div class="dash-label">Balance actual</div>
+          <div class="dash-value">$2,285.01</div>
+          <div class="dash-month">Mayo 2026</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">Ingresos</div>
+          <div class="dash-value income">$3,500</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">Gastos</div>
+          <div class="dash-value expense">$1,214.99</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertas -->
+    <div>
+      <p class="preview-label">Alertas</p>
+      <div class="section-card">
+        <div class="alert-list">
+          <div class="alert-item alert-item--danger">
+            <span class="alert-dot dot-danger"></span>
+            Tarjeta Visa: 91% del límite usado ($4,550 de $5,000).
+          </div>
+          <div class="alert-item">
+            <span class="alert-dot dot-warn"></span>
+            Vence en 2 días: "Netflix" — $15.99.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de transacciones -->
+    <div>
+      <p class="preview-label">Registros</p>
+      <div class="section-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Descripción</th>
+              <th>Categoría</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>May 01</td>
+              <td>Salario</td>
+              <td><span class="badge badge-income">Ingreso</span></td>
+              <td class="amount-income">+ $3,500.00</td>
+            </tr>
+            <tr>
+              <td>May 02</td>
+              <td>Alquiler</td>
+              <td>Vivienda</td>
+              <td class="amount-expense">− $850.00</td>
+            </tr>
+            <tr>
+              <td>May 05</td>
+              <td>Supermercado</td>
+              <td>Alimentación</td>
+              <td class="amount-expense">− $120.00</td>
+            </tr>
+            <tr>
+              <td>May 08</td>
+              <td>Gasolina</td>
+              <td>Transporte</td>
+              <td class="amount-expense">− $45.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div>
+      <p class="preview-label">Botones</p>
+      <div class="section-card">
+        <div class="btn-row">
+          <button class="btn-primary">+ Registrar</button>
+          <button class="btn-outline">⬇ CSV</button>
+          <button class="btn-danger">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div>
+      <p class="preview-label">Modal (formulario)</p>
+      <div class="modal-preview">
+        <div class="modal-header">
+          <span class="modal-title">Nueva Transacción</span>
+          <button class="modal-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="tipo-bar">
+            <button class="btn-tipo active-income">Ingreso</button>
+            <button class="btn-tipo">Gasto</button>
+          </div>
+          <div>
+            <div class="form-label">Descripción</div>
+            <input class="form-input" type="text" value="Salario mayo" readonly />
+          </div>
+          <div>
+            <div class="form-label">Banco</div>
+            <input class="form-input" type="text" value="Mi Banco" readonly />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div>
+      <p class="preview-label">Notificación</p>
+      <div class="toast">✓ Transacción guardada correctamente.</div>
+    </div>
+
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Inicio
+    </button>
+    <button class="tab-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Registros
+    </button>
+    <button class="tab-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Reportes
+    </button>
+    <button class="tab-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Config
+    </button>
+  </div>
+
+</body>
+</html>

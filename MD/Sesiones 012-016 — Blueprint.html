@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foresee — Blueprint Sesiones 012–016</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1e2530;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #f78166;
+    --accent4: #d2a8ff;
+    --accent5: #ffa657;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --warning: #e3b341;
+    --danger: #f85149;
+    --success: #3fb950;
+    --badge-012: #1f3a5f;
+    --badge-013: #2d1f4a;
+    --badge-014: #1f3a2d;
+    --badge-015: #3a2d1f;
+    --badge-016: #3a1f3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+
+  /* HEADER */
+  .site-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .site-header h1 { font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: -.3px; }
+  .site-header .subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .session-nav {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .session-nav a {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    transition: background .15s;
+  }
+  .session-nav a:hover { background: var(--bg3); }
+  .nav-012 { color: #79b8ff; border-color: #1f3a5f !important; background: #1f3a5f22; }
+  .nav-013 { color: var(--accent4); border-color: #2d1f4a !important; background: #2d1f4a22; }
+  .nav-014 { color: var(--accent2); border-color: #1f3a2d !important; background: #1f3a2d22; }
+  .nav-015 { color: var(--accent5); border-color: #3a2d1f !important; background: #3a2d1f22; }
+  .nav-016 { color: #f0a3ff; border-color: #3a1f3a !important; background: #3a1f3a22; }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* SESSION BLOCK */
+  .session-block {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .session-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .s012 .session-header { background: var(--badge-012); border-bottom: 1px solid #1f3a5f; }
+  .s013 .session-header { background: var(--badge-013); border-bottom: 1px solid #2d1f4a; }
+  .s014 .session-header { background: var(--badge-014); border-bottom: 1px solid #1f3a2d; }
+  .s015 .session-header { background: var(--badge-015); border-bottom: 1px solid #3a2d1f; }
+  .s016 .session-header { background: var(--badge-016); border-bottom: 1px solid #3a1f3a; }
+
+  .session-num {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .s012 .session-num { color: #79b8ff; }
+  .s013 .session-num { color: var(--accent4); }
+  .s014 .session-num { color: var(--accent2); }
+  .s015 .session-num { color: var(--accent5); }
+  .s016 .session-num { color: #f0a3ff; }
+
+  .session-meta { flex: 1; }
+  .session-meta h2 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .session-meta .meta-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .meta-item { font-size: 12px; color: var(--muted); }
+  .meta-item strong { color: var(--text); }
+  .session-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .badge-fixes { background: #1a3a4a; color: #79c5ff; }
+  .badge-features { background: #1a3a28; color: #5fba7d; }
+  .badge-maintenance { background: #2d1a4a; color: #c9a0f0; }
+  .badge-critical { background: #4a1a1a; color: #ff8080; }
+  .badge-mixed { background: #2d2d1a; color: #e3c34a; }
+
+  .session-body {
+    background: var(--bg2);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* CHANGE CARD */
+  .change-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .change-header {
+    padding: 12px 16px;
+    background: #1e2530;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .change-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .s012 .change-num { background: #1f3a5f; color: #79b8ff; }
+  .s013 .change-num { background: #2d1f4a; color: var(--accent4); }
+  .s014 .change-num { background: #1f3a2d; color: var(--accent2); }
+  .s015 .change-num { background: #3a2d1f; color: var(--accent5); }
+  .s016 .change-num { background: #3a1f3a; color: #f0a3ff; }
+  .change-title { font-size: 14px; font-weight: 600; }
+  .change-tag {
+    margin-left: auto;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .tag-bug { background: #4a1a1a; color: #ff8080; }
+  .tag-perf { background: #1a2d4a; color: #80c4ff; }
+  .tag-feature { background: #1a3a28; color: #5fba7d; }
+  .tag-fix { background: #2d2d1a; color: #e3c34a; }
+  .tag-arch { background: #2d1a4a; color: #c9a0f0; }
+  .tag-security { background: #3a1a2d; color: #f0a3ff; }
+
+  .change-body { padding: 14px 16px; }
+  .change-body p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .change-body p:last-child { margin-bottom: 0; }
+  .change-body strong { color: var(--text); }
+  .change-body ul { padding-left: 18px; color: var(--muted); font-size: 13px; }
+  .change-body ul li { margin-bottom: 4px; }
+  .change-body ul li strong { color: var(--text); }
+
+  /* Q&A */
+  .qa-section { margin-top: 4px; }
+  .qa-section h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
+  .qa-item { margin-bottom: 12px; }
+  .qa-q {
+    background: #1a2035;
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .qa-q::before { content: '👤 '; font-style: normal; }
+  .qa-a {
+    background: #1a2d1a;
+    border-left: 3px solid var(--accent2);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: #9ad5a5;
+  }
+  .qa-a::before { content: '🤖 '; font-style: normal; }
+
+  /* CODE BLOCK */
+  pre {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 12px;
+    font-family: 'Consolas', 'Cascadia Code', 'SF Mono', monospace;
+    line-height: 1.5;
+    color: #c9d1d9;
+    margin: 8px 0;
+  }
+  code { font-family: 'Consolas', 'Cascadia Code', 'SF Mono', monospace; font-size: 12px; }
+  .hl-fn { color: #d2a8ff; }
+  .hl-kw { color: #ff7b72; }
+  .hl-str { color: #a5d6ff; }
+  .hl-cm { color: #8b949e; font-style: italic; }
+  .hl-num { color: #79c0ff; }
+  .hl-ok { color: #3fb950; }
+  .hl-err { color: #f85149; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+  th { background: var(--bg3); padding: 8px 12px; text-align: left; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+  td { padding: 8px 12px; border-bottom: 1px solid #1e2530; color: var(--muted); }
+  td:first-child { color: var(--text); font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  .status-ok { color: var(--success); font-weight: 700; }
+  .status-pending { color: var(--warning); font-weight: 700; }
+  .status-info { color: var(--accent); font-weight: 600; }
+
+  /* FLOW */
+  .flow {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 8px 0;
+  }
+  .flow .flow-step { color: var(--text); }
+  .flow .flow-ok { color: var(--success); }
+  .flow .flow-err { color: var(--danger); }
+  .flow .flow-arrow { color: var(--accent); }
+
+  /* DISK TABLE */
+  .disk-table { font-size: 13px; }
+  .disk-before { color: var(--danger); }
+  .disk-after { color: var(--success); }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 0;
+  }
+  .section-divider span { color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
+  .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .summary-box h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
+
+  /* STATS ROW */
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .stat-pill {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 13px;
+    margin: 8px 0;
+  }
+  .callout-info { background: #1a2035; border-left: 3px solid var(--accent); color: #9db8e0; }
+  .callout-warn { background: #2d2200; border-left: 3px solid var(--warning); color: #d4a74a; }
+  .callout-ok { background: #0d2d1a; border-left: 3px solid var(--success); color: #7dc48a; }
+  .callout-err { background: #2d0d0d; border-left: 3px solid var(--danger); color: #e08080; }
+
+  /* TIMELINE */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 20px;
+    border-left: 2px solid var(--border);
+  }
+  .tl-item {
+    position: relative;
+    padding: 0 0 16px 20px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg2);
+    border: 2px solid var(--border);
+  }
+  .tl-item.ok::before { border-color: var(--success); background: #0d2d1a; }
+  .tl-item.warn::before { border-color: var(--warning); background: #2d2200; }
+  .tl-item .tl-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .tl-item .tl-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* FOOTER */
+  .site-footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 16px;
+  }
+
+  /* MASTER TASK TABLE */
+  .master-section {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .master-header {
+    background: #161b22;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+  .master-header h2 { font-size: 17px; font-weight: 700; color: var(--text); }
+  .master-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .master-body { padding: 20px 24px; }
+  .phase-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .phase-1 { background: #1a3a28; color: #5fba7d; }
+  .phase-2 { background: #1a2d4a; color: #80c4ff; }
+  .phase-3 { background: #3a1a1a; color: #ff8080; }
+  .phase-4 { background: #2d1f4a; color: #c9a0f0; }
+
+  @media (max-width: 600px) {
+    .site-header { padding: 16px; }
+    .container { padding: 16px; gap: 32px; }
+    .session-body { padding: 16px; }
+    .session-header { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Foresee — Blueprint de Desarrollo</h1>
+  <p class="subtitle">Sesiones 012–016 · 2026-05-25 / 2026-05-26 · Archivo activo: <strong>New 0018.html</strong></p>
+  <nav class="session-nav">
+    <a href="#s012" class="nav-012">Sesión 012</a>
+    <a href="#s013" class="nav-013">Sesión 013</a>
+    <a href="#s014" class="nav-014">Sesión 014</a>
+    <a href="#s015" class="nav-015">Sesión 015</a>
+    <a href="#s016" class="nav-016">Sesión 016</a>
+    <a href="#master-plan">Plan global</a>
+  </nav>
+</header>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════════════
+     SESIÓN 012
+═══════════════════════════════════════════════════════ -->
+<section class="session-block s012" id="s012">
+  <div class="session-header">
+    <div class="session-num">012</div>
+    <div class="session-meta">
+      <h2>Calidad, performance y bug crítico de navegación</h2>
+      <div class="meta-row">
+        <span class="meta-item">📅 <strong>2026-05-25</strong></span>
+        <span class="meta-item">📄 <strong>New 0015.html → New 0016.html</strong></span>
+        <span class="meta-item">🔧 <strong>10 cambios + renombre</strong></span>
+      </div>
+    </div>
+    <span class="session-badge badge-fixes">Fixes &amp; Performance</span>
+  </div>
+
+  <div class="session-body">
+
+    <div class="callout callout-err">
+      <strong>Bug crítico resuelto:</strong> el loading overlay bloqueaba toda la pantalla de forma invisible cuando Firestore fallaba — ningún botón respondía hasta recargar la página.
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">1</div>
+        <span class="change-title">Debounce de renderAll() — scheduleRenderAll()</span>
+        <span class="change-tag tag-perf">Perf</span>
+      </div>
+      <div class="change-body">
+        <p><strong>Problema:</strong> 6 listeners <code>onSnapshot</code> (prefRef, txCol, recurCol, cardsCol, projCol, gComunRef) llamaban <code>renderAll()</code> directamente. Al iniciar sesión, los 6 disparaban casi simultáneamente → hasta 6 renders completos en cascada en ~50ms.</p>
+        <p><strong>Fix:</strong> <code>scheduleRenderAll()</code> con debounce de 50ms. Los 6 listeners lo usan. Las acciones del usuario (<code>switchTab</code>, pull-to-refresh) usan <code>renderAll()</code> directo para respuesta inmediata.</p>
+        <pre><span class="hl-kw">let</span> _renderAllTimer = <span class="hl-kw">null</span>;
+<span class="hl-kw">function</span> <span class="hl-fn">scheduleRenderAll</span>() {
+  <span class="hl-kw">if</span> (_renderAllTimer) <span class="hl-fn">clearTimeout</span>(_renderAllTimer);
+  _renderAllTimer = <span class="hl-fn">setTimeout</span>(renderAll, <span class="hl-num">50</span>);
+}</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">2</div>
+        <span class="change-title">checkBudgetLimits() — filtro incorrecto</span>
+        <span class="change-tag tag-bug">Bug</span>
+      </div>
+      <div class="change-body">
+        <p><strong>Problema:</strong> Usaba <code>getFilteredTransactions()</code> (que aplica filtros de banco/categoría visibles en la UI). Los límites de presupuesto se calculaban solo sobre el subconjunto filtrado, no sobre el mes completo.</p>
+        <p><strong>Fix:</strong> Reemplazado por <code>appState.transactions.filter(t =&gt; t.type === 'expense' &amp;&amp; t.date?.substring(0,7) === currentMonth)</code>.</p>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">3</div>
+        <span class="change-title">renderCreditCardAlerts() — función faltante</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p>Existía el contenedor <code>#credit-card-alerts</code> en el HTML pero nunca se poblaba. Las alertas de tarjetas ≥80% del límite no aparecían.</p>
+        <p><strong>Fix:</strong> Implementada <code>renderCreditCardAlerts()</code> conectada a <code>renderDashboard()</code>. Clase <code>--danger</code> cuando ≥90%.</p>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">4</div>
+        <span class="change-title">Bug teclado en modal calculadora</span>
+        <span class="change-tag tag-bug">Bug</span>
+      </div>
+      <div class="change-body">
+        <p>El listener <code>handleCalcKeyboard</code> solo se adjuntaba desde el click de <code>btn-add-transaction</code>. Al abrir el modal desde el dashboard (<code>dash-income</code>, <code>dash-expense</code>) o el botón de edición en tabla, el teclado no respondía.</p>
+        <p><strong>Fix:</strong> Mover el <code>removeEventListener</code> + <code>addEventListener</code> al final de <code>openCalcModal()</code>.</p>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">5</div>
+        <span class="change-title">Dashboard cache _dashCache eliminado</span>
+        <span class="change-tag tag-bug">Bug</span>
+      </div>
+      <div class="change-body">
+        <p>El cache invalidaba solo cuando cambiaba <code>appState.transactions.length</code>. Si se editaba una transacción (mismo count, datos distintos), el dashboard mostraba valores obsoletos.</p>
+        <p><strong>Fix:</strong> Eliminado <code>_dashCache</code> de <code>appState</code> y de <code>renderDashboard()</code>. El cálculo O(N) no justifica el riesgo de stale data.</p>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">6</div>
+        <span class="change-title">commitInChunks() — límite 500 ops Firestore</span>
+        <span class="change-tag tag-arch">Arquitectura</span>
+      </div>
+      <div class="change-body">
+        <p><code>initiateNewMonth()</code>, <code>resetPeriod()</code> y <code>cfgImportJson()</code> usaban un único <code>writeBatch</code> sin límite. Firestore rechaza batches con más de 500 operaciones.</p>
+        <pre><span class="hl-kw">async function</span> <span class="hl-fn">commitInChunks</span>(ops) {
+  <span class="hl-kw">const</span> CHUNK = <span class="hl-num">499</span>;
+  <span class="hl-kw">for</span> (<span class="hl-kw">let</span> i = <span class="hl-num">0</span>; i &lt; ops.length; i += CHUNK) {
+    <span class="hl-kw">const</span> b = <span class="hl-fn">writeBatch</span>(db);
+    ops.<span class="hl-fn">slice</span>(i, i + CHUNK).<span class="hl-fn">forEach</span>((fn) =&gt; <span class="hl-fn">fn</span>(b));
+    <span class="hl-kw">await</span> b.<span class="hl-fn">commit</span>();
+  }
+}</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">7</div>
+        <span class="change-title">O(N×M) → O(N+M) en processRecurringExpenses()</span>
+        <span class="change-tag tag-perf">Perf</span>
+      </div>
+      <div class="change-body">
+        <p>Por cada gasto recurrente × mes se ejecutaba <code>appState.transactions.some(...)</code> con <code>new Date()</code> dentro — complejidad O(N×M).</p>
+        <p><strong>Fix:</strong> Pre-computar un <code>Set</code> de claves <code>"fecha_categoría_descripción"</code> una sola vez (O(N)), luego lookup O(1) por gasto.</p>
+        <pre><span class="hl-kw">const</span> existingKeys = <span class="hl-kw">new</span> <span class="hl-fn">Set</span>(
+  appState.transactions.<span class="hl-fn">map</span>(
+    (t) =&gt; <span class="hl-str">`${t.date}_${t.category}_${(t.description || '').toLowerCase()}`</span>
+  )
+);</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">8</div>
+        <span class="change-title">Timezone fix en fechas</span>
+        <span class="change-tag tag-bug">Bug</span>
+      </div>
+      <div class="change-body">
+        <p><code>new Date(y, m, d).toISOString().split('T')[0]</code> puede devolver el día anterior en zonas UTC-. Ejemplo: UTC-5 → <code>new Date(2025, 4, 1)</code> → <code>"2025-04-30T..."</code>.</p>
+        <p><strong>Fix:</strong> Construcción manual: <code>`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`</code></p>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">9</div>
+        <span class="change-title">BUG CRÍTICO — prefRef error handler no llamaba hideLoading()</span>
+        <span class="change-tag tag-bug">Bug Crítico</span>
+      </div>
+      <div class="change-body">
+        <p><strong>Síntoma:</strong> Todos los botones (tab-btn, cards del dashboard, action bar) dejaban de responder. Sin mensaje de error visible.</p>
+        <p><strong>Causa:</strong> El loading overlay (<code>#loading-overlay</code>) arranca con <code>class="active"</code>. Se desactiva cuando el callback de <strong>éxito</strong> del listener <code>prefRef</code> llama <code>hideLoading()</code>. Si Firestore lanzaba un error (red, modo incógnito, caché), el error handler se ejecutaba pero <strong>no llamaba</strong> <code>hideLoading()</code>. El overlay quedaba activo con <code>pointer-events: all; z-index: 9999</code> — absorbiendo todos los clicks en silencio.</p>
+        <pre><span class="hl-cm">// ANTES:</span>
+(err) =&gt; <span class="hl-fn">console</span>.<span class="hl-fn">error</span>(<span class="hl-str">'[Firestore] preferencias:'</span>, err)
+
+<span class="hl-cm">// DESPUÉS:</span>
+(err) =&gt; { <span class="hl-fn">console</span>.<span class="hl-fn">error</span>(<span class="hl-str">'[Firestore] preferencias:'</span>, err); <span class="hl-fn">hideLoading</span>(); }</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">10</div>
+        <span class="change-title">Fixes defensivos + renombre a New 0016.html</span>
+        <span class="change-tag tag-fix">Defensivo</span>
+      </div>
+      <div class="change-body">
+        <ul>
+          <li><strong>Null guard:</strong> <code>expense.description.toLowerCase()</code> → <code>(expense.description || '').toLowerCase()</code></li>
+          <li><strong>try/catch</strong> en <code>renderDashboard()</code> para <code>renderCreditCardAlerts()</code></li>
+          <li><strong>Renombre:</strong> <code>New 0015.html</code> → <code>New 0016.html</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <h3>Estado al cerrar sesión 012</h3>
+      <table>
+        <tr><td>Archivo activo</td><td><span class="status-ok">New 0016.html ✓</span></td></tr>
+        <tr><td>Bugs resueltos</td><td><span class="status-ok">6 bugs corregidos</span></td></tr>
+        <tr><td>Mejoras de performance</td><td><span class="status-ok">scheduleRenderAll, O(N+M), timezone</span></td></tr>
+        <tr><td>Nuevas funciones</td><td><span class="status-info">renderCreditCardAlerts, commitInChunks, scheduleRenderAll</span></td></tr>
+        <tr><td>Deuda técnica activa</td><td><span class="status-ok">Ninguna conocida</span></td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SESIÓN 013
+═══════════════════════════════════════════════════════ -->
+<section class="session-block s013" id="s013">
+  <div class="session-header">
+    <div class="session-num">013</div>
+    <div class="session-meta">
+      <h2>Mantenimiento del sistema — Liberación de disco C:</h2>
+      <div class="meta-row">
+        <span class="meta-item">📅 <strong>2026-05-25</strong></span>
+        <span class="meta-item">📄 <strong>New 0016.html → New 0017.html</strong> (renombre por el usuario)</span>
+        <span class="meta-item">💾 <strong>+36.96 GB liberados</strong></span>
+      </div>
+    </div>
+    <span class="session-badge badge-maintenance">Mantenimiento</span>
+  </div>
+
+  <div class="session-body">
+
+    <div class="callout callout-warn">
+      <strong>Sin cambios de código en esta sesión.</strong> El disco C: estaba al 96% de ocupación (7.88 GB libres de 199 GB). Sesión dedicada íntegramente a limpieza del sistema operativo.
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">—</div>
+        <span class="change-title">Diagnóstico previo — causas de ocupación</span>
+        <span class="change-tag tag-arch">Diagnóstico</span>
+      </div>
+      <div class="change-body">
+        <table>
+          <thead><tr><th>Carpeta</th><th>Tamaño</th><th>Causa</th></tr></thead>
+          <tbody>
+            <tr><td>C:\Windows (WinSxS)</td><td>37.9 GB</td><td>Componentes del sistema acumulados</td></tr>
+            <tr><td>AppData\...\WSA</td><td>14.3 GB</td><td>Windows Subsystem for Android</td></tr>
+            <tr><td>AppData\...\Claude UWP</td><td>13.2 GB</td><td>App de escritorio Claude (no Claude Code)</td></tr>
+            <tr><td>AppData\...\CapCut</td><td>12.4 GB</td><td>5 versiones acumuladas</td></tr>
+            <tr><td>AppData\...\Chrome</td><td>7 GB</td><td>OptGuideOnDeviceModel (IA on-device)</td></tr>
+            <tr><td>AppData\...\npm-cache</td><td>0.57 GB</td><td>Caché npm sin limpiar</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">—</div>
+        <span class="change-title">Acciones ejecutadas</span>
+        <span class="change-tag tag-fix">Sistema</span>
+      </div>
+      <div class="change-body">
+        <div class="timeline">
+          <div class="tl-item ok">
+            <div class="tl-title">CapCut — versiones viejas eliminadas</div>
+            <div class="tl-desc">Borradas carpetas 7.0.0.2865, 7.1.0.2881, 7.8.8.3267, 7.9.0.3294. Queda solo 8.5.0.3590. Ganancia: ~6 GB.</div>
+          </div>
+          <div class="tl-item ok">
+            <div class="tl-title">Chrome OptGuideOnDeviceModel eliminado</div>
+            <div class="tl-desc">Modelo IA on-device de Chrome. Regenerable automáticamente. Ganancia: ~4 GB.</div>
+          </div>
+          <div class="tl-item ok">
+            <div class="tl-title">npm cache limpiado</div>
+            <div class="tl-desc"><code>npm cache clean --force</code>. Ganancia: ~0.57 GB.</div>
+          </div>
+          <div class="tl-item ok">
+            <div class="tl-title">Claude UWP desinstalada</div>
+            <div class="tl-desc"><code>Get-AppxPackage -Name "Claude" | Remove-AppxPackage</code>. No afecta Claude Code en VSCode. Ganancia: ~13 GB.</div>
+          </div>
+          <div class="tl-item ok">
+            <div class="tl-title">WSA y herramientas Android desinstaladas</div>
+            <div class="tl-desc">MicrosoftCorporationII.WindowsSubsystemForAndroid + 3 herramientas asociadas. Ganancia: ~14 GB.</div>
+          </div>
+          <div class="tl-item ok">
+            <div class="tl-title">Disk Cleanup + DISM</div>
+            <div class="tl-desc">cleanmgr /sagerun:65 (Temp, Thumbnails, Recycle Bin, etc.) + DISM /Cleanup-Image /StartComponentCleanup (no encontró componentes obsoletos en WinSxS).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <h3>Resultado final</h3>
+      <table class="disk-table">
+        <thead><tr><th></th><th>Antes</th><th>Después</th></tr></thead>
+        <tbody>
+          <tr><td>Espacio libre</td><td class="disk-before">7.88 GB (4%)</td><td class="disk-after">44.84 GB (22.5%)</td></tr>
+          <tr><td>Espacio usado</td><td class="disk-before">191.47 GB</td><td class="disk-after">154.51 GB</td></tr>
+          <tr><td>Ganancia total</td><td></td><td class="disk-after"><strong>+36.96 GB</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SESIÓN 014
+═══════════════════════════════════════════════════════ -->
+<section class="session-block s014" id="s014">
+  <div class="session-header">
+    <div class="session-num">014</div>
+    <div class="session-meta">
+      <h2>Fase 1 completa — 5 features de comercialización</h2>
+      <div class="meta-row">
+        <span class="meta-item">📅 <strong>2026-05-25</strong></span>
+        <span class="meta-item">📄 <strong>New 0017.html</strong> (sin renombre)</span>
+        <span class="meta-item">🚀 <strong>Fase 1 cerrada</strong></span>
+      </div>
+    </div>
+    <span class="session-badge badge-features">Features</span>
+  </div>
+
+  <div class="session-body">
+
+    <div class="callout callout-ok">
+      <strong>Fase 1 del plan de comercialización completada.</strong> 6/6 tareas ✓ — la app está lista para recibir usuarios reales.
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">1</div>
+        <span class="change-title">Fix — Botones X de modales no cerraban en escritorio</span>
+        <span class="change-tag tag-bug">Bug</span>
+      </div>
+      <div class="change-body">
+        <p><strong>Causa:</strong> <code>guardClose()</code> mostraba un diálogo de confirmación ("¿Descartar cambios?") no visible en escritorio.</p>
+        <p><strong>Fix:</strong> Eliminado <code>guardClose</code> de 4 botones X. Ahora llaman directamente a su función de cierre:</p>
+        <ul>
+          <li><code>calc-close-btn</code> → <code>closeCalcModal()</code></li>
+          <li><code>proj-close-btn</code> → <code>closeProjModal()</code></li>
+          <li><code>cc-close-btn</code> → <code>closeCcModal()</code></li>
+          <li><code>rec-close-btn</code> → <code>closeRecModal()</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">2</div>
+        <span class="change-title">Selección de divisa (Tarea 3 Fase 1)</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <ul>
+          <li><code>appState.currency</code> añadido (default <code>'USD'</code>) en init y reset</li>
+          <li><code>formatCurrency()</code> lee <code>appState.currency</code> en lugar de hardcodear <code>'USD'</code></li>
+          <li>Carga desde Firestore al login: <code>d.currency || 'USD'</code></li>
+          <li>HTML: <code>&lt;select id="cfg-currency"&gt;</code> con 15 monedas en Configuración</li>
+          <li>CSS: <code>.cfg-select</code> con chevron SVG inline</li>
+          <li><code>handleSaveCurrency()</code>: guarda en Firestore con merge + <code>scheduleRenderAll()</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">3</div>
+        <span class="change-title">Tutorial de videos (Tarea 4 Fase 1)</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <ul>
+          <li>Botón flotante <code>#tutorial-fab</code> (abajo-izquierda, sobre la barra de tabs)</li>
+          <li>Modal <code>#tutorial-modal</code> con reproductor <code>&lt;video&gt;</code> nativo</li>
+          <li>Layout mobile: vertical. Desktop (≥768px): video + lista en fila</li>
+          <li>Array <code>TUTORIAL_VIDEOS</code> con 7 videos (Cloudinary mp4)</li>
+          <li>Lista construida una sola vez (<code>dataset.built</code>) — sin re-renders</li>
+          <li>Video se pausa automáticamente al cerrar el modal</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">4</div>
+        <span class="change-title">Onboarding 3 pasos (Tarea 5 Fase 1)</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <ul>
+          <li>Modal <code>#onboarding-modal</code> con barra de progreso visual (3 dots)</li>
+          <li><strong>Paso 1:</strong> Bienvenida + captura de alias → guarda en Firestore con merge</li>
+          <li><strong>Paso 2:</strong> Ofrece datos de demo o empezar desde cero</li>
+          <li><strong>Paso 3:</strong> Invitación a ver tutorial → abre <code>openTutorialModal(0)</code></li>
+          <li>Activación: registro escribe <code>localStorage['foresee-new-user'] = '1'</code></li>
+          <li>Tras cargar preferencias, si el flag existe y no hay <code>foresee-onboarding-done</code> → llama <code>showOnboarding()</code> con 800ms delay</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">5</div>
+        <span class="change-title">Datos de demo (Tarea 6 Fase 1)</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p><code>loadDemoData()</code> crea en Firestore vía <code>commitInChunks</code>:</p>
+        <ul>
+          <li>5 categorías con emoji: Alimentación 🛒, Transporte 🚗, Entretenimiento 🎬, Salud 💊, Vivienda 🏠</li>
+          <li>2 bancos: "Mi Banco", "Efectivo"</li>
+          <li>Saldo inicial: $2.000</li>
+          <li>6 transacciones del mes actual (1 ingreso $3.500 + 5 gastos)</li>
+          <li>1 gasto recurrente: Netflix $15.99, vence día 20</li>
+        </ul>
+        <p>Se activa solo si el usuario elige "Sí" en el paso 2 del onboarding.</p>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">6</div>
+        <span class="change-title">Reorganización de carpetas y documentación</span>
+        <span class="change-tag tag-arch">Organización</span>
+      </div>
+      <div class="change-body">
+        <ul>
+          <li><code>MD\</code> — planes, blueprints y documentos markdown</li>
+          <li><code>Informes\</code> — informes de sesión exportados</li>
+          <li><code>CLAUDE.md</code> actualizado con rutas correctas</li>
+          <li><code>project_pendientes.md</code> reescrito con plan de 4 fases</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <h3>Fase 1 — Estado final</h3>
+      <table>
+        <thead><tr><th>#</th><th>Tarea</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Recuperación de contraseña</td><td class="status-ok">✓ Completada</td></tr>
+          <tr><td>2</td><td>Eliminar cuenta y todos los datos (CCPA/GDPR)</td><td class="status-ok">✓ Completada</td></tr>
+          <tr><td>3</td><td>Selección de moneda</td><td class="status-ok">✓ Completada (sesión 014)</td></tr>
+          <tr><td>4</td><td>Tutorial de videos (7 videos Cloudinary)</td><td class="status-ok">✓ Completada (sesión 014)</td></tr>
+          <tr><td>5</td><td>Onboarding 3 pasos</td><td class="status-ok">✓ Completada (sesión 014)</td></tr>
+          <tr><td>6</td><td>Datos de demo</td><td class="status-ok">✓ Completada (sesión 014)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SESIÓN 015
+═══════════════════════════════════════════════════════ -->
+<section class="session-block s015" id="s015">
+  <div class="session-header">
+    <div class="session-num">015</div>
+    <div class="session-meta">
+      <h2>Bug fix crítico — tabs bloqueados por pointer-events</h2>
+      <div class="meta-row">
+        <span class="meta-item">📅 <strong>2026-05-25</strong></span>
+        <span class="meta-item">📄 <strong>New 0017 - copia.html → New 0018.html</strong></span>
+        <span class="meta-item">🔧 <strong>1 bug fix + renombre</strong></span>
+      </div>
+    </div>
+    <span class="session-badge badge-critical">Bug Crítico</span>
+  </div>
+
+  <div class="session-body">
+
+    <div class="qa-section">
+      <h3>Conversación</h3>
+      <div class="qa-item">
+        <div class="qa-q">Los botones tab "Tarjetas de Crédito", "Saldos" y "Reportes" no responden a clics. Los otros tabs sí funcionan. ¿Cuál es la causa?</div>
+        <div class="qa-a">La función <code>_syncModalState</code> aplicaba <code>el.style.pointerEvents = 'none'</code> a <code>#app-header</code>, <code>#tab-bar</code> y <code>#main-wrapper</code> al abrir modales. Si un modal se cerraba por una ruta no estándar (guardClose en el botón X del transfer-modal), el pointer-events quedaba sin restaurarse. Fix: eliminar las líneas de pointer-events de _syncModalState — los modals position:fixed ya bloquean clics solos.</div>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">1</div>
+        <span class="change-title">_syncModalState — pointer-events eliminado</span>
+        <span class="change-tag tag-bug">Bug Crítico</span>
+      </div>
+      <div class="change-body">
+        <p><strong>Síntoma:</strong> Tabs "Tarjetas de Crédito", "Saldos" y "Reportes" no respondían. El bug era intermitente — dependía de si un modal se había abierto y cerrado en la sesión actual.</p>
+        <p><strong>Causa raíz:</strong> Una reforma anterior había añadido <code>el.style.pointerEvents = 'none'</code> a <code>_syncModalState</code>. Cuando cualquier modal se abría, se aplicaba <code>pointer-events: none</code> a los elementos padre del tab-bar. Si el modal cerraba por una ruta no estándar, <code>pointer-events</code> quedaba en <code>none</code> para siempre.</p>
+        <p><strong>Por qué solo algunos tabs:</strong> La propiedad inline <code>el.style.pointerEvents = 'none'</code> en el elemento padre bloquea la propagación de eventos al listener delegado. El efecto era inconsistente según la historia de navegación de la sesión.</p>
+        <p><strong>Fix:</strong> Eliminadas las líneas <code>el.style.pointerEvents = 'none'</code> y <code>el.style.pointerEvents = ''</code> de <code>_syncModalState</code>. Los modals tienen <code>position: fixed; inset: 0; z-index: alto</code> que bloquea clics visualmente. El <code>aria-hidden</code> y <code>body.overflow</code> se conservan.</p>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">2</div>
+        <span class="change-title">Renombre a New 0018.html</span>
+        <span class="change-tag tag-arch">Renombre</span>
+      </div>
+      <div class="change-body">
+        <p><code>New 0017 - copia.html</code> → <code>New 0018.html</code></p>
+        <p>Este archivo contiene <strong>todas</strong> las features de sesiones 001–014: modo claro/oscuro toggle, exportar CSV, header CSS Grid, selector de divisa, tutorial de videos, onboarding, datos de demo, más todos los fixes de calidad.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SESIÓN 016
+═══════════════════════════════════════════════════════ -->
+<section class="session-block s016" id="s016">
+  <div class="session-header">
+    <div class="session-num">016</div>
+    <div class="session-meta">
+      <h2>Task 9: Notificaciones · Bug login bloqueante · Fullscreen post-login</h2>
+      <div class="meta-row">
+        <span class="meta-item">📅 <strong>2026-05-26</strong></span>
+        <span class="meta-item">📄 <strong>New 0018.html</strong> (sin renombre)</span>
+        <span class="meta-item">🚀 <strong>3 tareas completadas</strong></span>
+      </div>
+    </div>
+    <span class="session-badge badge-mixed">Feature + Bugs</span>
+  </div>
+
+  <div class="session-body">
+
+    <!-- TASK 9 NOTIFICATIONS -->
+    <div class="section-divider"><span>Task 9 — Notificaciones del navegador</span></div>
+
+    <div class="qa-section">
+      <h3>Preguntas y respuestas</h3>
+
+      <div class="qa-item">
+        <div class="qa-q">¿Cómo, cuándo y a través de qué medio notifica?</div>
+        <div class="qa-a">Medio: <code>new Notification()</code> (Browser Notification API) — aparece como notificación nativa del OS (Windows: esquina inferior derecha). Cuándo: al abrir la app, se ejecutan <code>checkRecurringPaymentReminders()</code> y <code>checkCreditCardNotifications()</code>. Las condiciones son: gasto recurrente que vence mañana, o tarjeta de crédito que supera el 80% del límite. La deduplicación usa localStorage (una notificación por día por ítem).</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">¿Y en el móvil también notifica?</div>
+        <div class="qa-a"><code>new Notification()</code> está <strong>prohibido</strong> en el hilo principal de Android Chrome. Falla silenciosamente. Para móvil se requiere Service Worker con <code>registration.showNotification()</code>. Por ahora queda como limitación conocida — fix pendiente.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Por ahora no [al fix móvil].</div>
+        <div class="qa-a">Entendido. La limitación queda documentada. La feature funciona completamente en desktop (Windows, Mac, Linux con Chrome/Firefox/Edge).</div>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">1</div>
+        <span class="change-title">CSS — .cfg-notif-row y .cfg-notif-status</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <pre><span class="hl-fn">.cfg-notif-row</span> { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+<span class="hl-fn">.cfg-notif-status</span> { flex: <span class="hl-num">1</span>; font-size: var(--font-xs); color: var(--color-text-muted); }
+<span class="hl-fn">.cfg-notif-status.notif-on</span> { color: var(--color-success); }
+<span class="hl-fn">.cfg-notif-status.notif-blocked</span> { color: var(--color-danger); }</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">2</div>
+        <span class="change-title">HTML — Sección "Notificaciones" en Configuración</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p>Ubicación: entre "Divisa" y "Acciones de Período".</p>
+        <pre><span class="hl-kw">&lt;div</span> class=<span class="hl-str">"cfg-section"</span>&gt;
+  <span class="hl-kw">&lt;h3&gt;</span>Notificaciones<span class="hl-kw">&lt;/h3&gt;</span>
+  <span class="hl-kw">&lt;div</span> class=<span class="hl-str">"cfg-notif-row"</span>&gt;
+    <span class="hl-kw">&lt;span</span> id=<span class="hl-str">"cfg-notif-status"</span> class=<span class="hl-str">"cfg-notif-status"</span>&gt;Cargando...<span class="hl-kw">&lt;/span&gt;</span>
+    <span class="hl-kw">&lt;button</span> class=<span class="hl-str">"btn-outline btn-cfg"</span> id=<span class="hl-str">"cfg-notif-btn"</span>&gt;Activar<span class="hl-kw">&lt;/button&gt;</span>
+  <span class="hl-kw">&lt;/div&gt;</span>
+  <span class="hl-kw">&lt;p</span> class=<span class="hl-str">"cfg-desc"</span>&gt;Recibe alertas del navegador cuando un gasto recurrente vence mañana o una tarjeta de crédito supera el 80% del límite.<span class="hl-kw">&lt;/p&gt;</span>
+<span class="hl-kw">&lt;/div&gt;</span></pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">3</div>
+        <span class="change-title">appState + Firestore load</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <pre><span class="hl-cm">// En appState (init y reset):</span>
+notificationsEnabled: <span class="hl-kw">false</span>,
+
+<span class="hl-cm">// En onSnapshot de preferencias:</span>
+appState.notificationsEnabled = d.notificationsEnabled || <span class="hl-kw">false</span>;</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">4</div>
+        <span class="change-title">sendBrowserNotification(title, body)</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p>Wrapper centralizado con guard triple: <code>notificationsEnabled</code>, soporte del navegador, y permiso concedido.</p>
+        <pre><span class="hl-kw">function</span> <span class="hl-fn">sendBrowserNotification</span>(title, body) {
+  <span class="hl-kw">if</span> (!appState.notificationsEnabled) <span class="hl-kw">return</span>;
+  <span class="hl-kw">if</span> (!(<span class="hl-str">'Notification'</span> <span class="hl-kw">in</span> window) || Notification.permission !== <span class="hl-str">'granted'</span>) <span class="hl-kw">return</span>;
+  <span class="hl-kw">try</span> { <span class="hl-kw">new</span> <span class="hl-fn">Notification</span>(title, { body }); }
+  <span class="hl-kw">catch</span> (err) { console.<span class="hl-fn">error</span>(<span class="hl-str">'[Notification]'</span>, err); }
+}</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">5</div>
+        <span class="change-title">checkRecurringPaymentReminders() — mejorado</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p>Añade browser notification con deduplicación por <code>localStorage</code> (<code>notif-rec-{id}-{fecha}</code>). El toast sigue usando <code>sessionStorage</code> para dedup dentro de la sesión.</p>
+        <pre><span class="hl-kw">const</span> notifKey = <span class="hl-str">`notif-rec-${exp.id}-${tomorrowKey}`</span>;
+<span class="hl-kw">if</span> (!<span class="hl-fn">localStorage</span>.<span class="hl-fn">getItem</span>(notifKey)) {
+  <span class="hl-fn">sendBrowserNotification</span>(<span class="hl-str">'Foresee — Gasto recurrente'</span>, msg);
+  <span class="hl-fn">localStorage</span>.<span class="hl-fn">setItem</span>(notifKey, <span class="hl-str">'1'</span>);
+}</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">6</div>
+        <span class="change-title">checkCreditCardNotifications() — nueva función</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p>Notifica tarjetas >80% del límite, una vez por día por tarjeta.</p>
+        <pre><span class="hl-kw">function</span> <span class="hl-fn">checkCreditCardNotifications</span>() {
+  <span class="hl-kw">const</span> todayKey = <span class="hl-kw">new</span> <span class="hl-fn">Date</span>().<span class="hl-fn">toISOString</span>().<span class="hl-fn">split</span>(<span class="hl-str">'T'</span>)[<span class="hl-num">0</span>];
+  appState.creditCards.<span class="hl-fn">forEach</span>((card) =&gt; {
+    <span class="hl-kw">const</span> deuda = <span class="hl-fn">parseFloat</span>(card.amount) || <span class="hl-num">0</span>;
+    <span class="hl-kw">const</span> limite = <span class="hl-fn">parseFloat</span>(card.limit) || <span class="hl-num">0</span>;
+    <span class="hl-kw">if</span> (!limite || deuda / limite &lt; <span class="hl-num">0.8</span>) <span class="hl-kw">return</span>;
+    <span class="hl-kw">const</span> notifKey = <span class="hl-str">`notif-cc-${card.id}-${todayKey}`</span>;
+    <span class="hl-kw">if</span> (<span class="hl-fn">localStorage</span>.<span class="hl-fn">getItem</span>(notifKey)) <span class="hl-kw">return</span>;
+    <span class="hl-kw">const</span> pct = ((deuda / limite) * <span class="hl-num">100</span>).<span class="hl-fn">toFixed</span>(<span class="hl-num">0</span>);
+    <span class="hl-fn">sendBrowserNotification</span>(<span class="hl-str">'Foresee — Tarjeta de crédito'</span>,
+      <span class="hl-str">`Tarjeta ${card.bank}: ${pct}% del límite usado.`</span>);
+    <span class="hl-fn">localStorage</span>.<span class="hl-fn">setItem</span>(notifKey, <span class="hl-str">'1'</span>);
+  });
+}</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">7</div>
+        <span class="change-title">handleNotificationToggle() / renderNotificationToggle()</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p><code>handleNotificationToggle()</code>: gestiona el flujo de pedir permiso del navegador, guardar en Firestore y mostrar feedback visual.</p>
+        <p><code>renderNotificationToggle()</code>: actualiza el texto y clase de <code>#cfg-notif-status</code> y el label de <code>#cfg-notif-btn</code> según el estado actual (desactivado / activo / bloqueado por el navegador).</p>
+        <p>Listener añadido en <code>setupEventListeners()</code>. Llamado desde <code>renderConfigurationLists()</code> al abrir Configuración.</p>
+      </div>
+    </div>
+
+    <!-- BUG LOGIN -->
+    <div class="section-divider"><span>Bug fix — Login bloqueaba la página</span></div>
+
+    <div class="qa-section">
+      <h3>Preguntas y respuestas</h3>
+
+      <div class="qa-item">
+        <div class="qa-q">Ocurre algo muy extraño cuando me logeo mal y luego entro a la app. Se bloquean algunas funciones, los formularios no responden, se bloquea la página, no funcionan las teclas ESC, F12, F11 y los tab-btn de tarjeta, saldo y reportes no funcionan. ¿Por qué ocurre? Una pregunta adicional: si coloco la contraseña errada varias veces, ¿el usuario se bloquea y de ser así por cuánto tiempo?</div>
+        <div class="qa-a">
+          Causa raíz 1 (principal): <code>requestFullscreen()</code> se llamaba dentro de <code>handleLogin()</code> inmediatamente después de que Firebase autenticara, mientras <code>auth-modal</code> todavía estaba visible. El navegador entraba en fullscreen con el modal activo. En fullscreen: ESC sale del fullscreen (no cierra modal) → el usuario percibe "ESC no funciona". F11 intenta alternar fullscreen del navegador → conflicto con API. Causa raíz 2: sin guard de doble envío — Enter en password disparaba el form aunque el botón estuviera deshabilitado, dejando el estado UI inconsistente. Sobre Firebase: sí bloquea con <code>auth/too-many-requests</code> tras ~10 intentos fallidos. Backoff exponencial, típicamente unos minutos.
+        </div>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">8</div>
+        <span class="change-title">handleLogin() / handleRegister() — reescritos con guards</span>
+        <span class="change-tag tag-bug">Bug Crítico</span>
+      </div>
+      <div class="change-body">
+        <ul>
+          <li><code>requestFullscreen()</code> <strong>eliminado</strong> de <code>handleLogin()</code></li>
+          <li>Flag <code>let _authInProgress = false</code> — bloquea dobles envíos en login y registro</li>
+          <li><code>finally</code> block en ambas funciones: <code>setAuthLoading(false)</code> siempre ejecuta</li>
+          <li>Mensaje específico para <code>auth/too-many-requests</code>: "Demasiados intentos fallidos. Espera unos minutos e intenta de nuevo."</li>
+        </ul>
+        <pre><span class="hl-kw">let</span> _authInProgress = <span class="hl-kw">false</span>;
+
+<span class="hl-kw">async function</span> <span class="hl-fn">handleLogin</span>(email, password) {
+  <span class="hl-kw">if</span> (_authInProgress) <span class="hl-kw">return</span>;
+  <span class="hl-fn">clearAuthErrors</span>();
+  _authInProgress = <span class="hl-kw">true</span>;
+  <span class="hl-fn">setAuthLoading</span>(<span class="hl-kw">true</span>);
+  <span class="hl-kw">try</span> {
+    <span class="hl-kw">await</span> <span class="hl-fn">signInWithEmailAndPassword</span>(auth, email, password);
+  } <span class="hl-kw">catch</span> (err) {
+    <span class="hl-kw">const</span> msg = err.code === <span class="hl-str">'auth/too-many-requests'</span>
+      ? <span class="hl-str">'Demasiados intentos fallidos. Espera unos minutos e intenta de nuevo.'</span>
+      : <span class="hl-str">'Correo o contraseña incorrectos.'</span>;
+    document.<span class="hl-fn">getElementById</span>(<span class="hl-str">'auth-password-error'</span>).textContent = msg;
+  } <span class="hl-kw">finally</span> {
+    _authInProgress = <span class="hl-kw">false</span>;
+    <span class="hl-fn">setAuthLoading</span>(<span class="hl-kw">false</span>);
+  }
+}</pre>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">9</div>
+        <span class="change-title">MODAL_IDS — privacy-modal y terms-modal añadidos</span>
+        <span class="change-tag tag-bug">Bug</span>
+      </div>
+      <div class="change-body">
+        <p><code>privacy-modal</code> y <code>terms-modal</code> eran modal-overlays que no estaban en la lista <code>MODAL_IDS</code>. No participaban en <code>_syncModalState</code>, por lo que al abrirlos no se registraban como modales activos — podían interferir con el estado de la UI. Añadidos a la lista.</p>
+      </div>
+    </div>
+
+    <!-- FULLSCREEN POST-LOGIN -->
+    <div class="section-divider"><span>Fullscreen post-login restaurado</span></div>
+
+    <div class="qa-section">
+      <h3>Preguntas y respuestas</h3>
+
+      <div class="qa-item">
+        <div class="qa-q">Por ahora con la modificación está funcionando bien, pero antes desde que hice la aplicación la pantalla abría en fullscreen al iniciar la app y quiero que la aplicación después de loguearse abra fullscreen. Analiza y dame una respuesta.</div>
+        <div class="qa-a">El problema de fondo es que <code>requestFullscreen()</code> requiere <em>transient user activation</em> — una ventana de ~1 segundo. Los callbacks de Firebase (<code>onAuthStateChanged</code>, <code>onSnapshot</code>) son macrotasks asíncronas que llegan fuera de esa ventana. No se puede llamar <code>requestFullscreen()</code> directamente ahí de forma confiable. La solución correcta: ya existe <code>#fullscreen-prompt</code> en el HTML (nunca se había activado). Es una pantalla de bienvenida "Iniciar Aplicación". El clic del usuario <strong>sí es</strong> un user gesture → <code>requestFullscreen()</code> funciona de forma confiable. Flujo: Login → datos cargan → pantalla bienvenida → usuario hace clic → fullscreen confiable.</div>
+      </div>
+    </div>
+
+    <div class="change-card">
+      <div class="change-header">
+        <div class="change-num">10</div>
+        <span class="change-title">_showFullscreenOnLoad — flag + activación del prompt</span>
+        <span class="change-tag tag-feature">Feature</span>
+      </div>
+      <div class="change-body">
+        <p>3 edits coordinados:</p>
+        <pre><span class="hl-cm">// 1. Declarar junto a _authInProgress:</span>
+<span class="hl-kw">let</span> _showFullscreenOnLoad = <span class="hl-kw">false</span>;
+
+<span class="hl-cm">// 2. En onAuthStateChanged(user) → activar al loguearse:</span>
+<span class="hl-kw">if</span> (user) {
+  _showFullscreenOnLoad = <span class="hl-kw">true</span>;   <span class="hl-cm">// ← AÑADIDO</span>
+  <span class="hl-fn">hideAuthModal</span>(); <span class="hl-fn">showLoading</span>(); <span class="hl-fn">loadUserData</span>(user.uid);
+}
+
+<span class="hl-cm">// 3. En unloadUserData() → limpiar al desloguearse:</span>
+_showFullscreenOnLoad = <span class="hl-kw">false</span>;   <span class="hl-cm">// ← AÑADIDO</span>
+
+<span class="hl-cm">// 4. En onSnapshot preferencias, después de hideLoading():</span>
+<span class="hl-kw">if</span> (_showFullscreenOnLoad && !document.fullscreenElement) {
+  _showFullscreenOnLoad = <span class="hl-kw">false</span>;
+  document.<span class="hl-fn">getElementById</span>(<span class="hl-str">'fullscreen-prompt'</span>).classList.<span class="hl-fn">add</span>(<span class="hl-str">'active'</span>);
+}</pre>
+        <div class="flow">
+<span class="flow-step">Login → Firebase autentica → onAuthStateChanged(user)</span>
+  <span class="flow-arrow">→</span> _showFullscreenOnLoad = true
+  <span class="flow-arrow">→</span> hideAuthModal() → showLoading() → loadUserData()
+    <span class="flow-arrow">→</span> Firestore carga → hideLoading()
+      <span class="flow-arrow">→</span> flag activo &amp;&amp; !fullscreenElement → <span class="flow-ok">true</span>
+        <span class="flow-arrow">→</span> fullscreen-prompt.active añadido
+          <span class="flow-arrow">→</span> <span class="flow-step">Usuario ve "Bienvenido / Iniciar Aplicación"</span>
+            <span class="flow-arrow">→</span> <span class="flow-ok">[USER GESTURE → requestFullscreen() → FULLSCREEN OK]</span>
+        </div>
+        <p>Guards: si ya está en fullscreen (<code>document.fullscreenElement</code>), no muestra el prompt. Si Firestore actualiza preferencias en background, el flag ya es false → no reaparece.</p>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <h3>Estado final — Sesión 016</h3>
+      <table>
+        <thead><tr><th>Elemento</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Archivo activo</td><td class="status-ok">New 0018.html ✓</td></tr>
+          <tr><td>Task 9 — Notificaciones</td><td class="status-ok">✓ Completa (desktop)</td></tr>
+          <tr><td>Bug login/fullscreen bloqueante</td><td class="status-ok">✓ Corregido</td></tr>
+          <tr><td>Fullscreen post-login</td><td class="status-ok">✓ Restaurado (vía prompt)</td></tr>
+          <tr><td>Notificaciones móvil (Android Chrome)</td><td><span style="color:var(--warning)">⏳ Pendiente (Service Worker)</span></td></tr>
+          <tr><td>Tarea 10 — Reportes avanzados</td><td><span class="status-pending">⏳ Pendiente (Fase 2)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     MASTER TASK TABLE
+═══════════════════════════════════════════════════════ -->
+<section class="master-section" id="master-plan">
+  <div class="master-header">
+    <h2>Plan de Comercialización — Estado Global</h2>
+    <p>Todas las tareas del plan de 4 fases · Actualizado al cierre de sesión 016</p>
+  </div>
+  <div class="master-body">
+
+    <div class="phase-label phase-1">Fase 1 — App lista para usuarios ✓ Completa</div>
+    <table>
+      <thead><tr><th>#</th><th>Tarea</th><th>Sesión</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Recuperación de contraseña (sendPasswordResetEmail)</td><td>Previa</td><td class="status-ok">✓</td></tr>
+        <tr><td>2</td><td>Eliminar cuenta y todos los datos (CCPA/GDPR)</td><td>Previa</td><td class="status-ok">✓</td></tr>
+        <tr><td>3</td><td>Selección de moneda (formatCurrency + Firestore)</td><td>014</td><td class="status-ok">✓</td></tr>
+        <tr><td>4</td><td>Tutorial de videos (7 videos Cloudinary, video nativo)</td><td>014</td><td class="status-ok">✓</td></tr>
+        <tr><td>5</td><td>Onboarding 3 pasos (alias → demo → tutorial)</td><td>014</td><td class="status-ok">✓</td></tr>
+        <tr><td>6</td><td>Datos de demo (5 categorías, 2 bancos, 6 tx, 1 recurrente)</td><td>014</td><td class="status-ok">✓</td></tr>
+      </tbody>
+    </table>
+
+    <br>
+    <div class="phase-label phase-2">Fase 2 — Mejoras de producto 🔄 En curso</div>
+    <table>
+      <thead><tr><th>#</th><th>Tarea</th><th>Sesión</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>7</td><td>Exportar CSV</td><td>014</td><td class="status-ok">✓</td></tr>
+        <tr><td>8</td><td>Modo oscuro / claro toggle</td><td>014</td><td class="status-ok">✓</td></tr>
+        <tr><td>9</td><td>Notificaciones del navegador (Browser Notification API)</td><td>016</td><td class="status-ok">✓ Desktop</td></tr>
+        <tr><td>10</td><td>Reportes avanzados</td><td>—</td><td class="status-pending">⏳ Próxima</td></tr>
+      </tbody>
+    </table>
+
+    <br>
+    <div class="phase-label phase-3">Fase 3 — Monetización ⬜ Pendiente</div>
+    <table>
+      <thead><tr><th>#</th><th>Tarea</th><th>Notas</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>11</td><td>Lógica freemium en el código</td><td>Definir límites plan gratis</td><td class="status-pending">⏳</td></tr>
+        <tr><td>12</td><td>Pantalla de upgrade dentro de la app</td><td>Modal con features Pro + botón de compra</td><td class="status-pending">⏳</td></tr>
+        <tr><td>13</td><td>Stripe + Firebase Cloud Functions</td><td>Procesa pago → desbloquea plan Pro</td><td class="status-pending">⏳</td></tr>
+        <tr><td>14</td><td>Textos legales</td><td>Privacy Policy, Terms of Service, Refund Policy</td><td class="status-pending">⏳</td></tr>
+      </tbody>
+    </table>
+
+    <br>
+    <div class="phase-label phase-4">Fase 4 — Lanzamiento ⬜ Pendiente</div>
+    <table>
+      <thead><tr><th>#</th><th>Tarea</th><th>Notas</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>15</td><td>Dominio propio</td><td>foreseefinances.com</td><td class="status-pending">⏳</td></tr>
+        <tr><td>16</td><td>Landing page</td><td>Demo 60-90 seg, precio, CTA</td><td class="status-pending">⏳</td></tr>
+        <tr><td>17</td><td>PWA — manifest.json</td><td>Instalar como app nativa en móvil</td><td class="status-pending">⏳</td></tr>
+        <tr><td>18</td><td>Email de soporte visible</td><td>Genera confianza antes de comprar</td><td class="status-pending">⏳</td></tr>
+      </tbody>
+    </table>
+
+    <br>
+    <div class="callout callout-info">
+      <strong>Próxima sesión (017):</strong> Tarea 10 — Reportes avanzados. Diferenciador vs apps básicas. Archivo activo: <strong>New 0018.html</strong>.
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+<footer class="site-footer">
+  Foresee — Blueprint de Desarrollo · Sesiones 012–016 · 2026-05-25 / 2026-05-26
+</footer>
+
+</body>
+</html>
