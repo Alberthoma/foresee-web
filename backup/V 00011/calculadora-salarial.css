@@ -536,6 +536,16 @@ select:focus {
   padding: 1rem;
 }
 
+.entry-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
 .entry-card__field {
   display: flex;
   flex-direction: column;
@@ -598,9 +608,6 @@ select:focus {
 .category-row__bar--posttax {
   background-color: var(--accent);
 }
-.category-row__bar--data {
-  background-color: var(--text-secondary);
-}
 
 .category-row__name {
   flex: 1;
@@ -633,13 +640,6 @@ select:focus {
 
 .category-row.is-open .category-row__details {
   display: block;
-}
-
-.category-row.is-open .entry-card__fields {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 0.6rem;
 }
 
 .category-row__detail-item {

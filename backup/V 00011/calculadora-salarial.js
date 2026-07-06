@@ -444,10 +444,38 @@ function buildEntryCard(entry) {
   card.className = 'entry-card';
   card.dataset.id = entry.id;
 
+  const header = document.createElement('div');
+  header.className = 'entry-card__header';
+  header.append(
+    buildSelectField('Estado', Object.entries(STATES).map(([code, cfg]) => [code, cfg.name]), entry.state, (value) =>
+      updateEntryField(entry.id, 'state', value),
+    ),
+    buildNumberField('Tarifa/Hora ($)', entry.hourlyRate, '0.01', (value) =>
+      updateEntryField(entry.id, 'hourlyRate', value),
+    ),
+    buildNumberField('H. Regulares', entry.regularHours, '0.1', (value) =>
+      updateEntryField(entry.id, 'regularHours', value),
+    ),
+    buildNumberField('H. Feriado', entry.holidayHours, '0.1', (value) =>
+      updateEntryField(entry.id, 'holidayHours', value),
+    ),
+    buildNumberField('H. Overtime', entry.overtimeHours, '0.01', (value) =>
+      updateEntryField(entry.id, 'overtimeHours', value),
+    ),
+    buildSelectField(
+      'Estado Civil',
+      [
+        ['single', 'Soltero/a'],
+        ['married', 'Casado/a'],
+      ],
+      entry.filingStatus,
+      (value) => updateEntryField(entry.id, 'filingStatus', value),
+    ),
+    buildEntryActions(entry.id),
+  );
+
   const categories = document.createElement('div');
   categories.className = 'category-list';
-
-  categories.appendChild(buildEntryDataRow(entry));
 
   categories.appendChild(
     buildCategoryRow('gross', 'Salario Bruto', result.grossPay, [
@@ -494,63 +522,8 @@ function buildEntryCard(entry) {
   `;
   categories.appendChild(net);
 
-  card.append(categories);
+  card.append(header, categories);
   return card;
-}
-
-/**
- * Fila colapsable con los datos base del cálculo (estado, tarifa, horas,
- * estado civil) y las acciones Editar/Eliminar. Colapsada muestra un
- * resumen (estado + tarifa por hora); al expandir revela los campos
- * editables, igual que las demás categorías de la tarjeta.
- */
-function buildEntryDataRow(entry) {
-  const row = document.createElement('div');
-  row.className = 'category-row';
-
-  const summary = document.createElement('button');
-  summary.type = 'button';
-  summary.className = 'category-row__summary';
-  summary.innerHTML = `
-    <span class="category-row__bar category-row__bar--data"></span>
-    <span class="category-row__name">${STATES[entry.state].name}</span>
-    <span class="category-row__amount">${formatCurrency(Number(entry.hourlyRate) || 0)}/h</span>
-    <span class="category-row__chevron">▾</span>
-  `;
-  summary.addEventListener('click', () => row.classList.toggle('is-open'));
-
-  const detailsEl = document.createElement('div');
-  detailsEl.className = 'category-row__details entry-card__fields';
-  detailsEl.append(
-    buildSelectField('Estado', Object.entries(STATES).map(([code, cfg]) => [code, cfg.name]), entry.state, (value) =>
-      updateEntryField(entry.id, 'state', value),
-    ),
-    buildNumberField('Tarifa/Hora ($)', entry.hourlyRate, '0.01', (value) =>
-      updateEntryField(entry.id, 'hourlyRate', value),
-    ),
-    buildNumberField('H. Regulares', entry.regularHours, '0.1', (value) =>
-      updateEntryField(entry.id, 'regularHours', value),
-    ),
-    buildNumberField('H. Feriado', entry.holidayHours, '0.1', (value) =>
-      updateEntryField(entry.id, 'holidayHours', value),
-    ),
-    buildNumberField('H. Overtime', entry.overtimeHours, '0.01', (value) =>
-      updateEntryField(entry.id, 'overtimeHours', value),
-    ),
-    buildSelectField(
-      'Estado Civil',
-      [
-        ['single', 'Soltero/a'],
-        ['married', 'Casado/a'],
-      ],
-      entry.filingStatus,
-      (value) => updateEntryField(entry.id, 'filingStatus', value),
-    ),
-    buildEntryActions(entry.id),
-  );
-
-  row.append(summary, detailsEl);
-  return row;
 }
 
 function buildEntryActions(entryId) {

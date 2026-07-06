@@ -3,7 +3,7 @@
 /* Service Worker — Calculadora de Salario Neto.
    CACHE_VERSION debe subir en cada release (junto con el footer #app-version);
    eso invalida automáticamente la caché anterior en el evento 'activate'. */
-const CACHE_VERSION = 12;
+const CACHE_VERSION = 11;
 const CACHE_NAME = `calculadora-salarial-cache-v${CACHE_VERSION}`;
 
 const APP_SHELL = [
