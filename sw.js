@@ -1,47 +1,67 @@
-const CACHE_NAME = 'foresee-cache-v2';
+'use strict';
 
-const STATIC_ASSETS = [
+/* Service Worker — Calculadora de Salario Neto.
+   CACHE_VERSION debe subir en cada release (junto con el footer #app-version);
+   eso invalida automáticamente la caché anterior en el evento 'activate'. */
+const CACHE_VERSION = 6;
+const CACHE_NAME = `calculadora-salarial-cache-v${CACHE_VERSION}`;
+
+const APP_SHELL = [
+  './',
+  'index.html',
+  'calculadora-salarial.css',
+  'calculadora-salarial.js',
   'manifest.json',
-  'numberParser.js',
+  'icon-192.png',
+  'icon-512.png',
+  'apple-touch-icon.png',
 ];
 
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   self.skipWaiting();
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
+});
+
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS))
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
+      .then(() => self.clients.claim()),
   );
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
-});
+self.addEventListener('fetch', (event) => {
+  const isDocument = event.request.destination === 'document' || event.request.url.endsWith('.html');
 
-self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
-
-  // HTML: siempre de la red — nunca servir versión cacheada
-  if (event.request.destination === 'document' || url.pathname.endsWith('.html')) {
+  if (isDocument) {
+    // HTML: red primero, para que el usuario reciba siempre la última versión;
+    // si no hay red, se sirve la copia cacheada.
     event.respondWith(
-      fetch(event.request).catch(() => caches.match('/index.html'))
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('index.html'))),
     );
     return;
   }
 
-  // Assets estáticos: cache-first
+  // Assets estáticos: caché primero, con actualización en segundo plano.
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        if (response && response.status === 200 && response.type === 'basic') {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      });
-    })
+    caches.match(event.request).then((cached) => {
+      const fetchPromise = fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200 && response.type === 'basic') {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => cached);
+      return cached || fetchPromise;
+    }),
   );
 });

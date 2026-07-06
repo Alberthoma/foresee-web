@@ -610,9 +610,17 @@ function handleFormSubmit(event) {
 /* Inicialización                                                        */
 /* ---------------------------------------------------------------------- */
 
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js');
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   populateStateSelect();
+  registerServiceWorker();
 
   document.getElementById('contribution401kType').addEventListener('change', () => {
     updateContribution401kLabel();
