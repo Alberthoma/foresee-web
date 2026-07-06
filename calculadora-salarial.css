@@ -181,6 +181,137 @@ body {
   }
 }
 
+/* ---------- Header: usuario / sesión ---------- */
+
+.app-header__right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.app-header__user {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.app-header__user-email {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  max-width: 11rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Pantalla de acceso ---------- */
+
+.auth-screen {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 23rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 2.5rem 2rem 2rem;
+  text-align: center;
+}
+
+.auth-card__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.auth-card h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.auth-card__subtitle {
+  margin: 0 0 1.75rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.auth-card form {
+  text-align: left;
+}
+
+.auth-card .field + .field {
+  margin-top: 0.85rem;
+}
+
+.auth-card__submit {
+  width: 100%;
+  margin-top: 1.6rem;
+}
+
+.auth-card__message {
+  margin: 1rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.auth-card__message--error {
+  background-color: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  color: var(--negative);
+}
+
+.auth-card__message--notice {
+  background-color: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  color: var(--positive);
+}
+
+.auth-card__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.75rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.link-btn:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
 /* ---------- Tarjetas ---------- */
 
 .card {
@@ -555,6 +686,14 @@ select:focus {
 @media (max-width: 560px) {
   .app-header {
     flex-wrap: wrap;
+  }
+
+  .app-header__user-email {
+    max-width: 7rem;
+  }
+
+  .auth-card {
+    padding: 2rem 1.25rem 1.5rem;
   }
 
   .field-row,

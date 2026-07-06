@@ -35,17 +35,72 @@
             </p>
           </div>
         </div>
-        <button
-          id="theme-toggle"
-          type="button"
-          aria-label="Cambiar entre modo claro y oscuro"
-        >
-          <span class="theme-icon theme-icon--sun">☀</span>
-          <span class="theme-icon theme-icon--moon">☾</span>
-        </button>
+        <div class="app-header__right">
+          <div id="user-info" class="app-header__user hidden">
+            <span id="user-email" class="app-header__user-email"></span>
+            <button id="logout-btn" type="button" class="btn btn--ghost">
+              Cerrar sesión
+            </button>
+          </div>
+          <button
+            id="theme-toggle"
+            type="button"
+            aria-label="Cambiar entre modo claro y oscuro"
+          >
+            <span class="theme-icon theme-icon--sun">☀</span>
+            <span class="theme-icon theme-icon--moon">☾</span>
+          </button>
+        </div>
       </header>
 
-      <main>
+      <section id="auth-screen" class="auth-screen">
+        <div class="auth-card">
+          <div class="auth-card__badge">$</div>
+          <h2 id="auth-title">Iniciar sesión</h2>
+          <p id="auth-subtitle" class="auth-card__subtitle">
+            Accede para sincronizar tus cálculos entre tus dispositivos.
+          </p>
+
+          <form id="auth-form">
+            <div class="field">
+              <label for="auth-email">Correo electrónico</label>
+              <input
+                id="auth-email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="auth-password">Contraseña</label>
+              <input
+                id="auth-password"
+                type="password"
+                autocomplete="current-password"
+                minlength="6"
+                required
+              />
+            </div>
+            <button type="submit" id="auth-submit-btn" class="btn btn--primary auth-card__submit">
+              Iniciar sesión
+            </button>
+          </form>
+
+          <p id="auth-error" class="auth-card__message auth-card__message--error hidden"></p>
+          <p id="auth-notice" class="auth-card__message auth-card__message--notice hidden"></p>
+
+          <div class="auth-card__links">
+            <button type="button" id="auth-forgot-btn" class="link-btn">
+              ¿Olvidaste tu contraseña?
+            </button>
+            <button type="button" id="auth-toggle-btn" class="link-btn">
+              ¿No tienes cuenta? Crea una
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <main id="app-main" class="hidden">
         <section class="card" aria-labelledby="form-title">
           <h2 id="form-title" data-mode-label>Nuevo Cálculo</h2>
 
@@ -265,10 +320,10 @@
 
       <footer class="app-footer">
         <span>Calculadora de Salario Neto</span>
-        <span id="app-version">V 00006</span>
+        <span id="app-version">V 00007</span>
       </footer>
     </div>
 
-    <script src="calculadora-salarial.js"></script>
+    <script type="module" src="calculadora-salarial.js"></script>
   </body>
 </html>

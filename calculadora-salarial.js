@@ -4,7 +4,49 @@
    Calculadora de Salario Neto — lógica
    Datos fiscales: año fiscal 2026 (IRS + agencias tributarias estatales).
    Estimador de nómina — no sustituye asesoría fiscal profesional.
+   Los cálculos se guardan en Firebase (Auth + Firestore) para sincronizar
+   entre dispositivos bajo la cuenta del usuario.
    ========================================================================== */
+
+// Mismo proyecto Firebase que la app de finanzas, con una colección propia
+// (artifacts/calculadora-salarial/...) para no mezclar los datos de ambas apps.
+const FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyCTicX5tqqVr3pK_RFqgvqpRavsUuTvS2g',
+  authDomain: 'wittfinances-282f1.firebaseapp.com',
+  projectId: 'wittfinances-282f1',
+  storageBucket: 'wittfinances-282f1.firebasestorage.app',
+  messagingSenderId: '998192322959',
+  appId: '1:998192322959:web:e2afcdd7f47da3767853fa',
+};
+
+const ENTRIES_PATH = (uid) => `artifacts/calculadora-salarial/users/${uid}/entries`;
+
+// Los módulos de Firebase se cargan con import dinámico (no import estático):
+// si el import de un módulo remoto falla, ES Modules aborta la ejecución de
+// TODO el archivo. Con import dinámico, si no hay conexión, el resto de la
+// app (tema, formulario, cálculo) sigue funcionando; solo se deshabilita el
+// inicio de sesión con un aviso.
+let auth = null;
+let db = null;
+let fbAuth = null;
+let fbStore = null;
+
+async function initFirebase() {
+  const [{ initializeApp }, authMod, storeMod] = await Promise.all([
+    import('https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js'),
+    import('https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js'),
+    import('https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js'),
+  ]);
+
+  fbAuth = authMod;
+  fbStore = storeMod;
+
+  const firebaseApp = initializeApp(FIREBASE_CONFIG);
+  auth = fbAuth.getAuth(firebaseApp);
+  db = fbStore.initializeFirestore(firebaseApp, {
+    localCache: fbStore.persistentLocalCache({ tabManager: fbStore.persistentMultipleTabManager() }),
+  });
+}
 
 const PAY_PERIODS = 26; // Quincenal
 
@@ -125,7 +167,6 @@ const STATES = {
 };
 
 const DEFAULT_STATE = 'FL';
-const STORAGE_KEY_ENTRIES = 'calculadoraSalarialEntries';
 const STORAGE_KEY_THEME = 'calculadoraSalarialTheme';
 
 const formatCurrency = (value) =>
@@ -259,20 +300,27 @@ function calculatePaycheck(data) {
 }
 
 /* ---------------------------------------------------------------------- */
-/* Persistencia                                                          */
+/* Persistencia (Firestore)                                              */
 /* ---------------------------------------------------------------------- */
 
-function loadEntries() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_ENTRIES);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
+let currentUid = null;
+let currentEntries = [];
+let unsubscribeEntries = null;
+
+function subscribeToEntries(uid) {
+  const entriesQuery = fbStore.query(fbStore.collection(db, ENTRIES_PATH(uid)), fbStore.orderBy('createdAt', 'asc'));
+  unsubscribeEntries = fbStore.onSnapshot(entriesQuery, (snapshot) => {
+    currentEntries = snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+    renderTable();
+  });
 }
 
-function saveEntries(entries) {
-  localStorage.setItem(STORAGE_KEY_ENTRIES, JSON.stringify(entries));
+function unsubscribeFromEntries() {
+  if (unsubscribeEntries) {
+    unsubscribeEntries();
+    unsubscribeEntries = null;
+  }
+  currentEntries = [];
 }
 
 /* ---------------------------------------------------------------------- */
@@ -369,12 +417,11 @@ function stateTaxLabel(stateCode) {
 }
 
 function renderTable() {
-  const entries = loadEntries();
   const list = document.getElementById('results-list');
   list.innerHTML = '';
-  document.getElementById('empty-hint').classList.toggle('hidden', entries.length > 0);
+  document.getElementById('empty-hint').classList.toggle('hidden', currentEntries.length > 0);
 
-  entries.forEach((entry) => {
+  currentEntries.forEach((entry) => {
     list.appendChild(buildEntryCard(entry));
   });
 }
@@ -562,19 +609,14 @@ function buildCategoryRow(kind, name, total, details) {
 }
 
 function updateEntryField(id, field, value) {
-  const entries = loadEntries();
-  const entry = entries.find((e) => e.id === id);
-  if (!entry) return;
-  entry[field] = value;
-  saveEntries(entries);
-  renderTable();
+  if (!currentUid) return;
+  fbStore.updateDoc(fbStore.doc(db, ENTRIES_PATH(currentUid), id), { [field]: value });
 }
 
 function deleteEntry(id) {
-  const entries = loadEntries().filter((e) => e.id !== id);
-  saveEntries(entries);
+  if (!currentUid) return;
   if (editingEntryId === id) resetFormToAddMode();
-  renderTable();
+  fbStore.deleteDoc(fbStore.doc(db, ENTRIES_PATH(currentUid), id));
 }
 
 function startEdit(id) {
@@ -591,19 +633,16 @@ function startEdit(id) {
 
 function handleFormSubmit(event) {
   event.preventDefault();
+  if (!currentUid) return;
   const data = readFormData();
-  const entries = loadEntries();
 
   if (editingEntryId) {
-    const index = entries.findIndex((e) => e.id === editingEntryId);
-    if (index !== -1) entries[index] = { ...entries[index], ...data };
+    fbStore.updateDoc(fbStore.doc(db, ENTRIES_PATH(currentUid), editingEntryId), data);
   } else {
-    entries.push({ id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, ...data });
+    fbStore.addDoc(fbStore.collection(db, ENTRIES_PATH(currentUid)), { ...data, createdAt: fbStore.serverTimestamp() });
   }
 
-  saveEntries(entries);
   resetFormToAddMode();
-  renderTable();
 }
 
 /* ---------------------------------------------------------------------- */
@@ -615,6 +654,132 @@ function registerServiceWorker() {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js');
   });
+}
+
+/* ---------------------------------------------------------------------- */
+/* Autenticación                                                         */
+/* ---------------------------------------------------------------------- */
+
+let authMode = 'login';
+
+const AUTH_ERROR_MESSAGES = {
+  'auth/invalid-email': 'El correo electrónico no es válido.',
+  'auth/user-not-found': 'No existe una cuenta con ese correo.',
+  'auth/wrong-password': 'Contraseña incorrecta.',
+  'auth/invalid-credential': 'Correo o contraseña incorrectos.',
+  'auth/email-already-in-use': 'Ya existe una cuenta con ese correo.',
+  'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
+  'auth/too-many-requests': 'Demasiados intentos. Espera unos minutos e intenta de nuevo.',
+  'auth/missing-password': 'Ingresa una contraseña.',
+};
+
+function getAuthErrorMessage(error) {
+  return AUTH_ERROR_MESSAGES[error.code] || 'Ocurrió un error. Intenta de nuevo.';
+}
+
+function clearAuthMessages() {
+  document.getElementById('auth-error').classList.add('hidden');
+  document.getElementById('auth-notice').classList.add('hidden');
+}
+
+function showAuthError(message) {
+  clearAuthMessages();
+  const el = document.getElementById('auth-error');
+  el.textContent = message;
+  el.classList.remove('hidden');
+}
+
+function showAuthNotice(message) {
+  clearAuthMessages();
+  const el = document.getElementById('auth-notice');
+  el.textContent = message;
+  el.classList.remove('hidden');
+}
+
+function setAuthMode(mode) {
+  authMode = mode;
+  clearAuthMessages();
+  const isLogin = mode === 'login';
+  document.getElementById('auth-title').textContent = isLogin ? 'Iniciar sesión' : 'Crear cuenta';
+  document.getElementById('auth-subtitle').textContent = isLogin
+    ? 'Accede para sincronizar tus cálculos entre tus dispositivos.'
+    : 'Crea una cuenta para guardar tus cálculos en la nube.';
+  document.getElementById('auth-submit-btn').textContent = isLogin ? 'Iniciar sesión' : 'Crear cuenta';
+  document.getElementById('auth-toggle-btn').textContent = isLogin
+    ? '¿No tienes cuenta? Crea una'
+    : '¿Ya tienes cuenta? Inicia sesión';
+}
+
+async function handleAuthSubmit(event) {
+  event.preventDefault();
+  if (!auth) return;
+  clearAuthMessages();
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const submitBtn = document.getElementById('auth-submit-btn');
+
+  submitBtn.disabled = true;
+  try {
+    if (authMode === 'login') {
+      await fbAuth.signInWithEmailAndPassword(auth, email, password);
+    } else {
+      await fbAuth.createUserWithEmailAndPassword(auth, email, password);
+    }
+  } catch (error) {
+    showAuthError(getAuthErrorMessage(error));
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+
+async function handlePasswordReset() {
+  if (!auth) return;
+  const email = document.getElementById('auth-email').value.trim();
+  if (!email) {
+    showAuthError('Ingresa tu correo arriba para poder enviarte el enlace de recuperación.');
+    return;
+  }
+  try {
+    await fbAuth.sendPasswordResetEmail(auth, email);
+    showAuthNotice('Te enviamos un correo con instrucciones para restablecer tu contraseña.');
+  } catch (error) {
+    showAuthError(getAuthErrorMessage(error));
+  }
+}
+
+function handleLogout() {
+  if (!auth) return;
+  fbAuth.signOut(auth);
+}
+
+function updateUiForAuthState(user) {
+  const authScreen = document.getElementById('auth-screen');
+  const appMain = document.getElementById('app-main');
+  const userInfo = document.getElementById('user-info');
+
+  if (user) {
+    currentUid = user.uid;
+    authScreen.classList.add('hidden');
+    appMain.classList.remove('hidden');
+    userInfo.classList.remove('hidden');
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('auth-form').reset();
+    clearAuthMessages();
+    subscribeToEntries(user.uid);
+  } else {
+    currentUid = null;
+    authScreen.classList.remove('hidden');
+    appMain.classList.add('hidden');
+    userInfo.classList.add('hidden');
+    unsubscribeFromEntries();
+    resetFormToAddMode();
+  }
+}
+
+function disableAuthForm() {
+  document.getElementById('auth-submit-btn').disabled = true;
+  document.getElementById('auth-forgot-btn').disabled = true;
+  document.getElementById('auth-toggle-btn').disabled = true;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -631,5 +796,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('salary-form').addEventListener('submit', handleFormSubmit);
   document.getElementById('cancel-edit-btn').addEventListener('click', resetFormToAddMode);
 
-  renderTable();
+  document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
+  document.getElementById('auth-forgot-btn').addEventListener('click', handlePasswordReset);
+  document.getElementById('auth-toggle-btn').addEventListener('click', () =>
+    setAuthMode(authMode === 'login' ? 'signup' : 'login'),
+  );
+  document.getElementById('logout-btn').addEventListener('click', handleLogout);
+
+  initFirebase()
+    .then(() => {
+      fbAuth.onAuthStateChanged(auth, updateUiForAuthState);
+    })
+    .catch(() => {
+      showAuthError('No se pudo conectar. Revisa tu conexión e intenta de nuevo.');
+      disableAuthForm();
+    });
 });

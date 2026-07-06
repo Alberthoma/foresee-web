@@ -27,8 +27,18 @@ esas constantes cuando cambien las tasas oficiales.
 ## Stack técnico
 
 - HTML + CSS + JS puro (sin frameworks, sin build step).
-- Persistencia en `localStorage` del navegador (historial de cálculos y
-  preferencia de tema claro/oscuro) — los datos no salen del dispositivo.
+- **Cuenta e inicio de sesión** (email/contraseña, con recuperación de
+  contraseña) vía Firebase Authentication. El historial de cálculos se
+  guarda en Firebase Firestore bajo el usuario autenticado
+  (`artifacts/calculadora-salarial/users/{uid}/entries`), lo que permite
+  usar la app desde el celular y la PC con los mismos datos sincronizados.
+  Usa el mismo proyecto de Firebase que la app de gestión financiera
+  (`wittfinances-282f1`), pero con su propia colección de datos, aislada.
+  La preferencia de tema claro/oscuro se mantiene en `localStorage` (no
+  necesita sincronizarse).
+- Los módulos de Firebase se cargan con *import dinámico*: si no hay
+  conexión, el resto de la app (tema, formulario) sigue respondiendo en vez
+  de quedar inerte; solo el login queda deshabilitado con un aviso.
 - Diseño responsivo (mobile-first, breakpoints en 800px y 560px).
 - PWA instalable: `manifest.json` + `sw.js` (Service Worker) + íconos
   (`icon-192.png`, `icon-512.png`, `apple-touch-icon.png`).
@@ -64,7 +74,20 @@ y visitar `http://localhost:8080`.
 - **iOS / Safari**: botón Compartir → "Añadir a pantalla de inicio".
 
 Una vez instalada, el Service Worker permite abrirla sin conexión (usa la
-última versión cacheada de `index.html`, CSS y JS).
+última versión cacheada de `index.html`, CSS y JS). Para ver/editar cálculos
+hace falta conexión e iniciar sesión, ya que el historial vive en Firestore.
+
+## Cuenta y sincronización
+
+Al abrir la app pide iniciar sesión (o crear cuenta) con correo y
+contraseña. Un mismo usuario ve el mismo historial de cálculos en cualquier
+dispositivo donde inicie sesión (celular, PC, etc.), ya que los datos viven
+en Firestore, no en `localStorage` del dispositivo.
+
+**Nota importante sobre seguridad**: las reglas de Firestore (quién puede
+leer/escribir qué) se configuran en la consola de Firebase, no en este
+repositorio. Verifica ahí que la ruta `artifacts/calculadora-salarial/users/{uid}/**`
+solo sea accesible por el usuario dueño de ese `uid`.
 
 ## Versionado
 
