@@ -392,17 +392,6 @@ function resetFormToAddMode() {
   document.getElementById('cancel-edit-btn').classList.add('hidden');
 }
 
-function openFormModal() {
-  document.getElementById('form-modal-backdrop').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeFormModal() {
-  document.getElementById('form-modal-backdrop').classList.add('hidden');
-  document.body.style.overflow = '';
-  resetFormToAddMode();
-}
-
 function updateContribution401kLabel() {
   const type = document.getElementById('contribution401kType').value;
   const label = document.getElementById('contribution401kLabel');
@@ -626,19 +615,20 @@ function updateEntryField(id, field, value) {
 
 function deleteEntry(id) {
   if (!currentUid) return;
-  if (editingEntryId === id) closeFormModal();
+  if (editingEntryId === id) resetFormToAddMode();
   fbStore.deleteDoc(fbStore.doc(db, ENTRIES_PATH(currentUid), id));
 }
 
 function startEdit(id) {
-  const entry = currentEntries.find((e) => e.id === id);
+  const entries = loadEntries();
+  const entry = entries.find((e) => e.id === id);
   if (!entry) return;
   editingEntryId = id;
   fillForm(entry);
   document.getElementById('form-title').textContent = 'Editar Cálculo';
   document.getElementById('submit-btn').textContent = 'Guardar Cambios';
   document.getElementById('cancel-edit-btn').classList.remove('hidden');
-  openFormModal();
+  document.getElementById('salary-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function handleFormSubmit(event) {
@@ -652,7 +642,7 @@ function handleFormSubmit(event) {
     fbStore.addDoc(fbStore.collection(db, ENTRIES_PATH(currentUid)), { ...data, createdAt: fbStore.serverTimestamp() });
   }
 
-  closeFormModal();
+  resetFormToAddMode();
 }
 
 /* ---------------------------------------------------------------------- */
@@ -776,14 +766,14 @@ function handleLogout() {
 function updateUiForAuthState(user) {
   const authScreen = document.getElementById('auth-screen');
   const appMain = document.getElementById('app-main');
-  const logoutBtn = document.getElementById('logout-btn');
+  const userInfo = document.getElementById('user-info');
   const userEmailRow = document.getElementById('user-email-row');
 
   if (user) {
     currentUid = user.uid;
     authScreen.classList.add('hidden');
     appMain.classList.remove('hidden');
-    logoutBtn.classList.remove('hidden');
+    userInfo.classList.remove('hidden');
     userEmailRow.classList.remove('hidden');
     document.getElementById('user-email').textContent = user.email;
     document.getElementById('auth-form').reset();
@@ -793,10 +783,10 @@ function updateUiForAuthState(user) {
     currentUid = null;
     authScreen.classList.remove('hidden');
     appMain.classList.add('hidden');
-    logoutBtn.classList.add('hidden');
+    userInfo.classList.add('hidden');
     userEmailRow.classList.add('hidden');
     unsubscribeFromEntries();
-    closeFormModal();
+    resetFormToAddMode();
   }
 }
 
@@ -818,20 +808,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('salary-form').addEventListener('submit', handleFormSubmit);
-  document.getElementById('cancel-edit-btn').addEventListener('click', closeFormModal);
-
-  document.getElementById('open-form-btn').addEventListener('click', () => {
-    resetFormToAddMode();
-    openFormModal();
-  });
-  document.getElementById('close-form-btn').addEventListener('click', closeFormModal);
-  document.getElementById('form-modal-backdrop').addEventListener('click', (event) => {
-    if (event.target.id === 'form-modal-backdrop') closeFormModal();
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape') return;
-    if (!document.getElementById('form-modal-backdrop').classList.contains('hidden')) closeFormModal();
-  });
+  document.getElementById('cancel-edit-btn').addEventListener('click', resetFormToAddMode);
 
   document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
   document.getElementById('auth-forgot-btn').addEventListener('click', handlePasswordReset);

@@ -101,25 +101,20 @@ body {
 /* ---------- Encabezado ---------- */
 
 .app-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-areas:
-    'logo   .      theme'
-    'center center center'
-    '.      .      logout';
-  column-gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
   padding: 0.85rem 0.25rem 1.1rem;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
-  background-color: var(--bg-page);
+}
+
+.app-header__top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .app-header__logo {
-  grid-area: logo;
-  align-self: start;
   width: 2.5rem;
   height: 2.5rem;
   object-fit: contain;
@@ -127,7 +122,6 @@ body {
 }
 
 .app-header__center {
-  grid-area: center;
   text-align: center;
   margin-top: 0.5rem;
 }
@@ -148,9 +142,6 @@ body {
 }
 
 #theme-toggle {
-  grid-area: theme;
-  justify-self: end;
-  align-self: start;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -204,9 +195,9 @@ p.app-header__user-email {
   white-space: nowrap;
 }
 
-#logout-btn {
-  grid-area: logout;
-  justify-self: end;
+.app-header__bottom-row {
+  display: flex;
+  justify-content: flex-end;
   margin-top: 0.85rem;
 }
 
@@ -454,53 +445,6 @@ select:focus {
   display: none !important;
 }
 
-/* ---------- Acciones del dashboard ---------- */
-
-.dashboard-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
-/* ---------- Modal: Nuevo Cálculo / Editar Cálculo ---------- */
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  justify-content: center;
-  padding: 2.5rem 1rem;
-  overflow-y: auto;
-  background-color: rgba(6, 10, 18, 0.55);
-}
-
-.modal {
-  width: 100%;
-  max-width: 52rem;
-  height: fit-content;
-  margin: auto 0;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
-  padding: 1.5rem;
-}
-
-.modal__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-}
-
-.modal__header h2 {
-  margin: 0;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--primary);
-}
-
 /* ---------- Tabla de resultados ---------- */
 
 .table-header {
@@ -743,34 +687,6 @@ select:focus {
 }
 
 @media (max-width: 560px) {
-  .app-header {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'center center'
-      'theme  logout';
-    padding: 0.75rem 0.25rem 0.85rem;
-  }
-
-  .app-header__logo,
-  .app-header__subtitle {
-    display: none;
-  }
-
-  .app-header__center {
-    grid-area: center;
-    margin-top: 0;
-  }
-
-  #theme-toggle {
-    grid-area: theme;
-    justify-self: start;
-    margin-top: 0.7rem;
-  }
-
-  #logout-btn {
-    margin-top: 0.7rem;
-  }
-
   .auth-card {
     padding: 2rem 1.25rem 1.5rem;
   }
@@ -782,19 +698,6 @@ select:focus {
 
   .card {
     padding: 1.1rem;
-  }
-
-  .modal-backdrop {
-    padding: 0;
-  }
-
-  .modal {
-    max-width: none;
-    height: 100%;
-    margin: 0;
-    border-radius: 0;
-    padding: 1.1rem;
-    overflow-y: auto;
   }
 
   .form-actions {
