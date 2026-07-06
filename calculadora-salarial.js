@@ -651,6 +651,17 @@ function handleFormSubmit(event) {
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
+
+  // Cuando un Service Worker nuevo toma el control, recarga una sola vez
+  // para asegurar que el dispositivo quede en la última versión (evita que
+  // quede "atascado" sirviendo CSS/JS viejos desde la caché anterior).
+  let reloadedForNewVersion = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloadedForNewVersion) return;
+    reloadedForNewVersion = true;
+    window.location.reload();
+  });
+
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js');
   });
