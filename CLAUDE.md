@@ -30,9 +30,9 @@ instalada). Ver `calculadora-salarial.md` para el detalle de la app.
 Antes de modificar cualquiera de los 4 archivos versionados
 (`index.html`, `calculadora-salarial.css`, `calculadora-salarial.js`,
 `sw.js`), copiar la versión **actual** (previa al cambio, con el número de
-versión que tiene en ese momento) a la carpeta `backup/` en la raíz del
-repo, con el nombre `<archivo sin extensión> - V 000XX.<extensión>`. Por
-ejemplo, al partir de la versión V 00007: `index - V 00007.html`,
-`calculadora-salarial - V 00007.css`, `calculadora-salarial - V 00007.js`,
-`sw - V 00007.js`. Esto se hace en cada cambio, antes de subir el número de
-versión a la siguiente.
+versión que tiene en ese momento) a una subcarpeta `backup/V 000XX/` en la
+raíz del repo, manteniendo el nombre original de cada archivo. Por
+ejemplo, al partir de la versión V 00007: `backup/V 00007/index.html`,
+`backup/V 00007/calculadora-salarial.css`,
+`backup/V 00007/calculadora-salarial.js`, `backup/V 00007/sw.js`. Esto se
+hace en cada cambio, antes de subir el número de versión a la siguiente.
