@@ -767,14 +767,12 @@ function updateUiForAuthState(user) {
   const authScreen = document.getElementById('auth-screen');
   const appMain = document.getElementById('app-main');
   const userInfo = document.getElementById('user-info');
-  const userEmailRow = document.getElementById('user-email-row');
 
   if (user) {
     currentUid = user.uid;
     authScreen.classList.add('hidden');
     appMain.classList.remove('hidden');
     userInfo.classList.remove('hidden');
-    userEmailRow.classList.remove('hidden');
     document.getElementById('user-email').textContent = user.email;
     document.getElementById('auth-form').reset();
     clearAuthMessages();
@@ -784,7 +782,6 @@ function updateUiForAuthState(user) {
     authScreen.classList.remove('hidden');
     appMain.classList.add('hidden');
     userInfo.classList.add('hidden');
-    userEmailRow.classList.add('hidden');
     unsubscribeFromEntries();
     resetFormToAddMode();
   }
