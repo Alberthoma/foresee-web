@@ -15,6 +15,14 @@ Antes de generar código nuevo o modificar un archivo existente:
 
 Esto aplica a todo el repositorio, no solo a `calculadora-salarial`.
 
+## Pull requests: fusionar automáticamente
+
+Una vez aprobado el plan y comiteados los cambios, hacer push y **fusionar
+el pull request a `main` automáticamente, sin preguntar** (el usuario ya
+autorizó este flujo de forma permanente). No hace falta pedir confirmación
+para el merge en sí — solo para el plan de los cambios de código, como ya
+indica la sección anterior.
+
 ## Versionado de `calculadora-salarial`
 
 La app `calculadora-salarial` (`index.html`, `calculadora-salarial.css`,
