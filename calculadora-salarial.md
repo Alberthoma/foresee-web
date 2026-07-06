@@ -1,5 +1,12 @@
 # Calculadora de Salario Neto
 
+> **Estado actual (2026-07-06)**: PR #2 (login con Firebase) abierto y sin
+> fusionar todavía en https://github.com/Alberthoma/foresee-web/pull/2.
+> Pendiente verificar reglas de seguridad de Firestore en la consola de
+> Firebase y probar el flujo de login con conexión real. Ver
+> `calculadora-salarial-bitacora.md` para el detalle completo de lo hecho
+> en cada sesión y lo que queda pendiente.
+
 ## Qué es
 
 App web (no oficial, de uso personal) para estimar el **salario neto** a
@@ -54,6 +61,7 @@ esas constantes cuando cambien las tasas oficiales.
 | `sw.js` | Service Worker: caché de la app shell y funcionamiento offline |
 | `icon-192.png`, `icon-512.png` | Íconos para Android/Chrome (manifest) |
 | `apple-touch-icon.png` | Ícono para "Añadir a inicio" en iOS |
+| `calculadora-salarial-bitacora.md` | Historial detallado de cada sesión de trabajo (qué se hizo, decisiones, pendientes) |
 
 ## Cómo correrla
 
