@@ -102,41 +102,43 @@ body {
 
 .app-header {
   display: flex;
-  flex-direction: column;
-  padding: 0.85rem 0.25rem 1.1rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 0.25rem;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
 }
 
-.app-header__top-row {
+.app-header__title {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.85rem;
 }
 
-.app-header__logo {
-  width: 2.5rem;
-  height: 2.5rem;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.app-header__center {
-  text-align: center;
-  margin-top: 0.5rem;
+.app-header__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  border-radius: var(--radius-md);
+  background-color: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.4rem;
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
-.app-header__center p {
-  margin: 0.3rem 0 0;
+.app-header p {
+  margin: 0.15rem 0 0;
   font-size: 0.85rem;
   color: var(--text-secondary);
 }
@@ -181,35 +183,26 @@ body {
 
 /* ---------- Header: usuario / sesión ---------- */
 
-p.app-header__user-email {
-  display: inline-block;
-  margin-top: 0.6rem;
-  font-size: 0.78rem;
+.app-header__right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.app-header__user {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.app-header__user-email {
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  padding: 0.2rem 0.65rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  max-width: 100%;
+  max-width: 11rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.app-header__bottom-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 0.85rem;
-}
-
-.btn--danger {
-  background-color: transparent;
-  border-color: var(--negative);
-  color: var(--negative);
-}
-
-.btn--danger:hover {
-  background-color: var(--negative);
-  color: #ffffff;
 }
 
 /* ---------- Pantalla de acceso ---------- */
@@ -232,12 +225,18 @@ p.app-header__user-email {
   text-align: center;
 }
 
-.auth-card__logo {
-  display: block;
-  width: 3.5rem;
-  height: 3.5rem;
-  object-fit: contain;
+.auth-card__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
   margin: 0 auto 1.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .auth-card h2 {
@@ -687,6 +686,14 @@ select:focus {
 }
 
 @media (max-width: 560px) {
+  .app-header {
+    flex-wrap: wrap;
+  }
+
+  .app-header__user-email {
+    max-width: 7rem;
+  }
+
   .auth-card {
     padding: 2rem 1.25rem 1.5rem;
   }
