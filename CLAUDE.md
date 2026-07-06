@@ -24,3 +24,15 @@ archivos debe incrementar ese número en 1**, y actualizar en el mismo commit
 la constante `CACHE_VERSION` de `sw.js` al mismo valor (esto invalida la
 caché del Service Worker en los dispositivos que ya tengan la app
 instalada). Ver `calculadora-salarial.md` para el detalle de la app.
+
+## Respaldo antes de modificar código
+
+Antes de modificar cualquiera de los 4 archivos versionados
+(`index.html`, `calculadora-salarial.css`, `calculadora-salarial.js`,
+`sw.js`), copiar la versión **actual** (previa al cambio, con el número de
+versión que tiene en ese momento) a la carpeta `backup/` en la raíz del
+repo, con el nombre `<archivo sin extensión> - V 000XX.<extensión>`. Por
+ejemplo, al partir de la versión V 00007: `index - V 00007.html`,
+`calculadora-salarial - V 00007.css`, `calculadora-salarial - V 00007.js`,
+`sw - V 00007.js`. Esto se hace en cada cambio, antes de subir el número de
+versión a la siguiente.
