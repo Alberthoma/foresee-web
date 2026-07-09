@@ -174,23 +174,6 @@ const formatCurrency = (value) =>
     .toFixed(2)
     .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
 
-const MONTH_ABBR_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-
-/** Parseo manual (sin Date/timezone) de 'YYYY-MM-DD' para evitar corrimientos de día. */
-function formatDateShort(isoDate) {
-  const [year, month, day] = isoDate.split('-').map(Number);
-  return { label: `${String(day).padStart(2, '0')} ${MONTH_ABBR_ES[month - 1]}`, year };
-}
-
-function formatPayPeriod(startIso, endIso) {
-  if (!startIso || !endIso) return 'Sin período';
-  const start = formatDateShort(startIso);
-  const end = formatDateShort(endIso);
-  return start.year === end.year
-    ? `${start.label} – ${end.label} ${end.year}`
-    : `${start.label} ${start.year} – ${end.label} ${end.year}`;
-}
-
 /** Suma progresiva de impuesto por tramos (federal, NY, CA). */
 function calculateBracketTax(taxableAnnual, brackets) {
   let tax = 0;
@@ -367,8 +350,6 @@ let editingEntryId = null;
 
 function readFormData() {
   return {
-    payPeriodStart: document.getElementById('payPeriodStart').value,
-    payPeriodEnd: document.getElementById('payPeriodEnd').value,
     state: document.getElementById('state').value,
     hourlyRate: document.getElementById('hourlyRate').value,
     regularHours: document.getElementById('regularHours').value,
@@ -386,8 +367,6 @@ function readFormData() {
 }
 
 function fillForm(entry) {
-  document.getElementById('payPeriodStart').value = entry.payPeriodStart || '';
-  document.getElementById('payPeriodEnd').value = entry.payPeriodEnd || '';
   document.getElementById('state').value = entry.state;
   document.getElementById('hourlyRate').value = entry.hourlyRate;
   document.getElementById('regularHours').value = entry.regularHours;
@@ -465,19 +444,6 @@ function buildEntryCard(entry) {
   card.className = 'entry-card';
   card.dataset.id = entry.id;
 
-  const summary = document.createElement('button');
-  summary.type = 'button';
-  summary.className = 'entry-card__summary';
-  summary.innerHTML = `
-    <span class="entry-card__summary-period">${formatPayPeriod(entry.payPeriodStart, entry.payPeriodEnd)}</span>
-    <span class="entry-card__summary-amount">${formatCurrency(result.netPay)}</span>
-    <span class="entry-card__summary-chevron">▾</span>
-  `;
-  summary.addEventListener('click', () => card.classList.toggle('is-open'));
-
-  const body = document.createElement('div');
-  body.className = 'entry-card__body';
-
   const categories = document.createElement('div');
   categories.className = 'category-list';
 
@@ -528,8 +494,7 @@ function buildEntryCard(entry) {
   `;
   categories.appendChild(net);
 
-  body.appendChild(categories);
-  card.append(summary, body);
+  card.append(categories);
   return card;
 }
 
