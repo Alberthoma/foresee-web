@@ -548,17 +548,16 @@ select:focus {
   text-align: left;
   color: var(--text-primary);
   font-family: inherit;
-  font-size: 0.95rem;
 }
 
 .entry-card__summary-period {
   flex: 1;
   font-weight: 700;
+  font-size: 0.95rem;
 }
 
 .entry-card__summary-amount {
   font-weight: 700;
-  font-size: 1.1rem;
   color: var(--positive);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
